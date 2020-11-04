@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^mwa.soc.srcf.net$
+RewriteRule ^(.*)$ http://mayweekalternative.org.uk/$1 [R,L]
+SSLRequireSSL

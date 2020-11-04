@@ -1,0 +1,29 @@
+#faq{
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: stretch;
+
+	padding: 24px 0;
+	color: black;
+}
+
+.ui.styled.accordion {
+    width: auto;
+}
+
+.ui.styled.accordion .title {
+    width: auto;
+		font-family: 'Laca', sans-serif;
+		font-weight: 500;
+}
+
+.ui.styled.accordion .content {
+    width: auto;
+		font-family: mr-eaves-sans, sans-serif;
+}
+
+.ui.styled.accordion .accordion .content, .ui.styled.accordion .content {
+
+	font-weight: 300;
+}
