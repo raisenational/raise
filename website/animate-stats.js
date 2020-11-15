@@ -106,6 +106,6 @@ animateNumber(yearsElement, 0, 3, standardIntegerFormatter, 1000, easingFunction
 const studentsElement = document.getElementById('students-number');
 animateNumber(studentsElement, 0, 651, standardIntegerFormatter, 2000, easingFunctions.linear);
 const raisedElement = document.getElementById('raised-number');
-animateNumber(raisedElement, 0, 152200, integerPoundsFormatter, 3000, easingFunctions.linear);
+animateNumber(raisedElement, 0, 160472, integerPoundsFormatter, 3000, easingFunctions.linear);
 const peopleProtectedElement = document.getElementById('people-protected-number');
-animateNumber(peopleProtectedElement, 0, 178360, standardIntegerFormatter, 4000, easingFunctions.linear);
+animateNumber(peopleProtectedElement, 0, 186314, standardIntegerFormatter, 4000, easingFunctions.linear);
