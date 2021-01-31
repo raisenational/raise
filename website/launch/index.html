@@ -19,8 +19,7 @@
     <link rel="stylesheet" type="text/css" href="/semantic/semantic.min.css">
     <link rel="stylesheet" href="/mwa_style.css?rnd=1">
     <link rel="stylesheet" href="/contact_style.css">
-    <link rel="stylesheet" href="/launch/css/themicons.css">
-    <link rel="stylesheet" href="/launch/css/style.css">
+    <link rel="stylesheet" href="/launch/muses.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="apple-touch-icon" sizes="57x57" href="/resources/favicon/apple-icon-57x57.png">
@@ -61,8 +60,27 @@
     <span class="menu-join-text leftSkew noSelect" style="font-size:15px; height: 20px;">Get involved!
     </span>
   </a>
-  <div class="cc_player" data-skin="custom" data-autoplay=0 id="radio" data-username="kheghsfk" style="position:fixed; top:135px; right:32px;">Loading ...</div>
-  <script language="javascript" type="text/javascript" src="https://us10a.serverse.com:2199/system/player.js"></script>
+  <!-- <div class="cc_player" data-skin="custom" data-autoplay=0 id="radio" data-username="kheghsfk" style="position:fixed; top:135px; right:32px;">Loading ...</div> -->
+  <script type="text/javascript" src="https://hosted.muses.org/mrp.js"></script>
+  <script type="text/javascript">
+    MRP.insert({
+      'url': 'https://us10a.serverse.com/proxy/kheghsfk?mp=/stream',
+      'codec': 'mp3',
+      'volume': 50,
+      'autoplay': true,
+      'forceHTML5': true,
+      'jsevents': true,
+      'buffering': 0,
+      'title': 'MWA/Raise Launch!',
+      'wmode': 'transparent',
+      'skin': 'repvku-100',
+      'width': 100,
+      'height': 25
+    });
+  </script>
+
+  
+  <!-- <script language="javascript" type="text/javascript" src="https://us10a.serverse.com:2199/system/player.js"></script>
   <script language="javascript">
     (function () {
       var centovacast = (window.centovacast || (window.centovacast = {}));
@@ -72,6 +90,6 @@
         },
       };
     })();
-  </script>
+  </script> -->
 </body>
 </html>
