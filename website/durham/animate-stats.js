@@ -104,8 +104,8 @@ function integerPoundsFormatter(value) {
 const yearsElement = document.getElementById('years-number');
 animateNumber(yearsElement, 0, 1, standardIntegerFormatter, 1000, easingFunctions.linear);
 const studentsElement = document.getElementById('students-number');
-animateNumber(studentsElement, 0, 89, standardIntegerFormatter, 2000, easingFunctions.linear);
+animateNumber(studentsElement, 0, 125, standardIntegerFormatter, 2000, easingFunctions.linear);
 const raisedElement = document.getElementById('raised-number');
-animateNumber(raisedElement, 0, 20310, integerPoundsFormatter, 3000, easingFunctions.linear);
+animateNumber(raisedElement, 0, 26820, integerPoundsFormatter, 3000, easingFunctions.linear);
 const peopleProtectedElement = document.getElementById('people-protected-number');
-animateNumber(peopleProtectedElement, 0, 25407, standardIntegerFormatter, 4000, easingFunctions.linear);
+animateNumber(peopleProtectedElement, 0, 34800, standardIntegerFormatter, 4000, easingFunctions.linear);
