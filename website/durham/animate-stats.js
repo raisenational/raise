@@ -108,4 +108,4 @@ animateNumber(studentsElement, 0, 125, standardIntegerFormatter, 2000, easingFun
 const raisedElement = document.getElementById('raised-number');
 animateNumber(raisedElement, 0, 26820, integerPoundsFormatter, 3000, easingFunctions.linear);
 const peopleProtectedElement = document.getElementById('people-protected-number');
-animateNumber(peopleProtectedElement, 0, 34800, standardIntegerFormatter, 4000, easingFunctions.linear);
+animateNumber(peopleProtectedElement, 0, 33000, standardIntegerFormatter, 4000, easingFunctions.linear);
