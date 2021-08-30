@@ -228,6 +228,7 @@ nav.main-nav li.menu-join {
 nav.main-nav ul {
   list-style-type: none;
   margin: 0 32px;
+  padding: 0;
 }
 
 nav.main-nav a {
