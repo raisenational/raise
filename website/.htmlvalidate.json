@@ -1,0 +1,12 @@
+{
+  "elements": [
+    "html5"
+  ],
+  "extends": [
+    "html-validate:recommended"
+  ],
+  "rules": {
+    "wcag/h37": "off",
+    "no-inline-style": "off"
+  }
+}
