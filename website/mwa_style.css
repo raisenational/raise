@@ -132,7 +132,7 @@ body {
 	align-self: center;
   border: 1px solid white;
   margin: 0 10px;
-  padding: 0;
+  padding: 0 !important;
 	background: white;
 	/* transform: rotateZ(var(--SkewValue)); */
 }

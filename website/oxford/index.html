@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-160904737-1"></script>
     <script>
@@ -37,7 +38,7 @@
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="/resources/favicon/ms-icon-144x144.png">
   <meta name="theme-color" content="#ffffff">
-  <meta property="og:image" content="http://raiseoxford.uk/raise-facebook-logo.png">
+  <meta property="og:image" content="/resources/raise-link-icon.png">
   <meta property="og:description" content="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.">
   <meta property="og:title" content="Raise Oxford">
   <title>Raise Oxford - Celebrate and make the world a better place</title>
@@ -50,16 +51,23 @@
         <button type="button" onclick="displayMenu()" class="main-nav-menu-button">
           <i class="material-icons md-light">menu</i>
         </button>
+        <div class="menu-join menu-join-mobile">
+          <a href="https://app.sogive.org/#fundraiser/raiseoxford.Qf5OnaFn.702c64" class="menu-join-link rightSkew redBackground rounded buttonShadow hoverable">
+            <span class="menu-join-text leftSkew noSelect" style="font-size:1em">Join: Donate Here</span>
+          </a>
+        </div>
+        <!--
         <div class="menu-join menu-join-mobile menu-join-mobile-first">
           <a href="https://www.facebook.com/raiseoxford/" class="menu-join-link rightSkew redBackground rounded buttonShadow hoverable">
             <span class="menu-join-text leftSkew noSelect">Facebook</span>
           </a>
         </div>
-		<div class="menu-join menu-join-mobile">
+		    <div class="menu-join menu-join-mobile">
           <a href="https://www.instagram.com/raiseoxford/" class="menu-join-link rightSkew redBackground rounded buttonShadow hoverable">
             <span class="menu-join-text leftSkew noSelect">Instagram</span>
           </a>
         </div>
+        -->
         <div id="phone-dropdown" class="menu-content">
           <button type="button" onclick="displayMenu()" class="main-nav-menu-button">
             <i class="material-icons md-light">close</i>
@@ -69,11 +77,11 @@
             <li><a class="menu-item" href="./#how-it-works">How It Works</a></li>
             <li><a class="menu-item" href="./#faq">More Info</a></li>
             <li><a class="menu-item" href="./#our-philosophy">Our Philosophy</a></li>
-            <!-- <li><a class="menu-item" href="/get_involved/">Get Involved</a></li> Might be putting this back in the future -->
             <li><a class="menu-item" href="./#contact">Contact</a></li>
             <li class="verticalBar"></li>
-            <li><a class="menu-item" href="./partner/">Partner</a></li>
-            <li class="menu-join" style="margin: 0 20px 0 auto;">
+            <li><a class="menu-item" href="./partner">Partner</a></li>
+            <!--
+              <li class="menu-join" style="margin: 0 20px 0 auto;">
               <a href="https://www.facebook.com/raiseoxford/" class="menu-join-link rightSkew redBackground rounded buttonShadow hoverable">
                 <span class="menu-join-text leftSkew noSelect">Like us on Facebook</span>
               </a>
@@ -81,6 +89,12 @@
 			<li class="menu-join" style="margin: 0 20px 0 0;">
               <a href="https://www.instagram.com/raiseoxford/" class="menu-join-link rightSkew redBackground rounded buttonShadow hoverable">
                 <span class="menu-join-text leftSkew noSelect">Follow us on Instagram</span>
+              </a>
+            </li>
+            -->
+              <li class="menu-join">
+              <a href="https://app.sogive.org/#fundraiser/raiseoxford.Qf5OnaFn.702c64" class="menu-join-link rightSkew redBackground rounded buttonShadow hoverable">
+                <span style="font-size:1.2em" class="menu-join-text leftSkew noSelect">Join: Donate Here</span>
               </a>
             </li>
           </ul>
@@ -94,8 +108,8 @@
       </div>
       <div id="tagline">
         <p>Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.</p>
-
-	  <p style="
+        <p>Here are the figures for our national impact:</p>
+	  <!-- <p style="
 	font-size: 0.9em;
     color: #ffffff;
     background-color: #5d215e;
@@ -103,30 +117,30 @@
     padding: 10px;
 	">
     Raise is back for 2020/2021! We're so excited to get going again after last year's activities were interrupted by the COVID-19 pandemic. Below are the figures for our <a class="white-link" href="http://www.mayweekalternative.org.uk">sister organisation in Cambridge</a> that demonstrate how impactful this movement can be, and we look forward to building on this success in Oxford.
-	  </p>
+	  </p>-->
       </div>
       <div class="stats-bar">
         <div class="stats-item">
           <div class="stats-item-inner">
-            <div class="stats-item-number" id="years-number">3</div>
+            <div class="stats-item-number" id="years-number">4</div>
             <div class="stats-item-desc">years</div>
           </div>
         </div>
         <div class="stats-item">
           <div class="stats-item-inner">
-            <div class="stats-item-number" id="students-number">651</div>
+            <div class="stats-item-number" id="students-number">1366</div>
             <div class="stats-item-desc">students</div>
           </div>
         </div>
         <div class="stats-item">
           <div class="stats-item-inner">
-            <div class="stats-item-number" id="raised-number">&pound;160,472</div>
+            <div class="stats-item-number" id="raised-number">&pound;284,581</div>
             <div class="stats-item-desc">raised</div>
           </div>
         </div>
         <div class="stats-item">
           <div class="stats-item-inner">
-            <div class="stats-item-number" id="people-protected-number">186,314</div>
+            <div class="stats-item-number" id="people-protected-number">340,013</div>
             <div class="stats-item-desc">people protected</div>
           </div>
         </div>
@@ -157,18 +171,19 @@
         <div id="hiw-celebrate" class="hiw-box shadow rounded">
           <img src="/resources/how_it_works/PartyPopper.svg">
           <h4>Celebrate</h4>
-          <p>Towards the end of Trinity Term, we will host a Summer Party to celebrate the end of exams and our collective impact.
+          <p>Towards the end of Trinity Term, we will host a Summer Celebration to celebrate the end of exams and our collective impact.
             There's food and drink, great company and live entertainment!</p>
         </div>
       </div>
       <div class="cta-buttons">
+        <a href="https://app.sogive.org/#fundraiser/raiseoxford.Qf5OnaFn.702c64" class="rounded whiteBorder hoverable">
+          <div>Join: Donate Here</div>
+        </a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLScVFYUFAiSqzWxJnQEBC5Q2o0f7XEWDVIRM_YGbPWXRULQaxg/viewform" class="rounded whiteBorder hoverable">
           <div>Become a college rep</div>
         </a>
-      </div>
-      <div class="cta-buttons" style="margin-top:0">
         <a href="https://docs.google.com/forms/d/e/1FAIpQLScVFYUFAiSqzWxJnQEBC5Q2o0f7XEWDVIRM_YGbPWXRULQaxg/viewform" class="rounded whiteBorder hoverable">
-          <div>Join the commettee</div>
+          <div>Join the committee</div>
         </a>
       </div>
     </section>
@@ -180,12 +195,12 @@
          Sounds great, where do I sign up?
         </div>
        <div class="content">
-         <!--p class="transition hidden">Awesome - to join Raise 2020 and celebrate the end of this academic year through giving, 
-		  you can donate <a href="https://app.sogive.org/?#fundraiser/celebrationofgiving.foq5jXMe.9613b8">here</a>
-		  any time. 
-          </p-->
-          <p class="transition hidden">We’re recruiting! Click <a href="http://bit.ly/JoinRaise2020">here</a> to find out more, or click <a href="http://eepurl.com/hff_IX">here</a> to join our mailing list.
+         <p class="transition hidden">Awesome - to join Raise 2020 and celebrate the end of this academic year through giving,
+		  you can donate <a href="https://app.sogive.org/#fundraiser/raiseoxford.Qf5OnaFn.702c64">here</a>
+		  any time.
           </p>
+          <!--p class="transition hidden">We’re recruiting! Click <a href="http://bit.ly/JoinRaise2020">here</a> to find out more, or click <a href="http://eepurl.com/hff_IX">here</a> to join our mailing list.
+          </p-->
        </div>
         <div class="title">
           <i class="dropdown icon"></i>
@@ -193,7 +208,7 @@
           <!--I've joined! How can I get more involved?-->
         </div>
         <div class="content">
-          <p>We&#39;re so pleased you&#39;ve joined, and look forward to celebrating with you; here are a few ways you can help grow the movement: </p>
+          <p>We're so pleased you've joined, and look forward to celebrating with you; here are a few ways you can help grow the movement: </p>
           <p><b>Tell your friends</b>: Encouraging friends to join is one of the most valuable things you can do - aside from the huge impact of their donations, celebrating is more fun when we do it together! Why not show them our website, share our posts on social media, and invite friends to follow our <a href="https://www.facebook.com/raiseoxford/">Facebook page</a> themselves?</p>
           <p><b>Social media</b>: One of the best ways to spread the word is through social media - you could share our <a href="https://www.facebook.com/raiseoxford/">Facebook page</a> or one of our posts.
           </p>
@@ -345,6 +360,9 @@
       <div id="social-icons">
         <a href="https://www.facebook.com/raiseoxford/">
           <img alt="Facebook" src="/resources/fb-white.svg">
+        </a>
+        <a href="https://www.instagram.com/raiseoxford/">
+          <img alt="Instagram" src="/resources/instagram.png">
         </a>
         <a href="mailto:raiseoxford@gmail.com">
           <img alt="Email" src="/resources/email-white.svg">
