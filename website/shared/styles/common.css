@@ -897,7 +897,7 @@ a.inline {
 	height: 64px;
 	border-radius: 50%;
 
-	background-image: url('/shared/images/quote_1.png');
+	background-image: url('../images/quote_1.png');
 	background-position: center center;
 	background-size: cover;
 
