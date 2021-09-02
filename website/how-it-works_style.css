@@ -91,7 +91,7 @@
 	height: 64px;
 	border-radius: 50%;
 
-	background-image: url('/resources/quote_1.png');
+	background-image: url('/shared/images/quote_1.png');
 	background-position: center center;
 	background-size: cover;
 
