@@ -1,13 +1,16 @@
 'use strict';
 
+// TOOD: why is this here?
 $('.ui.accordion')
   .accordion()
 ;
 
+// TOOD: why is this not in nav.js
 function displayMenu() {
     document.getElementById('phone-dropdown').classList.toggle('show-nav');
 }
 
+// TOOD: why is this not in nav.js
 window.onclick = function(event) {
     if (!event.target.matches('.main-nav-menu-button')) {
         var dropdowns = document.getElementById("phone-dropdown");
@@ -21,6 +24,7 @@ window.onclick = function(event) {
     }
 }
 
+// TODO: we always use linear anyways - is this necessary?
 // https://gist.github.com/gre/1650294
 const easingFunctions = {
     // no easing, no acceleration
@@ -51,24 +55,27 @@ const easingFunctions = {
     easeInOutQuint: function (t) { return t<.5 ? 16*t*t*t*t*t : 1+16*(--t)*t*t*t*t }
 }
 
+function animateNumber(element, startValue, durationMs, easingFunction = easingFunctions.linear) {
+    if (!/^£?\d[,\d]*$/.test(element.innerText)) {
+        console.error('Invalid value \'' + element.innerText + '\' found for animated element', element);
+        return;
+    }
 
-function animateNumber(element, startValue, endValue, formatter, durationMs, easingFunction) {
-    const startTime = Date.now();
-
+    const formatter = element.innerText.includes('£') ? integerPoundsFormatter : standardIntegerFormatter;
+    const endValue = parseInt(element.innerText.replace(/\D/g, ''));
+    
     const displayValue = (unformattedValue) => {
         const formattedValue = formatter(unformattedValue);
-
         element.textContent = formattedValue;
     };
-
+    
     const animate = () => {
         const currentTime = Date.now();
         const elapsedTime = currentTime - startTime;
 
-        const easedValue = ease(startValue, endValue, durationMs, elapsedTime, easingFunction);
-        displayValue(easedValue);
-
-        if(elapsedTime < durationMs) {
+        if (elapsedTime < durationMs) {
+            const easedValue = ease(startValue, endValue, durationMs, elapsedTime, easingFunction);
+            displayValue(easedValue);
             window.requestAnimationFrame(animate);
         } else {
             //make sure the final value is rendered
@@ -76,6 +83,7 @@ function animateNumber(element, startValue, endValue, formatter, durationMs, eas
         }
     }
 
+    const startTime = Date.now();
     animate();
 }
 
@@ -98,14 +106,10 @@ function standardIntegerFormatter(value) {
 }
 
 function integerPoundsFormatter(value) {
-    return "\u00A3" + value.toLocaleString('en-GB', { style: 'decimal', maximumFractionDigits: 0 });
+    return "£" + standardIntegerFormatter(value);
 }
 
-const yearsElement = document.getElementById('years-number');
-animateNumber(yearsElement, 0, 4, standardIntegerFormatter, 1000, easingFunctions.linear);
-const studentsElement = document.getElementById('students-number');
-animateNumber(studentsElement, 0, 1366, standardIntegerFormatter, 2000, easingFunctions.linear);
-const raisedElement = document.getElementById('raised-number');
-animateNumber(raisedElement, 0, 284581, integerPoundsFormatter, 3000, easingFunctions.linear);
-const peopleProtectedElement = document.getElementById('people-protected-number');
-animateNumber(peopleProtectedElement, 0, 340013, standardIntegerFormatter, 4000, easingFunctions.linear);
+const elements = document.getElementsByClassName('stats-animate');
+for (let i = 0; i < elements.length; i++) {
+    animateNumber(elements[i], 0, (i + 1) * 1000);
+}
