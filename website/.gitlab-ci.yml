@@ -45,3 +45,5 @@ validate:
   stage: test
   script:
     - npx html-validate .
+  rules:
+    - when: always
