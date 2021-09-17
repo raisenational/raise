@@ -1,16 +1,32 @@
+/* FONTS */
+
+@font-face {
+  font-family:"laca";
+  src:url("https://use.typekit.net/af/ca51a1/00000000000000003b9b39df/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/ca51a1/00000000000000003b9b39df/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/ca51a1/00000000000000003b9b39df/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("opentype");
+  font-display:auto;font-style:normal;font-weight:400;
+}
+
+@font-face {
+  font-family:"laca";
+  src:url("https://use.typekit.net/af/94e9d3/00000000000000003b9b39e5/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff2"),url("https://use.typekit.net/af/94e9d3/00000000000000003b9b39e5/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("woff"),url("https://use.typekit.net/af/94e9d3/00000000000000003b9b39e5/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n7&v=3") format("opentype");
+  font-display:auto;font-style:normal;font-weight:700;
+}
+
+@font-face {
+  font-family:"mr-eaves-sans";
+  src:url("https://use.typekit.net/af/b303fd/00000000000000003b9adbc9/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3") format("woff2"),url("https://use.typekit.net/af/b303fd/00000000000000003b9adbc9/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3") format("woff"),url("https://use.typekit.net/af/b303fd/00000000000000003b9adbc9/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n3&v=3") format("opentype");
+  font-display:auto;font-style:normal;font-weight:300;
+}
+
+@font-face {
+  font-family:"mr-eaves-sans";
+  src:url("https://use.typekit.net/af/49cf3f/00000000000000003b9adbca/27/l?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff2"),url("https://use.typekit.net/af/49cf3f/00000000000000003b9adbca/27/d?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("woff"),url("https://use.typekit.net/af/49cf3f/00000000000000003b9adbca/27/a?primer=7cdcb44be4a7db8877ffa5c0007b8dd865b3bbc383831fe2ea177f62257a9191&fvd=n4&v=3") format("opentype");
+  font-display:auto;font-style:normal;font-weight:400;
+}
+
 /*PRE-DEFINED BACKGROUND COLOURS*/
 
 :root {
-  --LightBlue: #1282a2;
-  --DarkBlue: #034078;
-  --ButtonBlue: #001f54;
-  --BlueBlack: #001f54;
-  --LightGreen: #12a26b;
-  --ButtonDarkGreen: #0d422d;
-  --DarkPurple: #884886;
-  --ButtonPurple: #2f182e;
-
-  /* new colours */
   --Purple: #5D215E;
   --DarkRed: #AD2E53;
   --SkyBlue: #2ecad6;
@@ -23,38 +39,6 @@
 	--Shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
 	--SkewValue: 15deg;
-}
-.light-blue {
-  background-color: #1282a2;
-  background-color: var(--LightBlue);
-}
-.dark-blue {
-  background-color: #034078;
-  background-color: var(--DarkBlue);
-}
-.button-blue {
-  background-color: #001f54;
-  background-color: var(--ButtonBlue);
-}
-.light-green {
-  background-color: #12a26b;
-  background-color: var(--LightGreen);
-}
-.button-green {
-  background-color: #12a26b;
-  background-color: var(--LightGreen);
-}
-.button-dark-green {
-  background-color: #0d422d;
-  background-color: var(--ButtonDarkGreen);
-}
-.dark-purple {
-  background-color: #884886;
-  background-color: var(--DarkPurple);
-}
-.button-purple {
-  background-color: #2f182e;
-  background-color: var(--ButtonPurple);
 }
 body {
   background-color: #d1e8ff;
