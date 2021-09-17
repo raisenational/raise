@@ -298,7 +298,7 @@ nav.main-nav a:hover {
   .menu-content {
     display: none;
     position: absolute;
-    background-color: var(--DarkPurple);
+    background-color: var(--Purple);
     z-index: 1;
     left: 0;
     top: 0;
