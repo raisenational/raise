@@ -24,7 +24,7 @@ const IndexPage = () => (
         right={[
         ]}
       />
-      <SectionNoPadding className="m-auto px-8">
+      <SectionNoPadding className="m-auto px-8 pb-8">
         <IntroStats
           title="Raise: A Celebration of Giving"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our four chapter websites to learn more about what we do."
