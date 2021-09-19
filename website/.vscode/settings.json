@@ -20,7 +20,8 @@
     "package-lock.json": true,
     "package.json": true,
     "postcss.config.js": true,
-    "tailwind.config.js": true,
+    // https://github.com/tailwindlabs/tailwindcss-intellisense/issues/410
+    // "tailwind.config.js": true,
     "tsconfig.json": true,
   },
   "search.exclude": {
@@ -40,7 +41,4 @@
   "workbench.startupEditor": "none",
   "git.enableSmartCommit": true,
   "redhat.telemetry.enabled": false,
-  "tailwindCSS.includeLanguages": {
-    "plaintext": "javascript",
-  }
 }
