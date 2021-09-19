@@ -3,7 +3,6 @@
 image: node:16.0-slim
 
 stages:
-- build
 - test
 - deploy
 
@@ -13,15 +12,11 @@ cache:
     - .cache/
     - public
 
-setup:
-  stage: build
-  script:
-    - npm install
-    - npm run build
-
 test:
   stage: test
   script:
+    - npm install
+    - npm run build
     - npm test
 
 pages:
