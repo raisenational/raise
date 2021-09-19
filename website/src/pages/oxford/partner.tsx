@@ -84,7 +84,7 @@ const PartnerPage = () => (
       </div>
     </Section>
 
-    <Section id="contact" className="pb-12">
+    <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
       <div className="flex justify-center gap-8">
         <SocialIcon icon={instagram} alt="Instagram" href="https://www.instagram.com/raiseoxford/" />
