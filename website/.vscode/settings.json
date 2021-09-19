@@ -4,6 +4,25 @@
   "files.encoding": "utf8",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
+  "files.exclude": {
+    "public/**": true,
+    "node_modules/**": true,
+    ".cache/**": true,
+    ".eslintrc": true,
+    ".gitignore": true,
+    ".gitlab-ci.yml": true,
+    ".gitpod.yml": true,
+    ".vscode/**": true,
+    "gatsby-browser.js": true,
+    "gatsby-config.js": true,
+    "gatsby-node.js": true,
+    "gatsby-ssr.js": true,
+    "package-lock.json": true,
+    "package.json": true,
+    "postcss.config.js": true,
+    "tailwind.config.js": true,
+    "tsconfig.json": true,
+  },
   "search.exclude": {
     "public/**": true,
     "node_modules/**": true,
@@ -18,4 +37,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
   },
+  "workbench.startupEditor": "none",
+  "git.enableSmartCommit": true,
+  "redhat.telemetry.enabled": false,
 }
