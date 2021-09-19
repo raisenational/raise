@@ -13,7 +13,7 @@ const IndexPage = () => (
       <title>Raise</title>
       <meta property="og:title" content="Raise" />
     </Helmet>
-    <Cover>
+    <Cover className="-mb-16">
       <Navigation
         left={[
           { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
