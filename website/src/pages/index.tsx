@@ -16,10 +16,10 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Cambridge", to: "https://www.mayweekalternative.org.uk/" },
-          { text: "Durham", to: "/durham/" },
-          { text: "Glasgow", to: "/glasgow/" },
-          { text: "Oxford", to: "/oxford/" },
+          { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
+          { text: "Durham", href: "/durham/" },
+          { text: "Glasgow", href: "/glasgow/" },
+          { text: "Oxford", href: "/oxford/" },
         ]}
         right={[
         ]}

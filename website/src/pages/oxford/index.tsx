@@ -28,15 +28,15 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Home", to: "/oxford/" },
-          { text: "How It Works", to: "/oxford/#how-it-works" },
-          { text: "FAQs", to: "/oxford/#faq" },
-          { text: "Our Philosophy", to: "/oxford/#our-philosophy" },
-          { text: "Contact", to: "/oxford/#contact" },
-          { text: "Partner", to: "/oxford/partner/" },
+          { text: "Home", href: "/oxford/" },
+          { text: "How It Works", href: "/oxford/#how-it-works" },
+          { text: "FAQs", href: "/oxford/#faq" },
+          { text: "Our Philosophy", href: "/oxford/#our-philosophy" },
+          { text: "Contact", href: "/oxford/#contact" },
+          { text: "Partner", href: "/oxford/partner/" },
         ]}
         right={[
-          { text: "Join: Donate Here", to: "https://app.sogive.org/#fundraiser/raiseoxford.Qf5OnaFn.702c64" },
+          { text: "Join: Donate Here", href: "https://app.sogive.org/#fundraiser/raiseoxford.Qf5OnaFn.702c64" },
         ]}
       />
       <SectionNoPadding className="px-8">
@@ -53,7 +53,7 @@ const IndexPage = () => (
       </SectionNoPadding>
       <CTADown
         text="How it works"
-        to="#how-it-works"
+        href="#how-it-works"
       />
     </Cover>
 
@@ -157,9 +157,9 @@ const IndexPage = () => (
     <Section id="contact" className="pb-12">
       <SectionTitle>Get in Touch</SectionTitle>
       <div className="flex justify-center gap-8">
-        <SocialIcon icon={instagram} alt="Instagram" to="https://www.instagram.com/raiseoxford/" />
-        <SocialIcon icon={facebook} alt="Facebook" to="https://www.facebook.com/raiseoxford" />
-        <SocialIcon icon={email} alt="Email" to="mailto:raiseoxford@gmail.com" />
+        <SocialIcon icon={instagram} alt="Instagram" href="https://www.instagram.com/raiseoxford/" />
+        <SocialIcon icon={facebook} alt="Facebook" href="https://www.facebook.com/raiseoxford" />
+        <SocialIcon icon={email} alt="Email" href="mailto:raiseoxford@gmail.com" />
       </div>
       <ContactForm className="mt-8" action="https://formspree.io/mvoqrejq" />
     </Section>

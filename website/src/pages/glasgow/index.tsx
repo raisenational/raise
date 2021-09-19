@@ -28,14 +28,14 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Home", to: "/durham/" },
-          { text: "How It Works", to: "/durham/#how-it-works" },
-          { text: "FAQs", to: "/durham/#faq" },
-          { text: "Our Philosophy", to: "/durham/#our-philosophy" },
-          { text: "Contact", to: "/durham/#contact" },
+          { text: "Home", href: "/durham/" },
+          { text: "How It Works", href: "/durham/#how-it-works" },
+          { text: "FAQs", href: "/durham/#faq" },
+          { text: "Our Philosophy", href: "/durham/#our-philosophy" },
+          { text: "Contact", href: "/durham/#contact" },
         ]}
         right={[
-          { text: "Join the 2021/22 committee", to: "https://forms.gle/Eo4w7mfhr35bmm5F6" },
+          { text: "Join the 2021/22 committee", href: "https://forms.gle/Eo4w7mfhr35bmm5F6" },
         ]}
       />
       <SectionNoPadding className="px-8">
@@ -52,7 +52,7 @@ const IndexPage = () => (
       </SectionNoPadding>
       <CTADown
         text="How it works"
-        to="#how-it-works"
+        href="#how-it-works"
       />
     </Cover>
 
@@ -142,9 +142,9 @@ const IndexPage = () => (
     <Section id="contact" className="pb-12">
       <SectionTitle>Get in Touch</SectionTitle>
       <div className="flex justify-center gap-8">
-        <SocialIcon icon={instagram} alt="Instagram" to="https://www.instagram.com/raiseglasgow/" />
-        <SocialIcon icon={facebook} alt="Facebook" to="https://www.facebook.com/raiseglasgow" />
-        <SocialIcon icon={email} alt="Email" to="mailto:raiseglasgow@gmail.com" />
+        <SocialIcon icon={instagram} alt="Instagram" href="https://www.instagram.com/raiseglasgow/" />
+        <SocialIcon icon={facebook} alt="Facebook" href="https://www.facebook.com/raiseglasgow" />
+        <SocialIcon icon={email} alt="Email" href="mailto:raiseglasgow@gmail.com" />
       </div>
       <ContactForm className="mt-8" action="https://formspree.io/mogdgkjm" />
     </Section>

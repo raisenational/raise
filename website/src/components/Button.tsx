@@ -2,16 +2,16 @@ import classNames from "classnames"
 import * as React from "react"
 
 interface Props {
-  to: string,
+  href: string,
   variant?: "red" | "outline",
   className?: string,
 }
 
 const Button: React.FC<Props> = ({
-  children, to, variant = "outline", className,
+  children, href, variant = "outline", className,
 }) => (
   <a
-    href={to}
+    href={href}
     className={classNames("py-2 px-4 rounded transform -skew-x-15 transition-all duration-250 shadow hover:shadow-lg scale-100 hover:scale-105", {
       "bg-raise-red hover:text-gray-200": variant === "red",
       "border-4 border-white hover:text-raise-blue hover:bg-white": variant === "outline",
