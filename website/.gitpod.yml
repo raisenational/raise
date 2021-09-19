@@ -4,7 +4,7 @@ tasks:
       chmod +x .git/hooks/post-commit
       npm install
     command: |
-      '[[ $(git rev-parse --abbrev-ref HEAD) == "master" ]] && git checkout -b "$GITPOD_WORKSPACE_ID/$(date +%s)"'
+      [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]] && git checkout -b "$GITPOD_WORKSPACE_ID/$(date +%s)"
       gp open src/pages/index.tsx
       npm run dev
 
