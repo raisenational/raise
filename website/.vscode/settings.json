@@ -40,4 +40,7 @@
   "workbench.startupEditor": "none",
   "git.enableSmartCommit": true,
   "redhat.telemetry.enabled": false,
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "javascript",
+  }
 }
