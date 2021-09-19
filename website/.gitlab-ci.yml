@@ -1,49 +1,35 @@
-# Sets default image - runs fast, and has everything we need
+# IMPORTANT: Consult the national team before editing this file. This file catches errors, but can't check itself.
+
 image: node:16.0-slim
+
+stages:
+- build
+- test
+- deploy
+
+cache:
+  paths:
+    - node_modules/
+    - .cache/
+    - public
+
+setup:
+  stage: build
+  script:
+    - npm install
+    - npm run build
+
+test:
+  stage: test
+  script:
+    - npm test
 
 pages:
   stage: deploy
   script:
-    - mkdir .public
-    - cp -r * .public
-    - mv .public public
+    - "# noop"
   artifacts:
     paths:
       - public
   only:
     - master
-
-pages:preview:
-  stage: deploy
-  script:
-    - mkdir .public
-    - cp -r * .public
-    - mv .public public
-  artifacts:
-    paths:
-      - public
-  rules:
-    - if: $CI_MERGE_REQUEST_IID
-  environment:
-    name: preview/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}
-    url: https://${CI_PROJECT_NAMESPACE}.gitlab.io/-/${CI_PROJECT_NAME}/-/jobs/${CI_JOB_ID}/artifacts/public/index.html
-    on_stop: pages:preview:stop
-
-pages:preview:stop:
-  stage: deploy
-  rules:
-    - if: $CI_MERGE_REQUEST_IID
-      when: manual
-  allow_failure: true
-  environment:
-    name: preview/${CI_PROJECT_NAME}/${CI_COMMIT_REF_NAME}
-    action: stop
-  script:
-    - echo "Stopping pages preview"
-
-validate:
-  stage: test
-  script:
-    - npx html-validate .
-  rules:
-    - when: always
