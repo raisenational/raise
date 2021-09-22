@@ -28,11 +28,11 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Home", href: "/durham/" },
-          { text: "How It Works", href: "/durham/#how-it-works" },
-          { text: "FAQs", href: "/durham/#faq" },
-          { text: "Our Philosophy", href: "/durham/#our-philosophy" },
-          { text: "Contact", href: "/durham/#contact" },
+          { text: "Home", href: "/glasgow/" },
+          { text: "How It Works", href: "/glasgow/#how-it-works" },
+          { text: "FAQs", href: "/glasgow/#faq" },
+          { text: "Our Philosophy", href: "/glasgow/#our-philosophy" },
+          { text: "Contact", href: "/glasgow/#contact" },
         ]}
         right={[
           { text: "Join the 2021/22 committee", href: "https://forms.gle/Eo4w7mfhr35bmm5F6" },
