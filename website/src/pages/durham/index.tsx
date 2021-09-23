@@ -45,8 +45,8 @@ const IndexPage = () => (
           statistics={{
             years: 1,
             students: 122,
-            raised: 30096,
-            protected: 37444,
+            raised: 30714,
+            protected: 37867,
           }}
         />
       </SectionNoPadding>
