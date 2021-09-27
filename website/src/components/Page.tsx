@@ -24,7 +24,7 @@ const Page: React.FC<{}> = ({ children }) => (
       <meta property="og:image" content="/shared/images/raise-link-icon.png" />
       <meta property="og:description" content="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving." />
     </Helmet>
-    <div className="bg-raise-blue min-h-screen text-white font-raise-content text-2xl font-normal text-center pb-16">
+    <div className="bg-raise-blue min-h-screen text-white font-raise-content text-2xl font-normal text-center pb-16 overflow-auto">
       {children}
     </div>
   </>

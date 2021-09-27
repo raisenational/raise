@@ -1,11 +1,12 @@
 import * as React from "react"
+import { RouteComponentProps } from "@reach/router"
 
 import Page from "../components/Page"
 import Section from "../components/Section"
 import logo from "../images/logo.png"
 import Button from "../components/Button"
 
-const NotFoundPage = () => (
+const NotFoundPage: React.FC<RouteComponentProps> = () => (
   <Page>
     <Section>
       <img alt="" src={logo} height={60} width={95} className="mb-8" />

@@ -55,4 +55,8 @@
   .Section + .Section {
     @apply mt-16
   }
+
+  .raise-google-button {
+    @apply rounded px-2 !important;
+  }
 }

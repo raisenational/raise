@@ -5,7 +5,7 @@ import classNames from "classnames"
 import { SectionNoPadding } from "./Section"
 import Button from "./Button"
 
-interface Link { text: string, href: string }
+interface Link { text: string, href?: string, onClick?: React.MouseEventHandler }
 
 const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) => (
   <Disclosure as={React.Fragment}>
@@ -30,6 +30,7 @@ const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) 
                     <a
                       key={item.text}
                       href={item.href}
+                      onClick={item.onClick}
                       className="hover:text-gray-100 p-2 transform transition-all duration-250 scale-100 hover:scale-105"
                     >
                       {item.text}
@@ -42,7 +43,7 @@ const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) 
               <div className="hidden md:block">
                 <div className="flex space-x-2">
                   {right.map((item) => (
-                    <Button key={item.href} href={item.href} variant="red">{item.text}</Button>
+                    <Button key={item.href} href={item.href} onClick={item.onClick} variant="red">{item.text}</Button>
                   ))}
                 </div>
               </div>
@@ -53,15 +54,16 @@ const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) 
             <div className="px-8 -mt-8 space-y-2">
               {left.map((item) => (
                 <a
-                  key={item.text}
+                  key={item.href}
                   href={item.href}
+                  onClick={item.onClick}
                   className="rounded block py-4 hover:bg-raise-red"
                 >
                   {item.text}
                 </a>
               ))}
               {right.map((item) => (
-                <Button key={item.href} href={item.href} variant="red" className="block py-4 px-4">{item.text}</Button>
+                <Button key={item.href} href={item.href} onClick={item.onClick} variant="red" className="block py-4 px-4">{item.text}</Button>
               ))}
             </div>
           </Disclosure.Panel>
