@@ -1,5 +1,6 @@
 import classNames from "classnames"
 import * as React from "react"
+import Link from "./Link"
 
 interface Props {
   href?: string,
@@ -11,7 +12,7 @@ interface Props {
 const Button: React.FC<Props> = ({
   children, href, onClick, variant = "outline", className,
 }) => (
-  <a
+  <Link
     href={href}
     onClick={onClick}
     className={classNames("py-2 px-4 rounded cursor-pointer transform -skew-x-15 transition-all duration-250 shadow hover:shadow-lg scale-100 hover:scale-105", {
@@ -20,7 +21,7 @@ const Button: React.FC<Props> = ({
     }, className)}
   >
     <span className="inline-block transform skew-x-15">{children}</span>
-  </a>
+  </Link>
 )
 
 export default Button
