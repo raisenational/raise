@@ -105,7 +105,7 @@ const IntroStats: React.FC<Props> = ({ title, tagline, statistics }) => {
 const Statistic: React.FC<{ value: string | number, description: string, className?: string, numberClassName?: string }> = ({
   value, description, className, numberClassName,
 }) => (
-  <div className={classNames("flex-auto items-center p-2 sm:py-3 md:p-5", className)}>
+  <div className={classNames("flex-auto items-center p-2 sm:py-3 md:p-5 text-center", className)}>
     <div className="transform sm:skew-x-15">
       <p className={classNames("text-3xl sm:text-5xl stat-animate mx-auto", numberClassName)}>{value}</p>
       <p className="text-xl">{description}</p>

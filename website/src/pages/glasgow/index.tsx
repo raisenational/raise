@@ -38,7 +38,7 @@ const IndexPage = () => (
           { text: "Join the 2021/22 committee", href: "https://forms.gle/Eo4w7mfhr35bmm5F6" },
         ]}
       />
-      <SectionNoPadding className="px-8">
+      <Section className="px-8">
         <IntroStats
           title="Raise Glasgow"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
@@ -49,7 +49,7 @@ const IndexPage = () => (
             protected: 12170,
           }}
         />
-      </SectionNoPadding>
+      </Section>
       <CTADown
         text="How it works"
         href="#how-it-works"

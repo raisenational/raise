@@ -10,6 +10,6 @@ export const SectionNoPadding: React.FC<Props> = ({ children, id, className }) =
 
 const Section: React.FC<Props> = ({ children, id, className }) => <SectionNoPadding id={id} className={classNames("Section pt-8", className)}>{children}</SectionNoPadding>
 
-export const SectionTitle: React.FC<{}> = ({ children }) => <h2 className="text-4xl sm:text-6xl font-raise-header font-black mb-8">{children}</h2>
+export const SectionTitle: React.FC<Props> = ({ children, id, className }) => <h2 id={id} className={classNames("text-4xl sm:text-6xl font-raise-header font-black mb-4", className)}>{children}</h2>
 
 export default Section

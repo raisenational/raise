@@ -2,7 +2,7 @@ import * as React from "react"
 import Helmet from "react-helmet"
 
 import Page from "../components/Page"
-import { SectionNoPadding } from "../components/Section"
+import Section from "../components/Section"
 import Navigation from "../components/Navigation"
 import Cover from "../components/Cover"
 import IntroStats from "../components/IntroStats"
@@ -24,7 +24,7 @@ const IndexPage = () => (
         right={[
         ]}
       />
-      <SectionNoPadding className="m-auto px-8 pb-8">
+      <Section className="m-auto px-8 pb-8">
         <IntroStats
           title="Raise: A Celebration of Giving"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our four chapter websites to learn more about what we do."
@@ -35,7 +35,7 @@ const IndexPage = () => (
             protected: 340013,
           }}
         />
-      </SectionNoPadding>
+      </Section>
     </Cover>
   </Page>
 )

@@ -39,7 +39,7 @@ const IndexPage = () => (
           { text: "Join: Donate Here", href: "https://app.sogive.org/#fundraiser/raiseoxford.Qf5OnaFn.702c64" },
         ]}
       />
-      <SectionNoPadding className="px-8">
+      <Section className="px-8">
         <IntroStats
           title="Raise Oxford"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
@@ -50,7 +50,7 @@ const IndexPage = () => (
             protected: 17080,
           }}
         />
-      </SectionNoPadding>
+      </Section>
       <CTADown
         text="How it works"
         href="#how-it-works"

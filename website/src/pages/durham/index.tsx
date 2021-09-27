@@ -38,7 +38,7 @@ const IndexPage = () => (
           { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSfeK5cMn8ZWlRtFh5ZJHexjTiS0DVvfpL9E93Logd3CPLMK9A/viewform" },
         ]}
       />
-      <SectionNoPadding className="px-8">
+      <Section className="px-8">
         <IntroStats
           title="Raise Durham"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
@@ -49,7 +49,7 @@ const IndexPage = () => (
             protected: 37867,
           }}
         />
-      </SectionNoPadding>
+      </Section>
       <CTADown
         text="How it works"
         href="#how-it-works"

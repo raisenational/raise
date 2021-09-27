@@ -39,7 +39,7 @@ const IndexLayout = () => {
           ]}
         />
       )}
-      <Router basepath="/admin">
+      <Router basepath="/admin" className="text-left">
         {auth && (
           <>
             <Fundraisers path="/" />
