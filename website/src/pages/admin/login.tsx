@@ -19,11 +19,11 @@ const Login: React.FC<RouteComponentProps> = () => {
   const [error, setError] = React.useState<string | undefined>()
 
   return (
-    <Section className="mt-8">
+    <Section className="mt-8 text-center">
       <img alt="" src={logo} height={60} width={95} className="mb-8" />
       <div className="max-w-lg bg-black bg-opacity-20 rounded p-8 mx-auto">
         <SectionTitle>Admin Login</SectionTitle>
-        {error && <Alert variant="error" className="-mt-2">{error}</Alert>}
+        {error && <Alert variant="error" className="-mt-2 mb-4">{error}</Alert>}
         <GoogleLogin
           clientId="730827052132-u1tatnr4anip3vf7j5tq82k33gb5okpe.apps.googleusercontent.com"
           scope={requiredScopes.join(" ")}
@@ -46,8 +46,12 @@ const Login: React.FC<RouteComponentProps> = () => {
               })
             }
           }}
-          onFailure={(err) => setError(err.error ? err.error : String(err))}
-          onScriptLoadFailure={(err) => setError(err.error ? err.error : "Failed to load Google Sign-In script")}
+          onFailure={(err) => {
+            // eslint-disable-next-line no-console
+            console.error(err)
+            const errorMessage = [err.message, err.error, err.details].filter((s) => s).join(": ")
+            setError(errorMessage.length > 0 ? errorMessage : String(err))
+          }}
           // FIXME: This is a hack to get styles working
           // https://github.com/anthonyjgrove/react-google-login/issues/201
           // className="rounded px-2"

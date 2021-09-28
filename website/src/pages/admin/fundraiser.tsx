@@ -66,6 +66,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           value: amountFormatter(fundraiser?.minimumDonationAmount),
           editor: "amount",
         }]}
+        primaryKey="property"
       />
 
       <SectionTitle className="mt-12">Donations</SectionTitle>
