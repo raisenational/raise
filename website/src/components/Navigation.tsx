@@ -44,7 +44,7 @@ const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) 
               <div className="hidden md:block">
                 <div className="flex space-x-2">
                   {right.map((item) => (
-                    <Button key={item.href} href={item.href} onClick={item.onClick} variant="red">{item.text}</Button>
+                    <Button key={item.text} href={item.href} onClick={item.onClick} variant="red">{item.text}</Button>
                   ))}
                 </div>
               </div>
@@ -55,7 +55,7 @@ const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) 
             <div className="px-8 -mt-12 pb-8 space-y-2">
               {left.map((item) => (
                 <Link
-                  key={item.href}
+                  key={item.text}
                   href={item.href}
                   onClick={item.onClick}
                   className="rounded block py-4 mx-8"
@@ -64,7 +64,7 @@ const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) 
                 </Link>
               ))}
               {right.map((item) => (
-                <Button key={item.href} href={item.href} onClick={item.onClick} variant="red" className="block py-4 px-4 mx-8">{item.text}</Button>
+                <Button key={item.text} href={item.href} onClick={item.onClick} variant="red" className="block py-4 px-4 mx-8">{item.text}</Button>
               ))}
             </div>
           </Disclosure.Panel>

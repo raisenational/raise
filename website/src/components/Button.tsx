@@ -6,18 +6,21 @@ interface Props {
   href?: string,
   onClick?: React.MouseEventHandler,
   variant?: "red" | "outline",
+  size?: "normal" | "small",
   className?: string,
 }
 
 const Button: React.FC<Props> = ({
-  children, href, onClick, variant = "outline", className,
+  children, href, onClick, variant = "outline", size = "normal", className,
 }) => (
   <Link
     href={href}
     onClick={onClick}
-    className={classNames("py-2 px-4 rounded cursor-pointer transform -skew-x-15 transition-all duration-250 shadow hover:shadow-lg scale-100 hover:scale-105", {
+    className={classNames("Button", {
       "bg-raise-red hover:text-gray-200": variant === "red",
-      "border-4 border-white hover:text-raise-blue hover:bg-white": variant === "outline",
+      "border-2 border-white hover:text-raise-blue hover:bg-white": variant === "outline",
+      "px-2 py-0": size === "small",
+      "border-4": variant === "outline" && size === "normal",
     }, className)}
   >
     <span className="inline-block transform skew-x-15">{children}</span>
