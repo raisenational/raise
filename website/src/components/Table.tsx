@@ -18,6 +18,8 @@ interface Props<I> {
 const Table = <I,>({
   definition, items, primaryKey, onClick,
 }: Props<I>) => {
+  // TODO: handle empty, loading and error states
+
   // Normalized properties
   const nItems = ((items === undefined || Array.isArray(items)) ? items : items.data) ?? []
   const nPrimaryKey = primaryKey || (nItems && nItems[0] && "id" in nItems[0] ? "id" as keyof I : undefined)
@@ -48,5 +50,7 @@ const Table = <I,>({
 
 export const amountFormatter = (amountInPence?: number) => (amountInPence === undefined ? "—" : `£${amountInPence / 100}`)
 export const dateFormatter = (unixTimestamp?: number) => (unixTimestamp === undefined ? "—" : new Date(unixTimestamp * 1000).toLocaleDateString())
+export const percentFormatter = (percentageInPoints?: number) => (percentageInPoints === undefined ? "—" : `${percentageInPoints}%`)
+export const timestampFormatter = (unixTimestamp?: number) => (unixTimestamp === undefined ? "—" : new Date(unixTimestamp * 1000).toLocaleString())
 
 export default Table

@@ -9,6 +9,7 @@ import Login from "./login"
 import NotFoundPage from "../404"
 import Navigation from "../../components/Navigation"
 import { AuthContext, AuthProvider } from "../../components/AuthProvider"
+import Fundraiser from "./fundraiser"
 
 const IndexPage = () => (
   <Page>
@@ -43,6 +44,7 @@ const IndexLayout = () => {
         {auth && (
           <>
             <Fundraisers path="/" />
+            <Fundraiser path="/:fundraiserId" />
             <Profile path="/profile" />
             <NotFoundPage default />
           </>

@@ -1,9 +1,10 @@
 import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
+import { navigate } from "gatsby"
 
 import useAxios from "../../components/useAxios"
 import Section, { SectionTitle } from "../../components/Section"
-import { Fundraiser } from "./types"
+import { Fundraiser } from "./types.d"
 import Table, { amountFormatter, dateFormatter } from "../../components/Table"
 
 const Fundraisers: React.FC<RouteComponentProps> = () => {
@@ -21,7 +22,7 @@ const Fundraisers: React.FC<RouteComponentProps> = () => {
           totalRaised: { label: "Raised", formatter: amountFormatter, className: "w-36" },
         }}
         items={fundraisers}
-        onClick={(i) => alert("TODO: open fundraiser")}
+        onClick={(i) => navigate(`/admin/${i.id}/`)}
       />
     </Section>
   )
