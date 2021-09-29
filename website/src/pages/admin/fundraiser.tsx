@@ -5,6 +5,7 @@ import useAxios from "../../components/useAxios"
 import Section, { SectionTitle } from "../../components/Section"
 import { Fundraiser, Donation } from "./types.d"
 import Table, { amountFormatter, matchFundingRateFormatter, timestampFormatter } from "../../components/Table"
+import PropertyEditor from "../../components/PropertyEditor"
 
 const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> = ({ fundraiserId }) => {
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
@@ -15,58 +16,19 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
   return (
     <Section>
       <SectionTitle>{fundraiser?.name || "Fundraiser"}</SectionTitle>
-      <Table
+      <PropertyEditor
         definition={{
-          label: { label: "Property" },
-          value: { label: "Value" },
+          name: { label: "Name" },
+          activeFrom: { label: "From", formatter: timestampFormatter },
+          activeTo: { label: "To", formatter: timestampFormatter },
+          totalRaised: { label: "Total", formatter: amountFormatter },
+          goal: { label: "Goal", formatter: amountFormatter },
+          matchFundingRate: { label: "Match funding rate", formatter: matchFundingRateFormatter },
+          matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: amountFormatter },
+          matchFundingRemaining: { label: "Match funding remaining", formatter: amountFormatter },
+          minimumDonationAmount: { label: "Minimum donation amount", formatter: amountFormatter },
         }}
-        items={[{
-          property: "name",
-          label: "Name",
-          value: fundraiser?.name,
-          type: "text",
-        }, {
-          property: "activeFrom",
-          label: "From",
-          value: timestampFormatter(fundraiser?.activeFrom),
-          type: "timestamp",
-        }, {
-          property: "activeTo",
-          label: "To",
-          value: timestampFormatter(fundraiser?.activeFrom),
-          type: "timestamp",
-        }, {
-          property: "totalRaised",
-          label: "Total",
-          value: amountFormatter(fundraiser?.totalRaised),
-          type: "amount",
-        }, {
-          property: "goal",
-          label: "Goal",
-          value: amountFormatter(fundraiser?.goal),
-          type: "amount",
-        }, {
-          property: "matchFundingRate",
-          label: "Match funding rate",
-          value: matchFundingRateFormatter(fundraiser?.matchFundingRate),
-          type: "matchFundingRate",
-        }, {
-          property: "matchFundingPerDonationLimit",
-          label: "Match funding per donation limit",
-          value: amountFormatter(fundraiser?.matchFundingPerDonationLimit),
-          type: "amount",
-        }, {
-          property: "matchFundingRemaining",
-          label: "Match funding remaining",
-          value: amountFormatter(fundraiser?.matchFundingRemaining),
-          type: "amount",
-        }, {
-          property: "minimumDonationAmount",
-          label: "Minimum donation amount",
-          value: amountFormatter(fundraiser?.minimumDonationAmount),
-          type: "amount",
-        }]}
-        primaryKey="property"
+        item={fundraiser}
       />
 
       <SectionTitle className="mt-12">Donations</SectionTitle>

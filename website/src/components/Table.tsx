@@ -21,10 +21,10 @@ const Table = <I,>({
 }: Props<I>) => {
   // Normalized properties
   const nItems = ((items === undefined || Array.isArray(items)) ? items : items.data) ?? []
-  const nPrimaryKey = primaryKey || (nItems && nItems[0] && "id" in nItems[0] ? "id" as keyof I : undefined)
+  const nPrimaryKey = primaryKey ?? (nItems && nItems[0] && "id" in nItems[0] ? "id" as keyof I : undefined)
 
   // Loading and error states
-  if (items && "loading" in items) {
+  if (items && !Array.isArray(items)) {
     if (items.loading) return <div className="overflow-x-auto bg-black bg-opacity-20 rounded p-4"><span className="animate-pulse">Loading...</span></div>
     if (items.error) return <Alert variant="error">{items.error}</Alert>
   }
@@ -35,7 +35,7 @@ const Table = <I,>({
         <thead>
           <tr>
             {Object.entries(definition).map(([k, v], index, arr) => (
-              <th key={k} className={classNames("p-2", { "pl-4": index === 0, "pr-4": index === arr.length - 1 }, v.className)}>{v.label || k}</th>
+              <th key={k} className={classNames("p-2", { "pl-4": index === 0, "pr-4": index === arr.length - 1 }, v.className)}>{v.label ?? k}</th>
             ))}
           </tr>
         </thead>

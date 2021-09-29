@@ -1,7 +1,8 @@
 import * as React from "react"
 import Helmet from "react-helmet"
+import classNames from "classnames"
 
-const Page: React.FC<{}> = ({ children }) => (
+const Page: React.FC<{ className?: string }> = ({ children, className }) => (
   <>
     <Helmet>
       <link rel="apple-touch-icon" sizes="57x57" href="/shared/favicon/apple-icon-57x57.png" />
@@ -24,7 +25,7 @@ const Page: React.FC<{}> = ({ children }) => (
       <meta property="og:image" content="/shared/images/raise-link-icon.png" />
       <meta property="og:description" content="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving." />
     </Helmet>
-    <div className="bg-raise-blue min-h-screen text-white font-raise-content text-2xl font-normal text-center overflow-auto">
+    <div className={classNames("bg-raise-blue min-h-screen text-white font-raise-content text-2xl font-normal text-center overflow-auto", className)}>
       {children}
     </div>
   </>

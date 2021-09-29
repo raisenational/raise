@@ -12,7 +12,7 @@ import { AuthContext, AuthProvider } from "../../components/AuthProvider"
 import Fundraiser from "./fundraiser"
 
 const IndexPage = () => (
-  <Page>
+  <Page className="pb-8">
     <Helmet>
       <title>Raise Admin</title>
       <meta property="og:title" content="Raise Admin" />
