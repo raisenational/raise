@@ -8,6 +8,7 @@ import Cover, { CTADown } from "../components/Cover"
 import IntroStats from "../components/IntroStats"
 import Philosophy from "../components/Philosophy"
 import ContactForm from "../components/ContactForm"
+import Footer from "../components/Footer"
 
 const IndexPage = () => (
   <Page>
@@ -53,6 +54,8 @@ const IndexPage = () => (
       <SectionTitle>Get in Touch</SectionTitle>
       <ContactForm className="mt-8" action="https://formspree.io/f/mnqlrnvq" />
     </Section>
+
+    <Footer />
   </Page>
 )
 

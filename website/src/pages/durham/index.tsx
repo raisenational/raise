@@ -18,6 +18,7 @@ import email from "../../images/email.svg"
 import moneyBox from "../../images/moneyBox.svg"
 import doubled from "../../images/doubled.png"
 import party from "../../images/party.svg"
+import Footer from "../../components/Footer"
 
 const IndexPage = () => (
   <Page>
@@ -157,6 +158,8 @@ const IndexPage = () => (
       </div>
       <ContactForm className="mt-8" action="https://formspree.io/f/mdoplnna" />
     </Section>
+
+    <Footer />
   </Page>
 )
 

@@ -13,6 +13,7 @@ import instagram from "../../images/instagram.png"
 import facebook from "../../images/facebook.svg"
 import email from "../../images/email.svg"
 import Button from "../../components/Button"
+import Footer from "../../components/Footer"
 
 const PartnerPage = () => (
   <Page>
@@ -93,6 +94,8 @@ const PartnerPage = () => (
       </div>
       <ContactForm className="mt-8" action="https://formspree.io/mvoqrejq" />
     </Section>
+
+    <Footer />
   </Page>
 )
 
