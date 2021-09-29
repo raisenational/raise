@@ -1,6 +1,6 @@
 # IMPORTANT: Consult the national team before editing this file. This file catches errors, but can't check itself.
 
-image: node:16.0-slim
+image: node:16.0
 
 stages:
 - test
@@ -15,7 +15,7 @@ cache:
 test:
   stage: test
   script:
-    - npm install
+    - npm ci
     - npm run build
     - npm test
 
