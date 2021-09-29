@@ -13,6 +13,7 @@
     ".gitlab-ci.yml": true,
     ".gitpod.yml": true,
     ".vscode/**": true,
+    "codeowners.js": true,
     "gatsby-browser.js": true,
     "gatsby-config.js": true,
     "gatsby-node.js": true,
