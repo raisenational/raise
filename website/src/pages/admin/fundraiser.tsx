@@ -4,7 +4,7 @@ import { RouteComponentProps } from "@reach/router"
 import useAxios from "../../components/useAxios"
 import Section, { SectionTitle } from "../../components/Section"
 import { Fundraiser, Donation } from "./types.d"
-import Table, { amountFormatter, percentFormatter, timestampFormatter } from "../../components/Table"
+import Table, { amountFormatter, matchFundingRateFormatter, timestampFormatter } from "../../components/Table"
 
 const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> = ({ fundraiserId }) => {
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
@@ -24,47 +24,47 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           property: "name",
           label: "Name",
           value: fundraiser?.name,
-          editor: "text",
+          type: "text",
         }, {
           property: "activeFrom",
           label: "From",
           value: timestampFormatter(fundraiser?.activeFrom),
-          editor: "timestamp",
+          type: "timestamp",
         }, {
           property: "activeTo",
           label: "To",
           value: timestampFormatter(fundraiser?.activeFrom),
-          editor: "timestamp",
+          type: "timestamp",
         }, {
           property: "totalRaised",
           label: "Total",
           value: amountFormatter(fundraiser?.totalRaised),
-          editor: "amount_warn",
+          type: "amount",
         }, {
           property: "goal",
           label: "Goal",
           value: amountFormatter(fundraiser?.goal),
-          editor: "amount",
+          type: "amount",
         }, {
           property: "matchFundingRate",
           label: "Match funding rate",
-          value: percentFormatter(fundraiser?.matchFundingRate),
-          editor: "matchFunding",
+          value: matchFundingRateFormatter(fundraiser?.matchFundingRate),
+          type: "matchFundingRate",
         }, {
           property: "matchFundingPerDonationLimit",
           label: "Match funding per donation limit",
           value: amountFormatter(fundraiser?.matchFundingPerDonationLimit),
-          editor: "amount",
+          type: "amount",
         }, {
           property: "matchFundingRemaining",
           label: "Match funding remaining",
           value: amountFormatter(fundraiser?.matchFundingRemaining),
-          editor: "amount_warn",
+          type: "amount",
         }, {
           property: "minimumDonationAmount",
           label: "Minimum donation amount",
           value: amountFormatter(fundraiser?.minimumDonationAmount),
-          editor: "amount",
+          type: "amount",
         }]}
         primaryKey="property"
       />
