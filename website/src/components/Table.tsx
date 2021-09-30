@@ -43,7 +43,7 @@ const Table = <I,>({
           {nItems.map((item, rowIndex) => (
             <tr key={nPrimaryKey ? String(item[nPrimaryKey]) : rowIndex} className={classNames("hover:bg-black hover:bg-opacity-20", { "cursor-pointer": onClick !== undefined })} onClick={onClick === undefined ? undefined : (e) => onClick(item, e)}>
               {Object.entries(definition).map(([k, v], cellIndex, arr) => (
-                <td key={k} className={classNames("p-2", { "pl-4": cellIndex === 0, "pr-4": cellIndex === arr.length - 1 }, v.className)}>{v.formatter ? v.formatter(item[k as keyof I]) : item[k as keyof I]}</td>
+                <td key={k} className={classNames("p-2", { "pl-4": cellIndex === 0, "pr-4": cellIndex === arr.length - 1 }, v.className)}>{v.formatter ? v.formatter(item[k as keyof I]) : (item[k as keyof I] ?? "—")}</td>
               ))}
             </tr>
           ))}
@@ -53,7 +53,8 @@ const Table = <I,>({
   )
 }
 
-export const amountFormatter = (amountInPence?: number) => (amountInPence === undefined ? "—" : `£${amountInPence / 100}`)
+export const amountFormatter = (amountInPence?: number) => (amountInPence === undefined ? "—" : `£${(amountInPence / 100).toFixed(2)}`)
+export const booleanFormatter = (boolean?: boolean) => (boolean === undefined ? "—" : (boolean && "Yes") || "No")
 export const dateFormatter = (unixTimestamp?: number) => (unixTimestamp === undefined ? "—" : new Date(unixTimestamp * 1000).toLocaleDateString())
 export const matchFundingRateFormatter = (percentageInPoints?: number) => (percentageInPoints === undefined ? "—" : `${percentageInPoints}% (i.e. £1 donated, £${percentageInPoints % 100 === 0 ? (percentageInPoints / 100) : (percentageInPoints / 100).toFixed(2)} matched, £${percentageInPoints % 100 === 0 ? (1 + percentageInPoints / 100) : (1 + percentageInPoints / 100).toFixed(2)} total)`)
 export const percentFormatter = (percentageInPoints?: number) => (percentageInPoints === undefined ? "—" : `${percentageInPoints}%`)

@@ -4,7 +4,9 @@ import { RouteComponentProps } from "@reach/router"
 import useAxios from "../../components/useAxios"
 import Section, { SectionTitle } from "../../components/Section"
 import { Fundraiser, Donation } from "./types.d"
-import Table, { amountFormatter, matchFundingRateFormatter, timestampFormatter } from "../../components/Table"
+import Table, {
+  amountFormatter, booleanFormatter, matchFundingRateFormatter, timestampFormatter,
+} from "../../components/Table"
 import PropertyEditor from "../../components/PropertyEditor"
 
 const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> = ({ fundraiserId }) => {
@@ -18,17 +20,26 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
       <SectionTitle>{fundraiser?.name || "Fundraiser"}</SectionTitle>
       <PropertyEditor
         definition={{
-          name: { label: "Name" },
-          activeFrom: { label: "From", formatter: timestampFormatter },
-          activeTo: { label: "To", formatter: timestampFormatter },
-          totalRaised: { label: "Total", formatter: amountFormatter },
-          goal: { label: "Goal", formatter: amountFormatter },
-          matchFundingRate: { label: "Match funding rate", formatter: matchFundingRateFormatter },
-          matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: amountFormatter },
-          matchFundingRemaining: { label: "Match funding remaining", formatter: amountFormatter },
-          minimumDonationAmount: { label: "Minimum donation amount", formatter: amountFormatter },
+          name: { label: "Name", inputType: "text" },
+          activeFrom: { label: "From", formatter: timestampFormatter, inputType: "datetime-local" },
+          activeTo: { label: "To", formatter: timestampFormatter, inputType: "datetime-local" },
+          paused: { label: "Paused", formatter: booleanFormatter, inputType: "checkbox" },
+          totalRaised: {
+            label: "Total", formatter: amountFormatter, inputType: "amount", editWarning: "Do not edit this unless you know what you are doing",
+          },
+          goal: { label: "Goal", formatter: amountFormatter, inputType: "amount" },
+          matchFundingRate: { label: "Match funding rate", formatter: matchFundingRateFormatter, inputType: "number" },
+          matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: amountFormatter, inputType: "amount" },
+          matchFundingRemaining: {
+            label: "Match funding remaining", formatter: amountFormatter, inputType: "amount", editWarning: "Do not edit this unless you know what you are doing",
+          },
+          minimumDonationAmount: { label: "Minimum donation amount", formatter: amountFormatter, inputType: "amount" },
+          groupsWithAccess: {
+            label: "Groups with access", formatter: (groups: string[]) => groups.join(", "), // inputType: "multiselect", selectOptions: ["National"],
+          },
         }}
         item={fundraiser}
+        onSave={(p, d) => alert(`TODO: save property "${p}" with data "${d}"`)}
       />
 
       <SectionTitle className="mt-12">Donations</SectionTitle>

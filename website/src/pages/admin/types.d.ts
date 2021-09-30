@@ -3,12 +3,14 @@ export interface Fundraiser {
   name: string,
   activeFrom: number,
   activeTo?: number,
+  paused: boolean,
   totalRaised: number,
   goal: number,
   matchFundingRate?: number,
   matchFundingPerDonationLimit?: number,
   matchFundingRemaining?: number,
   minimumDonationAmount?: number,
+  groupsWithAccess: string[],
 }
 
 export interface Donation {

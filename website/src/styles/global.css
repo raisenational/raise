@@ -52,16 +52,24 @@
     margin-top: 1em;
   }
 
+  .Section {
+    @apply pt-8
+  }
+
   .Section + .Section {
     @apply mt-16
   }
 
+  .SectionNoPadding {
+    @apply max-w-5xl md:w-11/12 mx-auto px-4
+  }
+
   .Button {
-    @apply py-2 px-4 rounded cursor-pointer inline-block transform -skew-x-15 transition-all duration-200 shadow hover:shadow-lg scale-100 hover:scale-105
+    @apply py-2 px-4 rounded text-white cursor-pointer inline-block transform -skew-x-15 transition-all duration-200 shadow hover:shadow-lg scale-100 hover:scale-105
   }
 
   .Alert {
-    @apply bg-raise-red rounded p-4 break-words flex
+    @apply rounded p-4 break-words flex items-center
   }
 
   .raise-google-button {

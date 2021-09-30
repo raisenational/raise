@@ -9,7 +9,13 @@ interface Props {
 }
 
 const Alert: React.FC<Props> = ({ children, variant = "error", className }) => (
-  <p className={classNames("Alert", className)}>
+  <p className={classNames("Alert",
+    {
+      "bg-raise-red text-white": variant === "error",
+      "bg-raise-yellow text-black": variant === "warning",
+    },
+    className)}
+  >
     {variant === "error" && <ExclamationCircleIcon className="w-6 h-6 mr-2 mt-1" />}
     {variant === "warning" && <ExclamationIcon className="w-6 h-6 mr-2 mt-1" />}
     <span className="flex-1">
