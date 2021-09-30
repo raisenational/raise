@@ -1,6 +1,6 @@
 import 'source-map-support/register';
 import * as Joi from '@hapi/joi'
-import { middyfy } from '../../../helpers/wrapper';
+import { middyfy } from '../../../../helpers/wrapper';
 
 const schema = Joi.object({
   name: Joi.string(),

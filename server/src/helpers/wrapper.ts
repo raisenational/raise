@@ -16,15 +16,31 @@ const middyJsonBodySerializer: middy.MiddlewareFunction<any, any> = async (reque
 }
 
 const middyErrorHandler: middy.MiddlewareFunction<any, any> = async (request) => {
-  const err = (request.error instanceof Error ? request.error : new Error('An unknown error occurred')) as { statusCode?: number } & Error;
-  if (typeof err.statusCode !== "number") err.statusCode = 500;
-  if (typeof err.message !== "string") err.message = "An unknown error occured";
+  const err = (request.error instanceof Error ? request.error : new Error('An unknown error occurred')) as { statusCode?: number, details?: any } & Error;
 
-  if (err.statusCode >= 500) console.error(request.error);
+  // Log and hide details of unexpected errors
+  if (typeof err.statusCode !== "number" || typeof err.message !== "string" || err.statusCode >= 500) {
+    console.error('Internal error processing request:')
+    console.error(request.error);
+    err.statusCode = err.statusCode > 500 ? err.statusCode : 500;
+    err.message = "An internal error occured";
+    err.details = undefined;
+  }
+
+  // Strip unstringifyable details
+  if (err.details !== undefined) {
+    try {
+      JSON.stringify(err.details);
+    } catch {
+      console.error('Failed to stringify details for following error:')
+      console.error(request.error);
+      err.details = undefined;
+    }
+  }
 
   request.response = {
     statusCode: err.statusCode,
-    body: JSON.stringify({ message: err.message }),
+    body: JSON.stringify({ message: err.message, details: err.details }),
     headers: {
       'Content-Type': 'application/json'
     }
@@ -34,8 +50,9 @@ const middyErrorHandler: middy.MiddlewareFunction<any, any> = async (request) =>
 export function middyfy(handler: Handler<Omit<APIGatewayProxyEvent, 'body'>, any>): Handler<APIGatewayProxyEvent, APIGatewayProxyResult>;
 export function middyfy<T extends Joi.Schema>(schema: T, handler: Handler<Omit<APIGatewayProxyEvent, 'body'> & { body: Joi.extractType<T> }, any>): Handler<APIGatewayProxyEvent, APIGatewayProxyResult>;
 export function middyfy<T extends Joi.Schema>(arg0: T | Handler<Omit<APIGatewayProxyEvent, 'body'>, any>, arg1?: Handler<Omit<APIGatewayProxyEvent, 'body'> & { body: Joi.extractType<T> }, any>): Handler<APIGatewayProxyEvent, APIGatewayProxyResult> {
-  return (arg0 && arg1 ? middy(arg1).use(middyJoiValidator({ schema: Joi.object({ body: arg0 }), options: { allowUnknown: true } })) : middy(arg0 as Handler<Omit<APIGatewayProxyEvent, 'body'>, any>))
-    .use(middyJsonBodyParser())
+  const m = (arg0 && arg1 ? middy(arg1) : middy(arg0 as Handler<Omit<APIGatewayProxyEvent, 'body'>, any>)).use(middyJsonBodyParser());
+
+  return (arg0 && arg1 ? m.use(middyJoiValidator({ schema: Joi.object({ body: arg0 }), options: { allowUnknown: true } })) : m)
     .after(middyJsonBodySerializer)
     .onError(middyErrorHandler)  
 }

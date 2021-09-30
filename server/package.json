@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "serverless.ts",
   "scripts": {
+    "start": "sls offline",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -13,7 +14,8 @@
     "@middy/core": "^1.5.2",
     "@middy/http-json-body-parser": "^1.5.2",
     "middy-sparks-joi": "0.0.2",
-    "source-map-support": "^0.5.19"
+    "source-map-support": "^0.5.19",
+    "ulid": "^2.3.0"
   },
   "devDependencies": {
     "@serverless/typescript": "^2.23.0",

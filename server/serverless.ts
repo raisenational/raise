@@ -2,7 +2,7 @@ import { AWS } from '@serverless/typescript';
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
 
-const allowedMethods = ['get', 'post', 'put', 'delete'];
+const allowedMethods = ['get', 'post', 'patch', 'put', 'delete'];
 
 const camelCase = (s: string): string => s.replace(/\/([a-zA-Z])/g, (g) => g[1].toUpperCase())
 
@@ -64,6 +64,10 @@ const serverlessConfiguration: AWS = {
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
+    },
+    httpApi: {
+      payload: '2.0',
+      cors: true
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
