@@ -95,7 +95,7 @@ interface EditorProps<I, T> {
 const ifNaN = <T,>(n: number, otherwise: T): number | T => (Number.isNaN(n) ? otherwise : n)
 
 const toInput = <T,>(raw: T, inputType: InputType<T>): string | boolean => {
-  if (raw === undefined) return ""
+  if (raw === undefined || raw === null) return ""
   if (inputType === "amount") return (raw as unknown as number / 100).toFixed(2)
   if (inputType === "date" || inputType === "datetime-local") return new Date((raw as unknown as number * 1000) - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 19)
   if (inputType === "checkbox") return raw as unknown as boolean

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "gatsby build",
     "clean": "rimraf public",
-    "dev": "gatsby develop",
+    "dev": "gatsby develop --port 8000",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "start": "npm run dev",
     "test": "npm run type-check && npm run lint && npm run codeowners",

@@ -4,7 +4,7 @@ import { makeUseAxios, ResponseValues } from "axios-hooks"
 
 export const axios = _axios.create({
   baseURL: window.location.host.startsWith("localhost")
-    ? "http://localhost:3000/"
+    ? "http://localhost:8001/"
     : "https://bblp6lj50j.execute-api.eu-west-1.amazonaws.com/",
 })
 

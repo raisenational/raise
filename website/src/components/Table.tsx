@@ -53,11 +53,11 @@ const Table = <I,>({
   )
 }
 
-export const amountFormatter = (amountInPence?: number) => (amountInPence === undefined ? "—" : `£${(amountInPence / 100).toFixed(2)}`)
-export const booleanFormatter = (boolean?: boolean) => (boolean === undefined ? "—" : (boolean && "Yes") || "No")
-export const dateFormatter = (unixTimestamp?: number) => (unixTimestamp === undefined ? "—" : new Date(unixTimestamp * 1000).toLocaleDateString())
-export const matchFundingRateFormatter = (percentageInPoints?: number) => (percentageInPoints === undefined ? "—" : `${percentageInPoints}% (i.e. £1 donated, £${percentageInPoints % 100 === 0 ? (percentageInPoints / 100) : (percentageInPoints / 100).toFixed(2)} matched, £${percentageInPoints % 100 === 0 ? (1 + percentageInPoints / 100) : (1 + percentageInPoints / 100).toFixed(2)} total)`)
-export const percentFormatter = (percentageInPoints?: number) => (percentageInPoints === undefined ? "—" : `${percentageInPoints}%`)
-export const timestampFormatter = (unixTimestamp?: number) => (unixTimestamp === undefined ? "—" : new Date(unixTimestamp * 1000).toLocaleString())
+export const amountFormatter = (amountInPence?: number | null) => (amountInPence === undefined || amountInPence === null ? "—" : `£${(amountInPence / 100).toFixed(2)}`)
+export const booleanFormatter = (boolean?: boolean | null) => (boolean === undefined || boolean === null ? "—" : (boolean && "Yes") || "No")
+export const dateFormatter = (unixTimestamp?: number | null) => (unixTimestamp === undefined || unixTimestamp === null ? "—" : new Date(unixTimestamp * 1000).toLocaleDateString())
+export const matchFundingRateFormatter = (percentageInPoints?: number | null) => (percentageInPoints === undefined || percentageInPoints === null ? "—" : `${percentageInPoints}% (i.e. £1 donated, £${percentageInPoints % 100 === 0 ? (percentageInPoints / 100) : (percentageInPoints / 100).toFixed(2)} matched, £${percentageInPoints % 100 === 0 ? (1 + percentageInPoints / 100) : (1 + percentageInPoints / 100).toFixed(2)} total)`)
+export const percentFormatter = (percentageInPoints?: number | null) => (percentageInPoints === undefined || percentageInPoints === null ? "—" : `${percentageInPoints}%`)
+export const timestampFormatter = (unixTimestamp?: number | null) => (unixTimestamp === undefined || unixTimestamp === null ? "—" : new Date(unixTimestamp * 1000).toLocaleString())
 
 export default Table
