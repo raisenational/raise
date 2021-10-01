@@ -36,6 +36,25 @@
       "warn",
       "always-multiline"
     ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "axios",
+            "message": "Use src/components/networking.ts instead"
+          },
+          {
+            "name": "axios-hooks",
+            "importNames": [
+              "default",
+              "makeUseAxios"
+            ],
+            "message": "Use src/components/networking.ts instead"
+          }
+        ]
+      }
+    ],
     "import/prefer-default-export": "off",
     "comma-spacing": "off",
     "@typescript-eslint/comma-spacing": "error",

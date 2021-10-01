@@ -1,7 +1,7 @@
 import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 
-import useAxios from "../../components/useAxios"
+import { asResponseValues, useAxios } from "../../components/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import { Fundraiser, Donation } from "./types.d"
 import Table, {
@@ -13,21 +13,24 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
   const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
 
-  const fundraiser = fundraisers.data?.find((f) => f.id === fundraiserId)
+  const fundraiser = asResponseValues(fundraisers.data?.find((f) => f.id === fundraiserId), fundraisers)
 
   return (
     <Section>
-      <SectionTitle>{fundraiser?.name || "Fundraiser"}</SectionTitle>
+      <SectionTitle>{fundraiser.data?.name || "Fundraiser"}</SectionTitle>
       <PropertyEditor
         definition={{
           name: { label: "Name", inputType: "text" },
           activeFrom: { label: "From", formatter: timestampFormatter, inputType: "datetime-local" },
           activeTo: { label: "To", formatter: timestampFormatter, inputType: "datetime-local" },
           paused: { label: "Paused", formatter: booleanFormatter, inputType: "checkbox" },
+          goal: { label: "Goal", formatter: amountFormatter, inputType: "amount" },
           totalRaised: {
             label: "Total", formatter: amountFormatter, inputType: "amount", editWarning: "Do not edit this unless you know what you are doing",
           },
-          goal: { label: "Goal", formatter: amountFormatter, inputType: "amount" },
+          donationsCount: {
+            label: "Donor count", inputType: "number", editWarning: "Do not edit this unless you know what you are doing",
+          },
           matchFundingRate: { label: "Match funding rate", formatter: matchFundingRateFormatter, inputType: "number" },
           matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: amountFormatter, inputType: "amount" },
           matchFundingRemaining: {
@@ -39,7 +42,8 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           },
         }}
         item={fundraiser}
-        onSave={(p, d) => alert(`TODO: save property "${p}" with data "${d}"`)}
+        onSave={() => { refetchFundraisers() }}
+        patchEndpoint={`/admin/fundraisers/${fundraiserId}`}
       />
 
       <SectionTitle className="mt-12">Donations</SectionTitle>

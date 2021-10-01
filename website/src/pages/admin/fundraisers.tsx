@@ -2,13 +2,13 @@ import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 import { navigate } from "gatsby"
 
-import useAxios from "../../components/useAxios"
+import { useAxios } from "../../components/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import { Fundraiser } from "./types.d"
 import Table, { amountFormatter, dateFormatter } from "../../components/Table"
 
 const Fundraisers: React.FC<RouteComponentProps> = () => {
-  const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
+  const [fundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
 
   return (
     <Section>

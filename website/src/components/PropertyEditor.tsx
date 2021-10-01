@@ -7,6 +7,7 @@ import Table from "./Table"
 import Modal from "./Modal"
 import { SectionTitle } from "./Section"
 import Button from "./Button"
+import { axios } from "./networking"
 
 type InputType<V> = V extends string ?
   | "text" | "tel" | "email" // string
@@ -35,12 +36,13 @@ interface Props<I> {
   definition: Partial<{ [K in keyof I]: PropertyDefinition<I, I[K]> }> & { [s: `_${string}`]: PropertyDefinition<I, unknown> },
   item?: I | ResponseValues<I, unknown>,
   onClick?: (key: keyof I, event: React.MouseEvent) => void,
-  onSave: (property: keyof I, data: I[keyof I]) => void,
+  onSave?: (property: keyof I, data: I[keyof I]) => void | Promise<void>,
+  patchEndpoint?: string,
 }
 
 // I (the item type) should not have a loading prop, but there doesn't seem like a nice TS way to do this
 const PropertyEditor = <I,>({
-  definition, item, onClick, onSave,
+  definition, item, onClick, onSave, patchEndpoint,
 }: Props<I>) => {
   const [editingProperty, setEditingProperty] = React.useState<keyof I | undefined>()
 
@@ -54,7 +56,7 @@ const PropertyEditor = <I,>({
   return (
     <>
       <Modal open={editingProperty !== undefined} onClose={() => { setEditingProperty(undefined) }}>
-        {editingProperty !== undefined && <Editor property={editingProperty} definition={definition[editingProperty] as EditorProps<I, I[keyof I]>["definition"]} initialValue={nItem[editingProperty]} onSave={(property, data) => onSave(property, data)} />}
+        {editingProperty !== undefined && <Editor property={editingProperty} definition={definition[editingProperty] as EditorProps<I, I[keyof I]>["definition"]} initialValue={nItem[editingProperty]} onSave={(data) => { setEditingProperty(undefined); if (onSave) onSave(editingProperty, data) }} patchEndpoint={patchEndpoint} />}
       </Modal>
       <Table
         definition={{
@@ -86,7 +88,8 @@ interface EditorProps<I, T> {
   property: keyof I,
   definition: Omit<PropertyDefinition<I, T>, "inputType"> & { inputType: InputType<T> },
   initialValue: T,
-  onSave: (property: keyof I, data: T) => void,
+  onSave?: (data: T) => void | Promise<void>,
+  patchEndpoint?: string,
 }
 
 const ifNaN = <T,>(n: number, otherwise: T): number | T => (Number.isNaN(n) ? otherwise : n)
@@ -102,7 +105,7 @@ const toInput = <T,>(raw: T, inputType: InputType<T>): string | boolean => {
 const fromInput = <T,>(raw: string | boolean, inputType: InputType<T>): T => {
   if (inputType === "text" || inputType === "tel" || inputType === "email") return raw as unknown as T
   if (inputType === "checkbox" || typeof raw === "boolean") return raw as unknown as T // NB: typeof raw === "boolean" if-and-only-if inputType === "checkbox"
-  if (inputType === "number") return ifNaN(parseFloat(raw), undefined) as unknown as T
+  if (inputType === "number") return ifNaN(parseInt(raw, 10), undefined) as unknown as T
   if (inputType === "date" || inputType === "datetime-local") return ifNaN((new Date(raw).getTime()) / 1000, undefined) as unknown as T
   if (inputType === "amount") return ifNaN(Math.round(parseFloat(raw) * 100), undefined) as unknown as T
   // if (inputType === "select") return TODO as unknown as T
@@ -122,12 +125,30 @@ const LabelledInput = React.forwardRef<HTMLInputElement, React.InputHTMLAttribut
 ))
 
 const Editor = <I, T>({
-  property, definition, initialValue, onSave,
+  property, definition, initialValue, onSave, patchEndpoint,
 }: EditorProps<I, T>) => {
+  const [error, setError] = React.useState<Error | undefined>()
   const nInputType = definition.inputType === "amount" ? "number" : definition.inputType as React.HTMLInputTypeAttribute
   const nDefaultValue = toInput<T>(initialValue, definition.inputType)
-  const { register, handleSubmit, control } = useForm({ defaultValues: { value: nDefaultValue } })
-  const onSubmit: SubmitHandler<{ value: string | boolean }> = (data) => onSave(property, fromInput<T>(data.value, definition.inputType))
+  const {
+    register, handleSubmit, control, formState: { isSubmitting },
+  } = useForm({ defaultValues: { value: nDefaultValue } })
+  const onSubmit: SubmitHandler<{ value: string | boolean }> = (data) => {
+    const value = fromInput<T>(data.value, definition.inputType)
+    if (patchEndpoint !== undefined) {
+      return axios.patch(patchEndpoint, { [property]: value })
+        .then(() => { // TODO: confirmation it was successful would be nice
+          if (onSave) return onSave(value)
+          return undefined
+        })
+        .catch((err) => {
+          if (err instanceof Error) setError(err)
+          else setError(new Error(String(err)))
+        })
+    }
+    if (onSave) return onSave(value)
+    return undefined
+  }
   const newValue = fromInput<T>(useWatch({ control, name: "value" }), definition.inputType)
 
   // TODO: handle string array as (multi-)select
@@ -139,7 +160,8 @@ const Editor = <I, T>({
       <LabelledInput label={definition.label ?? property as string} id="editorValue" className="w-1/2" autoComplete="off" type={nInputType} {...register("value")} />
       <p>Current value: {definition.formatter ? definition.formatter(initialValue) : (initialValue ?? "—")}</p>
       <p>New value: {definition.formatter ? definition.formatter(newValue) : (newValue ?? "—")}</p>
-      <Button variant="blue" className="mt-4" onClick={handleSubmit(onSubmit)}>Save</Button>
+      {error && <Alert className="mt-2">{error}</Alert>}
+      <Button variant="blue" className="mt-4" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>{isSubmitting ? "Saving..." : "Save"}</Button>
     </form>
   )
 }

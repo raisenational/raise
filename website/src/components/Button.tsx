@@ -8,10 +8,11 @@ interface Props {
   variant?: "red" | "outline" | "blue",
   size?: "normal" | "small",
   className?: string,
+  disabled?: boolean,
 }
 
 const Button: React.FC<Props> = ({
-  children, href, onClick, variant = "outline", size = "normal", className,
+  children, href, onClick, variant = "outline", size = "normal", className, disabled,
 }) => (
   <Link
     href={href}
@@ -23,6 +24,7 @@ const Button: React.FC<Props> = ({
       "px-2 py-0": size === "small",
       "border-4": variant === "outline" && size === "normal",
     }, className)}
+    disabled={disabled}
   >
     <span className="inline-block transform skew-x-15">{children}</span>
   </Link>
