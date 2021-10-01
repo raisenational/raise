@@ -47,12 +47,13 @@ const middyErrorHandler: middy.MiddlewareFunction<any, any> = async (request) =>
   }
 }
 
-export function middyfy(handler: Handler<Omit<APIGatewayProxyEvent, 'body'>, any>): Handler<APIGatewayProxyEvent, APIGatewayProxyResult>;
-export function middyfy<T extends Joi.Schema>(schema: T, handler: Handler<Omit<APIGatewayProxyEvent, 'body'> & { body: Joi.extractType<T> }, any>): Handler<APIGatewayProxyEvent, APIGatewayProxyResult>;
-export function middyfy<T extends Joi.Schema>(arg0: T | Handler<Omit<APIGatewayProxyEvent, 'body'>, any>, arg1?: Handler<Omit<APIGatewayProxyEvent, 'body'> & { body: Joi.extractType<T> }, any>): Handler<APIGatewayProxyEvent, APIGatewayProxyResult> {
-  const m = (arg0 && arg1 ? middy(arg1) : middy(arg0 as Handler<Omit<APIGatewayProxyEvent, 'body'>, any>)).use(middyJsonBodyParser());
-
-  return (arg0 && arg1 ? m.use(middyJoiValidator({ schema: Joi.object({ body: arg0 }), options: { allowUnknown: true } })) : m)
+export function middyfy<RequestSchema extends Joi.Schema, ResponseSchema extends Joi.Schema>(requestSchema: RequestSchema, responseSchema: ResponseSchema, handler: Handler<Omit<APIGatewayProxyEvent, 'body'> & { body: Joi.extractType<RequestSchema> }, Joi.extractType<ResponseSchema>>): Handler<APIGatewayProxyEvent, APIGatewayProxyResult> {
+  return middy(handler)
+    .use(middyJsonBodyParser())
+    // TODO: check body against schema and don't allow unknown properties
+    // TODO: check after against responseSchema
+    // TODO: improve error messagings of middyJoiValidator / use AJV + middy validator?
+    .use(middyJoiValidator({ schema: Joi.object({ body: requestSchema === undefined ? Joi.any() : requestSchema.required() }), options: { allowUnknown: true } }))
     .after(middyJsonBodySerializer)
     .onError(middyErrorHandler)  
 }

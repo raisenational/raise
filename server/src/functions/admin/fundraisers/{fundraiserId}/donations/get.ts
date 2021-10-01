@@ -17,7 +17,7 @@ export const main = middyfy(async (event) => {
         createdAt: 1632840179,
         address: undefined,
         giftAid: false,
-        comment: '',
+        comment: undefined,
         donationAmount: 150_00,
         matchFundingAmount: 150_00,
         contributionAmount: 0_00,
