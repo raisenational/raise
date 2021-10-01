@@ -2,7 +2,7 @@ import 'source-map-support/register';
 import { middyfy } from '../../../../../helpers/wrapper';
 import createError from 'http-errors'
 
-export const main = middyfy(async (event) => {
+export const main = middyfy(undefined, undefined, async (event) => {
   if (!event.pathParameters || !(typeof event.pathParameters.fundraiserId === "string")) throw new createError.BadRequest('Missing fundraiserId')
 
   if (event.pathParameters.fundraiserId !== '01FGNSHH6X6X878ZNBZKY44JQA') {

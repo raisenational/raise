@@ -11,7 +11,7 @@ const envCase = (s: string): string => s.replace(/[\/_\- ]+/g, () => '_').toUppe
 const camelCase = (s: string): string => s.replace(/[\/_\- ]+([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 const pascalCase = (s: string): string => s.replace(/(^|[\/_\- ]+)([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 
-const defineTables = (definitions: { name: string, pk: string, sk: string }[]): { env: Record<string, string>, resources: AWS['resources']['Resources'] } => {
+const defineTables = (definitions: { name: string, pk: string, sk?: string }[]): { env: Record<string, string>, resources: AWS['resources']['Resources'] } => {
   return definitions.reduce<{ env: Record<string, string>, resources: AWS['resources']['Resources'] }>((acc, def) => {
     const TableName = `${SERVICE_NAME}-${STAGE}-${def.name}`;
 
@@ -24,17 +24,17 @@ const defineTables = (definitions: { name: string, pk: string, sk: string }[]): 
         AttributeDefinitions: [{
           AttributeName: def.pk,
           AttributeType: 'S' // String
-        },{
+        }, ...(def.sk !== undefined ? [{
           AttributeName: def.sk,
           AttributeType: 'S' // String
-        }],
+        }] : [])],
         KeySchema: [{
           AttributeName: def.pk,
-            KeyType: 'HASH'
-        }, {
-            AttributeName: def.sk,
-            KeyType: 'RANGE'
-        }],
+          KeyType: 'HASH'
+        }, ...(def.sk !== undefined ? [{
+          AttributeName: def.sk,
+          KeyType: 'RANGE'
+        }] : [])],
         BillingMode: 'PAY_PER_REQUEST',
         PointInTimeRecoverySpecification : {
           PointInTimeRecoveryEnabled: STAGE === 'dev' ? false : true,
@@ -52,6 +52,9 @@ const defineTables = (definitions: { name: string, pk: string, sk: string }[]): 
 }
 
 const tables = defineTables([{
+  name: 'fundraiser',
+  pk: 'id',
+}, {
   name: 'donation',
   pk: 'fundraiserId',
   sk: 'id',
@@ -132,6 +135,18 @@ const serverlessConfiguration: AWS = {
       start: {
         port: 8004,
         migrate: true,
+        seed: true
+      },
+      seed: {
+        sample: {
+          sources: [{
+            table: tables.env['TABLE_NAME_FUNDRAISER'],
+            sources: ['./local/table_fundraiser.json'],
+          }, {
+            table: tables.env['TABLE_NAME_DONATION'],
+            sources: ['./local/table_donation.json'],
+          }]
+        }
       },
     }
   },

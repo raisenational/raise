@@ -9,26 +9,8 @@ import { middyfy } from '../../../helpers/wrapper';
 
 export const main = middyfy<undefined, typeof fundraisersSchema>(undefined, fundraisersSchema, async (event) => {
   const r = await dynamoDBDocumentClient.send(new ScanCommand({
-    TableName: process.env.TABLE_NAME_DONATION,
+    TableName: process.env.TABLE_NAME_FUNDRAISER,
   }))
 
-  return Joi.attempt([], fundraisersSchema) as Joi.extractType<typeof fundraisersSchema>;
-
-  // return [
-  //   {
-  //     id: '01FGNSHH6X6X878ZNBZKY44JQA',
-  //     name: 'Raise Demo',
-  //     activeFrom: 1632780000,
-  //     activeTo: undefined,
-  //     paused: false,
-  //     goal: 1234_56,
-  //     totalRaised: 480_00,
-  //     donationsCount: 2,
-  //     matchFundingRate: 1_00,
-  //     matchFundingPerDonationLimit: 150_00,
-  //     matchFundingRemaining: undefined,
-  //     minimumDonationAmount: undefined,
-  //     groupsWithAccess: ['National'],
-  //   },
-  // ]
+  return Joi.attempt(r.Items, fundraisersSchema) as Joi.extractType<typeof fundraisersSchema>;
 });

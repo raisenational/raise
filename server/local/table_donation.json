@@ -1,0 +1,60 @@
+[
+  {
+    "id": "01FGPDQQ9RNX77QX5V62MA2X81",
+    "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
+    "name": "John Doe",
+    "email": "johndoe@example.com",
+    "createdAt": 1632840179,
+    "giftAid": false,
+    "donationAmount": 15000,
+    "matchFundingAmount": 15000,
+    "contributionAmount": 0,
+    "payments": [
+      {
+        "at": 1632840179,
+        "amount": 15000
+      }
+    ],
+    "paymentMethod": "card",
+    "paymentGatewayId": "pymt_12345",
+    "charity": "AMF",
+    "overallPublic": true,
+    "namePublic": true,
+    "commentPublic": false,
+    "donationAmountPublic": false
+  },
+  {
+    "id": "01FGP6MMPGGVY0MH9GE9DRRNKG",
+    "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
+    "name": "Jane Doe",
+    "email": "jane@example.com",
+    "createdAt": 1632832738,
+    "address": "123 Something Street, London, EC1A 1AA",
+    "giftAid": true,
+    "comment": "Pleased to be giving to such a great cause",
+    "donationAmount": 9000,
+    "matchFundingAmount": 9000,
+    "contributionAmount": 0,
+    "payments": [
+      {
+        "at": 1632832738,
+        "amount": 3000
+      },
+      {
+        "at": 1633392000,
+        "amount": 3000
+      },
+      {
+        "at": 1633996800,
+        "amount": 3000
+      }
+    ],
+    "paymentMethod": "card",
+    "paymentGatewayId": "pymt_67890",
+    "charity": "AMF",
+    "overallPublic": true,
+    "namePublic": true,
+    "commentPublic": true,
+    "donationAmountPublic": true
+  }
+]

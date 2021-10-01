@@ -1,0 +1,19 @@
+[
+  {
+    "id": "01FGNSHH6X6X878ZNBZKY44JQA",
+    "name": "Raise Demo",
+    "activeFrom": 1632780000,
+    "activeTo": null,
+    "paused": false,
+    "goal": 123456,
+    "totalRaised": 48000,
+    "donationsCount": 2,
+    "matchFundingRate": 100,
+    "matchFundingPerDonationLimit": 15000,
+    "matchFundingRemaining": null,
+    "minimumDonationAmount": null,
+    "groupsWithAccess": [
+      "National"
+    ]
+  }
+]
