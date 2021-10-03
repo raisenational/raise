@@ -6,7 +6,7 @@ import { middyfy } from "../../../../../helpers/wrapper"
 import { donationsSchema } from "../../../../../helpers/schemas"
 import dynamoDBDocumentClient from "../../../../../helpers/documentClient"
 
-export const main = middyfy(null, donationsSchema, async (event) => {
+export const main = middyfy(null, donationsSchema, true, async (event) => {
   if (!event.pathParameters || !(typeof event.pathParameters.fundraiserId === "string")) throw new createError.BadRequest("Missing fundraiserId")
 
   const r = await dynamoDBDocumentClient.send(new QueryCommand({

@@ -3,6 +3,8 @@ import type { AWS } from "@serverless/typescript"
 import { readdirSync } from "fs"
 import { resolve } from "path"
 
+import env from "./env"
+
 const SERVICE_NAME = "raise-server"
 const STAGE = "dev"
 
@@ -94,20 +96,7 @@ const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): 
   return result
 }
 
-const addEnvironmentVariables = (functions: NonNullable<AWS["functions"]>, env: Record<string, string>): NonNullable<AWS["functions"]> => {
-  for (const fKey in functions) {
-    const f = functions[fKey]
-    f.environment = f.environment ?? {}
-    for (const eKey in env) {
-      if (f.environment[eKey] !== undefined) throw new Error(`Duplciate function environment key ${eKey} in function ${fKey}`)
-      f.environment[eKey] = env[eKey]
-    }
-  }
-
-  return functions
-}
-
-const functions = addEnvironmentVariables(recursivelyFindFunctionsIn(resolve(__dirname, "src", "functions")), tables.env)
+const functions = recursivelyFindFunctionsIn(resolve(__dirname, "src", "functions"))
 
 const serverlessConfiguration: AWS = {
   service: SERVICE_NAME,
@@ -167,6 +156,8 @@ const serverlessConfiguration: AWS = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      ...env,
+      ...tables.env,
     },
     lambdaHashingVersion: "20201221",
     memorySize: 256,

@@ -6,7 +6,7 @@ import { middyfy } from "../../../helpers/wrapper"
 import { fundraiserEditsSchema, fundraiserSchema, ulid as ulidSchema } from "../../../helpers/schemas"
 import dynamoDBDocumentClient from "../../../helpers/documentClient"
 
-export const main = middyfy(fundraiserEditsSchema, ulidSchema, async (event) => {
+export const main = middyfy(fundraiserEditsSchema, ulidSchema, true, async (event) => {
   const fundraiser: FromSchema<typeof fundraiserSchema> = {
     id: ulid(),
     name: event.body.name ?? "New Fundraiser",

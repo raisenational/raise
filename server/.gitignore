@@ -5,3 +5,6 @@ node_modules
 .serverless
 .webpack
 .dynamodb
+
+# Custom environment
+env.ts

@@ -6,6 +6,7 @@ import type { FromSchema, JSONSchema } from "json-schema-to-ts"
 import type {
   APIGatewayProxyEvent, APIGatewayProxyResult, Context, Handler as AWSHandler,
 } from "aws-lambda"
+import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-auth"
 
 const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (request) => {
   request.response = {
@@ -49,11 +50,29 @@ const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) 
   }
 }
 
-type Handler<RequestSchema, ResponseSchema> = (event: Omit<APIGatewayProxyEvent, "body"> & { body: RequestSchema extends null ? null : FromSchema<RequestSchema> }, context: Context) => Promise<ResponseSchema extends null ? void : FromSchema<ResponseSchema>>
+type AuthTokenPayload = {
+  email: string,
+  groups: string[],
+}
 
-export function middyfy<RequestSchema extends JSONSchema | null, ResponseSchema extends JSONSchema | null>(requestSchema: RequestSchema, responseSchema: ResponseSchema, handler: Handler<RequestSchema, ResponseSchema>): AWSHandler<APIGatewayProxyEvent, APIGatewayProxyResult> {
+type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
+  event: Omit<APIGatewayProxyEvent, "body"> & {
+    body: RequestSchema extends null ? null : FromSchema<RequestSchema>,
+    auth: RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined,
+  },
+  context: Context) => Promise<ResponseSchema extends null ? void : FromSchema<ResponseSchema>>
+
+export function middyfy<RequestSchema extends JSONSchema | null, ResponseSchema extends JSONSchema | null, RequiresAuth extends boolean>(requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth, handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>): AWSHandler<APIGatewayProxyEvent, APIGatewayProxyResult> {
   try {
     return middy(handler)
+      // TODO: needs HTTP API support
+      // https://github.com/dbartholomae/middy-middleware-jwt-auth/pull/88
+      .use(new JWTAuthMiddleware({
+        algorithm: EncryptionAlgorithms.ES256,
+        credentialsRequired: requiresAuth,
+        isPayload: (token: any): token is AuthTokenPayload => typeof token === "object" && token !== null && typeof token.email === "string" && Array.isArray(token.groups) && token.groups.every((g: string) => typeof g === "string"),
+        secretOrPublicKey: process.env.JWT_PUBLIC_KEY!,
+      }))
       .use(middyJsonBodyParser())
       .after(middyJsonBodySerializer)
       // TODO: validate that the path parameters are present and are strings

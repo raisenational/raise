@@ -6,7 +6,7 @@ import dynamoDBDocumentClient from "../../../helpers/documentClient"
 import { fundraisersSchema } from "../../../helpers/schemas"
 import { middyfy } from "../../../helpers/wrapper"
 
-export const main = middyfy(null, fundraisersSchema, async () => {
+export const main = middyfy(null, fundraisersSchema, true, async () => {
   const r = await dynamoDBDocumentClient.send(new ScanCommand({
     TableName: process.env.TABLE_NAME_FUNDRAISER,
   }))

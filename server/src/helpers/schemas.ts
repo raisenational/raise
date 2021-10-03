@@ -17,6 +17,25 @@ export const statusSchema = {
   additionalProperties: false,
 } as const
 
+export const accessTokenSchema = {
+  type: "object",
+  properties: {
+    accessToken: { type: "string" },
+  },
+  required: ["accessToken"],
+  additionalProperties: false,
+} as const
+
+export const idAndAccessTokenSchema = {
+  type: "object",
+  properties: {
+    idToken: { type: "string" },
+    accessToken: { type: "string" },
+  },
+  required: ["idToken", "accessToken"],
+  additionalProperties: false,
+} as const
+
 export const fundraiserEditsSchema = {
   type: "object",
   properties: {
