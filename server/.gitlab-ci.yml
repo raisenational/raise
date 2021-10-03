@@ -15,8 +15,7 @@ test:
   script:
     - npm ci
     - npm run build
-    # TODO: add tests
-    # - npm test
+    - npm test
 
 deploy:
   stage: deploy
