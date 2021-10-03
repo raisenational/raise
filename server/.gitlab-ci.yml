@@ -1,0 +1,28 @@
+image: node:14.0-slim
+
+stages:
+- test
+- deploy
+
+cache:
+  paths:
+    - node_modules/
+    - .serverless/
+    - .webpack/
+
+test:
+  stage: test
+  script:
+    - npm ci
+    - npm run build
+    # TODO: add tests
+    # - npm test
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Do this manually for now"
+    # TODO: set up this pipeline properly
+    # - "npm run deploy:dev"
+  only:
+    - master

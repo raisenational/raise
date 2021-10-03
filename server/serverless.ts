@@ -11,8 +11,8 @@ const envCase = (s: string): string => s.replace(/[\/_\- ]+/g, () => '_').toUppe
 const camelCase = (s: string): string => s.replace(/[\/_\- ]+([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 const pascalCase = (s: string): string => s.replace(/(^|[\/_\- ]+)([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 
-const defineTables = (definitions: { name: string, pk: string, sk?: string }[]): { env: Record<string, string>, resources: AWS['resources']['Resources'] } => {
-  return definitions.reduce<{ env: Record<string, string>, resources: AWS['resources']['Resources'] }>((acc, def) => {
+const defineTables = (definitions: { name: string, pk: string, sk?: string }[]): { env: Record<string, string>, resources: NonNullable<NonNullable<AWS['resources']>['Resources']> } => {
+  return definitions.reduce<{ env: Record<string, string>, resources: NonNullable<NonNullable<AWS['resources']>['Resources']> }>((acc, def) => {
     const TableName = `${SERVICE_NAME}-${STAGE}-${def.name}`;
 
     const resourceKey = pascalCase(def.name) + 'Table';
@@ -36,7 +36,7 @@ const defineTables = (definitions: { name: string, pk: string, sk?: string }[]):
           KeyType: 'RANGE'
         }] : [])],
         BillingMode: 'PAY_PER_REQUEST',
-        PointInTimeRecoverySpecification : {
+        PointInTimeRecoverySpecification: {
           PointInTimeRecoveryEnabled: STAGE === 'dev' ? false : true,
         },
         TableName
@@ -60,7 +60,7 @@ const tables = defineTables([{
   sk: 'id',
 }])
 
-const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): AWS['functions'] => {
+const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): NonNullable<AWS['functions']> => {
   const result: AWS['functions'] = {};
   const files = readdirSync(path, { withFileTypes: true });
   for (const file of files) {
@@ -95,12 +95,13 @@ const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): 
   return result;
 }
 
-const addEnvironmentVariables = (functions: AWS['functions'], env: Record<string, string>): AWS['functions'] => {
+const addEnvironmentVariables = (functions: NonNullable<AWS['functions']>, env: Record<string, string>): NonNullable<AWS['functions']> => {
   for (const fKey in functions) {
-    functions[fKey].environment = functions[fKey].environment ?? {};
+    const f = functions[fKey];
+    f.environment = f.environment ?? {};
     for (const eKey in env) {
-      if (functions[fKey].environment[eKey] !== undefined) throw new Error('Duplciate function environment key ' + eKey + ' in function ' + fKey);
-      functions[fKey].environment[eKey] = env[eKey];
+      if (f.environment[eKey] !== undefined) throw new Error('Duplciate function environment key ' + eKey + ' in function ' + fKey);
+      f.environment[eKey] = env[eKey];
     }
   }
 
