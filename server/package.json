@@ -11,7 +11,7 @@
     "teardown:dev": "serverless remove --stage dev --verbose",
     "test": "npm run type-check && npm run lint",
     "type-check": "tsc",
-    "lint": "eslint 'src/**/*.ts'"
+    "lint": "eslint 'src/**/*.ts' 'serverless.ts'"
   },
   "engines": {
     "node": ">=14.15.0"
