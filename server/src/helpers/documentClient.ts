@@ -1,18 +1,19 @@
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+/* eslint-disable no-restricted-imports */
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb"
+import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb"
 
 const dynamoDBClient = process.env.IS_OFFLINE
-  ? new DynamoDBClient({ region: 'localhost', endpoint: 'http://localhost:8004', credentials: { accessKeyId: 'DEFAULT_ACCESS_KEY', secretAccessKey: 'DEFAULT_SECRET' } })
+  ? new DynamoDBClient({ region: "localhost", endpoint: "http://localhost:8004", credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" } })
   : new DynamoDBClient({})
 
 const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDBClient, {
   marshallOptions: {
     convertEmptyValues: false,
-    removeUndefinedValues: false
+    removeUndefinedValues: false,
   },
   unmarshallOptions: {
-    wrapNumbers: false
-  }
-});
+    wrapNumbers: false,
+  },
+})
 
-export default dynamoDBDocumentClient;
+export default dynamoDBDocumentClient
