@@ -58,7 +58,7 @@ export const useAuthState = () => {
 }
 
 const defaultConfig: AxiosRequestConfig = {
-  baseURL: window.location.host.startsWith("localhost")
+  baseURL: typeof window !== "undefined" && window.location.host.startsWith("localhost")
     ? "http://localhost:8001/"
     : "https://bblp6lj50j.execute-api.eu-west-1.amazonaws.com/",
   timeout: 60000,

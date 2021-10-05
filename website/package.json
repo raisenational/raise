@@ -14,7 +14,7 @@
     "codeowners": "node codeowners.js"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=14.15.0"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.1",
