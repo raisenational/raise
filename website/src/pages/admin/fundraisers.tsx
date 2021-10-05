@@ -15,7 +15,7 @@ const Fundraisers: React.FC<RouteComponentProps> = () => {
       <SectionTitle>Fundraisers</SectionTitle>
       <Table
         definition={{
-          name: { label: "Name", className: "whitespace-nowrap" },
+          fundraiserName: { label: "Name", className: "whitespace-nowrap" },
           activeFrom: { label: "From", formatter: dateFormatter, className: "w-36" },
           activeTo: { label: "To", formatter: dateFormatter, className: "w-36" },
           goal: { label: "Goal", formatter: amountFormatter, className: "w-36" },

@@ -17,10 +17,10 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
 
   return (
     <Section>
-      <SectionTitle>{fundraiser.data?.name || "Fundraiser"}</SectionTitle>
+      <SectionTitle>{fundraiser.data?.fundraiserName || "Fundraiser"}</SectionTitle>
       <PropertyEditor
         definition={{
-          name: { label: "Name", inputType: "text" },
+          fundraiserName: { label: "Name", inputType: "text" },
           activeFrom: { label: "From", formatter: timestampFormatter, inputType: "datetime-local" },
           activeTo: { label: "To", formatter: timestampFormatter, inputType: "datetime-local" },
           paused: { label: "Paused", formatter: booleanFormatter, inputType: "checkbox" },
@@ -49,8 +49,8 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
       <SectionTitle className="mt-12">Donations</SectionTitle>
       <Table
         definition={{
-          name: { label: "Name" },
-          email: { label: "Email" },
+          donorName: { label: "Name" },
+          donorEmail: { label: "Email" },
           createdAt: { label: "At", formatter: timestampFormatter },
           donationAmount: { label: "Amount", formatter: amountFormatter },
           matchFundingAmount: { label: "Matched", formatter: amountFormatter },

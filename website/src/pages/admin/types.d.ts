@@ -1,6 +1,13 @@
+export interface Profile {
+  email: string,
+  groups: string[],
+  issuedAt: number,
+  expiresAt: number,
+}
+
 export interface Fundraiser {
   id: string,
-  name: string,
+  fundraiserName: string,
   activeFrom: number,
   activeTo: number | null,
   paused: boolean,
@@ -17,8 +24,8 @@ export interface Fundraiser {
 export interface Donation {
   id: string,
   fundraiserId: string,
-  name: string,
-  email: string,
+  donorName: string,
+  donorEmail: string,
   createdAt: number,
   address: string | null,
   giftAid: boolean,

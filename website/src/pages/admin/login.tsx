@@ -5,7 +5,7 @@ import { GoogleLogin, GoogleLoginResponse } from "react-google-login"
 import Section, { SectionTitle } from "../../components/Section"
 import Alert from "../../components/Alert"
 import logo from "../../images/logo.png"
-import { AuthContext } from "../../components/AuthProvider"
+import { useAuthState, useRawAxios } from "../../components/networking"
 
 const requiredScopes = [
   "email",
@@ -15,8 +15,10 @@ const requiredScopes = [
 ]
 
 const Login: React.FC<RouteComponentProps> = () => {
-  const { setAuth } = React.useContext(AuthContext)
+  const [_, setAuth] = useAuthState()
   const [error, setError] = React.useState<string | undefined>()
+
+  const axios = useRawAxios()
 
   return (
     <Section className="mt-8 text-center">
@@ -27,7 +29,10 @@ const Login: React.FC<RouteComponentProps> = () => {
         <GoogleLogin
           clientId="730827052132-u1tatnr4anip3vf7j5tq82k33gb5okpe.apps.googleusercontent.com"
           scope={requiredScopes.join(" ")}
-          onSuccess={(_res) => {
+          onRequest={() => {
+            setError(undefined)
+          }}
+          onSuccess={async (_res) => {
             // FIXME: bad typescript definitions
             // https://github.com/anthonyjgrove/react-google-login/pull/482
             const res = _res as GoogleLoginResponse
@@ -37,13 +42,8 @@ const Login: React.FC<RouteComponentProps> = () => {
             if (missingScopes.length > 0) {
               setError(`Missing scopes: ${JSON.stringify(missingScopes)}`)
             } else {
-              setError(undefined)
-              setAuth({
-                idToken: res.tokenId,
-                accessToken: res.accessToken,
-                name: res.profileObj.name,
-                email: res.profileObj.email,
-              })
+              const loginResponse = await axios.post<{ accessToken: string, expiresAt: number }>("/admin/login", { idToken: res.tokenId, accessToken: res.accessToken })
+              setAuth({ token: loginResponse.data.accessToken, expiresAt: loginResponse.data.expiresAt })
             }
           }}
           onFailure={(err) => {

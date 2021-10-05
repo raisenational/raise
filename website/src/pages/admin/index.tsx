@@ -8,8 +8,10 @@ import Profile from "./profile"
 import Login from "./login"
 import NotFoundPage from "../404"
 import Navigation from "../../components/Navigation"
-import { AuthContext, AuthProvider } from "../../components/AuthProvider"
 import Fundraiser from "./fundraiser"
+import { useAuthState } from "../../components/networking"
+import Alert from "../../components/Alert"
+import Section from "../../components/Section"
 
 const IndexPage = () => (
   <Page className="pb-8">
@@ -18,14 +20,24 @@ const IndexPage = () => (
       <meta property="og:title" content="Raise Admin" />
       <meta name="robots" content="noindex" />
     </Helmet>
-    <AuthProvider>
-      <IndexLayout />
-    </AuthProvider>
+    <IndexLayout />
   </Page>
 )
 
 const IndexLayout = () => {
-  const { auth, setAuth } = React.useContext(AuthContext)
+  const [auth, setAuth] = useAuthState()
+  const [logoutWarning, setLogoutWarning] = React.useState<string | undefined>()
+  React.useEffect(() => {
+    if (typeof auth?.expiresAt !== "number") return undefined
+
+    const msUntilExpiration = (auth.expiresAt * 1000) - new Date().getTime()
+
+    const timeout = setTimeout(() => {
+      setLogoutWarning("You will be logged out in the next minute")
+    }, msUntilExpiration - 60_000)
+
+    return () => clearTimeout(timeout)
+  }, [auth?.expiresAt])
 
   return (
     <>
@@ -39,6 +51,11 @@ const IndexLayout = () => {
             { text: "Logout", onClick: () => setAuth() },
           ]}
         />
+      )}
+      {logoutWarning && (
+        <Section>
+          <Alert variant="warning">{logoutWarning}</Alert>
+        </Section>
       )}
       <Router basepath="/admin" className="text-left">
         {auth && (

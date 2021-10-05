@@ -69,7 +69,7 @@
   }
 
   .Alert {
-    @apply rounded p-4 break-words flex items-center
+    @apply rounded p-4 break-words flex items-center overflow-x-auto
   }
 
   .raise-google-button {

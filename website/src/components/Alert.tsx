@@ -16,8 +16,8 @@ const Alert: React.FC<Props> = ({ children, variant = "error", className }) => (
     },
     className)}
   >
-    {variant === "error" && <ExclamationCircleIcon className="w-6 h-6 mr-2 mt-1" />}
-    {variant === "warning" && <ExclamationIcon className="w-6 h-6 mr-2 mt-1" />}
+    {variant === "error" && <ExclamationCircleIcon className="w-6 h-6 min-w-min mr-2 mt-1" />}
+    {variant === "warning" && <ExclamationIcon className="w-6 h-6 min-w-min mr-2 mt-1" />}
     <span className="flex-1">
       {variant === "error" && "Error"}
       {variant === "warning" && "Warning"}
@@ -25,7 +25,7 @@ const Alert: React.FC<Props> = ({ children, variant = "error", className }) => (
         <>
           {children.message}
           {/* @ts-ignore */}
-          {"isAxiosError" in children && <><br /><code className="text-sm">{JSON.stringify(children?.response?.data)}</code></>}
+          {"isAxiosError" in children && <><br /><code className="text-sm whitespace-pre-wrap">{JSON.stringify(children?.response?.data, undefined, 2)}</code></>}
         </>
       ) : children}
     </span>

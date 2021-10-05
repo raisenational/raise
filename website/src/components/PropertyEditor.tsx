@@ -7,7 +7,7 @@ import Table from "./Table"
 import Modal from "./Modal"
 import { SectionTitle } from "./Section"
 import Button from "./Button"
-import { axios } from "./networking"
+import { useRawAxios } from "./networking"
 
 type InputType<V> = V extends string ?
   | "text" | "tel" | "email" // string
@@ -105,9 +105,9 @@ const toInput = <T,>(raw: T, inputType: InputType<T>): string | boolean => {
 const fromInput = <T,>(raw: string | boolean, inputType: InputType<T>): T => {
   if (inputType === "text" || inputType === "tel" || inputType === "email") return raw as unknown as T
   if (inputType === "checkbox" || typeof raw === "boolean") return raw as unknown as T // NB: typeof raw === "boolean" if-and-only-if inputType === "checkbox"
-  if (inputType === "number") return ifNaN(parseInt(raw, 10), undefined) as unknown as T
-  if (inputType === "date" || inputType === "datetime-local") return ifNaN((new Date(raw).getTime()) / 1000, undefined) as unknown as T
-  if (inputType === "amount") return ifNaN(Math.round(parseFloat(raw) * 100), undefined) as unknown as T
+  if (inputType === "number") return ifNaN(parseInt(raw, 10), null) as unknown as T
+  if (inputType === "date" || inputType === "datetime-local") return ifNaN((new Date(raw).getTime()) / 1000, null) as unknown as T
+  if (inputType === "amount") return ifNaN(Math.round(parseFloat(raw) * 100), null) as unknown as T
   // if (inputType === "select") return TODO as unknown as T
   // if (inputType === "multiselect") return TODO as unknown as T
 
@@ -128,6 +128,7 @@ const Editor = <I, T>({
   property, definition, initialValue, onSave, patchEndpoint,
 }: EditorProps<I, T>) => {
   const [error, setError] = React.useState<Error | undefined>()
+  const axios = useRawAxios()
   const nInputType = definition.inputType === "amount" ? "number" : definition.inputType as React.HTMLInputTypeAttribute
   const nDefaultValue = toInput<T>(initialValue, definition.inputType)
   const {
@@ -157,7 +158,7 @@ const Editor = <I, T>({
     <form onSubmit={handleSubmit(onSubmit)}>
       <SectionTitle>Editing {definition.label ?? property}</SectionTitle>
       {definition.editWarning && <Alert variant="warning" className="mb-4">{definition.editWarning}</Alert>}
-      <LabelledInput label={definition.label ?? property as string} id="editorValue" className="w-1/2" autoComplete="off" type={nInputType} {...register("value")} />
+      <LabelledInput label={definition.label ?? property as string} id="editorValue" className="w-1/2" autoComplete="off" type={nInputType} step={nInputType === "number" ? "any" : undefined} {...register("value")} />
       <p>Current value: {definition.formatter ? definition.formatter(initialValue) : (initialValue ?? "—")}</p>
       <p>New value: {definition.formatter ? definition.formatter(newValue) : (newValue ?? "—")}</p>
       {error && <Alert className="mt-2">{error}</Alert>}
