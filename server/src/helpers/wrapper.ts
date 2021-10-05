@@ -65,8 +65,6 @@ type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
 export function middyfy<RequestSchema extends JSONSchema | null, ResponseSchema extends JSONSchema | null, RequiresAuth extends boolean>(requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth, handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>): AWSHandler<APIGatewayProxyEvent, APIGatewayProxyResult> {
   try {
     return middy(handler)
-      // TODO: needs HTTP API support
-      // https://github.com/dbartholomae/middy-middleware-jwt-auth/pull/88
       .use(new JWTAuthMiddleware({
         algorithm: EncryptionAlgorithms.ES256,
         credentialsRequired: requiresAuth,
@@ -75,10 +73,15 @@ export function middyfy<RequestSchema extends JSONSchema | null, ResponseSchema 
       }))
       .use(middyJsonBodyParser())
       .after(middyJsonBodySerializer)
-      // TODO: validate that the path parameters are present and are strings
       .use(middyValidator({
         inputSchema: requestSchema === null ? { type: "object", properties: { body: { type: "null" } } } : { type: "object", properties: { body: requestSchema } },
         outputSchema: responseSchema === null ? undefined /* enforced by types as cannot validate the response is undefined */ : responseSchema,
+        ajvOptions: {
+          strict: true,
+          allErrors: true,
+          useDefaults: false,
+          coerceTypes: false,
+        },
       }))
       .onError(middyErrorHandler) as unknown as AWSHandler<APIGatewayProxyEvent, APIGatewayProxyResult>
   } catch (err) {

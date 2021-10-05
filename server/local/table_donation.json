@@ -2,8 +2,8 @@
   {
     "id": "01FGPDQQ9RNX77QX5V62MA2X81",
     "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
-    "name": "John Doe",
-    "email": "johndoe@example.com",
+    "donorName": "John Doe",
+    "donorEmail": "johndoe@example.com",
     "createdAt": 1632840179,
     "address": null,
     "giftAid": false,
@@ -28,8 +28,8 @@
   {
     "id": "01FGP6MMPGGVY0MH9GE9DRRNKG",
     "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
-    "name": "Jane Doe",
-    "email": "jane@example.com",
+    "donorName": "Jane Doe",
+    "donorEmail": "jane@example.com",
     "createdAt": 1632832738,
     "address": "123 Something Street, London, EC1A 1AA",
     "giftAid": true,

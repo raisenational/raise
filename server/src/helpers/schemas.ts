@@ -21,8 +21,9 @@ export const accessTokenSchema = {
   type: "object",
   properties: {
     accessToken: { type: "string" },
+    expiresAt: { type: "integer" },
   },
-  required: ["accessToken"],
+  required: ["accessToken", "expiresAt"],
   additionalProperties: false,
 } as const
 
@@ -36,10 +37,22 @@ export const idAndAccessTokenSchema = {
   additionalProperties: false,
 } as const
 
+export const profileSchema = {
+  type: "object",
+  properties: {
+    email: { type: "string" },
+    groups: { type: "array", items: { type: "string" } },
+    issuedAt: { type: "integer" },
+    expiresAt: { type: "integer" },
+  },
+  required: ["email", "groups", "issuedAt", "expiresAt"],
+  additionalProperties: false,
+} as const
+
 export const fundraiserEditsSchema = {
   type: "object",
   properties: {
-    name: { type: "string" },
+    fundraiserName: { type: "string", minLength: 1, maxLength: 128 },
     activeFrom: { type: "number" },
     activeTo: { type: ["number", "null"] },
     paused: { type: "boolean" },
@@ -52,6 +65,7 @@ export const fundraiserEditsSchema = {
     minimumDonationAmount: { type: ["integer", "null"], exclusiveMinimum: 0 },
     groupsWithAccess: { type: "array", items: { type: "string" } },
   },
+  minProperties: 1,
   additionalProperties: false,
 } as const
 
@@ -61,7 +75,7 @@ export const fundraiserSchema = {
     id: ulid,
     ...fundraiserEditsSchema.properties,
   },
-  required: ["id", "name", "activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "groupsWithAccess"],
+  required: ["id", "fundraiserName", "activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "groupsWithAccess"],
   additionalProperties: false,
 } as const
 
@@ -71,8 +85,8 @@ export const donationEditsSchema = {
   type: "object",
   properties: {
     fundraiserId: ulid,
-    name: { type: "string" },
-    email,
+    donorName: { type: "string" },
+    donorEmail: email,
     createdAt: { type: "integer" },
     address: { type: ["string", "null"] },
     giftAid: { type: "boolean" },
@@ -98,7 +112,7 @@ export const donationSchema = {
     id: ulid,
     ...donationEditsSchema.properties,
   },
-  required: ["id", "fundraiserId", "name", "email", "createdAt", "address", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "payments", "paymentMethod", "paymentGatewayId", "charity", "overallPublic", "namePublic", "commentPublic", "donationAmountPublic"],
+  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "address", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "payments", "paymentMethod", "paymentGatewayId", "charity", "overallPublic", "namePublic", "commentPublic", "donationAmountPublic"],
   additionalProperties: false,
 } as const
 

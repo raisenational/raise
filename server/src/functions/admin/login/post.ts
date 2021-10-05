@@ -19,14 +19,19 @@ export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, as
 
   // TODO: allowlist of users / restrict to G Suite domain with hd
 
+  const now = Math.floor(new Date().getTime() / 1000)
+
   return {
     accessToken: jwt.sign(
       {
         email: tokenPayload.email,
         groups: ["National"],
+        iat: now,
+        exp: now + 28800, // 8 hours
       },
       process.env.JWT_PRIVATE_KEY!,
-      { algorithm: "ES256", expiresIn: 3600 },
+      { algorithm: "ES256" },
     ),
+    expiresAt: now + 28800,
   }
 })

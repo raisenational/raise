@@ -9,7 +9,7 @@ import dynamoDBDocumentClient from "../../../helpers/documentClient"
 export const main = middyfy(fundraiserEditsSchema, ulidSchema, true, async (event) => {
   const fundraiser: FromSchema<typeof fundraiserSchema> = {
     id: ulid(),
-    name: event.body.name ?? "New Fundraiser",
+    fundraiserName: event.body.fundraiserName ?? "New Fundraiser",
     activeFrom: event.body.activeFrom ?? new Date().getTime() / 1000,
     activeTo: event.body.activeTo ?? null,
     paused: event.body.paused ?? false,
@@ -20,7 +20,7 @@ export const main = middyfy(fundraiserEditsSchema, ulidSchema, true, async (even
     matchFundingPerDonationLimit: event.body.matchFundingPerDonationLimit ?? null,
     matchFundingRemaining: event.body.matchFundingRemaining ?? null,
     minimumDonationAmount: event.body.minimumDonationAmount ?? null,
-    groupsWithAccess: event.body.groupsWithAccess ?? ["National"], // TODO: use user's group
+    groupsWithAccess: event.body.groupsWithAccess ?? event.auth.payload.groups,
   }
 
   await dynamoDBDocumentClient.send(new PutCommand({
