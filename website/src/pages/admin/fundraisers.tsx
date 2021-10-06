@@ -7,7 +7,7 @@ import Section, { SectionTitle } from "../../components/Section"
 import { Fundraiser } from "./types.d"
 import Table, { amountFormatter, dateFormatter } from "../../components/Table"
 
-const Fundraisers: React.FC<RouteComponentProps> = () => {
+const FundraisersPage: React.FC<RouteComponentProps> = () => {
   const [fundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
 
   return (
@@ -22,10 +22,10 @@ const Fundraisers: React.FC<RouteComponentProps> = () => {
           totalRaised: { label: "Raised", formatter: amountFormatter, className: "w-36" },
         }}
         items={fundraisers}
-        onClick={(i) => navigate(`/admin/${i.id}/`)}
+        onClick={(fundraiser) => navigate(`/admin/${fundraiser.id}/`)}
       />
     </Section>
   )
 }
 
-export default Fundraisers
+export default FundraisersPage

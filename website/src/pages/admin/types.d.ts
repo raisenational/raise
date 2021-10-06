@@ -3,6 +3,7 @@ export interface Profile {
   groups: string[],
   issuedAt: number,
   expiresAt: number,
+  sourceIp: string,
 }
 
 export interface Fundraiser {
@@ -27,14 +28,18 @@ export interface Donation {
   donorName: string,
   donorEmail: string,
   createdAt: number,
-  address: string | null,
+  addressLine1: string | null,
+  addressLine2: string | null,
+  addressLine3: string | null,
+  addressPostcode: string | null,
+  addressCountry: string | null,
   giftAid: boolean,
   comment: string | null,
   donationAmount: number,
   matchFundingAmount: number,
   contributionAmount: number,
   payments: { at: number, amount: number }[],
-  paymentMethod: "card",
+  paymentMethod: "card" | "cash" | "direct_to_charity",
   paymentGatewayId: string | null,
   charity: string,
   overallPublic: boolean,

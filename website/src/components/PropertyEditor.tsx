@@ -103,7 +103,7 @@ const toInput = <T,>(raw: T, inputType: InputType<T>): string | boolean => {
 }
 
 const fromInput = <T,>(raw: string | boolean, inputType: InputType<T>): T => {
-  if (inputType === "text" || inputType === "tel" || inputType === "email") return raw as unknown as T
+  if (inputType === "text" || inputType === "tel" || inputType === "email") return (raw === "" ? null : raw) as unknown as T
   if (inputType === "checkbox" || typeof raw === "boolean") return raw as unknown as T // NB: typeof raw === "boolean" if-and-only-if inputType === "checkbox"
   if (inputType === "number") return ifNaN(parseInt(raw, 10), null) as unknown as T
   if (inputType === "date" || inputType === "datetime-local") return ifNaN((new Date(raw).getTime()) / 1000, null) as unknown as T

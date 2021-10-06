@@ -19,6 +19,7 @@ const ProfilePage: React.FC<RouteComponentProps> = () => {
           groups: { label: "Groups with access", formatter: (groups: string[]) => groups.join(", ") },
           issuedAt: { label: "Logged in at", formatter: timestampFormatter },
           expiresAt: { label: "Login expires at", formatter: timestampFormatter },
+          sourceIp: { label: "IP address" },
         }}
         item={profile}
       />
