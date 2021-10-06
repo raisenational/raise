@@ -11,5 +11,6 @@ export const main = middyfy(null, profileSchema, true, async (event) => {
     groups: payload.groups,
     issuedAt: payload.iat!,
     expiresAt: payload.exp!,
+    sourceIp: event.requestContext.http.sourceIp,
   }
 })

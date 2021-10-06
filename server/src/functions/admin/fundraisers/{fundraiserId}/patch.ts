@@ -26,6 +26,9 @@ export const main = middyfy(fundraiserEditsSchema, null, true, async (event) => 
     throw new createHttpError.Forbidden(`Fundraiser requires you to be in one of the groups [${current.groupsWithAccess.join(", ")}] but you are in [${event.auth.payload.groups.join(", ")}]`)
   }
 
+  // TODO: consider restricting editing totalRaised and donationsCount to national team?
+  // TODO: require the fundraiser to be paused when editing totalRaised and donationsCount? (or at least require checks on previous value?)
+
   const entries = Object.entries(event.body)
   await dynamoDBDocumentClient.send(new UpdateCommand({
     TableName: process.env.TABLE_NAME_FUNDRAISER,

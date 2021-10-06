@@ -4,7 +4,7 @@ import middyJsonBodyParser from "@middy/http-json-body-parser"
 import middyValidator from "@middy/validator"
 import type { FromSchema, JSONSchema } from "json-schema-to-ts"
 import type {
-  APIGatewayProxyEvent, APIGatewayProxyResult, Context, Handler as AWSHandler,
+  APIGatewayProxyEventV2, APIGatewayProxyResult, Context, Handler as AWSHandler,
 } from "aws-lambda"
 import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-auth"
 
@@ -56,13 +56,13 @@ type AuthTokenPayload = {
 }
 
 type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
-  event: Omit<APIGatewayProxyEvent, "body"> & {
+  event: Omit<APIGatewayProxyEventV2, "body"> & {
     body: RequestSchema extends null ? null : FromSchema<RequestSchema>,
     auth: RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined,
   },
   context: Context) => Promise<ResponseSchema extends null ? void : FromSchema<ResponseSchema>>
 
-export function middyfy<RequestSchema extends JSONSchema | null, ResponseSchema extends JSONSchema | null, RequiresAuth extends boolean>(requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth, handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>): AWSHandler<APIGatewayProxyEvent, APIGatewayProxyResult> {
+export function middyfy<RequestSchema extends JSONSchema | null, ResponseSchema extends JSONSchema | null, RequiresAuth extends boolean>(requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth, handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>): AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult> {
   try {
     return middy(handler)
       .use(new JWTAuthMiddleware({
@@ -83,7 +83,7 @@ export function middyfy<RequestSchema extends JSONSchema | null, ResponseSchema 
           coerceTypes: false,
         },
       }))
-      .onError(middyErrorHandler) as unknown as AWSHandler<APIGatewayProxyEvent, APIGatewayProxyResult>
+      .onError(middyErrorHandler) as unknown as AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult>
   } catch (err) {
     console.error("Severe internal error processing request:")
     console.error(err)

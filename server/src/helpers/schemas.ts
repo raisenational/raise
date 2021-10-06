@@ -1,9 +1,9 @@
-export const email = {
+export const emailSchema = {
   type: "string",
   pattern: "^(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])$",
 } as const
 
-export const ulid = {
+export const ulidSchema = {
   type: "string",
   pattern: "^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$",
 } as const
@@ -44,8 +44,9 @@ export const profileSchema = {
     groups: { type: "array", items: { type: "string" } },
     issuedAt: { type: "integer" },
     expiresAt: { type: "integer" },
+    sourceIp: { type: "string" },
   },
-  required: ["email", "groups", "issuedAt", "expiresAt"],
+  required: ["email", "groups", "issuedAt", "expiresAt", "sourceIp"],
   additionalProperties: false,
 } as const
 
@@ -72,7 +73,7 @@ export const fundraiserEditsSchema = {
 export const fundraiserSchema = {
   type: "object",
   properties: {
-    id: ulid,
+    id: ulidSchema,
     ...fundraiserEditsSchema.properties,
   },
   required: ["id", "fundraiserName", "activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "groupsWithAccess"],
@@ -84,11 +85,15 @@ export const fundraisersSchema = { type: "array", items: fundraiserSchema } as c
 export const donationEditsSchema = {
   type: "object",
   properties: {
-    fundraiserId: ulid,
+    fundraiserId: ulidSchema,
     donorName: { type: "string" },
-    donorEmail: email,
+    donorEmail: emailSchema,
     createdAt: { type: "integer" },
-    address: { type: ["string", "null"] },
+    addressLine1: { type: ["string", "null"] },
+    addressLine2: { type: ["string", "null"] },
+    addressLine3: { type: ["string", "null"] },
+    addressPostcode: { type: ["string", "null"] },
+    addressCountry: { type: ["string", "null"] },
     giftAid: { type: "boolean" },
     comment: { type: ["string", "null"] },
     donationAmount: { type: "number", minimum: 0 },
@@ -109,10 +114,10 @@ export const donationEditsSchema = {
 export const donationSchema = {
   type: "object",
   properties: {
-    id: ulid,
+    id: ulidSchema,
     ...donationEditsSchema.properties,
   },
-  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "address", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "payments", "paymentMethod", "paymentGatewayId", "charity", "overallPublic", "namePublic", "commentPublic", "donationAmountPublic"],
+  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "payments", "paymentMethod", "paymentGatewayId", "charity", "overallPublic", "namePublic", "commentPublic", "donationAmountPublic"],
   additionalProperties: false,
 } as const
 

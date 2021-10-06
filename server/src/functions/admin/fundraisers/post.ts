@@ -3,14 +3,14 @@ import { PutCommand } from "@aws-sdk/lib-dynamodb"
 import { ulid } from "ulid"
 import type { FromSchema } from "json-schema-to-ts"
 import { middyfy } from "../../../helpers/wrapper"
-import { fundraiserEditsSchema, fundraiserSchema, ulid as ulidSchema } from "../../../helpers/schemas"
 import dynamoDBDocumentClient from "../../../helpers/documentClient"
+import { fundraiserEditsSchema, fundraiserSchema, ulidSchema } from "../../../helpers/schemas"
 
 export const main = middyfy(fundraiserEditsSchema, ulidSchema, true, async (event) => {
   const fundraiser: FromSchema<typeof fundraiserSchema> = {
     id: ulid(),
     fundraiserName: event.body.fundraiserName ?? "New Fundraiser",
-    activeFrom: event.body.activeFrom ?? new Date().getTime() / 1000,
+    activeFrom: event.body.activeFrom ?? Math.floor(new Date().getTime() / 1000),
     activeTo: event.body.activeTo ?? null,
     paused: event.body.paused ?? false,
     goal: event.body.goal ?? 1_00,
