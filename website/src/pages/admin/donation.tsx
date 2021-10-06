@@ -21,25 +21,25 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
       <SectionTitle>{donation.data?.donorName ? `Donation from ${donation.data?.donorName}` : "Donation"}</SectionTitle>
       <PropertyEditor
         definition={{
-          donorName: { label: "Donor name", inputType: "text", editWarning: giftAidEditWarning },
+          donorName: { label: "Donor name", inputType: "text", warning: giftAidEditWarning },
           donorEmail: { label: "Donor email", inputType: "email" },
           createdAt: { label: "At", formatter: timestampFormatter, inputType: "datetime-local" },
-          addressLine1: { label: "Address line 1", inputType: "text", editWarning: giftAidEditWarning },
-          addressLine2: { label: "Address line 2", inputType: "text", editWarning: giftAidEditWarning },
-          addressLine3: { label: "Address line 3", inputType: "text", editWarning: giftAidEditWarning },
-          addressPostcode: { label: "Address postcode", inputType: "text", editWarning: giftAidEditWarning },
-          addressCountry: { label: "Address country", inputType: "text", editWarning: giftAidEditWarning },
+          addressLine1: { label: "Address line 1", inputType: "text", warning: giftAidEditWarning },
+          addressLine2: { label: "Address line 2", inputType: "text", warning: giftAidEditWarning },
+          addressLine3: { label: "Address line 3", inputType: "text", warning: giftAidEditWarning },
+          addressPostcode: { label: "Address postcode", inputType: "text", warning: giftAidEditWarning },
+          addressCountry: { label: "Address country", inputType: "text", warning: giftAidEditWarning },
           donationAmount: {
-            label: "Donation amount", formatter: amountFormatter, inputType: "amount", editWarning: amountEditWarning,
+            label: "Donation amount", formatter: amountFormatter, inputType: "amount", warning: amountEditWarning,
           },
           matchFundingAmount: {
-            label: "Match funding amount", formatter: amountFormatter, inputType: "amount", editWarning: amountEditWarning,
+            label: "Match funding amount", formatter: amountFormatter, inputType: "amount", warning: amountEditWarning,
           },
           contributionAmount: {
-            label: "Raise contribution amount", formatter: amountFormatter, inputType: "amount", editWarning: amountEditWarning,
+            label: "Raise contribution amount", formatter: amountFormatter, inputType: "amount", warning: amountEditWarning,
           },
           giftAid: {
-            label: "Gift-aided", formatter: booleanFormatter, inputType: "checkbox", editWarning: giftAidEditWarning,
+            label: "Gift-aided", formatter: booleanFormatter, inputType: "checkbox", warning: giftAidEditWarning,
           },
           paymentMethod: { label: "Payment method" }, // TODO: needs select input
           payments: { label: "Payments", formatter: (p: { at: number, amount: number }[]) => JSON.stringify(p) }, // TODO: display better, maybe in their own table?

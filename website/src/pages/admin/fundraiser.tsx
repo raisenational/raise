@@ -26,15 +26,15 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           paused: { label: "Paused", formatter: booleanFormatter, inputType: "checkbox" },
           goal: { label: "Goal", formatter: amountFormatter, inputType: "amount" },
           totalRaised: {
-            label: "Total", formatter: amountFormatter, inputType: "amount", editWarning: "Do not edit the total raised unless you know what you are doing. You probably want to add a manual donation instead.",
+            label: "Total", formatter: amountFormatter, inputType: "amount", warning: "Do not edit the total raised unless you know what you are doing. You probably want to add a manual donation instead.",
           },
           donationsCount: {
-            label: "Donation count", inputType: "number", editWarning: "Do not edit the donor count unless you know what you are doing. You probably want to add a manual donation instead.",
+            label: "Donation count", inputType: "number", warning: "Do not edit the donation count unless you know what you are doing. You probably want to add a manual donation instead.",
           },
           matchFundingRate: { label: "Match funding rate", formatter: matchFundingRateFormatter, inputType: "number" },
           matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: amountFormatter, inputType: "amount" },
           matchFundingRemaining: {
-            label: "Match funding remaining", formatter: amountFormatter, inputType: "amount", editWarning: "Do not edit the match funding remaining unless you know what you are doing.",
+            label: "Match funding remaining", formatter: amountFormatter, inputType: "amount", warning: "Do not edit the match funding remaining unless you know what you are doing.",
           },
           minimumDonationAmount: { label: "Minimum donation amount", formatter: amountFormatter, inputType: "amount" },
           groupsWithAccess: {

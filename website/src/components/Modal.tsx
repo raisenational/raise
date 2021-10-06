@@ -25,6 +25,8 @@ const Modal: React.FC<Props> = ({ open, onClose, children }) => {
     >
       <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-80 z-0" />
 
+      {/* TODO: add a close button */}
+
       <Section ref={ref} className="p-8 my-16 bg-white rounded shadow relative z-10 overflow-auto">
         {children}
       </Section>
