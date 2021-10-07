@@ -14,10 +14,11 @@ interface Props<I> {
   items?: I[] | ResponseValues<I[], unknown>,
   primaryKey?: keyof I,
   onClick?: (item: I, event: React.MouseEvent) => void,
+  emptyMessage?: string,
 }
 
 const Table = <I,>({
-  definition, items, primaryKey, onClick,
+  definition, items, primaryKey, onClick, emptyMessage = "There are no entries",
 }: Props<I>) => {
   // Normalized properties
   const nItems = ((items === undefined || Array.isArray(items)) ? items : items.data) ?? []
@@ -49,6 +50,7 @@ const Table = <I,>({
           ))}
         </tbody>
       </table>
+      {nItems.length === 0 && <p className="px-4 pt-2 pb-1 text-center">{emptyMessage}</p>}
     </div>
   )
 }
@@ -59,5 +61,6 @@ export const dateFormatter = (unixTimestamp?: number | null) => (unixTimestamp =
 export const matchFundingRateFormatter = (percentageInPoints?: number | null) => (percentageInPoints === undefined || percentageInPoints === null ? "—" : `${percentageInPoints}% (i.e. £1 donated, £${percentageInPoints % 100 === 0 ? (percentageInPoints / 100) : (percentageInPoints / 100).toFixed(2)} matched, £${percentageInPoints % 100 === 0 ? (1 + percentageInPoints / 100) : (1 + percentageInPoints / 100).toFixed(2)} total)`)
 export const percentFormatter = (percentageInPoints?: number | null) => (percentageInPoints === undefined || percentageInPoints === null ? "—" : `${percentageInPoints}%`)
 export const timestampFormatter = (unixTimestamp?: number | null) => (unixTimestamp === undefined || unixTimestamp === null ? "—" : new Date(unixTimestamp * 1000).toLocaleString())
+export const jsonFormatter = (any: unknown) => JSON.stringify(any)
 
 export default Table

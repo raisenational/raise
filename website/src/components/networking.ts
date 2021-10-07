@@ -1,6 +1,8 @@
 /* eslint-disable no-restricted-imports */
 import _axios, { AxiosError, AxiosRequestConfig } from "axios"
-import { makeUseAxios, Options, ResponseValues } from "axios-hooks"
+import {
+  makeUseAxios, Options, ResponseValues, UseAxios,
+} from "axios-hooks"
 import { useEffect, useState } from "react"
 
 export interface AuthState {
@@ -82,7 +84,7 @@ axiosWithDefaults.interceptors.response.use(undefined, logoutOnTokenExpiry)
 
 const realUseAxios = makeUseAxios({ axios: axiosWithDefaults })
 
-export const useAxios = <TResponse = unknown, TError = unknown>(config: AxiosRequestConfig | string, options?: Options) => {
+export const useAxios = (<TResponse = unknown, TError = unknown>(config: AxiosRequestConfig | string, options?: Options) => {
   if (typeof config === "string") {
     // eslint-disable-next-line no-param-reassign
     config = { url: config }
@@ -97,7 +99,10 @@ export const useAxios = <TResponse = unknown, TError = unknown>(config: AxiosReq
   }
 
   return realUseAxios<TResponse, TError>(config, options)
-}
+}) as UseAxios
+// @ts-ignore
+// eslint-disable-next-line no-restricted-syntax,guard-for-in
+for (const key in realUseAxios) useAxios[key] = realUseAxios[key]
 
 export const useRawAxios = () => {
   const [auth] = useAuthState()

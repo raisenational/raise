@@ -18,11 +18,11 @@ const Button: React.FC<Props> = ({
     href={href}
     onClick={onClick}
     className={classNames("Button", {
-      "bg-raise-red hover:text-gray-200": variant === "red",
-      "bg-raise-blue hover:text-gray-200": variant === "blue",
-      "border-2 border-white hover:text-raise-blue hover:bg-white": variant === "outline",
+      "bg-raise-red border-raise-red hover:text-gray-200": variant === "red",
+      "bg-raise-blue border-raise-blue hover:text-gray-200": variant === "blue",
+      "border-white hover:text-raise-blue hover:bg-white": variant === "outline",
       "px-2 py-0": size === "small",
-      "border-4": variant === "outline" && size === "normal",
+      "border-4": size === "normal",
     }, className)}
     disabled={disabled}
   >

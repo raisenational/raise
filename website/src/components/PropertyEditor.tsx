@@ -17,8 +17,10 @@ type PropertyDefinition<I, V> = {
   formatter?: (v: V) => string,
   className?: string,
   warning?: string,
-  inputType?: InputType<V>,
-} & (V extends string[] ? { selectOptions: string[] } | { inputType?: undefined } : {})
+} & (
+    | { inputType?: Exclude<InputType<V>, "select" | "multiselect"> }
+    | { inputType: InputType<V> & ("select" | "multiselect"), selectOptions: string[] }
+  )
 
 interface Props<I> {
   definition: Partial<{ [K in keyof I]: PropertyDefinition<I, I[K]> }> & { [s: `_${string}`]: PropertyDefinition<I, unknown> },
@@ -36,10 +38,11 @@ const PropertyEditor = <I,>({
 
   // Loading and error states
   if (!item || ("loading" in item && item.loading)) return <div className="overflow-x-auto bg-black bg-opacity-20 rounded p-4"><span className="animate-pulse">Loading...</span></div>
-  if ("loading" in item && (item as ResponseValues<I, unknown>).error) return <Alert variant="error">{(item as ResponseValues<I, unknown>).error}</Alert>
+  if ("loading" in item && item.error) return <Alert variant="error">{item.error}</Alert>
+  if ("loading" in item && item.data === undefined) return <Alert variant="error">Data not found</Alert> // NB: A common cause of this is trying to find a new item you just created without refreshing the data (try useAxios.clearCache()).
 
   // Normalized properties
-  const nItem = ((item !== undefined && "loading" in item) ? (item as ResponseValues<I, unknown>).data : item) as I
+  const nItem = ((item !== undefined && "loading" in item) ? item.data : item) as I
 
   return (
     <>
@@ -75,7 +78,10 @@ const PropertyEditor = <I,>({
 
 interface EditorProps<I, T> {
   property: keyof I,
-  definition: Omit<PropertyDefinition<I, T>, "inputType"> & { inputType: InputType<T> },
+  definition: Exclude<PropertyDefinition<I, T>, "inputType"> & (
+    | { inputType: Exclude<InputType<T>, "select" | "multiselect"> }
+    | { inputType: InputType<T> & ("select" | "multiselect"), selectOptions: string[] }
+  ),
   initialValue: T,
   onSave?: (data: T) => void | Promise<void>,
   patchEndpoint?: string,
@@ -91,35 +97,41 @@ const Editor = <I, T>({
   const {
     register, handleSubmit, control, formState: { isSubmitting },
   } = useForm({ defaultValues: { value: nDefaultValue } })
-  const onSubmit: SubmitHandler<{ value: string | boolean }> = (data) => {
-    const value = fromInput<T>(data.value, definition.inputType)
-    if (patchEndpoint !== undefined) {
-      return axios.patch(patchEndpoint, { [property]: value })
-        .then(() => { // TODO: confirmation it was successful would be nice
-          if (onSave) return onSave(value)
-          return undefined
-        })
-        .catch((err) => {
-          if (err instanceof Error) setError(err)
-          else setError(new Error(String(err)))
-        })
+  // @ts-ignore
+  const newValue = fromInput<T>(useWatch({ control, name: "value" }), definition.inputType, definition.selectOptions)
+  const internalOnSubmit: SubmitHandler<{ value: string | boolean }> = () => {
+    try {
+      if (patchEndpoint !== undefined) {
+        return axios.patch(patchEndpoint, { [property]: newValue })
+          .then(() => { // TODO: confirmation it was successful would be nice
+            if (onSave) return onSave(newValue)
+            return undefined
+          })
+          .catch((err) => {
+            if (err instanceof Error) setError(err)
+            else setError(new Error(String(err)))
+          })
+      }
+      if (onSave) return onSave(newValue)
+      return undefined
+    } catch (err) {
+      if (err instanceof Error) setError(err)
+      else setError(new Error(String(err)))
+      return undefined
     }
-    if (onSave) return onSave(value)
-    return undefined
   }
-  const newValue = fromInput<T>(useWatch({ control, name: "value" }), definition.inputType)
 
   // TODO: handle string array as (multi-)select
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(internalOnSubmit)}>
       <SectionTitle>Editing {definition.label?.toLowerCase() ?? property}</SectionTitle>
       {definition.warning && <Alert variant="warning" className="mb-4">{definition.warning}</Alert>}
       <LabelledInput label={definition.label ?? property as string} id="editorValue" className="w-1/2" autoComplete="off" type={nInputType} step={nInputType === "number" ? "any" : undefined} {...register("value")} />
       <p>Current value: {definition.formatter ? definition.formatter(initialValue) : (initialValue ?? "—")}</p>
       <p>New value: {definition.formatter ? definition.formatter(newValue) : (newValue ?? "—")}</p>
       {error && <Alert className="mt-2">{error}</Alert>}
-      <Button variant="blue" className="mt-4" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>{isSubmitting ? "Saving..." : "Save"}</Button>
+      <Button variant="blue" className="mt-4" onClick={handleSubmit(internalOnSubmit)} disabled={isSubmitting}>{isSubmitting ? "Saving..." : "Save"}</Button>
     </form>
   )
 }

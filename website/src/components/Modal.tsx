@@ -18,7 +18,7 @@ const Modal: React.FC<Props> = ({ open, onClose, children }) => {
   return (
     <Dialog
       as="div"
-      className={classNames("fixed inset-0 overflow-y-auto mx-4", { "mr-8": document.getElementsByTagName("html")[0].scrollHeight > document.getElementsByTagName("html")[0].clientHeight })}
+      className={classNames("fixed inset-0 overflow-y-auto px-4", { "pr-8": document.getElementsByTagName("html")[0].scrollHeight > document.getElementsByTagName("html")[0].clientHeight })}
       open={open}
       onClose={onClose}
       initialFocus={ref}
@@ -27,7 +27,7 @@ const Modal: React.FC<Props> = ({ open, onClose, children }) => {
 
       {/* TODO: add a close button */}
 
-      <Section ref={ref} className="p-8 my-16 bg-white rounded shadow relative z-10 overflow-auto">
+      <Section ref={ref} className="transform p-8 my-16 bg-white rounded shadow relative z-10 overflow-auto">
         {children}
       </Section>
     </Dialog>

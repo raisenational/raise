@@ -41,7 +41,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           giftAid: {
             label: "Gift-aided", formatter: booleanFormatter, inputType: "checkbox", warning: giftAidEditWarning,
           },
-          paymentMethod: { label: "Payment method" }, // TODO: needs select input
+          paymentMethod: { label: "Payment method", inputType: "select", selectOptions: ["card", "cash", "direct_to_charity"] },
           payments: { label: "Payments", formatter: (p: { at: number, amount: number }[]) => JSON.stringify(p) }, // TODO: display better, maybe in their own table?
           paymentGatewayId: { label: "Payment reference", inputType: "text" },
           charity: { label: "Designated charity", inputType: "text" },
