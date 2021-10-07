@@ -44,6 +44,7 @@ export const main = middyfy(donationEditsSchema, null, true, async (event) => {
 
   // TODO: consider restricting editing gift-aided, amounts, at, payment method, payments, payment ref to national team?
   // TODO: validate match funding amount against limit? or not given this is a manual entry?
+  // TODO: validate gift-aid requirements
 
   const entries = Object.entries(event.body)
   await dynamoDBDocumentClient.send(new UpdateCommand({

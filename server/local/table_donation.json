@@ -18,11 +18,11 @@
     "payments": [
       {
         "at": 1632840179,
-        "amount": 15000
+        "amount": 15000,
+        "method": "card",
+        "reference": "pymt_12345"
       }
     ],
-    "paymentMethod": "card",
-    "paymentGatewayId": "pymt_12345",
     "charity": "AMF",
     "overallPublic": true,
     "namePublic": true,
@@ -48,19 +48,23 @@
     "payments": [
       {
         "at": 1632832738,
-        "amount": 3000
+        "amount": 3000,
+        "method": "card",
+        "reference": "pymt_67890"
       },
       {
         "at": 1633392000,
-        "amount": 3000
+        "amount": 3000,
+        "method": "card",
+        "reference": "pymt_67891"
       },
       {
         "at": 1633996800,
-        "amount": 3000
+        "amount": 3000,
+        "method": "card",
+        "reference": "pymt_67892"
       }
     ],
-    "paymentMethod": "card",
-    "paymentGatewayId": "pymt_67890",
     "charity": "AMF",
     "overallPublic": true,
     "namePublic": true,

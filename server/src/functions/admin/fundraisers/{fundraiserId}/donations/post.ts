@@ -25,6 +25,10 @@ export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event)
     throw new createHttpError.Forbidden(`Fundraiser requires you to be in one of the groups [${fundraiser.groupsWithAccess.join(", ")}] but you are in [${event.auth.payload.groups.join(", ")}]`)
   }
 
+  if (event.body.fundraiserId !== undefined && event.body.fundraiserId !== event.pathParameters.fundraiserId) {
+    throw new createHttpError.BadRequest(`Fundraiser id in body (${event.body.fundraiserId}) does not match path parameter (${event.pathParameters.fundraiserId})`)
+  }
+
   const donation: FromSchema<typeof donationSchema> = {
     id: ulid(),
     fundraiserId: event.pathParameters.fundraiserId,
@@ -52,6 +56,7 @@ export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event)
   }
 
   // TODO: validate match funding amount against limit? or not given this is a manual entry?
+  // TODO: validate gift-aid requirements
   // TODO: add amount to fundraiser totalRaised, subtract amount from fundraiser matchFundingRemaining
   // TODO: do this in a transaction
 

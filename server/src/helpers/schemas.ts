@@ -99,9 +99,19 @@ export const donationEditsSchema = {
     donationAmount: { type: "number", minimum: 0 },
     matchFundingAmount: { type: "integer", minimum: 0 },
     contributionAmount: { type: "integer", minimum: 0 },
-    payments: { type: "array", items: { type: "object", properties: { at: { type: "integer" }, amount: { type: "integer" } }, required: ["at", "amount"] } },
-    paymentMethod: { enum: ["card", "cash", "direct_to_charity"] },
-    paymentGatewayId: { type: ["string", "null"] },
+    payments: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          at: { type: "integer" },
+          amount: { type: "integer" },
+          method: { enum: ["card", "cash", "direct_to_charity"] },
+          reference: { type: ["string", "null"] },
+        },
+        required: ["at", "amount", "method", "reference"],
+      },
+    },
     charity: { type: "string" },
     overallPublic: { type: "boolean" },
     namePublic: { type: "boolean" },
@@ -117,7 +127,7 @@ export const donationSchema = {
     id: ulidSchema,
     ...donationEditsSchema.properties,
   },
-  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "payments", "paymentMethod", "paymentGatewayId", "charity", "overallPublic", "namePublic", "commentPublic", "donationAmountPublic"],
+  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "payments", "charity", "overallPublic", "namePublic", "commentPublic", "donationAmountPublic"],
   additionalProperties: false,
 } as const
 
