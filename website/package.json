@@ -6,7 +6,7 @@
   "scripts": {
     "build": "gatsby build",
     "clean": "rimraf public",
-    "dev": "gatsby develop",
+    "dev": "gatsby develop --port 8000",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "start": "npm run dev",
     "test": "npm run type-check && npm run lint && npm run codeowners",
@@ -14,7 +14,7 @@
     "codeowners": "node codeowners.js"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=14.15.0"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.1",
@@ -46,6 +46,7 @@
     "react-dom": "^16.8.6",
     "react-google-login": "^5.2.2",
     "react-helmet": "^5.2.1",
+    "react-hook-form": "^7.16.2",
     "typescript": "^4.4.3"
   },
   "devDependencies": {

@@ -1,10 +1,10 @@
 # IMPORTANT: Consult the national team before editing this file. This file catches errors, but can't check itself.
 
-image: node:16.0
+image: node:14.0
 
 stages:
-- test
-- deploy
+  - test
+  - deploy
 
 cache:
   paths:

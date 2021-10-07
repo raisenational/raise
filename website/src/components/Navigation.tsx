@@ -11,7 +11,7 @@ interface Link { text: string, href?: string, onClick?: React.MouseEventHandler 
 const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) => (
   <Disclosure as={React.Fragment}>
     {({ open }) => (
-      <nav className={classNames("text-3xl md:text-xl lg:text-2xl md:bg-transparent z-50 relative", { "bg-raise-purple": open })}>
+      <nav className={classNames("text-3xl md:text-xl lg:text-2xl md:bg-transparent", { "bg-raise-purple": open })}>
         <SectionNoPadding>
           <div className="relative flex items-center justify-between h-20 w-16 md:w-auto py-4">
             <div className="flex items-center md:hidden">
