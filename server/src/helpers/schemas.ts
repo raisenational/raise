@@ -118,6 +118,7 @@ export const donationEditsSchema = {
     commentPublic: { type: "boolean" },
     donationAmountPublic: { type: "boolean" },
   },
+  minProperties: 1,
   additionalProperties: false,
 } as const
 

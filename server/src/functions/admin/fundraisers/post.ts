@@ -1,13 +1,11 @@
 import "source-map-support/register"
-import { PutCommand } from "@aws-sdk/lib-dynamodb"
 import { ulid } from "ulid"
-import type { FromSchema } from "json-schema-to-ts"
 import { middyfy } from "../../../helpers/wrapper"
-import dynamoDBDocumentClient from "../../../helpers/documentClient"
+import { insert } from "../../../helpers/db"
 import { fundraiserEditsSchema, fundraiserSchema, ulidSchema } from "../../../helpers/schemas"
 
 export const main = middyfy(fundraiserEditsSchema, ulidSchema, true, async (event) => {
-  const fundraiser: FromSchema<typeof fundraiserSchema> = {
+  const fundraiser = await insert(process.env.TABLE_NAME_FUNDRAISER!, fundraiserSchema, {
     id: ulid(),
     fundraiserName: event.body.fundraiserName ?? "New Fundraiser",
     activeFrom: event.body.activeFrom ?? Math.floor(new Date().getTime() / 1000),
@@ -21,13 +19,7 @@ export const main = middyfy(fundraiserEditsSchema, ulidSchema, true, async (even
     matchFundingRemaining: event.body.matchFundingRemaining ?? null,
     minimumDonationAmount: event.body.minimumDonationAmount ?? null,
     groupsWithAccess: event.body.groupsWithAccess ?? event.auth.payload.groups,
-  }
-
-  await dynamoDBDocumentClient.send(new PutCommand({
-    TableName: process.env.TABLE_NAME_FUNDRAISER,
-    Item: fundraiser,
-    ConditionExpression: "attribute_not_exists(id)",
-  }))
+  })
 
   return fundraiser.id
 })

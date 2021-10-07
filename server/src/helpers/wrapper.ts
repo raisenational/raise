@@ -7,6 +7,7 @@ import type {
   APIGatewayProxyEventV2, APIGatewayProxyResult, Context, Handler as AWSHandler,
 } from "aws-lambda"
 import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-auth"
+import createHttpError from "http-errors"
 
 const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (request) => {
   request.response = {
@@ -16,6 +17,15 @@ const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (req
       "Content-Type": "application/json",
     },
   }
+}
+
+const middyPathParamsValidatorAndNormalizer: middy.MiddlewareFn<APIGatewayProxyEventV2, unknown> = async (request) => {
+  request.event.pathParameters = request.event.pathParameters ?? {}
+  request.event.routeKey.match(/\{[a-zA-Z0-9]*\}/g)?.map((k) => k.slice(1, -1)).forEach((k) => {
+    if (request.event.pathParameters![k] === undefined) {
+      throw new createHttpError.BadRequest(`Missing path parameter ${k}`)
+    }
+  })
 }
 
 const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) => {
@@ -56,8 +66,9 @@ type AuthTokenPayload = {
 }
 
 type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
-  event: Omit<APIGatewayProxyEventV2, "body"> & {
+  event: Omit<APIGatewayProxyEventV2, "body" | "pathParameters"> & {
     body: RequestSchema extends null ? null : FromSchema<RequestSchema>,
+    pathParameters: Record<string, string>,
     auth: RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined,
   },
   context: Context) => Promise<ResponseSchema extends null ? void : FromSchema<ResponseSchema>>
@@ -83,6 +94,7 @@ export function middyfy<RequestSchema extends JSONSchema | null, ResponseSchema 
           coerceTypes: false,
         },
       }))
+      .before(middyPathParamsValidatorAndNormalizer)
       .onError(middyErrorHandler) as unknown as AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult>
   } catch (err) {
     console.error("Severe internal error processing request:")
