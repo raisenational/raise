@@ -36,6 +36,7 @@ const IndexPage = () => (
           { text: "Contact", href: "/durham/#contact" },
         ]}
         right={[
+          { text: "Become a Rep!", href: "https://docs.google.com/forms/d/e/1FAIpQLSe7nNtxUS9TbRJi0otRJNbfxHqLxcMV1wLt1LhfNli0hwOH0A/viewform" },
           { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSfeK5cMn8ZWlRtFh5ZJHexjTiS0DVvfpL9E93Logd3CPLMK9A/viewform" },
         ]}
       />
