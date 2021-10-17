@@ -36,7 +36,7 @@ const IndexPage = () => (
           { text: "Contact", href: "/glasgow/#contact" },
         ]}
         right={[
-          { text: "Join the 2021/22 committee", href: "https://forms.gle/Eo4w7mfhr35bmm5F6" },
+          // { text: "Join the 2021/22 committee", href: "https://forms.gle/Eo4w7mfhr35bmm5F6" },
         ]}
       />
       <Section className="px-8">
@@ -85,7 +85,7 @@ const IndexPage = () => (
       <SectionTitle>More Info</SectionTitle>
       <FAQs>
         <FAQ title="Sounds great, where do I sign up?">
-          <p>Awesome! Our 2021 donations period for is now closed, but you can join the 2021/22 committee <a href="https://forms.gle/Eo4w7mfhr35bmm5F6">here</a>!</p>
+          <p>Awesome! Our committee applications period for is now closed, but you can follow us on <a href="https://www.facebook.com/raiseglasgow">Facebook</a> to keep up to date with the latest opportunities.</p>
         </FAQ>
 
         <FAQ title="How can I get involved?">
@@ -121,11 +121,11 @@ const IndexPage = () => (
 
         <FAQ title="What makes Raise different to a charity ball?">
           <p>At Raise, our mission is to encourage students to adopt a positive, deliberate approach towards giving. As such, we focus on ensuring that each student who chooses to join can engage meaningfully with the impact of their donation. The primary role of the Summer Party is to facilitate this engagement, as an enjoyable opportunity to come together as a community and celebrate our collective impact. However, it is not the most important element of what we do, nor the purpose of donating.</p>
-          <p>Crucially, the donation students make to join Raise does not constitute ‘buying a ticket’ to the party. Indeed, the funding of our summer celebration is completely separate to the donation (it’s funded through a combination of additional voluntary contributions from donors and external sponsorship). Many students have joined Raise without attending the Summer Party at all.</p>
+          <p>Crucially, the donation students make to join Raise does not constitute ‘buying a ticket’ to the party. Indeed, the funding of our summer celebration is completely separate to the donation (it’s funded through external sponsorship). Many students have joined Raise without attending the Summer Party at all.</p>
         </FAQ>
 
         <FAQ title="If 100% of donations go to charity, how do you put on the summer celebration? What's it like?">
-          <p>The Summer Party is a chance for us to come together and celebrate our collective impact, as well as the end of the academic year. Crucially, 100% of the money students donate goes directly to charity – none of it is used to fund the party. As such, we invite students to make an optional contribution of £10 per head, separate to their donation, to cover the costs of the event (which are generously subsidised by our sponsors). Importantly, everyone will be very welcome to join, whether or not they feel able to make this contribution.</p>
+          <p>The Summer Party is a chance for us to come together and celebrate our collective impact, as well as the end of the academic year. Crucially, 100% of the money students donate goes directly to charity – none of it is used to fund the party.</p>
           <p>There will be music, food, drinks (alcoholic and non-alcoholic) and live entertainment, contributing to the atmosphere of celebration you’ll experience with the rest of the Raise community. It’s a fantastic chance to reflect on the impact of our donations and many of those who’ve attended elsewhere in recent years have described it as a real highlight!</p>
         </FAQ>
 
