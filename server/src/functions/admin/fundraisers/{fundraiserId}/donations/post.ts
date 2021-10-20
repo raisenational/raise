@@ -3,12 +3,11 @@ import createHttpError from "http-errors"
 import { ulid } from "ulid"
 import { middyfy } from "../../../../../helpers/wrapper"
 import { assertHasGroup, get, insert } from "../../../../../helpers/db"
-import {
-  donationEditsSchema, donationSchema, fundraiserSchema, ulidSchema,
-} from "../../../../../helpers/schemas"
+import { donationEditsSchema, ulidSchema } from "../../../../../helpers/schemas"
+import { donationTable, fundraiserTable } from "../../../../../helpers/tables"
 
 export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event) => {
-  assertHasGroup(event, await get(process.env.TABLE_NAME_FUNDRAISER!, fundraiserSchema, { id: event.pathParameters.fundraiserId }))
+  assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
 
   if (event.body.fundraiserId !== undefined && event.body.fundraiserId !== event.pathParameters.fundraiserId) {
     throw new createHttpError.BadRequest(`Fundraiser id in body (${event.body.fundraiserId}) does not match path parameter (${event.pathParameters.fundraiserId})`)
@@ -19,7 +18,7 @@ export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event)
   // TODO: add amount to fundraiser totalRaised, subtract amount from fundraiser matchFundingRemaining
   // TODO: do this in a transaction
 
-  const donation = await insert(process.env.TABLE_NAME_DONATION!, donationSchema, {
+  const donation = await insert(donationTable, {
     id: ulid(),
     fundraiserId: event.pathParameters.fundraiserId,
     donorName: event.body.donorName ?? "Unknown",

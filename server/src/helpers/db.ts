@@ -6,7 +6,8 @@ import {
 import Ajv from "ajv"
 import createHttpError from "http-errors"
 import type { NativeAttributeValue } from "@aws-sdk/util-dynamodb"
-import type { FromSchema, JSONSchema } from "json-schema-to-ts"
+import type { Table } from "./tables"
+import type { JSONSchema } from "./schemas"
 
 const dynamoDBClient = process.env.IS_OFFLINE
   ? new DynamoDBClient({ region: "localhost", endpoint: "http://localhost:8004", credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" } })
@@ -29,7 +30,7 @@ const ajv = new Ajv({
   coerceTypes: false,
 })
 
-export const assertMatchesSchema = (schema: JSONSchema, data: unknown): void => {
+export const assertMatchesSchema = <T>(schema: JSONSchema<T>, data: unknown): void => {
   const validate = ajv.compile(schema)
   if (validate(data)) return
   const error = new createHttpError.InternalServerError("Database operations failed validation")
@@ -43,47 +44,45 @@ export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } 
   }
 }
 
-// TODO: I think it'd be really nice if we built information about tables into the TS source, rather than environment variables. This could also allow us to do clever stuff e.g. passing in an object representing a table, and not having to provide potentially incorrect schema - and validating keys are correct for the table, improving error messaging etc. It would also mean we wouldn't have to make non-checked assumptions e.g. that there the PK is always 'id'
-
-export const scan = async <T extends JSONSchema>(tableName: string, schema: T): Promise<FromSchema<T>> => {
-  const result = await dbClient.send(new ScanCommand({ TableName: tableName }))
-  assertMatchesSchema(schema, result.Items)
-  return result.Items as FromSchema<T>
+export const scan = async <S>(table: Table<S, unknown>): Promise<S[]> => {
+  const result = await dbClient.send(new ScanCommand({ TableName: table.name }))
+  assertMatchesSchema<S[]>({ type: "array", items: table.schema }, result.Items)
+  return result.Items as S[]
 }
 
-export const query = async <T extends JSONSchema>(tableName: string, schema: T, key: { [key: string]: NativeAttributeValue }): Promise<FromSchema<T>> => {
+export const query = async <S>(table: Table<S, unknown>, key: { [key: string]: NativeAttributeValue }): Promise<S[]> => {
   const entries = Object.entries(key)
   const result = await dbClient.send(new QueryCommand({
-    TableName: tableName,
+    TableName: table.name,
     KeyConditionExpression: `${entries.map(([k]) => `${k} = :${k}`).join(" AND ")}`,
     ExpressionAttributeValues: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
       acc[`:${k}`] = v
       return acc
     }, {}),
   }))
-  assertMatchesSchema(schema, result.Items)
-  return result.Items as FromSchema<T>
+  assertMatchesSchema<S[]>({ type: "array", items: table.schema }, result.Items)
+  return result.Items as S[]
 }
 
-export const get = async <T extends JSONSchema>(tableName: string, schema: T, key: { [key: string]: NativeAttributeValue }): Promise<FromSchema<T>> => {
-  const result = await dbClient.send(new GetCommand({ TableName: tableName, Key: key }))
+export const get = async <S>(table: Table<S, unknown>, key: { [key: string]: NativeAttributeValue }): Promise<S> => {
+  const result = await dbClient.send(new GetCommand({ TableName: table.name, Key: key }))
   if (!result.Item) throw new createHttpError.NotFound("Item not found")
-  assertMatchesSchema(schema, result.Item)
-  return result.Item as FromSchema<T>
+  assertMatchesSchema<S>(table.schema, result.Item)
+  return result.Item as S
 }
 
-export const insert = async <T extends JSONSchema>(tableName: string, schema: T, data: FromSchema<T> & { [key: string]: NativeAttributeValue }): Promise<FromSchema<T>> => {
-  assertMatchesSchema(schema, data)
-  await dbClient.send(new PutCommand({ TableName: tableName, Item: data, ConditionExpression: "attribute_not_exists(id)" }))
+export const insert = async <S>(table: Table<S, unknown>, data: S & { [key: string]: NativeAttributeValue }): Promise<S> => {
+  assertMatchesSchema<S>(table.schema, data)
+  await dbClient.send(new PutCommand({ TableName: table.name, Item: data, ConditionExpression: `attribute_not_exists(${table.pk})` }))
   return data
 }
 
-export const update = async <T extends JSONSchema>(tableName: string, schema: T, key: { [key: string]: NativeAttributeValue }, data: FromSchema<T> & { [key: string]: NativeAttributeValue }): Promise<FromSchema<T>> => {
-  assertMatchesSchema(schema, data)
+export const update = async <S extends Required<E>, E>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }, edits: E & { [key: string]: NativeAttributeValue }): Promise<S> => {
+  assertMatchesSchema<E>(table.editsSchema, edits)
 
-  const entries = Object.entries(data)
-  await dbClient.send(new UpdateCommand({
-    TableName: tableName,
+  const entries = Object.entries(edits)
+  const result = await dbClient.send(new UpdateCommand({
+    TableName: table.name,
     Key: key,
     ConditionExpression: "id = :id", // this ensures it doesn't create a new item
     UpdateExpression: `SET ${entries.map(([k]) => `${k} = :${k}`).join(", ")}`,
@@ -91,7 +90,8 @@ export const update = async <T extends JSONSchema>(tableName: string, schema: T,
       acc[`:${k}`] = v
       return acc
     }, { ":id": key.id }),
+    ReturnValues: "ALL_NEW",
   }))
-
-  return data
+  assertMatchesSchema<S>(table.schema, result.Attributes)
+  return result.Attributes as S
 }

@@ -26,7 +26,6 @@
     "charity": "AMF",
     "overallPublic": true,
     "namePublic": true,
-    "commentPublic": false,
     "donationAmountPublic": false
   },
   {
@@ -68,7 +67,6 @@
     "charity": "AMF",
     "overallPublic": true,
     "namePublic": true,
-    "commentPublic": true,
     "donationAmountPublic": true
   }
 ]

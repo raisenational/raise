@@ -11,7 +11,8 @@
     "teardown:dev": "serverless remove --stage dev --verbose",
     "test": "npm run type-check && npm run lint",
     "type-check": "tsc",
-    "lint": "eslint 'src/**/*.ts' 'serverless.ts'"
+    "lint": "eslint 'src/**/*.ts' 'serverless.ts'",
+    "schemas": "node local/schemasToTS.mjs"
   },
   "engines": {
     "node": ">=14.15.0"
@@ -35,6 +36,7 @@
     "@serverless/typescript": "^2.61.0",
     "@types/aws-lambda": "^8.10.71",
     "@types/http-errors": "^1.8.1",
+    "@types/json-schema": "^7.0.9",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^14.14.25",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
@@ -42,7 +44,7 @@
     "aws-lambda": "^1.0.6",
     "eslint": "^7.32.0",
     "eslint-config-blvd": "^1.2.1",
-    "json-schema-to-ts": "^1.6.4",
+    "json-schema-to-typescript": "^10.1.5",
     "serverless": "^2.61.0",
     "serverless-offline": "^8.2.0",
     "serverless-webpack": "^5.5.4",

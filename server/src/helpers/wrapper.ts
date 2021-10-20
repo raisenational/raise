@@ -2,12 +2,12 @@
 import middy from "@middy/core"
 import middyJsonBodyParser from "@middy/http-json-body-parser"
 import middyValidator from "@middy/validator"
-import type { FromSchema, JSONSchema } from "json-schema-to-ts"
 import type {
   APIGatewayProxyEventV2, APIGatewayProxyResult, Context, Handler as AWSHandler,
 } from "aws-lambda"
 import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-auth"
 import createHttpError from "http-errors"
+import { JSONSchema } from "./schemas"
 
 const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (request) => {
   request.response = {
@@ -67,13 +67,13 @@ type AuthTokenPayload = {
 
 type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
   event: Omit<APIGatewayProxyEventV2, "body" | "pathParameters"> & {
-    body: RequestSchema extends null ? null : FromSchema<RequestSchema>,
+    body: RequestSchema extends JSONSchema<infer T> ? T : null,
     pathParameters: Record<string, string>,
     auth: RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined,
   },
-  context: Context) => Promise<ResponseSchema extends null ? void : FromSchema<ResponseSchema>>
+  context: Context) => Promise<ResponseSchema extends JSONSchema<infer T> ? T : void>
 
-export function middyfy<RequestSchema extends JSONSchema | null, ResponseSchema extends JSONSchema | null, RequiresAuth extends boolean>(requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth, handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>): AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult> {
+export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends boolean>(requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth, handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>): AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult> {
   try {
     return middy(handler)
       .use(new JWTAuthMiddleware({
