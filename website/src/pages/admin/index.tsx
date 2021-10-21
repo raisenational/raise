@@ -40,6 +40,7 @@ const IndexLayout = () => {
     }, msUntilExpiration - 60_000)
 
     const logoutTimeout = setTimeout(() => {
+      setLogoutWarning(undefined)
       setAuth()
     }, msUntilExpiration)
 

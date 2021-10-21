@@ -42,6 +42,9 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             groupsWithAccess: {
               label: "Groups with access", formatter: jsonFormatter, inputType: "multiselect", selectOptions: ["National"],
             },
+            suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: amountFormatter, inputType: "amount" },
+            suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: amountFormatter, inputType: "amount" },
+            suggestedContributionAmount: { label: "Suggested contribution amount", formatter: amountFormatter, inputType: "amount" },
           }}
           initialValues={{
             fundraiserName: "New Fundraiser",
@@ -56,13 +59,13 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             matchFundingRemaining: null,
             minimumDonationAmount: null,
             groupsWithAccess: ["National"],
+            suggestedDonationAmountOneOff: 150_00,
+            suggestedDonationAmountWeekly: 9_00,
+            suggestedContributionAmount: 10_00,
           }}
           showCurrent={false}
           onSubmit={async (data) => {
             const fundraiserId = (await axios.post<string>("/admin/fundraisers", data)).data
-            // TODO: evaluate whether this is good
-            //   pros: simple, obvious why it's necessary, does not clear the cache for extra routes unnecessarily
-            //   cons: useAxios.clearCache() runs faster so the new page renders sooner, if this fails the form displays its error, which may lead people to incorrectly thinking their request was unsuccessful
             await refetchFundraisers()
             navigate(`/admin/${fundraiserId}`)
           }}

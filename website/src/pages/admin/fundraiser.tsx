@@ -1,7 +1,8 @@
 import * as React from "react"
 import { navigate, RouteComponentProps } from "@reach/router"
 
-import { PlusSmIcon } from "@heroicons/react/outline"
+import { DownloadIcon, PlusSmIcon } from "@heroicons/react/outline"
+import jsonexport from "jsonexport/dist"
 import { asResponseValues, useAxios, useRawAxios } from "../../components/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import { Fundraiser, Donation } from "./types.d"
@@ -17,10 +18,23 @@ import Button from "../../components/Button"
 const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> = ({ fundraiserId }) => {
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
   const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
-  const [newDonationModalOpen, setNewDonationModalOpen] = React.useState(false)
   const axios = useRawAxios()
 
+  const [newDonationModalOpen, setNewDonationModalOpen] = React.useState(false)
+
   const fundraiser = asResponseValues(fundraisers.data?.find((f) => f.id === fundraiserId), fundraisers)
+
+  const downloadDonationsCSV = async () => {
+    const csv = donations.data && await jsonexport(donations.data.map((d) => ({ ...d, payments: JSON.stringify(d.payments) })))
+    if (csv) {
+      const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csv}`)
+      const link = document.createElement("a")
+      link.setAttribute("href", encodedUri)
+      link.setAttribute("download", `${fundraiserId}-donations.csv`)
+      document.body.appendChild(link)
+      link.click()
+    }
+  }
 
   return (
     <Section>
@@ -33,7 +47,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           paused: { label: "Paused", formatter: booleanFormatter, inputType: "checkbox" },
           goal: { label: "Goal", formatter: amountFormatter, inputType: "amount" },
           totalRaised: {
-            label: "Total", formatter: amountFormatter, inputType: "amount", warning: "Do not edit the total raised unless you know what you are doing. You probably want to add a manual donation instead.",
+            label: "Total", formatter: amountFormatter, inputType: "amount", warning: "Do not edit the total unless you know what you are doing. You probably want to add a manual donation instead.",
           },
           donationsCount: {
             label: "Donation count", inputType: "number", warning: "Do not edit the donation count unless you know what you are doing. You probably want to add a manual donation instead.",
@@ -44,17 +58,23 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
             label: "Match funding remaining", formatter: amountFormatter, inputType: "amount", warning: "Do not edit the match funding remaining unless you know what you are doing.",
           },
           minimumDonationAmount: { label: "Minimum donation amount", formatter: amountFormatter, inputType: "amount" },
+          suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: amountFormatter, inputType: "amount" },
+          suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: amountFormatter, inputType: "amount" },
+          suggestedContributionAmount: { label: "Suggested contribution amount", formatter: amountFormatter, inputType: "amount" },
           groupsWithAccess: {
             label: "Groups with access", formatter: (groups: string[]) => groups.join(", "), // inputType: "multiselect", selectOptions: ["National"],
           },
         }}
         item={fundraiser}
-        onSave={() => { refetchFundraisers() }}
-        patchEndpoint={`/admin/fundraisers/${fundraiserId}`}
+        onSave={async (data) => {
+          await axios.patch(`/admin/fundraisers/${fundraiserId}`, data)
+          refetchFundraisers()
+        }}
       />
 
       <div className="flex mt-12">
         <SectionTitle className="flex-1">Donations</SectionTitle>
+        <Button onClick={() => downloadDonationsCSV()}><DownloadIcon className="h-6 mb-1" /> Download CSV</Button>
         <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> Record manual donation</Button>
       </div>
       <Modal open={newDonationModalOpen} onClose={() => setNewDonationModalOpen(false)}>
@@ -71,7 +91,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
             addressPostcode: { label: "Address postcode", inputType: "text" },
             addressCountry: { label: "Address country", inputType: "text" },
             donationAmount: {
-              label: "Donation amount", formatter: amountFormatter, inputType: "amount",
+              label: "Donation amount", formatter: amountFormatter, inputType: "amount", warning: "Rather than setting an amount here, you probably want to leave the amount as zero and then add a payment under this new donation as the next step.",
             },
             matchFundingAmount: {
               label: "Match funding amount", formatter: amountFormatter, inputType: "amount",
@@ -82,14 +102,11 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
             giftAid: {
               label: "Gift-aided", formatter: booleanFormatter, inputType: "checkbox", warning: "We must hold accurate names and addresses for gift-aided donations as per the Income Tax Act 2007",
             },
-            paymentMethod: { label: "Payment method", inputType: "select", selectOptions: ["card", "cash", "direct_to_charity"] },
             payments: { inputType: "hidden" },
-            paymentGatewayId: { label: "Payment reference", inputType: "text" },
             charity: { label: "Designated charity", inputType: "text" },
             comment: { label: "Donor comment", inputType: "text" },
             overallPublic: { label: "Donation is public", formatter: booleanFormatter, inputType: "checkbox" },
             namePublic: { label: "Donor name is public", formatter: booleanFormatter, inputType: "checkbox" },
-            commentPublic: { label: "Comment is public", formatter: booleanFormatter, inputType: "checkbox" },
             donationAmountPublic: { label: "Donation amount is public", formatter: booleanFormatter, inputType: "checkbox" },
           }}
           initialValues={{
@@ -108,20 +125,14 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
             matchFundingAmount: 0,
             contributionAmount: 0,
             payments: [],
-            paymentMethod: "direct_to_charity",
-            paymentGatewayId: null,
             charity: "AMF",
             overallPublic: false,
             namePublic: false,
-            commentPublic: false,
             donationAmountPublic: false,
           }}
           showCurrent={false}
           onSubmit={async (data) => {
             const donationId = (await axios.post<string>(`/admin/fundraisers/${fundraiserId}/donations`, data)).data
-            // TODO: evaluate whether this is good
-            //   pros: simple, obvious why it's necessary, does not clear the cache for extra routes unnecessarily
-            //   cons: useAxios.clearCache() runs faster so the new page renders sooner, if this fails the form displays its error, which may lead people to incorrectly thinking their request was unsuccessful
             await refetchDonations()
             navigate(`/admin/${fundraiserId}/${donationId}`)
           }}

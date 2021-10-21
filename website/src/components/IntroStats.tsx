@@ -26,23 +26,28 @@ function ease(startValue: number, endValue: number, duration: number, elapsedTim
   return startValue + (endValue - startValue) * proportionThroughAnimation
 }
 
-function standardIntegerFormatter(value: number): string {
-  return value.toLocaleString("en-GB", { style: "decimal", maximumFractionDigits: 0 })
+function standardIntegerFormatter(value: number, dp = 0): string {
+  return value.toLocaleString("en-GB", { style: "decimal", minimumFractionDigits: dp, maximumFractionDigits: dp })
 }
 
 function integerPoundsFormatter(value: number): string {
   return `£${standardIntegerFormatter(value)}`
 }
 
+function pencePoundsFormatter(value: number): string {
+  return `£${standardIntegerFormatter(value, 2)}`
+}
+
 function animateNumber(element: HTMLElement, startValue: number, durationMs: number) {
-  if (!/^£?\d[,\d]*$/.test(element.innerText)) {
+  if (!/^£?\d[,\d]*(.\d\d)?$/.test(element.innerText)) {
     // eslint-disable-next-line no-console
     console.error(`Invalid value '${element.innerText}' found for animated element`, element)
     return
   }
 
-  const formatter = element.innerText.includes("£") ? integerPoundsFormatter : standardIntegerFormatter
-  const endValue = parseInt(element.innerText.replace(/\D/g, ""), 10)
+  // eslint-disable-next-line no-nested-ternary
+  const formatter = element.innerText.includes("£") ? (element.innerText.includes(".") ? pencePoundsFormatter : integerPoundsFormatter) : standardIntegerFormatter
+  const endValue = parseInt(element.innerText.replace(/\D/g, ""), 10) / (element.innerText.includes(".") ? 100 : 1)
 
   const displayValue = (unformattedValue: number) => {
     const formattedValue = formatter(unformattedValue)
@@ -69,7 +74,7 @@ function animateNumber(element: HTMLElement, startValue: number, durationMs: num
   animate()
 }
 
-function animateStatsIn(element: HTMLElement) {
+export function animateStatsIn(element: HTMLElement) {
   const elements = element.getElementsByClassName("stat-animate")
   for (let i = 0; i < elements.length; i++) {
     animateNumber(elements[i] as HTMLElement, 0, (i + 1) * 1000)
