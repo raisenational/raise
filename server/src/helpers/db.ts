@@ -59,6 +59,7 @@ export const query = async <S>(table: Table<S, unknown>, key: { [key: string]: N
       acc[`:${k}`] = v
       return acc
     }, {}),
+    ScanIndexForward: false, // generally we want newest items first
   }))
   assertMatchesSchema<S[]>({ type: "array", items: table.schema }, result.Items)
   return result.Items as S[]
