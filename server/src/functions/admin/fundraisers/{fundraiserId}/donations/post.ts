@@ -38,7 +38,6 @@ export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event)
     charity: event.body.charity ?? "AMF",
     overallPublic: event.body.overallPublic ?? false,
     namePublic: event.body.namePublic ?? false,
-    commentPublic: event.body.commentPublic ?? false,
     donationAmountPublic: event.body.donationAmountPublic ?? false,
   })
 
