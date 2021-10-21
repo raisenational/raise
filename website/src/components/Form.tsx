@@ -86,7 +86,7 @@ type PropertyDefinition<V> = {
     | { inputType: InputType<V> & ("select" | "multiselect"), selectOptions: string[] }
   )
 
-interface FormProps<T> {
+export interface FormProps<T> {
   title?: string,
   warning?: string,
   definition: { [K in keyof UnpackNestedValue<T>]: PropertyDefinition<UnpackNestedValue<T>[K]> },
