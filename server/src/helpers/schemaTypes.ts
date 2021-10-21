@@ -105,6 +105,9 @@ export interface FundraiserEditsSchema {
   matchFundingPerDonationLimit?: number | null;
   matchFundingRemaining?: number | null;
   minimumDonationAmount?: number | null;
+  suggestedDonationAmountOneOff?: number;
+  suggestedDonationAmountWeekly?: number;
+  suggestedContributionAmount?: number | null;
   groupsWithAccess?: string[];
 }
 
@@ -121,6 +124,9 @@ export interface FundraiserSchema {
   matchFundingPerDonationLimit: number | null;
   matchFundingRemaining: number | null;
   minimumDonationAmount: number | null;
+  suggestedDonationAmountOneOff: number;
+  suggestedDonationAmountWeekly: number;
+  suggestedContributionAmount: number | null;
   groupsWithAccess: string[];
 }
 
@@ -137,6 +143,9 @@ export type FundraisersSchema = {
   matchFundingPerDonationLimit: number | null;
   matchFundingRemaining: number | null;
   minimumDonationAmount: number | null;
+  suggestedDonationAmountOneOff: number;
+  suggestedDonationAmountWeekly: number;
+  suggestedContributionAmount: number | null;
   groupsWithAccess: string[];
 }[];
 
@@ -164,6 +173,9 @@ export interface PublicFundraiserSchema {
   matchFundingPerDonationLimit: number | null;
   matchFundingRemaining: number | null;
   minimumDonationAmount: number | null;
+  suggestedDonationAmountOneOff: number;
+  suggestedDonationAmountWeekly: number;
+  suggestedContributionAmount: number | null;
   donations: {
     donorName?: string;
     createdAt: number;

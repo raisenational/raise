@@ -8,6 +8,7 @@ export const main = middyfy(donationEditsSchema, null, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
 
   // TODO: consider restricting editing gift-aided, amounts, at, payment method, payments, payment ref to national team?
+  // TODO: consider banning updates to payments property, and have that go through a different endpoint
   // TODO: validate match funding amount against limit? or not given this is a manual entry?
   // TODO: validate gift-aid requirements
 

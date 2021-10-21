@@ -1,6 +1,6 @@
 import type { JSONSchema7Definition } from "json-schema"
 import type {
-  AccessTokenSchema, DonationEditsSchema, DonationSchema, EmailSchema, FundraiserEditsSchema, FundraiserSchema, IdAndAccessTokenSchema, ProfileSchema, PublicDonationSchema, PublicFundraiserSchema, StatusSchema, UlidSchema,
+  AccessTokenSchema, DonationEditsSchema, DonationSchema, EmailSchema, FundraiserEditsSchema, FundraiserSchema, IdAndAccessTokenSchema, ProfileSchema, PublicFundraiserSchema, StatusSchema, UlidSchema,
 } from "./schemaTypes"
 
 // TODO: It'd be nice to use ajv's JSONSchemaType. However, it has poor performance and is incorrect: https://github.com/ajv-validator/ajv/issues/1664
@@ -62,8 +62,8 @@ export const fundraiserEditsSchema: JSONSchema<FundraiserEditsSchema> = {
   type: "object",
   properties: {
     fundraiserName: { type: "string", minLength: 1, maxLength: 128 },
-    activeFrom: { type: "number" },
-    activeTo: { type: ["number", "null"] },
+    activeFrom: { type: "integer" },
+    activeTo: { type: ["integer", "null"] },
     paused: { type: "boolean" },
     goal: { type: "integer", exclusiveMinimum: 0 },
     totalRaised: { type: "integer", minimum: 0 },
@@ -72,6 +72,9 @@ export const fundraiserEditsSchema: JSONSchema<FundraiserEditsSchema> = {
     matchFundingPerDonationLimit: { type: ["integer", "null"], exclusiveMinimum: 0 },
     matchFundingRemaining: { type: ["integer", "null"], minimum: 0 },
     minimumDonationAmount: { type: ["integer", "null"], exclusiveMinimum: 0 },
+    suggestedDonationAmountOneOff: { type: "integer", minimum: 0 },
+    suggestedDonationAmountWeekly: { type: "integer", minimum: 0 },
+    suggestedContributionAmount: { type: ["integer", "null"], minimum: 0 },
     groupsWithAccess: { type: "array", items: { type: "string" } },
   },
   minProperties: 1,
@@ -84,7 +87,7 @@ export const fundraiserSchema: JSONSchema<FundraiserSchema> = {
     id: ulidSchema,
     ...fundraiserEditsSchema.properties,
   },
-  required: ["id", "fundraiserName", "activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "groupsWithAccess"],
+  required: ["id", "fundraiserName", "activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "groupsWithAccess"],
   additionalProperties: false,
 }
 
@@ -155,6 +158,9 @@ export const publicFundraiserSchema: JSONSchema<PublicFundraiserSchema> = {
     matchFundingPerDonationLimit: { type: ["integer", "null"], exclusiveMinimum: 0 },
     matchFundingRemaining: { type: ["integer", "null"], minimum: 0 },
     minimumDonationAmount: { type: ["integer", "null"], exclusiveMinimum: 0 },
+    suggestedDonationAmountOneOff: { type: "integer", minimum: 0 },
+    suggestedDonationAmountWeekly: { type: "integer", minimum: 0 },
+    suggestedContributionAmount: { type: ["integer", "null"], minimum: 0 },
     donations: {
       type: "array",
       items: {
@@ -173,6 +179,6 @@ export const publicFundraiserSchema: JSONSchema<PublicFundraiserSchema> = {
       },
     },
   },
-  required: ["activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "donations"],
+  required: ["activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "donations"],
   additionalProperties: false,
 }

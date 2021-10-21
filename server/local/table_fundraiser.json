@@ -12,6 +12,9 @@
     "matchFundingPerDonationLimit": 15000,
     "matchFundingRemaining": null,
     "minimumDonationAmount": null,
+    "suggestedDonationAmountOneOff": 10000,
+    "suggestedDonationAmountWeekly": 900,
+    "suggestedContributionAmount": 1000,
     "groupsWithAccess": [
       "National"
     ]
