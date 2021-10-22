@@ -16,7 +16,7 @@ const requiredScopes = [
 
 const Login: React.FC<RouteComponentProps> = () => {
   const [_, setAuth] = useAuthState()
-  const [error, setError] = React.useState<string | undefined>()
+  const [error, setError] = React.useState<React.ReactNode | Error | undefined>()
 
   const axios = useRawAxios()
 
@@ -42,8 +42,14 @@ const Login: React.FC<RouteComponentProps> = () => {
             if (missingScopes.length > 0) {
               setError(`Missing scopes: ${JSON.stringify(missingScopes)}`)
             } else {
-              const loginResponse = await axios.post<{ accessToken: string, expiresAt: number }>("/admin/login", { idToken: res.tokenId, accessToken: res.accessToken })
-              setAuth({ token: loginResponse.data.accessToken, expiresAt: loginResponse.data.expiresAt })
+              try {
+                const loginResponse = await axios.post<{ accessToken: string, expiresAt: number }>("/admin/login", { idToken: res.tokenId, accessToken: res.accessToken })
+                setAuth({ token: loginResponse.data.accessToken, expiresAt: loginResponse.data.expiresAt })
+              } catch (err) {
+                // eslint-disable-next-line no-console
+                console.error(err)
+                setError(err instanceof Error ? err : String(err))
+              }
             }
           }}
           onFailure={(err) => {
