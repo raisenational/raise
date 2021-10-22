@@ -1,4 +1,5 @@
 import * as React from "react"
+import TimeAgo from "react-timeago"
 import classNames from "classnames"
 import { PublicFundraiser } from "../pages/admin/types.d"
 import { amountDropPenceIfZeroFormatter } from "./Table"
@@ -22,8 +23,7 @@ const DonationCard: React.FC<Props> = ({
     <p className={classNames({ "flex-1": !comment && !giftAid && !matchFundingAmount })}>{donorName ?? "Someone"} donated {donationAmount && amountDropPenceIfZeroFormatter(donationAmount)}</p>
     {(giftAid || matchFundingAmount) && <p className={classNames("text-base opacity-80", { "flex-1": !comment })}> ({matchFundingAmount && `+${amountDropPenceIfZeroFormatter(matchFundingAmount)} matched`}{giftAid && matchFundingAmount && ", "}{giftAid && donationAmount && `+${amountDropPenceIfZeroFormatter(donationAmount * 0.25)} gift-aided`})</p>}
     {comment && <p className="text-base flex-1 mt-2">{comment}</p>}
-    {/* TODO: need a proper time since now formatter here, e.g. "just now" / "3 minutes ago" / "1 week ago" */}
-    <p className="text-base opacity-80 mt-2 text-right">{Math.floor(((new Date().getTime() / 1000) - createdAt) / 60)} minutes ago</p>
+    <p className="text-base opacity-80 mt-2 text-right"><TimeAgo date={createdAt * 1000} /></p>
   </div>
 )
 
