@@ -154,6 +154,13 @@ export interface IdAndAccessTokenSchema {
   accessToken: string;
 }
 
+export interface PaymentEditsSchema {
+  at: number;
+  amount: number;
+  method: "card" | "cash" | "direct_to_charity";
+  reference: string | null;
+}
+
 export interface ProfileSchema {
   email: string;
   groups: string[];

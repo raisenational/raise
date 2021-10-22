@@ -1,6 +1,6 @@
 import type { JSONSchema7Definition } from "json-schema"
 import type {
-  AccessTokenSchema, DonationEditsSchema, DonationSchema, EmailSchema, FundraiserEditsSchema, FundraiserSchema, IdAndAccessTokenSchema, ProfileSchema, PublicFundraiserSchema, StatusSchema, UlidSchema,
+  AccessTokenSchema, DonationEditsSchema, DonationSchema, EmailSchema, FundraiserEditsSchema, FundraiserSchema, IdAndAccessTokenSchema, PaymentEditsSchema, ProfileSchema, PublicFundraiserSchema, StatusSchema, UlidSchema,
 } from "./schemaTypes"
 
 // TODO: It'd be nice to use ajv's JSONSchemaType. However, it has poor performance and is incorrect: https://github.com/ajv-validator/ajv/issues/1664
@@ -180,5 +180,17 @@ export const publicFundraiserSchema: JSONSchema<PublicFundraiserSchema> = {
     },
   },
   required: ["activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "donations"],
+  additionalProperties: false,
+}
+
+export const paymentEditsSchema: JSONSchema<PaymentEditsSchema> = {
+  type: "object",
+  properties: {
+    at: { type: "integer" },
+    amount: { type: "integer" },
+    method: { enum: ["card", "cash", "direct_to_charity"] },
+    reference: { type: ["string", "null"] },
+  },
+  required: ["at", "amount", "method", "reference"],
   additionalProperties: false,
 }

@@ -78,8 +78,41 @@ export const insert = async <S>(table: Table<S, unknown>, data: S & { [key: stri
   return data
 }
 
+export const appendList = async <S, P extends keyof { [K in keyof S as S[K] extends unknown[] ? K : never]: S[K] } & keyof S, E extends (S[P] extends (infer _E)[] ? _E : never)>(table: Table<S, unknown>, key: { [key: string]: NativeAttributeValue }, listProperty: P, newElement: E): Promise<S> => {
+  // TODO: fix type error on properties
+  assertMatchesSchema<E>(table.editsSchema.properties[listProperty], newElement)
+
+  const resultGet = await dbClient.send(new GetCommand({ TableName: table.name, Key: key }))
+  if (!resultGet.Item) throw new createHttpError.NotFound("Item not found")
+  assertMatchesSchema<S>(table.schema, resultGet.Item)
+  const result = await dbClient.send(new UpdateCommand({
+    TableName: table.name,
+    Key: key,
+    ConditionExpression: "id = :id", // this ensures it doesn't create a new item
+    UpdateExpression: `SET ${listProperty} = list_append(${listProperty}, :newElement)`,
+    ExpressionAttributeValues: {
+      ":newElement": newElement,
+    },
+    ReturnValues: "ALL_NEW",
+  }))
+  return result.Attributes as S
+}
+
 export const update = async <S extends Required<E>, E>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }, edits: E & { [key: string]: NativeAttributeValue }): Promise<S> => {
   assertMatchesSchema<E>(table.editsSchema, edits)
+
+  // type schema = S = { name: string, email: string, age: number }
+  // edits: E { "name": "Adam", "email": "adam@joinraise.org" }
+
+  // `SET ${entries.map(([k]) => `${k} = :${k}`).join(", ")}`
+
+  // ExpressionAttributeValues: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
+  //   acc[`:${k}`] = v
+  //   return acc
+  // }, { ":id": key.id }),
+
+  // "SET name = :abc, email = :def"
+  // { ":abc": "Adam", ":def": "adam@joinraise.org" }
 
   const entries = Object.entries(edits)
   const result = await dbClient.send(new UpdateCommand({
