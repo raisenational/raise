@@ -80,7 +80,7 @@ export const insert = async <S extends Required<E>, E>(table: Table<S, E>, data:
 }
 
 export const appendList = async <S extends Required<E>, E, P extends keyof { [K in keyof S as S[K] extends unknown[] ? K : never]: S[K] } & keyof S, I extends (S[P] extends (infer _I)[] ? _I : never)>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }, listProperty: P, newItem: I): Promise<S> => {
-  assertMatchesSchema<E>((table.editsSchema as Required<Pick<JSONSchema7, "properties">>).properties[listProperty], [newItem])
+  assertMatchesSchema<E>((table.schema as Required<Pick<JSONSchema7, "properties">>).properties[listProperty], [newItem])
 
   // TODO: do we actually need to check the item exists? we'll probably get an error or lack of Attributes back if it doesn't, maybe check that instead to reduce db accesses.
   const resultGet = await dbClient.send(new GetCommand({ TableName: table.name, Key: key }))
@@ -91,12 +91,14 @@ export const appendList = async <S extends Required<E>, E, P extends keyof { [K 
     TableName: table.name,
     Key: key,
     ConditionExpression: "id = :id", // this ensures it doesn't create a new item
-    UpdateExpression: `SET ${listProperty} = list_append(${listProperty}, :newItem)`,
+    UpdateExpression: `SET ${listProperty} = list_append(${listProperty}, :newItems)`,
     ExpressionAttributeValues: {
-      ":newItem": newItem,
+      ":newItems": [newItem],
+      ":id": key.id,
     },
     ReturnValues: "ALL_NEW",
   }))
+  // TODO: assert matches schema here
   return result.Attributes as S
 }
 
