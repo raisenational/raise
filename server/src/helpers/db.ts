@@ -103,19 +103,6 @@ export const appendList = async <S extends Required<E>, E, P extends keyof { [K 
 export const update = async <S extends Required<E>, E>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }, edits: E & { [key: string]: NativeAttributeValue }): Promise<S> => {
   assertMatchesSchema<E>(table.editsSchema, edits)
 
-  // type schema = S = { name: string, email: string, age: number }
-  // edits: E { "name": "Adam", "email": "adam@joinraise.org" }
-
-  // `SET ${entries.map(([k]) => `${k} = :${k}`).join(", ")}`
-
-  // ExpressionAttributeValues: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
-  //   acc[`:${k}`] = v
-  //   return acc
-  // }, { ":id": key.id }),
-
-  // "SET name = :abc, email = :def"
-  // { ":abc": "Adam", ":def": "adam@joinraise.org" }
-
   const entries = Object.entries(edits)
   const result = await dbClient.send(new UpdateCommand({
     TableName: table.name,

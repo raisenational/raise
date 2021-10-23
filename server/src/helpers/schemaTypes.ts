@@ -23,12 +23,6 @@ export interface DonationEditsSchema {
   donationAmount?: number;
   matchFundingAmount?: number;
   contributionAmount?: number;
-  payments?: {
-    at: number;
-    amount: number;
-    method: "card" | "cash" | "direct_to_charity";
-    reference: string | null;
-  }[];
   charity?: string;
   overallPublic?: boolean;
   namePublic?: boolean;
@@ -37,6 +31,14 @@ export interface DonationEditsSchema {
 
 export interface DonationSchema {
   id: string;
+  payments: {
+    id: string;
+    at: number;
+    amount: number;
+    method: "card" | "cash" | "direct_to_charity";
+    reference: string | null;
+    status?: "paid" | "pending" | "cancelled";
+  }[];
   fundraiserId: string;
   donorName: string;
   donorEmail: string;
@@ -51,12 +53,6 @@ export interface DonationSchema {
   donationAmount: number;
   matchFundingAmount: number;
   contributionAmount: number;
-  payments: {
-    at: number;
-    amount: number;
-    method: "card" | "cash" | "direct_to_charity";
-    reference: string | null;
-  }[];
   charity: string;
   overallPublic: boolean;
   namePublic: boolean;
@@ -65,6 +61,14 @@ export interface DonationSchema {
 
 export type DonationsSchema = {
   id: string;
+  payments: {
+    id: string;
+    at: number;
+    amount: number;
+    method: "card" | "cash" | "direct_to_charity";
+    reference: string | null;
+    status?: "paid" | "pending" | "cancelled";
+  }[];
   fundraiserId: string;
   donorName: string;
   donorEmail: string;
@@ -79,12 +83,6 @@ export type DonationsSchema = {
   donationAmount: number;
   matchFundingAmount: number;
   contributionAmount: number;
-  payments: {
-    at: number;
-    amount: number;
-    method: "card" | "cash" | "direct_to_charity";
-    reference: string | null;
-  }[];
   charity: string;
   overallPublic: boolean;
   namePublic: boolean;
@@ -159,6 +157,7 @@ export interface PaymentEditsSchema {
   amount: number;
   method: "card" | "cash" | "direct_to_charity";
   reference: string | null;
+  status: "paid" | "pending" | "cancelled";
 }
 
 export interface ProfileSchema {

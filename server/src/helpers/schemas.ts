@@ -110,20 +110,6 @@ export const donationEditsSchema: JSONSchema<DonationEditsSchema> = {
     donationAmount: { type: "number", minimum: 0 },
     matchFundingAmount: { type: "integer", minimum: 0 },
     contributionAmount: { type: "integer", minimum: 0 },
-    payments: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          at: { type: "integer" },
-          amount: { type: "integer" },
-          method: { enum: ["card", "cash", "direct_to_charity"] },
-          reference: { type: ["string", "null"] },
-        },
-        required: ["at", "amount", "method", "reference"],
-        additionalProperties: false,
-      },
-    },
     charity: { type: "string" },
     overallPublic: { type: "boolean" },
     namePublic: { type: "boolean" },
@@ -137,6 +123,22 @@ export const donationSchema: JSONSchema<DonationSchema> = {
   type: "object",
   properties: {
     id: ulidSchema,
+    payments: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          id: ulidSchema,
+          at: { type: "integer" },
+          amount: { type: "integer" },
+          method: { enum: ["card", "cash", "direct_to_charity"] },
+          reference: { type: ["string", "null"] },
+          status: { enum: ["paid", "pending", "cancelled"] },
+        },
+        required: ["id", "at", "amount", "method", "reference"],
+        additionalProperties: false,
+      },
+    },
     ...donationEditsSchema.properties,
   },
   required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "payments", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
@@ -190,7 +192,8 @@ export const paymentEditsSchema: JSONSchema<PaymentEditsSchema> = {
     amount: { type: "integer" },
     method: { enum: ["card", "cash", "direct_to_charity"] },
     reference: { type: ["string", "null"] },
+    status: { enum: ["paid", "pending", "cancelled"] },
   },
-  required: ["at", "amount", "method", "reference"],
+  required: ["at", "amount", "method", "reference", "status"],
   additionalProperties: false,
 }
