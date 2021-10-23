@@ -1,3 +1,4 @@
+import type { NativeAttributeValue } from "@aws-sdk/util-dynamodb"
 import {
   JSONSchema, donationSchema, fundraiserSchema, fundraiserEditsSchema, donationEditsSchema,
 } from "./schemas"
@@ -5,7 +6,7 @@ import {
   DonationEditsSchema, DonationSchema, FundraiserEditsSchema, FundraiserSchema,
 } from "./schemaTypes"
 
-export interface Table<Schema extends Required<EditsSchema>, EditsSchema> {
+export interface Table<Schema extends Required<EditsSchema>, EditsSchema extends { [key: string]: NativeAttributeValue }> {
   name: string,
   pk: string,
   sk?: string,

@@ -14,6 +14,7 @@ export const main = middyfy(paymentEditsSchema, ulidSchema, true, async (event) 
   const { fundraiserId, donationId } = event.pathParameters
 
   appendList(donationTable, { fundraiserId, id: donationId }, "payments", {
+    // TODO: add id
     at: event.body.at ?? Math.floor(new Date().getTime() / 1000),
     amount: event.body.amount ?? 0,
     method: event.body.method,
