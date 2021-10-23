@@ -11,7 +11,7 @@ export const main = middyfy(donationEditsSchema, null, true, async (event) => {
   // TODO: consider banning updates to payments property, and have that go through a different endpoint
   // TODO: validate match funding amount against limit? or not given this is a manual entry?
   // TODO: validate gift-aid requirements
-  // TODO: make sure only national team can edit strip id
+  // TODO: make sure only national team can edit stripe id
 
   await update(donationTable, { fundraiserId: event.pathParameters.fundraiserId, id: event.pathParameters.donationId }, event.body)
 
