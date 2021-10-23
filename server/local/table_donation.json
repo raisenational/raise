@@ -15,12 +15,17 @@
     "donationAmount": 15000,
     "matchFundingAmount": 15000,
     "contributionAmount": 0,
+    "recurringAmount": null,
+    "recurrenceFrequency": null,
+    "stripeId": "stripe_123",
     "payments": [
       {
+        "id": "01FJPJ1JE117RCVSM4GRTZK87P",
         "at": 1632840179,
         "amount": 15000,
         "method": "card",
-        "reference": "pymt_12345"
+        "reference": "pymt_12345",
+        "status": "paid"
       }
     ],
     "charity": "AMF",
@@ -44,24 +49,33 @@
     "donationAmount": 9000,
     "matchFundingAmount": 9000,
     "contributionAmount": 0,
+    "recurringAmount": 3000,
+    "recurrenceFrequency": "MONTHLY",
+    "stripeId": "stripe_456",
     "payments": [
       {
+        "id": "01FJPJ2E54WVSNCXK3TR9A8RYN",
         "at": 1632832738,
         "amount": 3000,
         "method": "card",
-        "reference": "pymt_67890"
+        "reference": "pymt_67890",
+        "status": "paid"
       },
       {
+        "id": "01FJPJ3P9Z414588ZEY28G2PE6",
         "at": 1633392000,
         "amount": 3000,
         "method": "card",
-        "reference": "pymt_67891"
+        "reference": "pymt_67891",
+        "status": "paid"
       },
       {
+        "id": "01FJPJ4QRTBEHT79PP0SP04Q7B",
         "at": 1633996800,
         "amount": 3000,
         "method": "card",
-        "reference": "pymt_67892"
+        "reference": "pymt_67892",
+        "status": "paid"
       }
     ],
     "charity": "AMF",

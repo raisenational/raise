@@ -1,6 +1,6 @@
 import type { JSONSchema7Definition } from "json-schema"
 import type {
-  AccessTokenSchema, DonationEditsSchema, DonationSchema, EmailSchema, FundraiserEditsSchema, FundraiserSchema, IdAndAccessTokenSchema, ProfileSchema, PublicFundraiserSchema, StatusSchema, UlidSchema,
+  AccessTokenSchema, DonationEditsSchema, DonationSchema, EmailSchema, FundraiserEditsSchema, FundraiserSchema, IdAndAccessTokenSchema, PaymentEditsSchema, ProfileSchema, PublicFundraiserSchema, StatusSchema, UlidSchema,
 } from "./schemaTypes"
 
 // TODO: It'd be nice to use ajv's JSONSchemaType. However, it has poor performance and is incorrect: https://github.com/ajv-validator/ajv/issues/1664
@@ -63,7 +63,7 @@ export const fundraiserEditsSchema: JSONSchema<FundraiserEditsSchema> = {
   properties: {
     fundraiserName: { type: "string", minLength: 1, maxLength: 128 },
     activeFrom: { type: "integer" },
-    activeTo: { type: ["integer", "null"] },
+    activeTo: { type: "integer" },
     paused: { type: "boolean" },
     goal: { type: "integer", exclusiveMinimum: 0 },
     totalRaised: { type: "integer", minimum: 0 },
@@ -110,20 +110,9 @@ export const donationEditsSchema: JSONSchema<DonationEditsSchema> = {
     donationAmount: { type: "number", minimum: 0 },
     matchFundingAmount: { type: "integer", minimum: 0 },
     contributionAmount: { type: "integer", minimum: 0 },
-    payments: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          at: { type: "integer" },
-          amount: { type: "integer" },
-          method: { enum: ["card", "cash", "direct_to_charity"] },
-          reference: { type: ["string", "null"] },
-        },
-        required: ["at", "amount", "method", "reference"],
-        additionalProperties: false,
-      },
-    },
+    recurringAmount: { type: ["integer", "null"], minimum: 0 },
+    recurrenceFrequency: { oneOf: [{ enum: ["WEEKLY", "MONTHLY"] }, { type: "null" }] },
+    stripeId: { type: "string" },
     charity: { type: "string" },
     overallPublic: { type: "boolean" },
     namePublic: { type: "boolean" },
@@ -137,9 +126,25 @@ export const donationSchema: JSONSchema<DonationSchema> = {
   type: "object",
   properties: {
     id: ulidSchema,
+    payments: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          id: ulidSchema,
+          at: { type: "integer" },
+          amount: { type: "integer" },
+          method: { enum: ["card", "cash", "direct_to_charity"] },
+          reference: { type: ["string", "null"] },
+          status: { enum: ["paid", "pending", "cancelled"] },
+        },
+        required: ["id", "at", "amount", "method", "reference", "status"],
+        additionalProperties: false,
+      },
+    },
     ...donationEditsSchema.properties,
   },
-  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "payments", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
+  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeId", "payments", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
   additionalProperties: false,
 }
 
@@ -180,5 +185,18 @@ export const publicFundraiserSchema: JSONSchema<PublicFundraiserSchema> = {
     },
   },
   required: ["activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "donations"],
+  additionalProperties: false,
+}
+
+export const paymentEditsSchema: JSONSchema<PaymentEditsSchema> = {
+  type: "object",
+  properties: {
+    at: { type: "integer" },
+    amount: { type: "integer" },
+    method: { enum: ["card", "cash", "direct_to_charity"] },
+    reference: { type: ["string", "null"] },
+    status: { enum: ["paid", "pending", "cancelled"] },
+  },
+  required: ["at", "amount", "method", "reference", "status"],
   additionalProperties: false,
 }

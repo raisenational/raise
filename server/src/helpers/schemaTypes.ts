@@ -23,12 +23,9 @@ export interface DonationEditsSchema {
   donationAmount?: number;
   matchFundingAmount?: number;
   contributionAmount?: number;
-  payments?: {
-    at: number;
-    amount: number;
-    method: "card" | "cash" | "direct_to_charity";
-    reference: string | null;
-  }[];
+  recurringAmount?: number | null;
+  recurrenceFrequency?: ("WEEKLY" | "MONTHLY") | null;
+  stripeId?: string;
   charity?: string;
   overallPublic?: boolean;
   namePublic?: boolean;
@@ -37,6 +34,14 @@ export interface DonationEditsSchema {
 
 export interface DonationSchema {
   id: string;
+  payments: {
+    id: string;
+    at: number;
+    amount: number;
+    method: "card" | "cash" | "direct_to_charity";
+    reference: string | null;
+    status: "paid" | "pending" | "cancelled";
+  }[];
   fundraiserId: string;
   donorName: string;
   donorEmail: string;
@@ -51,12 +56,9 @@ export interface DonationSchema {
   donationAmount: number;
   matchFundingAmount: number;
   contributionAmount: number;
-  payments: {
-    at: number;
-    amount: number;
-    method: "card" | "cash" | "direct_to_charity";
-    reference: string | null;
-  }[];
+  recurringAmount: number | null;
+  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
+  stripeId: string;
   charity: string;
   overallPublic: boolean;
   namePublic: boolean;
@@ -65,6 +67,14 @@ export interface DonationSchema {
 
 export type DonationsSchema = {
   id: string;
+  payments: {
+    id: string;
+    at: number;
+    amount: number;
+    method: "card" | "cash" | "direct_to_charity";
+    reference: string | null;
+    status: "paid" | "pending" | "cancelled";
+  }[];
   fundraiserId: string;
   donorName: string;
   donorEmail: string;
@@ -79,12 +89,9 @@ export type DonationsSchema = {
   donationAmount: number;
   matchFundingAmount: number;
   contributionAmount: number;
-  payments: {
-    at: number;
-    amount: number;
-    method: "card" | "cash" | "direct_to_charity";
-    reference: string | null;
-  }[];
+  recurringAmount: number | null;
+  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
+  stripeId: string;
   charity: string;
   overallPublic: boolean;
   namePublic: boolean;
@@ -96,7 +103,7 @@ export type EmailSchema = string;
 export interface FundraiserEditsSchema {
   fundraiserName?: string;
   activeFrom?: number;
-  activeTo?: number | null;
+  activeTo?: number;
   paused?: boolean;
   goal?: number;
   totalRaised?: number;
@@ -115,7 +122,7 @@ export interface FundraiserSchema {
   id: string;
   fundraiserName: string;
   activeFrom: number;
-  activeTo: number | null;
+  activeTo: number;
   paused: boolean;
   goal: number;
   totalRaised: number;
@@ -134,7 +141,7 @@ export type FundraisersSchema = {
   id: string;
   fundraiserName: string;
   activeFrom: number;
-  activeTo: number | null;
+  activeTo: number;
   paused: boolean;
   goal: number;
   totalRaised: number;
@@ -152,6 +159,14 @@ export type FundraisersSchema = {
 export interface IdAndAccessTokenSchema {
   idToken: string;
   accessToken: string;
+}
+
+export interface PaymentEditsSchema {
+  at: number;
+  amount: number;
+  method: "card" | "cash" | "direct_to_charity";
+  reference: string | null;
+  status: "paid" | "pending" | "cancelled";
 }
 
 export interface ProfileSchema {
