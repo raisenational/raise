@@ -138,7 +138,7 @@ export const donationSchema: JSONSchema<DonationSchema> = {
           reference: { type: ["string", "null"] },
           status: { enum: ["paid", "pending", "cancelled"] },
         },
-        required: ["id", "at", "amount", "method", "reference"],
+        required: ["id", "at", "amount", "method", "reference", "status"],
         additionalProperties: false,
       },
     },
