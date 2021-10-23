@@ -13,12 +13,12 @@ const Modal: React.FC<Props> = ({ open, onClose, children }) => {
   const ref = React.createRef<HTMLElement>()
 
   // Hack so that HMR works properly
-  if ("reactHotLoaderGlobal" in window && !open) return null
+  if (typeof window !== "undefined" && "reactHotLoaderGlobal" in window && !open) return null
 
   return (
     <Dialog
       as="div"
-      className={classNames("fixed inset-0 overflow-y-auto px-4", { "pr-8": document.getElementsByTagName("html")[0].scrollHeight > document.getElementsByTagName("html")[0].clientHeight })}
+      className={classNames("fixed inset-0 overflow-y-auto px-4", { "pr-8": typeof window !== "undefined" && document.getElementsByTagName("html")[0].scrollHeight > document.getElementsByTagName("html")[0].clientHeight })}
       open={open}
       onClose={onClose}
       initialFocus={ref}
