@@ -68,8 +68,9 @@ export interface PublicFundraiser {
   matchFundingPerDonationLimit: number | null,
   matchFundingRemaining: number | null,
   minimumDonationAmount: number | null,
-  suggestedDonationAmount: number,
-  suggestedContributionAmount: number,
+  suggestedDonationAmountOneOff: number,
+  suggestedDonationAmountWeekly: number,
+  suggestedContributionAmount: number | null,
   donations: {
     donorName?: string,
     createdAt: number,
