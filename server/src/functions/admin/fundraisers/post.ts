@@ -10,7 +10,7 @@ export const main = middyfy(fundraiserEditsSchema, ulidSchema, true, async (even
     id: ulid(),
     fundraiserName: event.body.fundraiserName ?? "New Fundraiser",
     activeFrom: event.body.activeFrom ?? Math.floor(new Date().getTime() / 1000),
-    activeTo: event.body.activeTo ?? null,
+    activeTo: event.body.activeTo ?? Math.floor(new Date().getTime() / 1000),
     paused: event.body.paused ?? false,
     goal: event.body.goal ?? 1_00,
     totalRaised: event.body.totalRaised ?? 0,
