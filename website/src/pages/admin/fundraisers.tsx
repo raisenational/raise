@@ -49,7 +49,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
           initialValues={{
             fundraiserName: "New Fundraiser",
             activeFrom: Math.floor(new Date().getTime() / 1000),
-            activeTo: null,
+            activeTo: Math.floor(new Date().getTime() / 1000),
             paused: false,
             goal: 1_00,
             totalRaised: 0,

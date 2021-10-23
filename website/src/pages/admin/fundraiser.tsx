@@ -78,9 +78,11 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
         <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> Record manual donation</Button>
       </div>
       <Modal open={newDonationModalOpen} onClose={() => setNewDonationModalOpen(false)}>
-        <Form<Omit<Donation, "id">>
+        <Form<Partial<Omit<Donation, "id">>>
           title="New donation"
           definition={{
+            // TODO: add recurrence and stripe properties?
+            // TODO: make this simpler, and assume for most things if people want to edit things they can in the donation viewer?
             fundraiserId: { inputType: "hidden" },
             donorName: { label: "Donor name", inputType: "text" },
             donorEmail: { label: "Donor email", inputType: "email" },

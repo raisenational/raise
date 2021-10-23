@@ -14,7 +14,7 @@ export interface Fundraiser {
   id: string,
   fundraiserName: string,
   activeFrom: number,
-  activeTo: number | null,
+  activeTo: number,
   paused: boolean,
   goal: number,
   totalRaised: number,
@@ -45,16 +45,29 @@ export interface Donation {
   donationAmount: number,
   matchFundingAmount: number,
   contributionAmount: number,
+  recurringAmount: number | null,
+  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null,
+  stripeId: string | null,
   payments: {
+    id: string,
     at: number,
     amount: number,
     method: "card" | "cash" | "direct_to_charity",
     reference: string | null,
+    status: "paid" | "pending" | "cancelled",
   }[],
   charity: string,
   overallPublic: boolean,
   namePublic: boolean,
   donationAmountPublic: boolean,
+}
+
+export interface Payment {
+  at: number,
+  amount: number,
+  method: "card" | "cash" | "direct_to_charity",
+  reference: string | null,
+  status: "paid" | "pending" | "cancelled",
 }
 
 export interface PublicFundraiser {

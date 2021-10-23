@@ -4,6 +4,7 @@
 // Map from Git user.name to path prefixes they are allowed to change
 const userAccess = {
   "Adam Jones": [""],
+  "Malena Schmidt": [""],
   "Joe Benton": [""],
   "Susanne Karbe": [""],
   "Andrew Launer": ["src/pages/glasgow/"],
@@ -28,11 +29,12 @@ const getCommits = (target = "origin/master", source = "HEAD") => new Promise((r
         else {
           resolve(logStdout.split("|").slice(1).map((s) => {
             const [user, paths] = s.trim().split("\n\n")
+            if (!paths) return null
             return {
               user,
               paths: paths.split("\n"),
             }
-          }))
+          }).filter((c) => c))
         }
       })
     }
