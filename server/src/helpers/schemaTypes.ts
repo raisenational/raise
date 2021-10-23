@@ -40,7 +40,7 @@ export interface DonationSchema {
     amount: number;
     method: "card" | "cash" | "direct_to_charity";
     reference: string | null;
-    status?: "paid" | "pending" | "cancelled";
+    status: "paid" | "pending" | "cancelled";
   }[];
   fundraiserId: string;
   donorName: string;
@@ -73,7 +73,7 @@ export type DonationsSchema = {
     amount: number;
     method: "card" | "cash" | "direct_to_charity";
     reference: string | null;
-    status?: "paid" | "pending" | "cancelled";
+    status: "paid" | "pending" | "cancelled";
   }[];
   fundraiserId: string;
   donorName: string;
