@@ -112,7 +112,7 @@ export const donationEditsSchema: JSONSchema<DonationEditsSchema> = {
     contributionAmount: { type: "integer", minimum: 0 },
     recurringAmount: { type: ["integer", "null"], minimum: 0 },
     recurrenceFrequency: { oneOf: [{ enum: ["WEEKLY", "MONTHLY"] }, { type: "null" }] },
-    stripeId: { type: "string" },
+    stripeId: { type: ["string", "null"] },
     charity: { type: "string" },
     overallPublic: { type: "boolean" },
     namePublic: { type: "boolean" },
