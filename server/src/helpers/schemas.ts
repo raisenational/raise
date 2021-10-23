@@ -63,7 +63,7 @@ export const fundraiserEditsSchema: JSONSchema<FundraiserEditsSchema> = {
   properties: {
     fundraiserName: { type: "string", minLength: 1, maxLength: 128 },
     activeFrom: { type: "integer" },
-    activeTo: { type: ["integer", "null"] },
+    activeTo: { type: "integer" },
     paused: { type: "boolean" },
     goal: { type: "integer", exclusiveMinimum: 0 },
     totalRaised: { type: "integer", minimum: 0 },
@@ -110,6 +110,9 @@ export const donationEditsSchema: JSONSchema<DonationEditsSchema> = {
     donationAmount: { type: "number", minimum: 0 },
     matchFundingAmount: { type: "integer", minimum: 0 },
     contributionAmount: { type: "integer", minimum: 0 },
+    recurringAmount: { type: ["integer", "null"], minimum: 0 },
+    recurrenceFrequency: { oneOf: [{ enum: ["WEEKLY", "MONTHLY"] }, { type: "null" }] },
+    stripeId: { type: "string" },
     charity: { type: "string" },
     overallPublic: { type: "boolean" },
     namePublic: { type: "boolean" },
@@ -141,7 +144,7 @@ export const donationSchema: JSONSchema<DonationSchema> = {
     },
     ...donationEditsSchema.properties,
   },
-  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "payments", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
+  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeId", "payments", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
   additionalProperties: false,
 }
 

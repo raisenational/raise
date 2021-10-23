@@ -15,6 +15,9 @@
     "donationAmount": 15000,
     "matchFundingAmount": 15000,
     "contributionAmount": 0,
+    "recurringAmount": null,
+    "recurrenceFrequency": null,
+    "stripeId": "stripe_123",
     "payments": [
       {
         "id": "01FJPJ1JE117RCVSM4GRTZK87P",
@@ -46,6 +49,9 @@
     "donationAmount": 9000,
     "matchFundingAmount": 9000,
     "contributionAmount": 0,
+    "recurringAmount": 3000,
+    "recurrenceFrequency": "MONTHLY",
+    "stripeId": "stripe_456",
     "payments": [
       {
         "id": "01FJPJ2E54WVSNCXK3TR9A8RYN",

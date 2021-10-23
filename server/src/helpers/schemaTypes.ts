@@ -23,6 +23,9 @@ export interface DonationEditsSchema {
   donationAmount?: number;
   matchFundingAmount?: number;
   contributionAmount?: number;
+  recurringAmount?: number | null;
+  recurrenceFrequency?: ("WEEKLY" | "MONTHLY") | null;
+  stripeId?: string;
   charity?: string;
   overallPublic?: boolean;
   namePublic?: boolean;
@@ -53,6 +56,9 @@ export interface DonationSchema {
   donationAmount: number;
   matchFundingAmount: number;
   contributionAmount: number;
+  recurringAmount: number | null;
+  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
+  stripeId: string;
   charity: string;
   overallPublic: boolean;
   namePublic: boolean;
@@ -83,6 +89,9 @@ export type DonationsSchema = {
   donationAmount: number;
   matchFundingAmount: number;
   contributionAmount: number;
+  recurringAmount: number | null;
+  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
+  stripeId: string;
   charity: string;
   overallPublic: boolean;
   namePublic: boolean;
@@ -94,7 +103,7 @@ export type EmailSchema = string;
 export interface FundraiserEditsSchema {
   fundraiserName?: string;
   activeFrom?: number;
-  activeTo?: number | null;
+  activeTo?: number;
   paused?: boolean;
   goal?: number;
   totalRaised?: number;
@@ -113,7 +122,7 @@ export interface FundraiserSchema {
   id: string;
   fundraiserName: string;
   activeFrom: number;
-  activeTo: number | null;
+  activeTo: number;
   paused: boolean;
   goal: number;
   totalRaised: number;
@@ -132,7 +141,7 @@ export type FundraisersSchema = {
   id: string;
   fundraiserName: string;
   activeFrom: number;
-  activeTo: number | null;
+  activeTo: number;
   paused: boolean;
   goal: number;
   totalRaised: number;
