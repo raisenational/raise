@@ -198,7 +198,8 @@ export interface PublicFundraiserSchema {
     comment: string | null;
     donationAmount?: number;
     matchFundingAmount?: number;
-    contributionAmount?: number;
+    recurringAmount?: number | null;
+    recurrenceFrequency?: ("WEEKLY" | "MONTHLY") | null;
   }[];
 }
 

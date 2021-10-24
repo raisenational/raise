@@ -31,7 +31,8 @@ export const main = middyfy(null, publicFundraiserSchema, false, async (event) =
       comment: d.comment,
       donationAmount: d.donationAmountPublic ? d.donationAmount : undefined,
       matchFundingAmount: d.donationAmountPublic ? d.matchFundingAmount : undefined,
-      contributionAmount: d.donationAmountPublic ? d.contributionAmount : undefined,
+      recurringAmount: d.donationAmountPublic ? d.recurringAmount : undefined,
+      recurrenceFrequency: d.donationAmountPublic ? d.recurrenceFrequency : undefined,
     })),
   }
 })
