@@ -25,7 +25,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
   const fundraiser = asResponseValues(fundraisers.data?.find((f) => f.id === fundraiserId), fundraisers)
 
   const downloadDonationsCSV = async () => {
-    const csv = donations.data && await jsonexport(donations.data.map((d) => ({ ...d, payments: JSON.stringify(d.payments) })))
+    const csv = donations.data && await jsonexport(donations.data)
     if (csv) {
       const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csv}`)
       const link = document.createElement("a")
@@ -104,7 +104,6 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
             giftAid: {
               label: "Gift-aided", formatter: booleanFormatter, inputType: "checkbox", warning: "We must hold accurate names and addresses for gift-aided donations as per the Income Tax Act 2007",
             },
-            payments: { inputType: "hidden" },
             charity: { label: "Designated charity", inputType: "text" },
             comment: { label: "Donor comment", inputType: "text" },
             overallPublic: { label: "Donation is public", formatter: booleanFormatter, inputType: "checkbox" },
@@ -126,7 +125,6 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
             donationAmount: 0,
             matchFundingAmount: 0,
             contributionAmount: 0,
-            payments: [],
             charity: "AMF",
             overallPublic: false,
             namePublic: false,

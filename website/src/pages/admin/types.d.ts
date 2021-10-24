@@ -48,14 +48,6 @@ export interface Donation {
   recurringAmount: number | null,
   recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null,
   stripeId: string | null,
-  payments: {
-    id: string,
-    at: number,
-    amount: number,
-    method: "card" | "cash" | "direct_to_charity",
-    reference: string | null,
-    status: "paid" | "pending" | "cancelled",
-  }[],
   charity: string,
   overallPublic: boolean,
   namePublic: boolean,
@@ -63,6 +55,8 @@ export interface Donation {
 }
 
 export interface Payment {
+  id: string,
+  donationId: string,
   at: number,
   amount: number,
   method: "card" | "cash" | "direct_to_charity",

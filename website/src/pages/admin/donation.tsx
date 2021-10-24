@@ -15,12 +15,12 @@ import { Form } from "../../components/Form"
 
 const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string }> = ({ fundraiserId, donationId }) => {
   const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
+  const [payments, refetchPayments] = useAxios<Payment[]>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`)
   const axios = useRawAxios()
 
   const [newPaymentModalOpen, setNewPaymentModalOpen] = React.useState(false)
 
   const donation = asResponseValues(donations.data?.find((d) => d.fundraiserId === fundraiserId && d.id === donationId), donations)
-  const payments = asResponseValues(donation.data?.payments, donation)
   const giftAidEditWarning = "We must hold accurate names and addresses for gift-aided donations as per the Income Tax Act 2007"
   const amountEditWarning = "Do not edit amounts unless you know what you are doing. This will not update the fundraiser totals."
   const frequencyEditWarning = "Do not edit the frequency of payments unless you know what you are doing. This will not update the payments."
@@ -94,14 +94,14 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           initialValues={{
             at: Math.floor(new Date().getTime() / 1000),
             amount: 0,
-            method: "direct_to_charity",
+            method: "cash",
             reference: "",
             status: "paid",
           }}
           showCurrent={false}
           onSubmit={async (data) => {
             await axios.post<string>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`, data)
-            await refetchDonations()
+            await refetchPayments()
             setNewPaymentModalOpen(false)
           }}
         />
