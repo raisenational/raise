@@ -34,14 +34,6 @@ export interface DonationEditsSchema {
 
 export interface DonationSchema {
   id: string;
-  payments: {
-    id: string;
-    at: number;
-    amount: number;
-    method: "card" | "cash" | "direct_to_charity";
-    reference: string | null;
-    status: "paid" | "pending" | "cancelled";
-  }[];
   fundraiserId: string;
   donorName: string;
   donorEmail: string;
@@ -67,14 +59,6 @@ export interface DonationSchema {
 
 export type DonationsSchema = {
   id: string;
-  payments: {
-    id: string;
-    at: number;
-    amount: number;
-    method: "card" | "cash" | "direct_to_charity";
-    reference: string | null;
-    status: "paid" | "pending" | "cancelled";
-  }[];
   fundraiserId: string;
   donorName: string;
   donorEmail: string;
@@ -162,12 +146,33 @@ export interface IdAndAccessTokenSchema {
 }
 
 export interface PaymentEditsSchema {
+  donationId?: string;
+  at?: number;
+  amount?: number;
+  method?: "card" | "cash" | "direct_to_charity";
+  reference?: string | null;
+  status?: "paid" | "pending" | "cancelled";
+}
+
+export interface PaymentSchema {
+  id: string;
+  donationId: string;
   at: number;
   amount: number;
   method: "card" | "cash" | "direct_to_charity";
   reference: string | null;
   status: "paid" | "pending" | "cancelled";
 }
+
+export type PaymentsSchema = {
+  id: string;
+  donationId: string;
+  at: number;
+  amount: number;
+  method: "card" | "cash" | "direct_to_charity";
+  reference: string | null;
+  status: "paid" | "pending" | "cancelled";
+}[];
 
 export interface ProfileSchema {
   email: string;

@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, unlinkSync } from "fs"
 
 // Hack to import schemas defined in ts into js
 const schemasSource = readFileSync(new URL("../src/helpers/schemas.ts", import.meta.url), { encoding: "utf-8" })
-  .replace(/import (type )?\{[^}]*\} .*/gm, "")
+  .replace(/import (type )?(\{[^}]*\}|\* as) .*/gm, "")
   .replace(/export type .*/g, "")
   .replace(/: JSONSchema<[^>]*>/g, "")
 writeFileSync(new URL("schemas.mjs", import.meta.url), schemasSource)

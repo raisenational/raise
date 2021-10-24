@@ -1,9 +1,9 @@
 import type { NativeAttributeValue } from "@aws-sdk/util-dynamodb"
 import {
-  JSONSchema, donationSchema, fundraiserSchema, fundraiserEditsSchema, donationEditsSchema,
+  JSONSchema, donationSchema, fundraiserSchema, fundraiserEditsSchema, donationEditsSchema, paymentSchema, paymentEditsSchema,
 } from "./schemas"
 import {
-  DonationEditsSchema, DonationSchema, FundraiserEditsSchema, FundraiserSchema,
+  DonationEditsSchema, DonationSchema, FundraiserEditsSchema, FundraiserSchema, PaymentEditsSchema, PaymentSchema,
 } from "./schemaTypes"
 
 export interface Table<Schema extends Required<EditsSchema>, EditsSchema extends { [key: string]: NativeAttributeValue }> {
@@ -29,4 +29,16 @@ export const donationTable: Table<DonationSchema, DonationEditsSchema> = {
   editsSchema: donationEditsSchema,
 }
 
-export const tables = [fundraiserTable, donationTable]
+export const paymentTable: Table<PaymentSchema, PaymentEditsSchema> = {
+  name: `raise-server-${process.env.STAGE}-payment`,
+  pk: "donationId",
+  sk: "id",
+  schema: paymentSchema,
+  editsSchema: paymentEditsSchema,
+}
+
+export const tables = {
+  fundraiser: fundraiserTable,
+  donation: donationTable,
+  payment: paymentTable,
+}

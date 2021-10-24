@@ -6,7 +6,11 @@ import { resolve } from "path"
 import env from "./env"
 
 const SERVICE_NAME = "raise-server"
-const STAGE = "dev"
+const STAGE = "dev" // TODO: sort out the stage correctly
+process.env.STAGE = STAGE
+
+// eslint-disable-next-line import/first
+import { Table, tables } from "./src/helpers/tables"
 
 const allowedMethods = ["get", "post", "patch", "put", "delete"]
 
@@ -14,52 +18,39 @@ const envCase = (s: string): string => s.replace(/[/_\- ]+/g, () => "_").toUpper
 const camelCase = (s: string): string => s.replace(/[/_\- ]+([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 const pascalCase = (s: string): string => s.replace(/(^|[/_\- ]+)([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 
-const defineTables = (definitions: { name: string, pk: string, sk?: string }[]): { env: Record<string, string>, resources: NonNullable<NonNullable<AWS["resources"]>["Resources"]> } => definitions.reduce<{ env: Record<string, string>, resources: NonNullable<NonNullable<AWS["resources"]>["Resources"]> }>((acc, def) => {
-  const TableName = `${SERVICE_NAME}-${STAGE}-${def.name}`
-
-  const resourceKey = `${pascalCase(def.name)}Table`
-  if (acc.resources[resourceKey] !== undefined) throw new Error(`Duplciate table resource key ${resourceKey}`)
-  acc.resources[resourceKey] = {
+const createResources = (definitions: Record<string, Table<any, any>>): NonNullable<NonNullable<AWS["resources"]>["Resources"]> => Object.entries(definitions).reduce<NonNullable<NonNullable<AWS["resources"]>["Resources"]>>((acc, [key, table]) => {
+  const resourceKey = `${pascalCase(key)}Table`
+  if (acc[resourceKey] !== undefined) throw new Error(`Duplciate table resource key ${resourceKey}`)
+  acc[resourceKey] = {
     Type: "AWS::DynamoDB::Table",
     DeletionPolicy: STAGE === "dev" ? "Delete" : "Retain",
     Properties: {
       AttributeDefinitions: [{
-        AttributeName: def.pk,
+        AttributeName: table.pk,
         AttributeType: "S", // String
-      }, ...(def.sk !== undefined ? [{
-        AttributeName: def.sk,
+      }, ...(table.sk !== undefined ? [{
+        AttributeName: table.sk,
         AttributeType: "S", // String
       }] : [])],
       KeySchema: [{
-        AttributeName: def.pk,
+        AttributeName: table.pk,
         KeyType: "HASH",
-      }, ...(def.sk !== undefined ? [{
-        AttributeName: def.sk,
+      }, ...(table.sk !== undefined ? [{
+        AttributeName: table.sk,
         KeyType: "RANGE",
       }] : [])],
       BillingMode: "PAY_PER_REQUEST",
       PointInTimeRecoverySpecification: {
         PointInTimeRecoveryEnabled: STAGE !== "dev",
       },
-      TableName,
+      TableName: table.name,
     },
   }
 
-  const envKey = `TABLE_NAME_${envCase(def.name)}`
-  if (acc.env[envKey] !== undefined) throw new Error(`Duplciate table environment key ${envKey}`)
-  acc.env[envKey] = TableName
-
   return acc
-}, { env: {}, resources: {} })
+}, {})
 
-const tables = defineTables([{
-  name: "fundraiser",
-  pk: "id",
-}, {
-  name: "donation",
-  pk: "fundraiserId",
-  sk: "id",
-}])
+const tableResources = createResources(tables)
 
 const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): NonNullable<AWS["functions"]> => {
   const result: AWS["functions"] = {}
@@ -126,11 +117,14 @@ const serverlessConfiguration: AWS = {
       seed: {
         sample: {
           sources: [{
-            table: tables.env.TABLE_NAME_FUNDRAISER,
+            table: tables.fundraiser.name,
             sources: ["./local/table_fundraiser.json"],
           }, {
-            table: tables.env.TABLE_NAME_DONATION,
+            table: tables.donation.name,
             sources: ["./local/table_donation.json"],
+          }, {
+            table: tables.payment.name,
+            sources: ["./local/table_payment.json"],
           }],
         },
       },
@@ -164,11 +158,11 @@ const serverlessConfiguration: AWS = {
     timeout: 10,
     iam: {
       role: {
-        statements: Object.keys(tables.resources).map((tableName) => ({
+        statements: Object.keys(tableResources).map((cloudformationName) => ({
           Effect: "Allow",
           Action: "dynamodb:*",
           Resource: {
-            "Fn::GetAtt": [tableName, "Arn"],
+            "Fn::GetAtt": [cloudformationName, "Arn"],
           },
         })),
       },
@@ -183,7 +177,7 @@ const serverlessConfiguration: AWS = {
       // not limiting factors. Instead, simplicity and maintainability are so a
       // multiple table design makes sense. As we're using on-demand mode billing
       // (as opposed to provisioned capacity) the costs aren't much higher.
-      ...tables.resources,
+      ...tableResources,
     },
   },
 }
