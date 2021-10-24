@@ -1,5 +1,7 @@
 import * as React from "react"
-import { FormProvider, useForm, useWatch } from "react-hook-form"
+import {
+  FormProvider, SubmitHandler, useForm, useWatch,
+} from "react-hook-form"
 import logo from "../images/logo.png"
 import Button from "./Button"
 import DonationCard from "./DonationCard"
@@ -68,17 +70,42 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
   )
 }
 
+interface DonationFormResponses {
+  donationAmount: number,
+  recurrenceFrequency: "ONE_OFF" | "WEEKLY" | "MONTHLY",
+  contributionAmount: number,
+  giftAid: boolean,
+  donorName: string,
+  donorEmail: string,
+  emailConsentInformational: boolean,
+  emailConsentMarketing: boolean,
+  addressLine1: string,
+  addressLine2: string,
+  addressLine3: string,
+  addressPostcode: string,
+  overallPublic: boolean,
+  namePublic: boolean,
+  donationAmountPublic: boolean,
+  comment: string,
+}
+
+// TODO: error handling
+// TODO: split into multiple pages
 const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }) => {
-  const formMethods = useForm({
+  const formMethods = useForm<DonationFormResponses>({
     defaultValues: {
       donationAmount: fundraiser.suggestedDonationAmountOneOff / 100,
-      donationFrequency: "ONE_OFF" as "ONE_OFF" | "WEEKLY" | "MONTHLY",
+      recurrenceFrequency: "ONE_OFF",
       contributionAmount: (fundraiser.suggestedContributionAmount ?? 0) / 100,
       giftAid: false,
       donorName: "",
       donorEmail: "",
       emailConsentInformational: true,
       emailConsentMarketing: true,
+      addressLine1: "",
+      addressLine2: "",
+      addressLine3: "",
+      addressPostcode: "",
       overallPublic: true,
       namePublic: true,
       donationAmountPublic: true,
@@ -90,24 +117,34 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }
   } = formMethods
   const watches = useWatch({ control })
 
+  // TODO: once past donation amount page, get payment intent from back-end and set up stripe fields
+
+  const onSubmit: SubmitHandler<DonationFormResponses> = (data) => {
+    // TODO: submit the donation to the back-end
+    console.log(data)
+
+    // TODO: confirm the payment with Stripe
+  }
+
   return (
     <FormProvider {...formMethods}>
       <SectionTitle>Donate</SectionTitle>
       <h3 className="text-2xl">Your Donation</h3>
       {/* TODO: formatting */}
       <div className="mt-2 grid gap-2 md:grid-cols-3 md:gap-4">
-        <button type="button" onClick={() => { setValue("donationAmount", fundraiser.suggestedDonationAmountOneOff / 100); setValue("donationFrequency", "ONE_OFF") }} className="rounded border border-gray-700 p-4 cursor-pointer transform transition-all hover:bg-gray-100 hover:scale-105">
+        <button type="button" onClick={() => { setValue("donationAmount", fundraiser.suggestedDonationAmountOneOff / 100); setValue("recurrenceFrequency", "ONE_OFF") }} className="rounded border border-gray-700 p-4 cursor-pointer transform transition-all hover:bg-gray-100 hover:scale-105">
           {amountDropPenceIfZeroFormatter(fundraiser.suggestedDonationAmountOneOff)} one-off
         </button>
-        <button type="button" onClick={() => { setValue("donationAmount", fundraiser.suggestedDonationAmountWeekly / 100); setValue("donationFrequency", "WEEKLY") }} className="rounded border border-gray-700 p-4 cursor-pointer transform transition-all hover:bg-gray-100 hover:scale-105">
+        <button type="button" onClick={() => { setValue("donationAmount", fundraiser.suggestedDonationAmountWeekly / 100); setValue("recurrenceFrequency", "WEEKLY") }} className="rounded border border-gray-700 p-4 cursor-pointer transform transition-all hover:bg-gray-100 hover:scale-105">
           {amountDropPenceIfZeroFormatter(fundraiser.suggestedDonationAmountWeekly)} weekly
         </button>
       </div>
 
       <div className="mt-2 grid md:grid-cols-2 md:gap-4">
-        <LabelledInput id="donationAmount" label="Donation amount" type="number" prefix="£" {...register("donationAmount"/* , { valueAsNumber: true, validate: (a) => (a * 100) % 1 === 0 } */)} />
+        <LabelledInput id="donationAmount" label="Donation amount" type="number" prefix="£" {...register("donationAmount"/* , { valueAsNumber: true, validate: (a) => ((a * 100) % 1 === 0 ? true : "Donation amount must be a valid monetary value") } */)} />
+        {/* {errors.donationAmount?.message} */}
         <LabelledInput
-          id="donationFrequency"
+          id="recurrenceFrequency"
           label="Donation frequency"
           type="select"
           options={{
@@ -115,7 +152,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }
             WEEKLY: "weekly",
           }}
           value="ONE_OFF"
-          {...register("donationFrequency")}
+          {...register("recurrenceFrequency")}
         />
       </div>
 
@@ -125,7 +162,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }
 
       <div className="mt-4">
         <p>At the end of the academic year, we come together as a community for a Summer Party to celebrate our collective impact. Given that 100% of your donation above will go directly to charity, we suggest an optional, separate contribution of {amountDropPenceIfZeroFormatter(fundraiser.suggestedContributionAmount)} to cover the costs of the event (which are generously subsidised by our sponsors). Importantly, everyone will be very welcome to join, whether or not they feel able to make this contribution.</p>
-        <LabelledInput id="contributionAmount" label={`Contribution amount${watches.donationFrequency !== "ONE_OFF" ? " (one-off)" : ""}`} type="number" prefix="£" className="mt-2" {...register("contributionAmount")} />
+        <LabelledInput id="contributionAmount" label={`Contribution amount${watches.recurrenceFrequency !== "ONE_OFF" ? " (one-off)" : ""}`} type="number" prefix="£" className="mt-2" {...register("contributionAmount")} />
       </div>
 
       <h3 className="text-2xl mt-16">Gift Aid</h3>
@@ -143,13 +180,12 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }
         </div>
         {watches.giftAid && (
           <>
-            <LabelledInput id="addressLine1" label="Address line 1" type="text" autoComplete="address-line1" />
-            <LabelledInput id="addressLine2" label="Address line 2" type="text" autoComplete="address-line2" />
+            <LabelledInput id="addressLine1" label="Address line 1" type="text" autoComplete="address-line1" {...register("addressLine1")} />
+            <LabelledInput id="addressLine2" label="Address line 2" type="text" autoComplete="address-line2" {...register("addressLine2")} />
             <div className="grid md:grid-cols-2 md:gap-2">
-              <LabelledInput id="addressLine3" label="Address line 3" type="text" autoComplete="address-line3" />
-              <LabelledInput id="addressPostcode" label="Address postcode" type="text" autoComplete="postal-code" />
+              <LabelledInput id="addressLine3" label="Address line 3" type="text" autoComplete="address-line3" {...register("addressLine3")} />
+              <LabelledInput id="addressPostcode" label="Address postcode" type="text" autoComplete="postal-code" {...register("addressPostcode")} />
             </div>
-            <LabelledInput id="addressCountry" label="Address country" type="hidden" value="UK" autoComplete="country-name" />
           </>
         )}
       </div>
@@ -179,20 +215,20 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }
             donationAmount={watches.donationAmountPublic ? watches.donationAmount! * 100 : undefined}
             // TODO: calculate properly
             matchFundingAmount={watches.donationAmountPublic ? watches.donationAmount! * 100 : undefined}
-            recurringAmount={watches.donationAmountPublic && watches.donationFrequency !== "ONE_OFF" ? watches.donationAmount! * 100 : null}
-            recurrenceFrequency={watches.donationFrequency !== "ONE_OFF" ? watches.donationFrequency : null}
+            recurringAmount={watches.donationAmountPublic && watches.recurrenceFrequency !== "ONE_OFF" ? watches.donationAmount! * 100 : null}
+            recurrenceFrequency={watches.recurrenceFrequency !== "ONE_OFF" ? watches.recurrenceFrequency : null}
             className="bg-raise-red text-2xl text-white font-raise-content max-w-md mt-2"
           />
         </>
       )}
 
       <h3 className="text-2xl mt-16">Payment</h3>
-      <p>Amount due: {amountDropPenceIfZeroFormatter(100 * (watches.donationAmount! + watches.contributionAmount!))}{watches.donationFrequency !== "ONE_OFF" && ` now, then ${amountDropPenceIfZeroFormatter(100 * watches.donationAmount!)} ${watches.donationFrequency?.toLowerCase()} (you can cancel your ${watches.donationFrequency?.toLowerCase()} payments at any time)`}</p>
+      <p>Amount due: {amountDropPenceIfZeroFormatter(100 * (watches.donationAmount! + watches.contributionAmount!))}{watches.recurrenceFrequency !== "ONE_OFF" && ` now, then ${amountDropPenceIfZeroFormatter(100 * watches.donationAmount!)} ${watches.recurrenceFrequency?.toLowerCase()} (you can cancel your ${watches.recurrenceFrequency?.toLowerCase()} payments at any time)`}</p>
       <Alert className="mt-2" variant="warning">
-        <p>This system is in development, and you should avoid using real card details. Use a <a href="https://stripe.com/docs/testing#cards" target="_blank" rel="noreferrer">Stripe test card</a>, for example:</p>
-        <p>Card number: <code className="select-all">4242 4242 4242 4242</code></p>
-        <p>Expiry date: <code className="select-all">01 / {(new Date().getFullYear() + 1).toFixed(0).slice(2)}</code> (or any future date)</p>
-        <p>Security code: <code className="select-all">123</code> (or any 3 digits)</p>
+        This system is in development, and you should avoid using real card details. Use a <a href="https://stripe.com/docs/testing#cards" target="_blank" rel="noreferrer">Stripe test card</a>, for example:<br />
+        Card number: <code className="select-all">4242 4242 4242 4242</code><br />
+        Expiry date: <code className="select-all">01 / {(new Date().getFullYear() + 1).toFixed(0).slice(2)}</code> (or any future date)<br />
+        Security code: <code className="select-all">123</code> (or any 3 digits)
       </Alert>
       <div className="grid md:grid-cols-1 md:gap-2 mt-4">
         <div>
@@ -204,7 +240,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }
         </div>
       </div>
 
-      <Button variant="blue" className="mt-4" onClick={() => alert("TODO: make backend call + sort Stripe stuff")}>Pay now</Button>
+      <Button variant="blue" className="mt-4" onClick={handleSubmit(onSubmit)}>Pay now</Button>
     </FormProvider>
   )
 }

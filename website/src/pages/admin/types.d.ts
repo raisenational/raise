@@ -89,3 +89,23 @@ export interface PublicFundraiser {
     recurrenceFrequency?: ("WEEKLY" | "MONTHLY") | null,
   }[],
 }
+
+export interface PublicDonationRequest {
+  fundraiserId: string,
+  donorName: string,
+  donorEmail: string,
+  createdAt: number,
+  addressLine1: string | null,
+  addressLine2: string | null,
+  addressLine3: string | null,
+  addressPostcode: string | null,
+  addressCountry: string | null,
+  giftAid: boolean,
+  comment: string | null,
+  donationAmount: number,
+  contributionAmount: number,
+  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null,
+  overallPublic: boolean,
+  namePublic: boolean,
+  donationAmountPublic: boolean,
+}
