@@ -1,22 +1,20 @@
 import type { JSONSchema7Definition } from "json-schema"
-import type {
-  AccessTokenSchema, DonationEditsSchema, DonationSchema, EmailSchema, FundraiserEditsSchema, FundraiserSchema, IdAndAccessTokenSchema, PaymentEditsSchema, ProfileSchema, PublicFundraiserSchema, StatusSchema, UlidSchema,
-} from "./schemaTypes"
+import type * as S from "./schemaTypes"
 
 // TODO: It'd be nice to use ajv's JSONSchemaType. However, it has poor performance and is incorrect: https://github.com/ajv-validator/ajv/issues/1664
 export type JSONSchema<T> = JSONSchema7Definition & { __type?: T };
 
-export const emailSchema: JSONSchema<EmailSchema> = {
+export const emailSchema: JSONSchema<S.EmailSchema> = {
   type: "string",
   pattern: "^(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])$",
 }
 
-export const ulidSchema: JSONSchema<UlidSchema> = {
+export const ulidSchema: JSONSchema<S.UlidSchema> = {
   type: "string",
   pattern: "^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$",
 }
 
-export const statusSchema: JSONSchema<StatusSchema> = {
+export const statusSchema: JSONSchema<S.StatusSchema> = {
   type: "object",
   properties: {
     message: { type: "string" },
@@ -25,7 +23,7 @@ export const statusSchema: JSONSchema<StatusSchema> = {
   additionalProperties: false,
 }
 
-export const accessTokenSchema: JSONSchema<AccessTokenSchema> = {
+export const accessTokenSchema: JSONSchema<S.AccessTokenSchema> = {
   type: "object",
   properties: {
     accessToken: { type: "string" },
@@ -35,7 +33,7 @@ export const accessTokenSchema: JSONSchema<AccessTokenSchema> = {
   additionalProperties: false,
 }
 
-export const idAndAccessTokenSchema: JSONSchema<IdAndAccessTokenSchema> = {
+export const idAndAccessTokenSchema: JSONSchema<S.IdAndAccessTokenSchema> = {
   type: "object",
   properties: {
     idToken: { type: "string" },
@@ -45,7 +43,7 @@ export const idAndAccessTokenSchema: JSONSchema<IdAndAccessTokenSchema> = {
   additionalProperties: false,
 }
 
-export const profileSchema: JSONSchema<ProfileSchema> = {
+export const profileSchema: JSONSchema<S.ProfileSchema> = {
   type: "object",
   properties: {
     email: { type: "string" },
@@ -58,7 +56,7 @@ export const profileSchema: JSONSchema<ProfileSchema> = {
   additionalProperties: false,
 }
 
-export const fundraiserEditsSchema: JSONSchema<FundraiserEditsSchema> = {
+export const fundraiserEditsSchema: JSONSchema<S.FundraiserEditsSchema> = {
   type: "object",
   properties: {
     fundraiserName: { type: "string", minLength: 1, maxLength: 128 },
@@ -81,7 +79,7 @@ export const fundraiserEditsSchema: JSONSchema<FundraiserEditsSchema> = {
   additionalProperties: false,
 }
 
-export const fundraiserSchema: JSONSchema<FundraiserSchema> = {
+export const fundraiserSchema: JSONSchema<S.FundraiserSchema> = {
   type: "object",
   properties: {
     id: ulidSchema,
@@ -91,9 +89,9 @@ export const fundraiserSchema: JSONSchema<FundraiserSchema> = {
   additionalProperties: false,
 }
 
-export const fundraisersSchema: JSONSchema<FundraiserSchema[]> = { type: "array", items: fundraiserSchema }
+export const fundraisersSchema: JSONSchema<S.FundraiserSchema[]> = { type: "array", items: fundraiserSchema }
 
-export const donationEditsSchema: JSONSchema<DonationEditsSchema> = {
+export const donationEditsSchema: JSONSchema<S.DonationEditsSchema> = {
   type: "object",
   properties: {
     fundraiserId: ulidSchema,
@@ -122,35 +120,45 @@ export const donationEditsSchema: JSONSchema<DonationEditsSchema> = {
   additionalProperties: false,
 }
 
-export const donationSchema: JSONSchema<DonationSchema> = {
+export const donationSchema: JSONSchema<S.DonationSchema> = {
   type: "object",
   properties: {
     id: ulidSchema,
-    payments: {
-      type: "array",
-      items: {
-        type: "object",
-        properties: {
-          id: ulidSchema,
-          at: { type: "integer" },
-          amount: { type: "integer" },
-          method: { enum: ["card", "cash", "direct_to_charity"] },
-          reference: { type: ["string", "null"] },
-          status: { enum: ["paid", "pending", "cancelled"] },
-        },
-        required: ["id", "at", "amount", "method", "reference", "status"],
-        additionalProperties: false,
-      },
-    },
     ...donationEditsSchema.properties,
   },
-  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeId", "payments", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
+  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeId", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
   additionalProperties: false,
 }
 
-export const donationsSchema: JSONSchema<DonationSchema[]> = { type: "array", items: donationSchema }
+export const donationsSchema: JSONSchema<S.DonationSchema[]> = { type: "array", items: donationSchema }
 
-export const publicFundraiserSchema: JSONSchema<PublicFundraiserSchema> = {
+export const paymentEditsSchema: JSONSchema<S.PaymentEditsSchema> = {
+  type: "object",
+  properties: {
+    donationId: ulidSchema,
+    at: { type: "integer" },
+    amount: { type: "integer" },
+    method: { enum: ["card", "cash", "direct_to_charity"] },
+    reference: { type: ["string", "null"] },
+    status: { enum: ["paid", "pending", "cancelled"] },
+  },
+  minProperties: 1,
+  additionalProperties: false,
+}
+
+export const paymentSchema: JSONSchema<S.PaymentSchema> = {
+  type: "object",
+  properties: {
+    id: ulidSchema,
+    ...paymentEditsSchema.properties,
+  },
+  required: ["id", "donationId", "at", "amount", "method", "reference", "status"],
+  additionalProperties: false,
+}
+
+export const paymentsSchema: JSONSchema<S.PaymentSchema[]> = { type: "array", items: paymentSchema }
+
+export const publicFundraiserSchema: JSONSchema<S.PublicFundraiserSchema> = {
   type: "object",
   properties: {
     activeFrom: { type: "number" },
@@ -186,18 +194,5 @@ export const publicFundraiserSchema: JSONSchema<PublicFundraiserSchema> = {
     },
   },
   required: ["activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "donations"],
-  additionalProperties: false,
-}
-
-export const paymentEditsSchema: JSONSchema<PaymentEditsSchema> = {
-  type: "object",
-  properties: {
-    at: { type: "integer" },
-    amount: { type: "integer" },
-    method: { enum: ["card", "cash", "direct_to_charity"] },
-    reference: { type: ["string", "null"] },
-    status: { enum: ["paid", "pending", "cancelled"] },
-  },
-  required: ["at", "amount", "method", "reference", "status"],
   additionalProperties: false,
 }
