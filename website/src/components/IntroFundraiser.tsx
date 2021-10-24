@@ -72,7 +72,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }
   const formMethods = useForm({
     defaultValues: {
       donationAmount: fundraiser.suggestedDonationAmountOneOff / 100,
-      donationFrequency: "ONE_OFF",
+      donationFrequency: "ONE_OFF" as "ONE_OFF" | "WEEKLY" | "MONTHLY",
       contributionAmount: (fundraiser.suggestedContributionAmount ?? 0) / 100,
       giftAid: false,
       donorName: "",
@@ -179,7 +179,8 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }
             donationAmount={watches.donationAmountPublic ? watches.donationAmount! * 100 : undefined}
             // TODO: calculate properly
             matchFundingAmount={watches.donationAmountPublic ? watches.donationAmount! * 100 : undefined}
-            contributionAmount={watches.donationAmountPublic ? watches.contributionAmount! * 100 : undefined}
+            recurringAmount={watches.donationAmountPublic && watches.donationFrequency !== "ONE_OFF" ? watches.donationAmount! * 100 : null}
+            recurrenceFrequency={watches.donationFrequency !== "ONE_OFF" ? watches.donationFrequency : null}
             className="bg-raise-red text-2xl text-white font-raise-content max-w-md mt-2"
           />
         </>
