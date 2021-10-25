@@ -7,4 +7,8 @@ export default {
 
   // OAuth 2 client id for Google sign-in
   GOOGLE_CLIENT_ID: "730827052132-u1tatnr4anip3vf7j5tq82k33gb5okpe.apps.googleusercontent.com",
+
+  // Stripe secret key
+  STRIPE_PUBLISHABLE_KEY: "pk_test_51JoQv0KzqibgSMB7aaaSq8ZJUsTwC4Hd1rfRwehKncms8iaHsKl941RvdBWNNVGQDcdRZmRaDaMknmBTilFqOhYU00EyfZikdJ",
+  STRIPE_SECRET_KEY: "sk_test_51JoQv0KzqibgSMB7Oe3m4t2wcaTp3nMhg0xol8MPHLCBICO96ETErfvwB724kCFoD5MKA9OfzHYL6EdQaaYGh7Az00DdEdhY2z",
 }

@@ -9,7 +9,6 @@ export interface AccessTokenSchema {
 }
 
 export interface DonationEditsSchema {
-  fundraiserId?: string;
   donorName?: string;
   donorEmail?: string;
   createdAt?: number;
@@ -146,7 +145,6 @@ export interface IdAndAccessTokenSchema {
 }
 
 export interface PaymentEditsSchema {
-  donationId?: string;
   at?: number;
   amount?: number;
   method?: "card" | "cash" | "direct_to_charity";
@@ -182,7 +180,28 @@ export interface ProfileSchema {
   sourceIp: string;
 }
 
+export interface PublicDonationRequest {
+  donationAmount: number;
+  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
+  contributionAmount: number;
+  giftAid: boolean;
+  donorName: string;
+  donorEmail: string;
+  emailConsentInformational: boolean;
+  emailConsentMarketing: boolean;
+  addressLine1: string | null;
+  addressLine2: string | null;
+  addressLine3: string | null;
+  addressPostcode: string | null;
+  addressCountry: string | null;
+  overallPublic: boolean;
+  namePublic: boolean;
+  donationAmountPublic: boolean;
+  comment: string | null;
+}
+
 export interface PublicFundraiserSchema {
+  id: string;
   activeFrom: number;
   activeTo: number | null;
   paused: boolean;
@@ -206,6 +225,13 @@ export interface PublicFundraiserSchema {
     recurringAmount?: number | null;
     recurrenceFrequency?: ("WEEKLY" | "MONTHLY") | null;
   }[];
+}
+
+export interface PublicPaymentIntentResponse {
+  donationId: string;
+  paymentId: string;
+  amount: number;
+  stripeClientSecret: string;
 }
 
 export interface StatusSchema {

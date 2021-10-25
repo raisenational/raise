@@ -1,40 +1,44 @@
-import type { NativeAttributeValue } from "@aws-sdk/util-dynamodb"
 import {
-  JSONSchema, donationSchema, fundraiserSchema, fundraiserEditsSchema, donationEditsSchema, paymentSchema, paymentEditsSchema,
+  JSONSchema, donationSchema, fundraiserSchema, paymentSchema,
 } from "./schemas"
-import {
-  DonationEditsSchema, DonationSchema, FundraiserEditsSchema, FundraiserSchema, PaymentEditsSchema, PaymentSchema,
+import type {
+  DonationSchema, FundraiserSchema, PaymentSchema,
 } from "./schemaTypes"
 
-export interface Table<Schema extends Required<EditsSchema>, EditsSchema extends { [key: string]: NativeAttributeValue }> {
+export type DBAttributeValue = null | boolean | number | string | DBAttributeValue[] | { [key: string]: DBAttributeValue }
+
+export interface Table<
+  PartitionKey extends string,
+  PrimaryKey extends string,
+  Schema extends Record<keyof Schema, DBAttributeValue> & Key,
+  Key extends Record<PartitionKey | PrimaryKey, string> = Record<PartitionKey | PrimaryKey, string>,
+  _Edits extends { [K in keyof Schema]?: K extends keyof Key ? never : Schema[K] } = { [K in keyof Schema]?: K extends keyof Key ? never : Schema[K] }
+  > {
   name: string,
-  pk: string,
-  sk?: string,
+  partitionKey: PartitionKey,
+  primaryKey: PrimaryKey,
   schema: JSONSchema<Schema>,
-  editsSchema: JSONSchema<EditsSchema>,
 }
 
-export const fundraiserTable: Table<FundraiserSchema, FundraiserEditsSchema> = {
+export const fundraiserTable: Table<"id", "id", FundraiserSchema> = {
   name: `raise-server-${process.env.STAGE}-fundraiser`,
-  pk: "id",
+  partitionKey: "id",
+  primaryKey: "id",
   schema: fundraiserSchema,
-  editsSchema: fundraiserEditsSchema,
 }
 
-export const donationTable: Table<DonationSchema, DonationEditsSchema> = {
+export const donationTable: Table<"fundraiserId", "id", DonationSchema> = {
   name: `raise-server-${process.env.STAGE}-donation`,
-  pk: "fundraiserId",
-  sk: "id",
+  partitionKey: "fundraiserId",
+  primaryKey: "id",
   schema: donationSchema,
-  editsSchema: donationEditsSchema,
 }
 
-export const paymentTable: Table<PaymentSchema, PaymentEditsSchema> = {
+export const paymentTable: Table<"donationId", "id", PaymentSchema> = {
   name: `raise-server-${process.env.STAGE}-payment`,
-  pk: "donationId",
-  sk: "id",
+  partitionKey: "donationId",
+  primaryKey: "id",
   schema: paymentSchema,
-  editsSchema: paymentEditsSchema,
 }
 
 export const tables = {

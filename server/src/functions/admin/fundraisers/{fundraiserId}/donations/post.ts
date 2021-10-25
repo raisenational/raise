@@ -1,5 +1,4 @@
 import "source-map-support/register"
-import createHttpError from "http-errors"
 import { ulid } from "ulid"
 import { middyfy } from "../../../../../helpers/wrapper"
 import {
@@ -10,10 +9,6 @@ import { donationTable, fundraiserTable } from "../../../../../helpers/tables"
 
 export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
-
-  if (event.body.fundraiserId !== undefined && event.body.fundraiserId !== event.pathParameters.fundraiserId) {
-    throw new createHttpError.BadRequest(`Fundraiser id in body (${event.body.fundraiserId}) does not match path parameter (${event.pathParameters.fundraiserId})`)
-  }
 
   const donationId = ulid()
   // TODO: validate match funding amount against limit? or not given this is a manual entry?

@@ -14,7 +14,7 @@ export const main = middyfy(paymentEditsSchema, ulidSchema, true, async (event) 
   const paymentAmount = event.body.amount ?? 0
 
   if (event.body.status !== "paid") {
-    insert(paymentTable, {
+    await insert(paymentTable, {
       id: paymentId,
       donationId,
       at: event.body.at ?? Math.floor(new Date().getTime() / 1000),
@@ -23,6 +23,7 @@ export const main = middyfy(paymentEditsSchema, ulidSchema, true, async (event) 
       reference: event.body.reference ?? null,
       status: event.body.status ?? "paid",
     })
+    return paymentId
   }
 
   const [fundraiser, donation] = await Promise.all([
