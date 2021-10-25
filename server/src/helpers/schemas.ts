@@ -158,6 +158,34 @@ export const paymentSchema: JSONSchema<S.PaymentSchema> = {
 
 export const paymentsSchema: JSONSchema<S.PaymentSchema[]> = { type: "array", items: paymentSchema }
 
+export const auditLogSchema: JSONSchema<S.AuditLogSchema> = {
+  type: "object",
+  properties: {
+    id: ulidSchema,
+    objectId: ulidSchema, // a thing that can be created/edited e.g. a donation. If non-existent (e.g. for logins), same as id.
+    subjectId: { type: "string" }, // e.g. a admin user, a public user, Stripe
+    action: { enum: ["create", "edit", "login"] },
+    at: { type: "integer" },
+    metadata: { type: "object", additionalProperties: { $ref: "#/definitions/auditLogMetadataSchema" } },
+    // TODO: potentially store IP address, API route key and/or Lambda invocation id?
+    // TODO: add a TTL so that Amazon deletes old audit logs for us?
+  },
+  required: ["id", "objectId", "subjectId", "action", "at", "metadata"],
+  additionalProperties: false,
+  definitions: {
+    auditLogMetadataSchema: {
+      oneOf: [
+        { type: "null" },
+        { type: "boolean" },
+        { type: "number" },
+        { type: "string" },
+        { type: "array", items: { $ref: "#/definitions/auditLogMetadataSchema" } },
+        { type: "object", additionalProperties: { $ref: "#/definitions/auditLogMetadataSchema" } },
+      ],
+    },
+  },
+}
+
 export const publicFundraiserSchema: JSONSchema<S.PublicFundraiserSchema> = {
   type: "object",
   properties: {

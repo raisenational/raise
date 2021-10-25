@@ -1,8 +1,8 @@
 import {
-  JSONSchema, donationSchema, fundraiserSchema, paymentSchema,
+  JSONSchema, donationSchema, fundraiserSchema, paymentSchema, auditLogSchema,
 } from "./schemas"
 import type {
-  DonationSchema, FundraiserSchema, PaymentSchema,
+  DonationSchema, FundraiserSchema, PaymentSchema, AuditLogSchema,
 } from "./schemaTypes"
 
 export type DBAttributeValue = null | boolean | number | string | DBAttributeValue[] | { [key: string]: DBAttributeValue }
@@ -41,8 +41,16 @@ export const paymentTable: Table<"donationId", "id", PaymentSchema> = {
   schema: paymentSchema,
 }
 
+export const auditLogTable: Table<"objectId", "id", AuditLogSchema> = {
+  name: `raise-server-${process.env.STAGE}-audit-log`,
+  partitionKey: "objectId",
+  primaryKey: "id",
+  schema: auditLogSchema,
+}
+
 export const tables = {
   fundraiser: fundraiserTable,
   donation: donationTable,
   payment: paymentTable,
+  auditLog: auditLogTable,
 }

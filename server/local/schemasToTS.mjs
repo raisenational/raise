@@ -11,5 +11,17 @@ writeFileSync(new URL("schemas.mjs", import.meta.url), schemasSource)
 const schemas = await import("./schemas.mjs")
 unlinkSync(new URL("schemas.mjs", import.meta.url))
 
-const schemaTypesSource = (await Promise.all(Object.entries(schemas).map(([k, v]) => compile({ ...v }, k, { bannerComment: "" })))).join("\n")
+const deepClone = (item) => {
+  if (Array.isArray(item)) return item.slice().map(deepClone)
+  if (typeof item !== "object") return item
+
+  const n = {}
+  // eslint-disable-next-line no-restricted-syntax,guard-for-in
+  for (const key in item) {
+    n[key] = deepClone(item[key])
+  }
+  return n
+}
+
+const schemaTypesSource = (await Promise.all(Object.entries(schemas).map(([k, v]) => compile(deepClone(v), k, { bannerComment: "" })))).join("\n")
 writeFileSync(new URL("../src/helpers/schemaTypes.ts", import.meta.url), `/* eslint-disable */\n/**\n* This file was automatically generated. DO NOT MODIFY IT BY HAND.\n* Instead, modify schemas.ts, and run "npm run schemas".\n*/\n${schemaTypesSource}`)
