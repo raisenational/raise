@@ -7,7 +7,7 @@ import Ajv from "ajv"
 import createHttpError from "http-errors"
 import type { NativeAttributeValue } from "@aws-sdk/util-dynamodb"
 import type { JSONSchema7 } from "json-schema"
-import type { Table } from "./tables"
+import type { DBAttributeValue, Table } from "./tables"
 import type { JSONSchema } from "./schemas"
 
 const dynamoDBClient = process.env.IS_OFFLINE
@@ -45,13 +45,25 @@ export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } 
   }
 }
 
-export const scan = async <S extends Required<E>, E>(table: Table<S, E>): Promise<S[]> => {
+export const scan = async <
+  Pa extends string,
+  Pr extends string,
+  S extends Record<keyof S, DBAttributeValue> & K,
+  K extends Record<Pa | Pr, string>,
+  E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
+  >(table: Table<Pa, Pr, S, K, E>): Promise<S[]> => {
   const result = await dbClient.send(new ScanCommand({ TableName: table.name }))
   assertMatchesSchema<S[]>({ type: "array", items: table.schema }, result.Items)
   return result.Items as S[]
 }
 
-export const query = async <S extends Required<E>, E>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }): Promise<S[]> => {
+export const query = async <
+  Pa extends string,
+  Pr extends string,
+  S extends Record<keyof S, DBAttributeValue> & K,
+  K extends Record<Pa | Pr, string>,
+  E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
+  >(table: Table<Pa, Pr, S, K, E>, key: Record<Pa, string>): Promise<S[]> => {
   const entries = Object.entries(key)
   const result = await dbClient.send(new QueryCommand({
     TableName: table.name,
@@ -66,37 +78,61 @@ export const query = async <S extends Required<E>, E>(table: Table<S, E>, key: {
   return result.Items as S[]
 }
 
-export const get = async <S extends Required<E>, E>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }): Promise<S> => {
+export const get = async <
+  Pa extends string,
+  Pr extends string,
+  S extends Record<keyof S, DBAttributeValue> & K,
+  K extends Record<Pa | Pr, string>,
+  E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
+  >(table: Table<Pa, Pr, S, K, E>, key: K): Promise<S> => {
   const result = await dbClient.send(new GetCommand({ TableName: table.name, Key: key }))
   if (!result.Item) throw new createHttpError.NotFound("Item not found")
   assertMatchesSchema<S>(table.schema, result.Item)
   return result.Item as S
 }
 
-export const insert = async <S extends Required<E>, E>(table: Table<S, E>, data: S & { [key: string]: NativeAttributeValue }): Promise<S> => {
+export const insert = async <
+  Pa extends string,
+  Pr extends string,
+  S extends Record<keyof S, DBAttributeValue> & K,
+  K extends Record<Pa | Pr, string>,
+  E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
+  >(table: Table<Pa, Pr, S, K, E>, data: S): Promise<S> => {
   assertMatchesSchema<S>(table.schema, data)
-  await dbClient.send(new PutCommand({ TableName: table.name, Item: data, ConditionExpression: `attribute_not_exists(${table.pk})` }))
+  await dbClient.send(new PutCommand({ TableName: table.name, Item: data, ConditionExpression: `attribute_not_exists(${table.partitionKey})` }))
   return data
 }
 
 type AWSTransactionDefinition = NonNullable<TransactWriteCommandInput["TransactItems"]>[number]
 
-export const insertT = <S extends Required<E>, E>(table: Table<S, E>, data: S & { [key: string]: NativeAttributeValue }): AWSTransactionDefinition => {
+export const insertT = <
+  Pa extends string,
+  Pr extends string,
+  S extends Record<keyof S, DBAttributeValue> & K,
+  K extends Record<Pa | Pr, string>,
+  E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
+  >(table: Table<Pa, Pr, S, K, E>, data: S): AWSTransactionDefinition => {
   const tdef: AWSTransactionDefinition = { Put: { Item: data, TableName: table.name } }
   return tdef
 }
 
-export const plusT = <S extends Required<E>, E>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }): AWSTransactionDefinition => {
+export const plusT = <
+  Pa extends string,
+  Pr extends string,
+  S extends Record<keyof S, DBAttributeValue> & K,
+  K extends Record<Pa | Pr, string>,
+  E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
+  >(table: Table<Pa, Pr, S, K, E>, key: K, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }): AWSTransactionDefinition => {
   const entries = Object.entries(data)
   const tdef: AWSTransactionDefinition = {
     Update: {
       TableName: table.name,
       Key: key,
-      ConditionExpression: `id = :id${extraConditionExpression ? ` AND ${extraConditionExpression}` : ""}`,
+      ConditionExpression: `${table.primaryKey} = :${table.primaryKey}${extraConditionExpression ? ` AND ${extraConditionExpression}` : ""}`,
       ExpressionAttributeValues: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
         acc[`:${k}`] = v
         return acc
-      }, { ":id": key.id, ...extraAttributeValues }),
+      }, { [`:${table.primaryKey}`]: key[table.primaryKey], ...extraAttributeValues }),
       UpdateExpression: `SET ${entries.map(([k]) => `${k} = ${k} + :${k}`).join(", ")}`,
     },
   }
@@ -109,7 +145,15 @@ export const inTransaction = async (args: AWSTransactionDefinition[]): Promise<T
   return result
 }
 
-export const appendList = async <S extends Required<E>, E, P extends keyof { [K in keyof S as S[K] extends unknown[] ? K : never]: S[K] } & keyof S, I extends (S[P] extends (infer _I)[] ? _I : never)>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }, listProperty: P, newItem: I): Promise<S> => {
+export const appendList = async <
+  Pa extends string,
+  Pr extends string,
+  S extends Record<keyof S, DBAttributeValue> & K,
+  K extends Record<Pa | Pr, string>,
+  E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
+  P extends keyof { [_K in keyof S as S[_K] extends unknown[] ? _K : never]: S[_K] } & keyof S,
+  I extends (S[P] extends (infer _I)[] ? _I : never)
+>(table: Table<Pa, Pr, S, K, E>, key: K, listProperty: P, newItem: I): Promise<S> => {
   assertMatchesSchema<E>((table.schema as Required<Pick<JSONSchema7, "properties">>).properties[listProperty], [newItem])
 
   // TODO: do we actually need to check the item exists? we'll probably get an error or lack of Attributes back if it doesn't, maybe check that instead to reduce db accesses.
@@ -120,11 +164,11 @@ export const appendList = async <S extends Required<E>, E, P extends keyof { [K 
   const result = await dbClient.send(new UpdateCommand({
     TableName: table.name,
     Key: key,
-    ConditionExpression: "id = :id", // this ensures it doesn't create a new item
+    ConditionExpression: `${table.primaryKey} = :${table.primaryKey}`, // this ensures it doesn't create a new item
     UpdateExpression: `SET ${listProperty} = list_append(${listProperty}, :newItems)`,
     ExpressionAttributeValues: {
       ":newItems": [newItem],
-      ":id": key.id,
+      [`:${table.primaryKey}`]: key[table.primaryKey],
     },
     ReturnValues: "ALL_NEW",
   }))
@@ -132,19 +176,25 @@ export const appendList = async <S extends Required<E>, E, P extends keyof { [K 
   return result.Attributes as S
 }
 
-export const update = async <S extends Required<E>, E>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }, edits: E & { [key: string]: NativeAttributeValue }): Promise<S> => {
-  assertMatchesSchema<E>(table.editsSchema, edits)
+export const update = async <
+  Pa extends string,
+  Pr extends string,
+  S extends Record<keyof S, DBAttributeValue> & K,
+  K extends Record<Pa | Pr, string>,
+  E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
+  >(table: Table<Pa, Pr, S, K, E>, key: K, edits: E): Promise<S> => {
+  assertMatchesSchema<E>({ ...table.schema as Record<string, unknown>, required: [] }, edits)
 
   const entries = Object.entries(edits)
   const result = await dbClient.send(new UpdateCommand({
     TableName: table.name,
     Key: key,
-    ConditionExpression: "id = :id", // this ensures it doesn't create a new item
+    ConditionExpression: `${table.primaryKey} = :${table.primaryKey}`, // this ensures it doesn't create a new item
     UpdateExpression: `SET ${entries.map(([k]) => `${k} = :${k}`).join(", ")}`,
     ExpressionAttributeValues: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
       acc[`:${k}`] = v
       return acc
-    }, { ":id": key.id }),
+    }, { [`:${table.primaryKey}`]: key[table.primaryKey] }),
     ReturnValues: "ALL_NEW",
   }))
   assertMatchesSchema<S>(table.schema, result.Attributes)

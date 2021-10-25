@@ -18,7 +18,7 @@ const envCase = (s: string): string => s.replace(/[/_\- ]+/g, () => "_").toUpper
 const camelCase = (s: string): string => s.replace(/[/_\- ]+([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 const pascalCase = (s: string): string => s.replace(/(^|[/_\- ]+)([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 
-const createResources = (definitions: Record<string, Table<any, any>>): NonNullable<NonNullable<AWS["resources"]>["Resources"]> => Object.entries(definitions).reduce<NonNullable<NonNullable<AWS["resources"]>["Resources"]>>((acc, [key, table]) => {
+const createResources = (definitions: Record<string, Table<any, any, any>>): NonNullable<NonNullable<AWS["resources"]>["Resources"]> => Object.entries(definitions).reduce<NonNullable<NonNullable<AWS["resources"]>["Resources"]>>((acc, [key, table]) => {
   const resourceKey = `${pascalCase(key)}Table`
   if (acc[resourceKey] !== undefined) throw new Error(`Duplciate table resource key ${resourceKey}`)
   acc[resourceKey] = {
@@ -26,17 +26,17 @@ const createResources = (definitions: Record<string, Table<any, any>>): NonNulla
     DeletionPolicy: STAGE === "dev" ? "Delete" : "Retain",
     Properties: {
       AttributeDefinitions: [{
-        AttributeName: table.pk,
+        AttributeName: table.partitionKey,
         AttributeType: "S", // String
-      }, ...(table.sk !== undefined ? [{
-        AttributeName: table.sk,
+      }, ...(table.primaryKey !== table.partitionKey ? [{
+        AttributeName: table.primaryKey,
         AttributeType: "S", // String
       }] : [])],
       KeySchema: [{
-        AttributeName: table.pk,
+        AttributeName: table.partitionKey,
         KeyType: "HASH",
-      }, ...(table.sk !== undefined ? [{
-        AttributeName: table.sk,
+      }, ...(table.primaryKey !== table.partitionKey ? [{
+        AttributeName: table.primaryKey,
         KeyType: "RANGE",
       }] : [])],
       BillingMode: "PAY_PER_REQUEST",

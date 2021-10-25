@@ -94,7 +94,6 @@ export const fundraisersSchema: JSONSchema<S.FundraiserSchema[]> = { type: "arra
 export const donationEditsSchema: JSONSchema<S.DonationEditsSchema> = {
   type: "object",
   properties: {
-    fundraiserId: ulidSchema,
     donorName: { type: "string" },
     donorEmail: emailSchema,
     createdAt: { type: "integer" },
@@ -124,6 +123,7 @@ export const donationSchema: JSONSchema<S.DonationSchema> = {
   type: "object",
   properties: {
     id: ulidSchema,
+    fundraiserId: ulidSchema,
     ...donationEditsSchema.properties,
   },
   required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeId", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
@@ -135,7 +135,6 @@ export const donationsSchema: JSONSchema<S.DonationSchema[]> = { type: "array", 
 export const paymentEditsSchema: JSONSchema<S.PaymentEditsSchema> = {
   type: "object",
   properties: {
-    donationId: ulidSchema,
     at: { type: "integer" },
     amount: { type: "integer" },
     method: { enum: ["card", "cash", "direct_to_charity"] },
@@ -150,6 +149,7 @@ export const paymentSchema: JSONSchema<S.PaymentSchema> = {
   type: "object",
   properties: {
     id: ulidSchema,
+    donationId: ulidSchema,
     ...paymentEditsSchema.properties,
   },
   required: ["id", "donationId", "at", "amount", "method", "reference", "status"],
@@ -161,6 +161,7 @@ export const paymentsSchema: JSONSchema<S.PaymentSchema[]> = { type: "array", it
 export const publicFundraiserSchema: JSONSchema<S.PublicFundraiserSchema> = {
   type: "object",
   properties: {
+    id: { type: "string" },
     activeFrom: { type: "number" },
     activeTo: { type: ["number", "null"] },
     paused: { type: "boolean" },
@@ -193,6 +194,43 @@ export const publicFundraiserSchema: JSONSchema<S.PublicFundraiserSchema> = {
       },
     },
   },
-  required: ["activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "donations"],
+  required: ["id", "activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "donations"],
+  additionalProperties: false,
+}
+
+export const publicDonationRequest: JSONSchema<S.PublicDonationRequest> = {
+  type: "object",
+  properties: {
+    donationAmount: { type: "number", minimum: 0 },
+    recurrenceFrequency: { oneOf: [{ enum: ["WEEKLY", "MONTHLY"] }, { type: "null" }] },
+    contributionAmount: { type: "integer", minimum: 0 },
+    giftAid: { type: "boolean" },
+    donorName: { type: "string" },
+    donorEmail: emailSchema,
+    emailConsentInformational: { type: "boolean" },
+    emailConsentMarketing: { type: "boolean" },
+    addressLine1: { type: ["string", "null"] },
+    addressLine2: { type: ["string", "null"] },
+    addressLine3: { type: ["string", "null"] },
+    addressPostcode: { type: ["string", "null"] },
+    addressCountry: { type: ["string", "null"] },
+    overallPublic: { type: "boolean" },
+    namePublic: { type: "boolean" },
+    donationAmountPublic: { type: "boolean" },
+    comment: { type: ["string", "null"] },
+  },
+  required: ["donationAmount", "recurrenceFrequency", "contributionAmount", "giftAid", "donorName", "donorEmail", "emailConsentInformational", "emailConsentMarketing", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "overallPublic", "namePublic", "donationAmountPublic", "comment"],
+  additionalProperties: false,
+}
+
+export const publicPaymentIntentResponse: JSONSchema<S.PublicPaymentIntentResponse> = {
+  type: "object",
+  properties: {
+    donationId: ulidSchema, // TODO: do we need this?
+    paymentId: ulidSchema, // TODO: do we need this?
+    amount: { type: "integer", exclusiveMinimum: 0 },
+    stripeClientSecret: { type: "string" },
+  },
+  required: ["donationId", "paymentId", "amount", "stripeClientSecret"],
   additionalProperties: false,
 }
