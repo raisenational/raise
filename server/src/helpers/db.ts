@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-imports */
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb"
 import {
-  DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, ScanCommand, UpdateCommand,
+  DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, ScanCommand, TransactWriteCommand, TransactWriteCommandInput, TransactWriteCommandOutput, UpdateCommand,
 } from "@aws-sdk/lib-dynamodb"
 import Ajv from "ajv"
 import createHttpError from "http-errors"
@@ -77,6 +77,36 @@ export const insert = async <S extends Required<E>, E>(table: Table<S, E>, data:
   assertMatchesSchema<S>(table.schema, data)
   await dbClient.send(new PutCommand({ TableName: table.name, Item: data, ConditionExpression: `attribute_not_exists(${table.pk})` }))
   return data
+}
+
+type AWSTransactionDefinition = NonNullable<TransactWriteCommandInput["TransactItems"]>[number]
+
+export const insertT = <S extends Required<E>, E>(table: Table<S, E>, data: S & { [key: string]: NativeAttributeValue }): AWSTransactionDefinition => {
+  const tdef: AWSTransactionDefinition = { Put: { Item: data, TableName: table.name } }
+  return tdef
+}
+
+export const plusT = <S extends Required<E>, E>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }): AWSTransactionDefinition => {
+  const entries = Object.entries(data)
+  const tdef: AWSTransactionDefinition = {
+    Update: {
+      TableName: table.name,
+      Key: key,
+      ConditionExpression: `id = :id${extraConditionExpression ? ` AND ${extraConditionExpression}` : ""}`,
+      ExpressionAttributeValues: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
+        acc[`:${k}`] = v
+        return acc
+      }, { ":id": key.id, ...extraAttributeValues }),
+      UpdateExpression: `SET ${entries.map(([k]) => `${k} = ${k} + :${k}`).join(", ")}`,
+    },
+  }
+  return tdef
+}
+
+export const inTransaction = async (args: AWSTransactionDefinition[]): Promise<TransactWriteCommandOutput> => {
+  const input = { TransactItems: args }
+  const result = await dbClient.send(new TransactWriteCommand(input))
+  return result
 }
 
 export const appendList = async <S extends Required<E>, E, P extends keyof { [K in keyof S as S[K] extends unknown[] ? K : never]: S[K] } & keyof S, I extends (S[P] extends (infer _I)[] ? _I : never)>(table: Table<S, E>, key: { [key: string]: NativeAttributeValue }, listProperty: P, newItem: I): Promise<S> => {
