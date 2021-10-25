@@ -79,4 +79,8 @@
   .raise-google-button {
     @apply rounded px-2 !important;
   }
+
+  .bg-white-important {
+    @apply bg-white !important
+  }
 }

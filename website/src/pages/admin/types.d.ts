@@ -65,6 +65,7 @@ export interface Payment {
 }
 
 export interface PublicFundraiser {
+  id: string,
   activeFrom: number,
   activeTo: number | null,
   paused: boolean,
@@ -91,21 +92,28 @@ export interface PublicFundraiser {
 }
 
 export interface PublicDonationRequest {
-  fundraiserId: string,
+  donationAmount: number,
+  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null,
+  contributionAmount: number,
+  giftAid: boolean,
   donorName: string,
   donorEmail: string,
-  createdAt: number,
+  emailConsentInformational: boolean,
+  emailConsentMarketing: boolean,
   addressLine1: string | null,
   addressLine2: string | null,
   addressLine3: string | null,
   addressPostcode: string | null,
   addressCountry: string | null,
-  giftAid: boolean,
-  comment: string | null,
-  donationAmount: number,
-  contributionAmount: number,
-  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null,
   overallPublic: boolean,
   namePublic: boolean,
   donationAmountPublic: boolean,
+  comment: string | null,
+}
+
+export interface PublicPaymentIntentResponse {
+  donationId: string,
+  paymentId: string,
+  amount: number,
+  stripeClientSecret: string,
 }
