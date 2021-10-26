@@ -3,33 +3,33 @@
 * This file was automatically generated. DO NOT MODIFY IT BY HAND.
 * Instead, modify schemas.ts, and run "npm run schemas".
 */
-export interface AccessTokenSchema {
+export interface AccessToken {
   accessToken: string;
   expiresAt: number;
 }
 
-export type AuditLogMetadataSchema =
+export type AuditLogMetadata =
   | null
   | boolean
   | number
   | string
-  | AuditLogMetadataSchema[]
+  | AuditLogMetadata[]
   | {
-      [k: string]: AuditLogMetadataSchema;
+      [k: string]: AuditLogMetadata;
     };
 
-export interface AuditLogSchema {
+export interface AuditLog {
   id: string;
   objectId: string;
   subject: string;
   action: "create" | "edit" | "login";
   at: number;
   metadata: {
-    [k: string]: AuditLogMetadataSchema;
+    [k: string]: AuditLogMetadata;
   };
 }
 
-export interface DonationEditsSchema {
+export interface DonationEdits {
   donorName?: string;
   donorEmail?: string;
   emailConsentInformational?: boolean;
@@ -54,7 +54,7 @@ export interface DonationEditsSchema {
   donationAmountPublic?: boolean;
 }
 
-export interface DonationSchema {
+export interface Donation {
   donorName: string;
   donorEmail: string;
   emailConsentInformational: boolean;
@@ -81,7 +81,7 @@ export interface DonationSchema {
   fundraiserId: string;
 }
 
-export type DonationsSchema = {
+export type Donations = {
   donorName: string;
   donorEmail: string;
   emailConsentInformational: boolean;
@@ -108,9 +108,9 @@ export type DonationsSchema = {
   fundraiserId: string;
 }[];
 
-export type EmailSchema = string;
+export type Email = string;
 
-export interface FundraiserEditsSchema {
+export interface FundraiserEdits {
   fundraiserName?: string;
   activeFrom?: number;
   activeTo?: number;
@@ -128,7 +128,7 @@ export interface FundraiserEditsSchema {
   groupsWithAccess?: string[];
 }
 
-export interface FundraiserSchema {
+export interface Fundraiser {
   id: string;
   fundraiserName: string;
   activeFrom: number;
@@ -147,7 +147,7 @@ export interface FundraiserSchema {
   groupsWithAccess: string[];
 }
 
-export type FundraisersSchema = {
+export type Fundraisers = {
   id: string;
   fundraiserName: string;
   activeFrom: number;
@@ -166,19 +166,19 @@ export type FundraisersSchema = {
   groupsWithAccess: string[];
 }[];
 
-export interface IdAndAccessTokenSchema {
+export interface IdAndAccessToken {
   idToken: string;
   accessToken: string;
 }
 
-export interface PaymentEditsSchema {
+export interface PaymentEdits {
   at?: number;
   amount?: number;
   method?: "cash" | "direct_to_charity";
   reference?: string | null;
 }
 
-export interface PaymentSchema {
+export interface Payment {
   at: number;
   amount: number;
   method: "card" | "cash" | "direct_to_charity";
@@ -188,7 +188,7 @@ export interface PaymentSchema {
   status: "paid" | "pending" | "cancelled";
 }
 
-export type PaymentsSchema = {
+export type Payments = {
   at: number;
   amount: number;
   method: "card" | "cash" | "direct_to_charity";
@@ -198,7 +198,7 @@ export type PaymentsSchema = {
   status: "paid" | "pending" | "cancelled";
 }[];
 
-export interface ProfileSchema {
+export interface Profile {
   email: string;
   groups: string[];
   issuedAt: number;
@@ -226,7 +226,7 @@ export interface PublicDonationRequest {
   comment: string | null;
 }
 
-export interface PublicFundraiserSchema {
+export interface PublicFundraiser {
   id: string;
   activeFrom: number;
   activeTo: number | null;
@@ -260,7 +260,7 @@ export interface PublicPaymentIntentResponse {
   stripeClientSecret: string;
 }
 
-export interface StatusSchema {
+export interface Status {
   message: string;
 }
 
@@ -295,4 +295,4 @@ export interface StripeWebhookRequest {
   [k: string]: unknown;
 }
 
-export type UlidSchema = string;
+export type Ulid = string;
