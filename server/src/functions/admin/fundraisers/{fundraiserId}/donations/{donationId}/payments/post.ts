@@ -13,19 +13,6 @@ export const main = middyfy(paymentEditsSchema, ulidSchema, true, async (event) 
   const { fundraiserId, donationId } = event.pathParameters
   const paymentAmount = event.body.amount ?? 0
 
-  if (event.body.status !== "paid") {
-    await insert(paymentTable, {
-      id: paymentId,
-      donationId,
-      at: event.body.at ?? Math.floor(new Date().getTime() / 1000),
-      amount: paymentAmount,
-      method: event.body.method ?? "cash",
-      reference: event.body.reference ?? null,
-      status: event.body.status ?? "paid",
-    })
-    return paymentId
-  }
-
   const [fundraiser, donation] = await Promise.all([
     get(fundraiserTable, { id: fundraiserId }),
     get(donationTable, { fundraiserId, id: donationId }),
@@ -41,7 +28,7 @@ export const main = middyfy(paymentEditsSchema, ulidSchema, true, async (event) 
       amount: paymentAmount,
       method: event.body.method ?? "cash",
       reference: event.body.reference ?? null,
-      status: event.body.status ?? "paid",
+      status: "paid",
     }),
     // we need to check the matchfundingamount on this donation has not increased since we got the data
     // so that we do not go over the limit on matchfunding per donation
