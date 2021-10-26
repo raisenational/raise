@@ -18,8 +18,8 @@ const envCase = (s: string): string => s.replace(/[/_\- ]+/g, () => "_").toUpper
 const camelCase = (s: string): string => s.replace(/[/_\- ]+([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 const pascalCase = (s: string): string => s.replace(/(^|[/_\- ]+)([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 
-const createResources = (definitions: Record<string, Table<any, any, any>>): NonNullable<NonNullable<AWS["resources"]>["Resources"]> => Object.entries(definitions).reduce<NonNullable<NonNullable<AWS["resources"]>["Resources"]>>((acc, [key, table]) => {
-  const resourceKey = `${pascalCase(key)}Table`
+const createResources = (definitions: Record<string, Table<any, any, any>>): NonNullable<NonNullable<AWS["resources"]>["Resources"]> => Object.values(definitions).reduce<NonNullable<NonNullable<AWS["resources"]>["Resources"]>>((acc, table) => {
+  const resourceKey = `${pascalCase(table.entityName)}Table`
   if (acc[resourceKey] !== undefined) throw new Error(`Duplciate table resource key ${resourceKey}`)
   acc[resourceKey] = {
     Type: "AWS::DynamoDB::Table",
@@ -125,6 +125,9 @@ const serverlessConfiguration: AWS = {
           }, {
             table: tables.payment.name,
             sources: ["./local/table_payment.json"],
+          }, {
+            table: tables.auditLog.name,
+            sources: ["./local/table_auditLog.json"],
           }],
         },
       },
