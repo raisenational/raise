@@ -40,6 +40,7 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
       donationAmount: event.body.donationAmount,
       contributionAmount: event.body.contributionAmount,
     },
+    setup_future_usage: event.body.recurrenceFrequency ? "off_session" : undefined,
   })
   const stripeClientSecret = paymentIntent.client_secret
   if (!stripeClientSecret) throw new Error("Failed to create Stripe client secret")
