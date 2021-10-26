@@ -2,7 +2,7 @@ import {
   JSONSchema, donationSchema, fundraiserSchema, paymentSchema, auditLogSchema,
 } from "./schemas"
 import type {
-  DonationSchema, FundraiserSchema, PaymentSchema, AuditLogSchema,
+  Donation, Fundraiser, Payment, AuditLog,
 } from "./schemaTypes"
 
 export type DBAttributeValue = null | boolean | number | string | DBAttributeValue[] | { [key: string]: DBAttributeValue }
@@ -21,7 +21,7 @@ export interface Table<
   schema: JSONSchema<Schema>,
 }
 
-export const fundraiserTable: Table<"id", "id", FundraiserSchema> = {
+export const fundraiserTable: Table<"id", "id", Fundraiser> = {
   name: `raise-server-${process.env.STAGE}-fundraiser`,
   entityName: "fundraiser",
   partitionKey: "id",
@@ -29,7 +29,7 @@ export const fundraiserTable: Table<"id", "id", FundraiserSchema> = {
   schema: fundraiserSchema,
 }
 
-export const donationTable: Table<"fundraiserId", "id", DonationSchema> = {
+export const donationTable: Table<"fundraiserId", "id", Donation> = {
   name: `raise-server-${process.env.STAGE}-donation`,
   entityName: "donation",
   partitionKey: "fundraiserId",
@@ -37,7 +37,7 @@ export const donationTable: Table<"fundraiserId", "id", DonationSchema> = {
   schema: donationSchema,
 }
 
-export const paymentTable: Table<"donationId", "id", PaymentSchema> = {
+export const paymentTable: Table<"donationId", "id", Payment> = {
   name: `raise-server-${process.env.STAGE}-payment`,
   entityName: "payment",
   partitionKey: "donationId",
@@ -45,7 +45,7 @@ export const paymentTable: Table<"donationId", "id", PaymentSchema> = {
   schema: paymentSchema,
 }
 
-export const auditLogTable: Table<"objectId", "id", AuditLogSchema> = {
+export const auditLogTable: Table<"objectId", "id", AuditLog> = {
   name: `raise-server-${process.env.STAGE}-audit-log`,
   entityName: "auditLog",
   partitionKey: "objectId",

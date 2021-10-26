@@ -23,5 +23,5 @@ const deepClone = (item) => {
   return n
 }
 
-const schemaTypesSource = (await Promise.all(Object.entries(schemas).map(([k, v]) => compile(deepClone(v), k, { bannerComment: "" })))).join("\n")
+const schemaTypesSource = (await Promise.all(Object.entries(schemas).map(([k, v]) => compile(deepClone(v), k.replace(/Schema$/, ""), { bannerComment: "" })))).join("\n")
 writeFileSync(new URL("../src/helpers/schemaTypes.ts", import.meta.url), `/* eslint-disable */\n/**\n* This file was automatically generated. DO NOT MODIFY IT BY HAND.\n* Instead, modify schemas.ts, and run "npm run schemas".\n*/\n${schemaTypesSource}`)

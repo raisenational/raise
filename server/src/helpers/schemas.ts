@@ -4,17 +4,17 @@ import type * as S from "./schemaTypes"
 // TODO: It'd be nice to use ajv's JSONSchemaType. However, it has poor performance and is incorrect: https://github.com/ajv-validator/ajv/issues/1664
 export type JSONSchema<T> = JSONSchema7Definition & { __type?: T };
 
-export const emailSchema: JSONSchema<S.EmailSchema> = {
+export const emailSchema: JSONSchema<S.Email> = {
   type: "string",
   pattern: "^(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])$",
 }
 
-export const ulidSchema: JSONSchema<S.UlidSchema> = {
+export const ulidSchema: JSONSchema<S.Ulid> = {
   type: "string",
   pattern: "^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$",
 }
 
-export const statusSchema: JSONSchema<S.StatusSchema> = {
+export const statusSchema: JSONSchema<S.Status> = {
   type: "object",
   properties: {
     message: { type: "string" },
@@ -23,7 +23,7 @@ export const statusSchema: JSONSchema<S.StatusSchema> = {
   additionalProperties: false,
 }
 
-export const accessTokenSchema: JSONSchema<S.AccessTokenSchema> = {
+export const accessTokenSchema: JSONSchema<S.AccessToken> = {
   type: "object",
   properties: {
     accessToken: { type: "string" },
@@ -33,7 +33,7 @@ export const accessTokenSchema: JSONSchema<S.AccessTokenSchema> = {
   additionalProperties: false,
 }
 
-export const idAndAccessTokenSchema: JSONSchema<S.IdAndAccessTokenSchema> = {
+export const idAndAccessTokenSchema: JSONSchema<S.IdAndAccessToken> = {
   type: "object",
   properties: {
     idToken: { type: "string" },
@@ -43,7 +43,7 @@ export const idAndAccessTokenSchema: JSONSchema<S.IdAndAccessTokenSchema> = {
   additionalProperties: false,
 }
 
-export const profileSchema: JSONSchema<S.ProfileSchema> = {
+export const profileSchema: JSONSchema<S.Profile> = {
   type: "object",
   properties: {
     email: { type: "string" },
@@ -56,7 +56,7 @@ export const profileSchema: JSONSchema<S.ProfileSchema> = {
   additionalProperties: false,
 }
 
-export const fundraiserEditsSchema: JSONSchema<S.FundraiserEditsSchema> = {
+export const fundraiserEditsSchema: JSONSchema<S.FundraiserEdits> = {
   type: "object",
   properties: {
     fundraiserName: { type: "string", minLength: 1, maxLength: 128 },
@@ -79,7 +79,7 @@ export const fundraiserEditsSchema: JSONSchema<S.FundraiserEditsSchema> = {
   additionalProperties: false,
 }
 
-export const fundraiserSchema: JSONSchema<S.FundraiserSchema> = {
+export const fundraiserSchema: JSONSchema<S.Fundraiser> = {
   type: "object",
   properties: {
     id: ulidSchema,
@@ -89,9 +89,9 @@ export const fundraiserSchema: JSONSchema<S.FundraiserSchema> = {
   additionalProperties: false,
 }
 
-export const fundraisersSchema: JSONSchema<S.FundraiserSchema[]> = { type: "array", items: fundraiserSchema }
+export const fundraisersSchema: JSONSchema<S.Fundraiser[]> = { type: "array", items: fundraiserSchema }
 
-export const donationEditsSchema: JSONSchema<S.DonationEditsSchema> = {
+export const donationEditsSchema: JSONSchema<S.DonationEdits> = {
   type: "object",
   properties: {
     donorName: { type: "string" },
@@ -121,7 +121,7 @@ export const donationEditsSchema: JSONSchema<S.DonationEditsSchema> = {
   additionalProperties: false,
 }
 
-export const donationSchema: JSONSchema<S.DonationSchema> = {
+export const donationSchema: JSONSchema<S.Donation> = {
   type: "object",
   properties: {
     ...donationEditsSchema.properties,
@@ -132,9 +132,9 @@ export const donationSchema: JSONSchema<S.DonationSchema> = {
   additionalProperties: false,
 }
 
-export const donationsSchema: JSONSchema<S.DonationSchema[]> = { type: "array", items: donationSchema }
+export const donationsSchema: JSONSchema<S.Donation[]> = { type: "array", items: donationSchema }
 
-export const paymentEditsSchema: JSONSchema<S.PaymentEditsSchema> = {
+export const paymentEditsSchema: JSONSchema<S.PaymentEdits> = {
   type: "object",
   properties: {
     at: { type: "integer" },
@@ -146,7 +146,7 @@ export const paymentEditsSchema: JSONSchema<S.PaymentEditsSchema> = {
   additionalProperties: false,
 }
 
-export const paymentSchema: JSONSchema<S.PaymentSchema> = {
+export const paymentSchema: JSONSchema<S.Payment> = {
   type: "object",
   properties: {
     ...paymentEditsSchema.properties,
@@ -159,9 +159,9 @@ export const paymentSchema: JSONSchema<S.PaymentSchema> = {
   additionalProperties: false,
 }
 
-export const paymentsSchema: JSONSchema<S.PaymentSchema[]> = { type: "array", items: paymentSchema }
+export const paymentsSchema: JSONSchema<S.Payment[]> = { type: "array", items: paymentSchema }
 
-export const auditLogSchema: JSONSchema<S.AuditLogSchema> = {
+export const auditLogSchema: JSONSchema<S.AuditLog> = {
   type: "object",
   properties: {
     id: ulidSchema,
@@ -169,27 +169,27 @@ export const auditLogSchema: JSONSchema<S.AuditLogSchema> = {
     subject: { type: "string" }, // e.g. a admin user, a public user, Stripe
     action: { enum: ["create", "edit", "login"] },
     at: { type: "integer" },
-    metadata: { type: "object", additionalProperties: { $ref: "#/definitions/auditLogMetadataSchema" } },
+    metadata: { type: "object", additionalProperties: { $ref: "#/definitions/auditLogMetadata" } },
     // TODO: potentially store IP address, API route key and/or Lambda invocation id?
     // TODO: add a TTL so that Amazon deletes old audit logs for us?
   },
   required: ["id", "objectId", "subject", "action", "at", "metadata"],
   additionalProperties: false,
   definitions: {
-    auditLogMetadataSchema: {
+    auditLogMetadata: {
       oneOf: [
         { type: "null" },
         { type: "boolean" },
         { type: "number" },
         { type: "string" },
-        { type: "array", items: { $ref: "#/definitions/auditLogMetadataSchema" } },
-        { type: "object", additionalProperties: { $ref: "#/definitions/auditLogMetadataSchema" } },
+        { type: "array", items: { $ref: "#/definitions/auditLogMetadata" } },
+        { type: "object", additionalProperties: { $ref: "#/definitions/auditLogMetadata" } },
       ],
     },
   },
 }
 
-export const publicFundraiserSchema: JSONSchema<S.PublicFundraiserSchema> = {
+export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
   type: "object",
   properties: {
     id: { type: "string" },
