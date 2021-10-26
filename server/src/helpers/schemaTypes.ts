@@ -20,9 +20,9 @@ export type AuditLogMetadata =
 
 export interface AuditLog {
   id: string;
-  objectId: string;
+  object: string;
   subject: string;
-  action: "create" | "edit" | "login";
+  action: "create" | "edit" | "login" | "plus" | "security";
   at: number;
   metadata: {
     [k: string]: AuditLogMetadata;

@@ -7,8 +7,11 @@ import Ajv from "ajv"
 import createHttpError from "http-errors"
 import type { NativeAttributeValue } from "@aws-sdk/util-dynamodb"
 import type { JSONSchema7 } from "json-schema"
-import type { DBAttributeValue, Table } from "./tables"
+import { ulid } from "ulid"
+import { auditLogTable, DBAttributeValue, Table } from "./tables"
 import type { JSONSchema } from "./schemas"
+import { auditContext } from "./auditContext"
+import { AuditLog, Ulid } from "./schemaTypes"
 
 const dynamoDBClient = process.env.IS_OFFLINE
   ? new DynamoDBClient({ region: "localhost", endpoint: "http://localhost:8004", credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" } })
@@ -91,6 +94,33 @@ export const get = async <
   return result.Item as S
 }
 
+type AuditDefinition = Omit<AuditLog, "id" | "at" | "subject" | "object" | "metadata"> & { object?: AuditLog["object"], metadata?: AuditLog["metadata"] }
+
+// TODO: maybe add ip address and user agent
+export const insertAudit = async (auditDefinition: AuditDefinition): Promise<void> => {
+  const id = ulid()
+  try {
+    if (auditContext.value === undefined) throw new Error("auditContext is undefined")
+    await dbClient.send(new PutCommand({
+      TableName: auditLogTable.name,
+      Item: {
+        id,
+        object: auditDefinition.object ?? id,
+        subject: auditContext.value.subject,
+        action: auditDefinition.action,
+        at: Math.floor(new Date().getTime() / 1000),
+        metadata: auditDefinition.metadata ?? {},
+      },
+      ConditionExpression: `attribute_not_exists(#${auditLogTable.primaryKey})`,
+      ExpressionAttributeNames: {
+        [`#${auditLogTable.primaryKey}`]: auditLogTable.primaryKey,
+      },
+    }))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 export const insert = async <
   Pa extends string,
   Pr extends string,
@@ -109,6 +139,15 @@ export const insert = async <
       ...extraAttributeNames,
     },
   }))
+
+  await insertAudit({
+    object: data[table.primaryKey],
+    action: "create",
+    metadata: {
+      tableName: table.entityName,
+      data,
+    },
+  })
   return data
 }
 
@@ -120,8 +159,8 @@ export const insertT = <
   S extends Record<keyof S, DBAttributeValue> & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
-  >(table: Table<Pa, Pr, S, K, E>, data: S, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): AWSTransactionDefinition => {
-  const tdef: AWSTransactionDefinition = {
+  >(table: Table<Pa, Pr, S, K, E>, data: S, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): { tDef: AWSTransactionDefinition, auditDef: AuditDefinition } => {
+  const tDef: AWSTransactionDefinition = {
     Put: {
       TableName: table.name,
       Item: data,
@@ -133,7 +172,12 @@ export const insertT = <
       },
     },
   }
-  return tdef
+  const auditDef: AuditDefinition = {
+    action: "create",
+    object: data[table.primaryKey],
+    metadata: { tableName: table.entityName, data: data as AuditLog["metadata"] },
+  }
+  return { tDef, auditDef }
 }
 
 export const plusT = <
@@ -142,9 +186,9 @@ export const plusT = <
   S extends Record<keyof S, DBAttributeValue> & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
-  >(table: Table<Pa, Pr, S, K, E>, key: K, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): AWSTransactionDefinition => {
+  >(table: Table<Pa, Pr, S, K, E>, key: K, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): { tDef: AWSTransactionDefinition, auditDef: AuditDefinition } => {
   const entries = Object.entries(data)
-  const tdef: AWSTransactionDefinition = {
+  const tDef: AWSTransactionDefinition = {
     Update: {
       TableName: table.name,
       Key: key,
@@ -166,7 +210,13 @@ export const plusT = <
       }),
     },
   }
-  return tdef
+  const auditDef: AuditDefinition = {
+    action: "plus",
+    object: key[table.primaryKey],
+    metadata: { tableName: table.entityName, data: data as AuditLog["metadata"] },
+  }
+
+  return { tDef, auditDef }
 }
 
 export const updateT = <
@@ -175,9 +225,9 @@ export const updateT = <
   S extends Record<keyof S, DBAttributeValue> & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
-  >(table: Table<Pa, Pr, S, K, E>, key: K, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): AWSTransactionDefinition => {
+  >(table: Table<Pa, Pr, S, K, E>, key: K, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): { tDef: AWSTransactionDefinition, auditDef: AuditDefinition } => {
   const entries = Object.entries(data)
-  const tdef: AWSTransactionDefinition = {
+  const tDef: AWSTransactionDefinition = {
     Update: {
       TableName: table.name,
       Key: key,
@@ -199,12 +249,19 @@ export const updateT = <
       }),
     },
   }
-  return tdef
+  const auditDef: AuditDefinition = {
+    action: "edit",
+    object: key[table.primaryKey],
+    metadata: { tableName: table.entityName, data: data as AuditLog["metadata"] },
+  }
+
+  return { tDef, auditDef }
 }
 
-export const inTransaction = async (args: AWSTransactionDefinition[]): Promise<TransactWriteCommandOutput> => {
-  const input = { TransactItems: args }
+export const inTransaction = async (args: { tDef: AWSTransactionDefinition, auditDef: AuditDefinition }[]): Promise<TransactWriteCommandOutput> => {
+  const input = { TransactItems: args.map((a) => a.tDef) }
   const result = await dbClient.send(new TransactWriteCommand(input))
+  await Promise.all(args.map((a) => insertAudit(a.auditDef)))
   return result
 }
 
@@ -214,7 +271,7 @@ export const appendList = async <
   S extends Record<keyof S, DBAttributeValue> & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
-  P extends keyof { [_K in keyof S as S[_K] extends unknown[] ? _K : never]: S[_K] } & keyof S,
+  P extends keyof { [_K in keyof S as S[_K] extends unknown[] ? _K : never]: S[_K] } & keyof S & string,
   I extends (S[P] extends (infer _I)[] ? _I : never)
 >(table: Table<Pa, Pr, S, K, E>, key: K, listProperty: P, newItem: I, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): Promise<S> => {
   assertMatchesSchema<E>((table.schema as Required<Pick<JSONSchema7, "properties">>).properties[listProperty], [newItem])
@@ -242,6 +299,15 @@ export const appendList = async <
     ReturnValues: "ALL_NEW",
   }))
   // TODO: assert matches schema here
+  await insertAudit({
+    object: key[table.primaryKey],
+    action: "plus",
+    metadata: {
+      tableName: table.entityName,
+      property: listProperty,
+      data: newItem as AuditLog["metadata"],
+    },
+  })
   return result.Attributes as S
 }
 
@@ -277,5 +343,10 @@ export const update = async <
     ReturnValues: "ALL_NEW",
   }))
   assertMatchesSchema<S>(table.schema, result.Attributes)
+  await insertAudit({
+    action: "edit",
+    object: key[table.primaryKey],
+    metadata: { tableName: table.entityName, data: edits as AuditLog["metadata"] },
+  })
   return result.Attributes as S
 }

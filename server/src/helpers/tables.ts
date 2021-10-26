@@ -45,10 +45,10 @@ export const paymentTable: Table<"donationId", "id", Payment> = {
   schema: paymentSchema,
 }
 
-export const auditLogTable: Table<"objectId", "id", AuditLog> = {
+export const auditLogTable: Table<"object", "id", AuditLog> = {
   name: `raise-server-${process.env.STAGE}-audit-log`,
   entityName: "auditLog",
-  partitionKey: "objectId",
+  partitionKey: "object",
   primaryKey: "id",
   schema: auditLogSchema,
 }

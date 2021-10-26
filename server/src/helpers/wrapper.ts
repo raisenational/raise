@@ -9,6 +9,7 @@ import createHttpError from "http-errors"
 import middyJsonBodyParser from "./http-json-body-parser"
 import { JSONSchema } from "./schemas"
 import { middyAuditContextManager } from "./auditContext"
+import { insertAudit } from "./db"
 
 const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (request) => {
   request.response = {
@@ -31,6 +32,13 @@ const middyPathParamsValidatorAndNormalizer: middy.MiddlewareFn<APIGatewayProxyE
 
 const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) => {
   const err = (request.error instanceof Error ? request.error : {}) as { statusCode?: number, details?: unknown } & Error
+
+  if (err.statusCode === 401 || err.statusCode === 403) {
+    await insertAudit({
+      action: "security",
+      metadata: { statuscode: err.statusCode, message: err.message },
+    })
+  }
 
   // Log and hide details of unexpected errors
   if (typeof err.statusCode !== "number" || typeof err.message !== "string" || err.statusCode >= 500) {
