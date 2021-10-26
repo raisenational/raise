@@ -96,6 +96,8 @@ export const donationEditsSchema: JSONSchema<S.DonationEditsSchema> = {
   properties: {
     donorName: { type: "string" },
     donorEmail: emailSchema,
+    emailConsentInformational: { type: "boolean" },
+    emailConsentMarketing: { type: "boolean" },
     createdAt: { type: "integer" },
     addressLine1: { type: ["string", "null"] },
     addressLine2: { type: ["string", "null"] },
@@ -126,7 +128,7 @@ export const donationSchema: JSONSchema<S.DonationSchema> = {
     fundraiserId: ulidSchema,
     ...donationEditsSchema.properties,
   },
-  required: ["id", "fundraiserId", "donorName", "donorEmail", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeId", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
+  required: ["id", "fundraiserId", "donorName", "donorEmail", "emailConsentInformational", "emailConsentMarketing", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeId", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
   additionalProperties: false,
 }
 

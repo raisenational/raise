@@ -24,6 +24,8 @@ export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event)
         fundraiserId: event.pathParameters.fundraiserId,
         donorName: event.body.donorName ?? "Unknown",
         donorEmail: event.body.donorEmail ?? "Unknown",
+        emailConsentInformational: event.body.emailConsentInformational ?? false,
+        emailConsentMarketing: event.body.emailConsentMarketing ?? false,
         createdAt: event.body.createdAt ?? Math.floor(new Date().getTime() / 1000),
         addressLine1: event.body.addressLine1 ?? null,
         addressLine2: event.body.addressLine2 ?? null,
