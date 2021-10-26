@@ -22,8 +22,8 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
   const amount = event.body.donationAmount + event.body.contributionAmount
 
   const now = Math.floor(new Date().getTime() / 1000)
-  const donationId = ulid(now)
-  const paymentId = ulid(now)
+  const donationId = ulid()
+  const paymentId = ulid()
 
   // Get stripe payment intent (attach metadata for fundraiserId, donationId, paymentId and contribution/donation amount)
   const paymentIntent = await stripe.paymentIntents.create({
