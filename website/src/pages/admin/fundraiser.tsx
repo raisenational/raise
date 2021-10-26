@@ -78,31 +78,18 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
         <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> Record manual donation</Button>
       </div>
       <Modal open={newDonationModalOpen} onClose={() => setNewDonationModalOpen(false)}>
-        <Form<Partial<Omit<Donation, "id">>>
+        <Form<Partial<Omit<Donation, "id" | "fundraiserId">>>
           title="New donation"
           definition={{
-            // TODO: add recurrence and stripe properties?
-            // TODO: make this simpler, and assume for most things if people want to edit things they can in the donation viewer?
-            fundraiserId: { inputType: "hidden" },
             donorName: { label: "Donor name", inputType: "text" },
             donorEmail: { label: "Donor email", inputType: "email" },
             emailConsentInformational: { label: "Email consent: informational", formatter: booleanFormatter, inputType: "checkbox" },
             emailConsentMarketing: { label: "Email consent: marketing", formatter: booleanFormatter, inputType: "checkbox" },
-            createdAt: { label: "At", formatter: timestampFormatter, inputType: "datetime-local" },
             addressLine1: { label: "Address line 1", inputType: "text" },
             addressLine2: { label: "Address line 2", inputType: "text" },
             addressLine3: { label: "Address line 3", inputType: "text" },
             addressPostcode: { label: "Address postcode", inputType: "text" },
             addressCountry: { label: "Address country", inputType: "text" },
-            donationAmount: {
-              label: "Donation amount", formatter: amountFormatter, inputType: "amount", warning: "Rather than setting an amount here, you probably want to leave the amount as zero and then add a payment under this new donation as the next step.",
-            },
-            matchFundingAmount: {
-              label: "Match funding amount", formatter: amountFormatter, inputType: "amount",
-            },
-            contributionAmount: {
-              label: "Raise contribution amount", formatter: amountFormatter, inputType: "amount",
-            },
             giftAid: {
               label: "Gift-aided", formatter: booleanFormatter, inputType: "checkbox", warning: "We must hold accurate names and addresses for gift-aided donations as per the Income Tax Act 2007",
             },
@@ -113,12 +100,10 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
             donationAmountPublic: { label: "Donation amount is public", formatter: booleanFormatter, inputType: "checkbox" },
           }}
           initialValues={{
-            fundraiserId: fundraiserId!,
             donorName: "",
             donorEmail: "",
             emailConsentInformational: false,
             emailConsentMarketing: false,
-            createdAt: Math.floor(new Date().getTime() / 1000),
             addressLine1: null,
             addressLine2: null,
             addressLine3: null,
@@ -126,9 +111,6 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
             addressCountry: null,
             giftAid: false,
             comment: null,
-            donationAmount: 0,
-            matchFundingAmount: 0,
-            contributionAmount: 0,
             charity: "AMF",
             overallPublic: false,
             namePublic: false,
