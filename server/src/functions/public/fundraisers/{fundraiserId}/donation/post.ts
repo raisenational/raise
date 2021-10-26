@@ -18,6 +18,10 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
 
   // TODO: validate donationAmount is greater than a global minimum (https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts)
 
+  // TODO: validate the fundraiser is not paused
+
+  // TODO: validate the fundraiser is within its active period
+
   // Calculate amount due
   const amount = event.body.donationAmount + event.body.contributionAmount
 
@@ -45,10 +49,9 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
   const stripeClientSecret = paymentIntent.client_secret
   if (!stripeClientSecret) throw new Error("Failed to create Stripe client secret")
 
-  // TODO: do the insertions in a transaction
   // TODO: delete unpaid/failed donations after some timeout?
   // Insert the donation
-  const donation = await insert(donationTable, {
+  await insert(donationTable, {
     id: donationId,
     fundraiserId: event.pathParameters.fundraiserId,
     donorName: event.body.donorName,
@@ -81,8 +84,13 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     donationAmountPublic: event.body.donationAmountPublic,
   })
 
+  // Can insert all the payments in parallel
+  // If any fail, we abort and we just have a donation with some funky payments
+  // We can't do it in parallel with the donation, as if the donation insert fails we may be left with orphaned payments
+  const dbPromises: Promise<unknown>[] = []
+
   // Insert the payment
-  const payment = await insert(paymentTable, {
+  dbPromises.push(insert(paymentTable, {
     id: paymentId,
     donationId,
     at: now,
@@ -90,11 +98,36 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     method: "card",
     reference: paymentIntent.id,
     status: "pending",
-  })
+  }))
 
+  // For recurring donations, insert future payments
+  if (event.body.recurrenceFrequency) {
+    // TODO: maybe we should calculate this differently, e.g. so it's always on the same day of the month, and scheudled for 00:00 on that day (so that the daily runner runs it that day)
+    const recurrencePeriod = {
+      WEEKLY: 604800,
+      MONTHLY: 2628000,
+    }[event.body.recurrenceFrequency]
+    let date = now + recurrencePeriod
+    while (date < fundraiser.activeTo) {
+      dbPromises.push(insert(paymentTable, {
+        id: ulid(),
+        donationId,
+        at: date,
+        amount: event.body.donationAmount,
+        method: "card",
+        reference: null,
+        status: "pending",
+      }))
+      date += recurrencePeriod
+    }
+  }
+
+  await Promise.all(dbPromises)
+
+  // TODO: return future amounts and schedule
   return {
-    donationId: donation.id,
-    paymentId: payment.id,
+    donationId,
+    paymentId,
     amount,
     stripeClientSecret,
   }
