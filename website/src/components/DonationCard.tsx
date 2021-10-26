@@ -28,9 +28,9 @@ const DonationCard: React.FC<Props> = ({
   className,
 }) => (
   <div className={classNames("p-4 rounded flex flex-col shadow-raise", className)}>
-    <p>{donorName ?? "Someone"} donated {donationAmount && amountDropPenceIfZeroFormatter(donationAmount)}</p>
-    {(recurringAmount && recurrenceFrequency) && <p className="text-base opacity-80"> giving {amountDropPenceIfZeroFormatter(recurringAmount)}  {recurrenceFrequency.toLowerCase()} </p>}
-    {(giftAid || matchFundingAmount) && <p className="text-base opacity-80"> ({matchFundingAmount && `+${amountDropPenceIfZeroFormatter(matchFundingAmount)} matched`}{giftAid && matchFundingAmount && ", "}{giftAid && donationAmount && `+${amountDropPenceIfZeroFormatter(donationAmount * 0.25)} gift-aided`})</p>}
+    <p>{donorName || "Someone"} donated {donationAmount !== undefined && amountDropPenceIfZeroFormatter(donationAmount)}</p>
+    {(recurringAmount !== undefined && recurringAmount !== null && recurrenceFrequency !== undefined && recurrenceFrequency !== null) && <p className="text-base opacity-80">giving {amountDropPenceIfZeroFormatter(recurringAmount)} {recurrenceFrequency.toLowerCase()}</p>}
+    {(giftAid || (matchFundingAmount !== undefined && matchFundingAmount > 0)) && <p className="text-base opacity-80"> ({(matchFundingAmount !== undefined && matchFundingAmount > 0) && `+${amountDropPenceIfZeroFormatter(matchFundingAmount)} matched`}{giftAid && (matchFundingAmount !== undefined && matchFundingAmount > 0) && ", "}{giftAid && donationAmount !== undefined && `+${amountDropPenceIfZeroFormatter(donationAmount * 0.25)} gift-aided`})</p>}
     {comment && <p className="text-base mt-2">{comment}</p>}
     <p className="text-base opacity-80 mt-auto pt-2 text-right">{typeof createdAt === "string" ? createdAt : <TimeAgo date={createdAt * 1000} />}</p>
   </div>
