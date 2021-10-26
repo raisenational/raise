@@ -28,7 +28,7 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
   // Get stripe payment intent (attach metadata for fundraiserId, donationId, paymentId and contribution/donation amount)
   const paymentIntent = await stripe.paymentIntents.create({
     amount,
-    currency: "GBP",
+    currency: "gbp",
     payment_method_types: [
       "card",
     ],

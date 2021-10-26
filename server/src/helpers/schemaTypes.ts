@@ -264,4 +264,35 @@ export interface StatusSchema {
   message: string;
 }
 
+export interface StripeWebhookRequest {
+  id: string;
+  object: "event";
+  api_version: "2020-08-27";
+  data: {
+    object: {
+      id: string;
+      object: "payment_intent";
+      amount: number;
+      amount_received: number;
+      currency: "gbp";
+      metadata: {
+        fundraiserId: string;
+        donationId: string;
+        paymentId: string;
+        donationAmount: string;
+        contributionAmount: string;
+      };
+      status: "succeeded";
+      payment_method: string;
+      setup_future_usage: null | "off_session";
+      created: number;
+      [k: string]: unknown;
+    };
+    [k: string]: unknown;
+  };
+  type: "payment_intent.succeeded";
+  created: number;
+  [k: string]: unknown;
+}
+
 export type UlidSchema = string;

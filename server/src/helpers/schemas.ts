@@ -265,3 +265,58 @@ export const publicPaymentIntentResponse: JSONSchema<S.PublicPaymentIntentRespon
   required: ["donationId", "paymentId", "amount", "stripeClientSecret"],
   additionalProperties: false,
 }
+
+// https://stripe.com/docs/api/events/object
+export const stripeWebhookRequest: JSONSchema<S.StripeWebhookRequest> = {
+  type: "object",
+  properties: {
+    id: { type: "string" },
+    object: { enum: ["event"] },
+    api_version: { enum: ["2020-08-27"] },
+    data: {
+      type: "object",
+      properties: {
+        // https://stripe.com/docs/api/payment_intents/object
+        object: {
+          type: "object",
+          properties: {
+            id: { type: "string" },
+            object: { enum: ["payment_intent"] },
+            amount: { type: "integer", exclusiveMinimum: 0 },
+            amount_received: { type: "integer", exclusiveMinimum: 0 },
+            // we only accept gbp payments
+            currency: { enum: ["gbp"] },
+            // these are set when creating the payment intent
+            metadata: {
+              type: "object",
+              properties: {
+                fundraiserId: ulidSchema,
+                donationId: ulidSchema,
+                paymentId: ulidSchema,
+                donationAmount: { type: "string" }, // integer (pence) as a string
+                contributionAmount: { type: "string" }, // integer (pence) as a string
+              },
+              required: ["fundraiserId", "donationId", "paymentId", "donationAmount", "contributionAmount"],
+              additionalProperties: false,
+            },
+            // we only subscribe to payment_intent.succeeded
+            status: { enum: ["succeeded"] },
+            payment_method: { type: "string" },
+            // null for one-off donations, off_session for recurring donations
+            setup_future_usage: { oneOf: [{ type: "null" }, { enum: ["off_session"] }] },
+            created: { type: "integer" },
+          },
+          required: ["id", "object", "amount", "amount_received", "currency", "metadata", "status", "payment_method", "setup_future_usage", "created"],
+          additionalProperties: true,
+        },
+      },
+      required: ["object"],
+      additionalProperties: true,
+    },
+    // If we subscribe to more webhooks, we must make sure the data.object is updated accordingly
+    type: { enum: ["payment_intent.succeeded"] },
+    created: { type: "integer" },
+  },
+  required: ["id", "api_version", "data", "type", "object", "created"],
+  additionalProperties: true,
+}

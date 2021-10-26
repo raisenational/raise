@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 import middy from "@middy/core"
-import middyJsonBodyParser from "@middy/http-json-body-parser"
 import middyValidator from "@middy/validator"
 import type {
   APIGatewayProxyEventV2, APIGatewayProxyResult, Context, Handler as AWSHandler,
 } from "aws-lambda"
 import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-auth"
 import createHttpError from "http-errors"
+import middyJsonBodyParser from "./http-json-body-parser"
 import { JSONSchema } from "./schemas"
 
 const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (request) => {
@@ -68,6 +68,7 @@ type AuthTokenPayload = {
 type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
   event: Omit<APIGatewayProxyEventV2, "body" | "pathParameters"> & {
     body: RequestSchema extends JSONSchema<infer T> ? T : null,
+    rawBody: RequestSchema extends JSONSchema<unknown> ? string : unknown,
     pathParameters: Record<string, string>,
     auth: RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined,
   },
