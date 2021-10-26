@@ -138,7 +138,9 @@ export const paymentEditsSchema: JSONSchema<S.PaymentEdits> = {
   type: "object",
   properties: {
     at: { type: "integer" },
-    amount: { type: "integer" },
+    donationAmount: { type: "integer" },
+    contributionAmount: { type: "integer" },
+    matchFundingAmount: { type: ["integer", "null"] }, // null means we have not calculated/allocated it yet
     method: { enum: ["cash", "direct_to_charity"] },
     reference: { type: ["string", "null"] },
   },
@@ -155,7 +157,7 @@ export const paymentSchema: JSONSchema<S.Payment> = {
     method: { enum: ["card", "cash", "direct_to_charity"] },
     status: { enum: ["paid", "pending", "cancelled"] },
   },
-  required: ["id", "donationId", "at", "amount", "method", "reference", "status"],
+  required: ["id", "donationId", "at", "donationAmount", "contributionAmount", "matchFundingAmount", "method", "reference", "status"],
   additionalProperties: false,
 }
 
@@ -257,12 +259,22 @@ export const publicDonationRequest: JSONSchema<S.PublicDonationRequest> = {
 export const publicPaymentIntentResponse: JSONSchema<S.PublicPaymentIntentResponse> = {
   type: "object",
   properties: {
-    donationId: ulidSchema, // TODO: do we need this?
-    paymentId: ulidSchema, // TODO: do we need this?
-    amount: { type: "integer", exclusiveMinimum: 0 },
     stripeClientSecret: { type: "string" },
+    amount: { type: "integer", exclusiveMinimum: 0 },
+    futurePayments: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          amount: { type: "integer", exclusiveMinimum: 0 },
+          at: { type: "integer" },
+        },
+        required: ["amount", "at"],
+        additionalProperties: false,
+      },
+    },
   },
-  required: ["donationId", "paymentId", "amount", "stripeClientSecret"],
+  required: ["stripeClientSecret", "amount", "futurePayments"],
   additionalProperties: false,
 }
 
@@ -293,10 +305,8 @@ export const stripeWebhookRequest: JSONSchema<S.StripeWebhookRequest> = {
                 fundraiserId: ulidSchema,
                 donationId: ulidSchema,
                 paymentId: ulidSchema,
-                donationAmount: { type: "string" }, // integer (pence) as a string
-                contributionAmount: { type: "string" }, // integer (pence) as a string
               },
-              required: ["fundraiserId", "donationId", "paymentId", "donationAmount", "contributionAmount"],
+              required: ["fundraiserId", "donationId", "paymentId"],
               additionalProperties: false,
             },
             // we only subscribe to payment_intent.succeeded

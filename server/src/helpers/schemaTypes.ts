@@ -173,14 +173,18 @@ export interface IdAndAccessToken {
 
 export interface PaymentEdits {
   at?: number;
-  amount?: number;
+  donationAmount?: number;
+  contributionAmount?: number;
+  matchFundingAmount?: number | null;
   method?: "cash" | "direct_to_charity";
   reference?: string | null;
 }
 
 export interface Payment {
   at: number;
-  amount: number;
+  donationAmount: number;
+  contributionAmount: number;
+  matchFundingAmount: number | null;
   method: "card" | "cash" | "direct_to_charity";
   reference: string | null;
   id: string;
@@ -190,7 +194,9 @@ export interface Payment {
 
 export type Payments = {
   at: number;
-  amount: number;
+  donationAmount: number;
+  contributionAmount: number;
+  matchFundingAmount: number | null;
   method: "card" | "cash" | "direct_to_charity";
   reference: string | null;
   id: string;
@@ -254,10 +260,12 @@ export interface PublicFundraiser {
 }
 
 export interface PublicPaymentIntentResponse {
-  donationId: string;
-  paymentId: string;
-  amount: number;
   stripeClientSecret: string;
+  amount: number;
+  futurePayments: {
+    amount: number;
+    at: number;
+  }[];
 }
 
 export interface Status {
@@ -279,8 +287,6 @@ export interface StripeWebhookRequest {
         fundraiserId: string;
         donationId: string;
         paymentId: string;
-        donationAmount: string;
-        contributionAmount: string;
       };
       status: "succeeded";
       payment_method: string;

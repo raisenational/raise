@@ -41,8 +41,6 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
       fundraiserId: event.pathParameters.fundraiserId,
       donationId,
       paymentId,
-      donationAmount: event.body.donationAmount,
-      contributionAmount: event.body.contributionAmount,
     },
     setup_future_usage: event.body.recurrenceFrequency ? "off_session" : undefined,
   })
@@ -92,11 +90,15 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     id: paymentId,
     donationId,
     at: now,
-    amount,
+    donationAmount: event.body.donationAmount,
+    contributionAmount: event.body.contributionAmount,
+    matchFundingAmount: null,
     method: "card",
     reference: paymentIntent.id,
     status: "pending",
   }))
+
+  const futurePayments: { amount: number, at: number }[] = []
 
   // For recurring donations, insert future payments
   if (event.body.recurrenceFrequency) {
@@ -107,11 +109,14 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     }[event.body.recurrenceFrequency]
     let date = now + recurrencePeriod
     while (date < fundraiser.activeTo) {
+      futurePayments.push({ amount: event.body.donationAmount, at: date })
       dbPromises.push(insert(paymentTable, {
         id: ulid(),
         donationId,
         at: date,
-        amount: event.body.donationAmount,
+        donationAmount: event.body.donationAmount,
+        contributionAmount: 0,
+        matchFundingAmount: null,
         method: "card",
         reference: null,
         status: "pending",
@@ -124,9 +129,8 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
 
   // TODO: return future amounts and schedule
   return {
-    donationId,
-    paymentId,
     amount,
     stripeClientSecret,
+    futurePayments,
   }
 })
