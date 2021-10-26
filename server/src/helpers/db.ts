@@ -86,7 +86,7 @@ export const get = async <
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, key: K): Promise<S> => {
   const result = await dbClient.send(new GetCommand({ TableName: table.name, Key: key }))
-  if (!result.Item) throw new createHttpError.NotFound("Item not found")
+  if (!result.Item) throw new createHttpError.NotFound(`${table.entityName} not found`)
   assertMatchesSchema<S>(table.schema, result.Item)
   return result.Item as S
 }
@@ -221,7 +221,7 @@ export const appendList = async <
 
   // TODO: do we actually need to check the item exists? we'll probably get an error or lack of Attributes back if it doesn't, maybe check that instead to reduce db accesses.
   const resultGet = await dbClient.send(new GetCommand({ TableName: table.name, Key: key }))
-  if (!resultGet.Item) throw new createHttpError.NotFound("Item not found")
+  if (!resultGet.Item) throw new createHttpError.NotFound(`${table.entityName} not found`)
 
   assertMatchesSchema<S>(table.schema, resultGet.Item)
   const result = await dbClient.send(new UpdateCommand({
