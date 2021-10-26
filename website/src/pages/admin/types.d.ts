@@ -57,12 +57,14 @@ export interface Donation {
 }
 
 export interface Payment {
-  id: string,
-  donationId: string,
   at: number,
-  amount: number,
+  donationAmount: number,
+  contributionAmount: number,
+  matchFundingAmount: number | null,
   method: "card" | "cash" | "direct_to_charity",
   reference: string | null,
+  id: string,
+  donationId: string,
   status: "paid" | "pending" | "cancelled",
 }
 
@@ -114,8 +116,10 @@ export interface PublicDonationRequest {
 }
 
 export interface PublicPaymentIntentResponse {
-  donationId: string,
-  paymentId: string,
-  amount: number,
   stripeClientSecret: string,
+  amount: number,
+  futurePayments: {
+    amount: number,
+    at: number,
+  }[],
 }

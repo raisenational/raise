@@ -83,16 +83,18 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
         <Form<Partial<Omit<Payment, "id">>>
           title="New payment"
           definition={{
-            at: { label: "Time of payment", formatter: timestampFormatter, inputType: "hidden" },
-            amount: { label: "Payment amount", formatter: amountFormatter, inputType: "amount" },
+            at: { inputType: "hidden" },
+            donationAmount: { label: "Donation amount", formatter: amountFormatter, inputType: "amount" },
+            contributionAmount: { label: "Contribution amount", formatter: amountFormatter, inputType: "amount" },
             method: {
-              label: "Payment method", inputType: "select", selectOptions: ["cash", "direct_to_charity"],
+              label: "Method", inputType: "select", selectOptions: ["cash", "direct_to_charity"],
             },
-            reference: { label: "Payment reference", inputType: "text" },
+            reference: { label: "Reference", inputType: "text" },
           }}
           initialValues={{
             at: Math.floor(new Date().getTime() / 1000),
-            amount: 0,
+            donationAmount: 0,
+            contributionAmount: 0,
             method: "cash",
             reference: "",
           }}
@@ -107,7 +109,9 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
       <Table
         definition={{
           at: { label: "At", formatter: timestampFormatter },
-          amount: { label: "Amount", formatter: amountFormatter },
+          donationAmount: { label: "Donation", formatter: amountFormatter },
+          contributionAmount: { label: "Contribution", formatter: amountFormatter },
+          matchFundingAmount: { label: "Match funding", formatter: amountFormatter },
           method: { label: "Method" },
           reference: { label: "Ref" },
           status: { label: "Status" },
