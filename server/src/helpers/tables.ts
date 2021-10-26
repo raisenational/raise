@@ -15,6 +15,7 @@ export interface Table<
   _Edits extends { [K in keyof Schema]?: K extends keyof Key ? never : Schema[K] } = { [K in keyof Schema]?: K extends keyof Key ? never : Schema[K] }
   > {
   name: string,
+  entityName: string,
   partitionKey: PartitionKey,
   primaryKey: PrimaryKey,
   schema: JSONSchema<Schema>,
@@ -22,6 +23,7 @@ export interface Table<
 
 export const fundraiserTable: Table<"id", "id", FundraiserSchema> = {
   name: `raise-server-${process.env.STAGE}-fundraiser`,
+  entityName: "fundraiser",
   partitionKey: "id",
   primaryKey: "id",
   schema: fundraiserSchema,
@@ -29,6 +31,7 @@ export const fundraiserTable: Table<"id", "id", FundraiserSchema> = {
 
 export const donationTable: Table<"fundraiserId", "id", DonationSchema> = {
   name: `raise-server-${process.env.STAGE}-donation`,
+  entityName: "donation",
   partitionKey: "fundraiserId",
   primaryKey: "id",
   schema: donationSchema,
@@ -36,6 +39,7 @@ export const donationTable: Table<"fundraiserId", "id", DonationSchema> = {
 
 export const paymentTable: Table<"donationId", "id", PaymentSchema> = {
   name: `raise-server-${process.env.STAGE}-payment`,
+  entityName: "payment",
   partitionKey: "donationId",
   primaryKey: "id",
   schema: paymentSchema,
@@ -43,6 +47,7 @@ export const paymentTable: Table<"donationId", "id", PaymentSchema> = {
 
 export const auditLogTable: Table<"objectId", "id", AuditLogSchema> = {
   name: `raise-server-${process.env.STAGE}-audit-log`,
+  entityName: "auditLog",
   partitionKey: "objectId",
   primaryKey: "id",
   schema: auditLogSchema,
