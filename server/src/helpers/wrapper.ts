@@ -8,6 +8,7 @@ import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-au
 import createHttpError from "http-errors"
 import middyJsonBodyParser from "./http-json-body-parser"
 import { JSONSchema } from "./schemas"
+import { middyAuditContextManager } from "./auditContext"
 
 const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (request) => {
   request.response = {
@@ -97,6 +98,7 @@ export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends bool
         },
       }))
       .before(middyPathParamsValidatorAndNormalizer)
+      .use(middyAuditContextManager)
       .onError(middyErrorHandler) as unknown as AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult>
   } catch (err) {
     console.error("Severe internal error processing request:")

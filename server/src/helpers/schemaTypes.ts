@@ -21,7 +21,7 @@ export type AuditLogMetadataSchema =
 export interface AuditLogSchema {
   id: string;
   objectId: string;
-  subjectId: string;
+  subject: string;
   action: "create" | "edit" | "login";
   at: number;
   metadata: {
