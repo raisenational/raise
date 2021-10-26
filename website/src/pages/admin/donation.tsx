@@ -83,22 +83,18 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
         <Form<Partial<Omit<Payment, "id">>>
           title="New payment"
           definition={{
-            at: { label: "Time of payment", formatter: timestampFormatter, inputType: "datetime-local" },
+            at: { label: "Time of payment", formatter: timestampFormatter, inputType: "hidden" },
             amount: { label: "Payment amount", formatter: amountFormatter, inputType: "amount" },
             method: {
-              label: "Payment method", inputType: "select", selectOptions: ["card", "cash", "direct_to_charity"],
+              label: "Payment method", inputType: "select", selectOptions: ["cash", "direct_to_charity"],
             },
             reference: { label: "Payment reference", inputType: "text" },
-            status: {
-              label: "Status", inputType: "select", selectOptions: ["paid", "pending", "cancelled"],
-            },
           }}
           initialValues={{
             at: Math.floor(new Date().getTime() / 1000),
             amount: 0,
             method: "cash",
             reference: "",
-            status: "paid",
           }}
           showCurrent={false}
           onSubmit={async (data) => {
