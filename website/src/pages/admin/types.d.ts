@@ -34,6 +34,8 @@ export interface Donation {
   fundraiserId: string,
   donorName: string,
   donorEmail: string,
+  emailConsentInformational: boolean,
+  emailConsentMarketing: boolean,
   createdAt: number,
   addressLine1: string | null,
   addressLine2: string | null,

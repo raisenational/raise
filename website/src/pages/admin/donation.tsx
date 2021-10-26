@@ -33,6 +33,8 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
         definition={{
           donorName: { label: "Donor name", inputType: "text", warning: giftAidEditWarning },
           donorEmail: { label: "Donor email", inputType: "email" },
+          emailConsentInformational: { label: "Email consent: informational", formatter: booleanFormatter, inputType: "checkbox" },
+          emailConsentMarketing: { label: "Email consent: marketing", formatter: booleanFormatter, inputType: "checkbox" },
           createdAt: { label: "At", formatter: timestampFormatter, inputType: "datetime-local" },
           addressLine1: { label: "Address line 1", inputType: "text", warning: giftAidEditWarning },
           addressLine2: { label: "Address line 2", inputType: "text", warning: giftAidEditWarning },
