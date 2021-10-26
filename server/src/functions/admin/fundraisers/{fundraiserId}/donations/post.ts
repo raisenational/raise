@@ -16,7 +16,7 @@ export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event)
   // TODO: add amount to fundraiser totalRaised, subtract amount from fundraiser matchFundingRemaining
   // TODO: do this in a transaction
 
-  inTransaction([
+  await inTransaction([
     insertT(
       donationTable,
       {

@@ -20,7 +20,7 @@ export const main = middyfy(paymentEditsSchema, ulidSchema, true, async (event) 
 
   const matchFundingAdded = Math.max(Math.min(Math.floor(paymentAmount * (fundraiser.matchFundingRate / 100)), fundraiser.matchFundingRemaining ?? Infinity, (fundraiser.matchFundingPerDonationLimit ?? Infinity) - donation.matchFundingAmount), 0)
 
-  inTransaction([
+  await inTransaction([
     insertT(paymentTable, {
       id: paymentId,
       donationId,
