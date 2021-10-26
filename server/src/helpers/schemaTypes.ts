@@ -8,6 +8,27 @@ export interface AccessTokenSchema {
   expiresAt: number;
 }
 
+export type AuditLogMetadataSchema =
+  | null
+  | boolean
+  | number
+  | string
+  | AuditLogMetadataSchema[]
+  | {
+    [k: string]: AuditLogMetadataSchema;
+  };
+
+export interface AuditLogSchema {
+  id: string;
+  objectId: string;
+  subjectId: string;
+  action: "create" | "edit" | "login";
+  at: number;
+  metadata: {
+    [k: string]: AuditLogMetadataSchema;
+  };
+}
+
 export interface DonationEditsSchema {
   donorName?: string;
   donorEmail?: string;
