@@ -53,6 +53,21 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
 
   const matchFundingAdded = Math.max(Math.min(Math.floor(donationAmount * (fundraiser.matchFundingRate / 100)), fundraiser.matchFundingRemaining ?? Infinity, (fundraiser.matchFundingPerDonationLimit ?? Infinity) - donation.matchFundingAmount), 0)
 
+  // If recurring, create a Stripe customer and attach this payment method to them
+  if (event.body.data.object.setup_future_usage !== null) {
+    const stripeCustomer = await stripe.customers.create({
+      name: donation.donorName,
+      email: donation.donorEmail,
+      metadata: {
+        fundraiserId,
+        donationId,
+      },
+      payment_method: event.body.data.object.payment_method,
+    })
+    // TODO: rename stripeId in table to stripeCustomerId
+    await update(donationTable, { fundraiserId, id: donationId }, { stripeId: stripeCustomer.id })
+  }
+
   await inTransaction([
     // Mark the payment as paid
     updateT(
