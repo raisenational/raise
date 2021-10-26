@@ -42,7 +42,7 @@
     "comment": "Pleased to be giving to such a great cause",
     "donationAmount": 9000,
     "matchFundingAmount": 9000,
-    "contributionAmount": 0,
+    "contributionAmount": 1000,
     "recurringAmount": 3000,
     "recurrenceFrequency": "MONTHLY",
     "stripeCustomerId": "cus_A1b23",
