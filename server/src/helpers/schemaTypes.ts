@@ -15,8 +15,8 @@ export type AuditLogMetadataSchema =
   | string
   | AuditLogMetadataSchema[]
   | {
-    [k: string]: AuditLogMetadataSchema;
-  };
+      [k: string]: AuditLogMetadataSchema;
+    };
 
 export interface AuditLogSchema {
   id: string;
@@ -32,6 +32,8 @@ export interface AuditLogSchema {
 export interface DonationEditsSchema {
   donorName?: string;
   donorEmail?: string;
+  emailConsentInformational?: boolean;
+  emailConsentMarketing?: boolean;
   createdAt?: number;
   addressLine1?: string | null;
   addressLine2?: string | null;
@@ -57,6 +59,8 @@ export interface DonationSchema {
   fundraiserId: string;
   donorName: string;
   donorEmail: string;
+  emailConsentInformational: boolean;
+  emailConsentMarketing: boolean;
   createdAt: number;
   addressLine1: string | null;
   addressLine2: string | null;
@@ -82,6 +86,8 @@ export type DonationsSchema = {
   fundraiserId: string;
   donorName: string;
   donorEmail: string;
+  emailConsentInformational: boolean;
+  emailConsentMarketing: boolean;
   createdAt: number;
   addressLine1: string | null;
   addressLine2: string | null;
