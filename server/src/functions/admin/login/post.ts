@@ -4,6 +4,7 @@ import createHttpError from "http-errors"
 import jwt from "jsonwebtoken"
 import { middyfy } from "../../../helpers/wrapper"
 import { accessTokenSchema, idAndAccessTokenSchema } from "../../../helpers/schemas"
+import { insertAudit } from "../../../helpers/db"
 
 // Exchanges a Google id and access token for a Raise access token
 export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, async (event) => {
@@ -18,7 +19,10 @@ export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, as
   if (!tokenPayload.email_verified) throw new createHttpError.Unauthorized("idToken: email not verified")
 
   // TODO: allowlist of users / restrict to G Suite domain with hd
-
+  await insertAudit({
+    object: tokenPayload.email,
+    action: "login",
+  })
   const now = Math.floor(new Date().getTime() / 1000)
 
   return {
