@@ -53,7 +53,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
 
   const matchFundingAdded = Math.max(Math.min(Math.floor(donationAmount * (fundraiser.matchFundingRate / 100)), fundraiser.matchFundingRemaining ?? Infinity, (fundraiser.matchFundingPerDonationLimit ?? Infinity) - donation.matchFundingAmount), 0)
 
-  inTransaction([
+  await inTransaction([
     // Mark the payment as paid
     updateT(
       paymentTable,
