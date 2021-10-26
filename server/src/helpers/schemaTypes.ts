@@ -55,8 +55,6 @@ export interface DonationEditsSchema {
 }
 
 export interface DonationSchema {
-  id: string;
-  fundraiserId: string;
   donorName: string;
   donorEmail: string;
   emailConsentInformational: boolean;
@@ -79,11 +77,11 @@ export interface DonationSchema {
   overallPublic: boolean;
   namePublic: boolean;
   donationAmountPublic: boolean;
+  id: string;
+  fundraiserId: string;
 }
 
 export type DonationsSchema = {
-  id: string;
-  fundraiserId: string;
   donorName: string;
   donorEmail: string;
   emailConsentInformational: boolean;
@@ -106,6 +104,8 @@ export type DonationsSchema = {
   overallPublic: boolean;
   namePublic: boolean;
   donationAmountPublic: boolean;
+  id: string;
+  fundraiserId: string;
 }[];
 
 export type EmailSchema = string;
@@ -174,28 +174,27 @@ export interface IdAndAccessTokenSchema {
 export interface PaymentEditsSchema {
   at?: number;
   amount?: number;
-  method?: "card" | "cash" | "direct_to_charity";
+  method?: "cash" | "direct_to_charity";
   reference?: string | null;
-  status?: "paid" | "pending" | "cancelled";
 }
 
 export interface PaymentSchema {
-  id: string;
-  donationId: string;
   at: number;
   amount: number;
   method: "card" | "cash" | "direct_to_charity";
   reference: string | null;
+  id: string;
+  donationId: string;
   status: "paid" | "pending" | "cancelled";
 }
 
 export type PaymentsSchema = {
-  id: string;
-  donationId: string;
   at: number;
   amount: number;
   method: "card" | "cash" | "direct_to_charity";
   reference: string | null;
+  id: string;
+  donationId: string;
   status: "paid" | "pending" | "cancelled";
 }[];
 

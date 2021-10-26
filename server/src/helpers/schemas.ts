@@ -124,9 +124,9 @@ export const donationEditsSchema: JSONSchema<S.DonationEditsSchema> = {
 export const donationSchema: JSONSchema<S.DonationSchema> = {
   type: "object",
   properties: {
+    ...donationEditsSchema.properties,
     id: ulidSchema,
     fundraiserId: ulidSchema,
-    ...donationEditsSchema.properties,
   },
   required: ["id", "fundraiserId", "donorName", "donorEmail", "emailConsentInformational", "emailConsentMarketing", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeId", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
   additionalProperties: false,
@@ -139,9 +139,8 @@ export const paymentEditsSchema: JSONSchema<S.PaymentEditsSchema> = {
   properties: {
     at: { type: "integer" },
     amount: { type: "integer" },
-    method: { enum: ["card", "cash", "direct_to_charity"] },
+    method: { enum: ["cash", "direct_to_charity"] },
     reference: { type: ["string", "null"] },
-    status: { enum: ["paid", "pending", "cancelled"] },
   },
   minProperties: 1,
   additionalProperties: false,
@@ -150,9 +149,11 @@ export const paymentEditsSchema: JSONSchema<S.PaymentEditsSchema> = {
 export const paymentSchema: JSONSchema<S.PaymentSchema> = {
   type: "object",
   properties: {
+    ...paymentEditsSchema.properties,
     id: ulidSchema,
     donationId: ulidSchema,
-    ...paymentEditsSchema.properties,
+    method: { enum: ["card", "cash", "direct_to_charity"] },
+    status: { enum: ["paid", "pending", "cancelled"] },
   },
   required: ["id", "donationId", "at", "amount", "method", "reference", "status"],
   additionalProperties: false,
