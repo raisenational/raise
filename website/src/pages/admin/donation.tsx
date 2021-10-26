@@ -24,7 +24,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
   const giftAidEditWarning = "We must hold accurate names and addresses for gift-aided donations as per the Income Tax Act 2007"
   const amountEditWarning = "Do not edit amounts unless you know what you are doing. This will not update the fundraiser totals."
   const frequencyEditWarning = "Do not edit the frequency of payments unless you know what you are doing. This will not update the payments."
-  const stripeIdWarning = "Do not edit the Stripe id unless you know what you are doing"
+  const stripeCustomerIdWarning = "Do not edit the Stripe customer ID unless you know what you are doing"
 
   return (
     <Section>
@@ -56,8 +56,8 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           contributionAmount: {
             label: "Raise contribution amount", formatter: amountFormatter, inputType: "amount", warning: amountEditWarning,
           },
-          stripeId: {
-            label: "Stripe ID", inputType: "text", warning: stripeIdWarning,
+          stripeCustomerId: {
+            label: "Stripe Customer ID", inputType: "text", warning: stripeCustomerIdWarning,
           },
           giftAid: {
             label: "Gift-aided", formatter: booleanFormatter, inputType: "checkbox", warning: giftAidEditWarning,
