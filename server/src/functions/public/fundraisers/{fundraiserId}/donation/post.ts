@@ -71,12 +71,10 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     donationAmount: 0,
     matchFundingAmount: 0,
     contributionAmount: 0,
-    // TODO: We need to create these pending payments at some point. Now, or fill in once Stripe confirms payment? (leaning towards the latter)
     recurringAmount: event.body.recurrenceFrequency ? event.body.donationAmount : null,
     recurrenceFrequency: event.body.recurrenceFrequency,
-    // TODO: rename to stripeCustomerId
-    // TODO: Add this now? Or fill it in later once Stripe confirms the payment? (leaning towards the latter)
-    stripeId: null,
+    // If this is a recurring donation, this will be filled in later once Stripe confirms the first payment. Otherwise, this will not be filled in
+    stripeCustomerId: null,
     // Donations to other charities should be manually added
     charity: "AMF",
     overallPublic: event.body.overallPublic,

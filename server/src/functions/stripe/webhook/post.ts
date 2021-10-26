@@ -64,8 +64,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
       },
       payment_method: event.body.data.object.payment_method,
     })
-    // TODO: rename stripeId in table to stripeCustomerId
-    await update(donationTable, { fundraiserId, id: donationId }, { stripeId: stripeCustomer.id })
+    await update(donationTable, { fundraiserId, id: donationId }, { stripeCustomerId: stripeCustomer.id })
   }
 
   await inTransaction([

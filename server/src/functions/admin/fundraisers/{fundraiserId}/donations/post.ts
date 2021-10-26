@@ -39,7 +39,7 @@ export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event)
         contributionAmount: event.body.contributionAmount ?? 0,
         recurringAmount: event.body.recurringAmount ?? null,
         recurrenceFrequency: event.body.recurrenceFrequency ?? null,
-        stripeId: event.body.stripeId ?? "",
+        stripeCustomerId: event.body.stripeCustomerId ?? "",
         charity: event.body.charity ?? "AMF",
         overallPublic: event.body.overallPublic ?? false,
         namePublic: event.body.namePublic ?? false,

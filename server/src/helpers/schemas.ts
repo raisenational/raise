@@ -111,7 +111,7 @@ export const donationEditsSchema: JSONSchema<S.DonationEditsSchema> = {
     contributionAmount: { type: "integer", minimum: 0 },
     recurringAmount: { type: ["integer", "null"], minimum: 0 },
     recurrenceFrequency: { oneOf: [{ enum: ["WEEKLY", "MONTHLY"] }, { type: "null" }] },
-    stripeId: { type: ["string", "null"] },
+    stripeCustomerId: { type: ["string", "null"] },
     charity: { type: "string" },
     overallPublic: { type: "boolean" },
     namePublic: { type: "boolean" },
@@ -128,7 +128,7 @@ export const donationSchema: JSONSchema<S.DonationSchema> = {
     id: ulidSchema,
     fundraiserId: ulidSchema,
   },
-  required: ["id", "fundraiserId", "donorName", "donorEmail", "emailConsentInformational", "emailConsentMarketing", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeId", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
+  required: ["id", "fundraiserId", "donorName", "donorEmail", "emailConsentInformational", "emailConsentMarketing", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeCustomerId", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
   additionalProperties: false,
 }
 
