@@ -68,7 +68,7 @@ const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): 
 
       const name = camelCase(relativePath.replace(/\{.*?\}/g, ""))
       result[name] = {
-        handler: `src/functions/${relativePath}.main`,
+        handler: `src/api/${relativePath}.main`,
         events: [
           {
             httpApi: {
@@ -87,7 +87,7 @@ const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): 
   return result
 }
 
-const functions = recursivelyFindFunctionsIn(resolve(__dirname, "src", "functions"))
+const functions = recursivelyFindFunctionsIn(resolve(__dirname, "src", "api"))
 
 const serverlessConfiguration: AWS = {
   service: SERVICE_NAME,
