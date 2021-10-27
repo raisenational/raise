@@ -8,6 +8,7 @@ const userAccess = {
   "Joe Benton": [""],
   "Susanne Karbe": [""],
   "Andrew Launer": ["src/pages/glasgow/"],
+  "Neha Banerjee": ["src/pages/oxford"],
 }
 
 /* eslint-disable no-restricted-syntax */
