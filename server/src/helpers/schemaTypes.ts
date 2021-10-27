@@ -24,6 +24,9 @@ export interface AuditLog {
   subject: string;
   action: "create" | "edit" | "login" | "plus" | "security";
   at: number;
+  sourceIp: string;
+  userAgent: string;
+  routeRaw: string;
   metadata: {
     [k: string]: AuditLogMetadata;
   };

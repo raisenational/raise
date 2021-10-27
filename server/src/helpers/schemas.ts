@@ -171,11 +171,14 @@ export const auditLogSchema: JSONSchema<S.AuditLog> = {
     subject: { type: "string" }, // e.g. a admin user, a public user, Stripe
     action: { enum: ["create", "edit", "login", "plus", "security"] },
     at: { type: "integer" },
+    sourceIp: { type: "string" },
+    userAgent: { type: "string" },
+    routeRaw: { type: "string" },
     metadata: { type: "object", additionalProperties: { $ref: "#/definitions/auditLogMetadata" } },
     // TODO: potentially store IP address, API route key and/or Lambda invocation id?
     // TODO: add a TTL so that Amazon deletes old audit logs for us?
   },
-  required: ["id", "object", "subject", "action", "at", "metadata"],
+  required: ["id", "object", "subject", "action", "at", "sourceIp", "userAgent", "routeRaw", "metadata"],
   additionalProperties: false,
   definitions: {
     auditLogMetadata: {

@@ -94,7 +94,8 @@ export const get = async <
   return result.Item as S
 }
 
-type AuditDefinition = Omit<AuditLog, "id" | "at" | "subject" | "object" | "metadata"> & { object?: AuditLog["object"], metadata?: AuditLog["metadata"] }
+type AuditDefinition = Omit<AuditLog, "id" | "at" | "subject" | "object" | "sourceIp" | "userAgent" | "routeRaw" | "metadata">
+  & { object?: AuditLog["object"], metadata?: AuditLog["metadata"] }
 
 // TODO: maybe add ip address and user agent
 export const insertAudit = async (auditDefinition: AuditDefinition): Promise<void> => {
@@ -109,6 +110,9 @@ export const insertAudit = async (auditDefinition: AuditDefinition): Promise<voi
         subject: auditContext.value.subject,
         action: auditDefinition.action,
         at: Math.floor(new Date().getTime() / 1000),
+        sourceIp: auditContext.value.sourceIp,
+        userAgent: auditContext.value.userAgent,
+        routeRaw: auditContext.value.routeRaw,
         metadata: auditDefinition.metadata ?? {},
       },
       ConditionExpression: `attribute_not_exists(#${auditLogTable.primaryKey})`,
