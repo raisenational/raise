@@ -5,7 +5,7 @@ tasks:
       npm install
     command: |
       [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]] && git checkout -b "$GITPOD_WORKSPACE_ID/$(date +%s)"
-      gp open src/functions/admin/fundraisers/get.ts
+      gp open src/api/admin/fundraisers/get.ts
       npm run dev
 
 ports:
