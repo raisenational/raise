@@ -1,4 +1,5 @@
-import middy from "@middy/core"
+import type middy from "@middy/core"
+import type { APIGatewayEvent } from "./types"
 
 type AuditContext = {
   value: undefined | {
@@ -15,13 +16,18 @@ type AuditContext = {
 // May be funky in reused environments e.g. serverless-offline or lambdas not wrapped by middify e.g. scheduler
 export const auditContext: AuditContext = { value: undefined }
 
+const extractSubject = (event: APIGatewayEvent): string => {
+  if (event.auth?.payload.email) return event.auth?.payload.email
+  if (event.requestContext.http.path.startsWith("/stripe/")) return "stripe"
+  if (event.requestContext.http.path.startsWith("/scheduler/")) return "scheduler"
+  return "public" // NB: covers both /public requests and unauthenticated (and therefore could be the public) requests to the /admin endpoints e.g. for login
+}
+
 // TODO: better typings
 export const middyAuditContextManager: middy.MiddlewareObj = {
   before: ({ event }) => {
-    const subject: string = event.auth?.payload.email ?? (event.requestContext.http.path.startsWith("/stripe/") ? "stripe" : "public")
-
     auditContext.value = {
-      subject,
+      subject: extractSubject(event),
       sourceIp: event.requestContext.http.sourceIp,
       userAgent: event.requestContext.http.userAgent,
       route: event.requestContext.routeKey,

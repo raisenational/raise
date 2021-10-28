@@ -1,15 +1,13 @@
 /* eslint-disable no-console */
 import middy from "@middy/core"
 import middyValidator from "@middy/validator"
-import type {
-  APIGatewayProxyEventV2, APIGatewayProxyResult, Context, Handler as AWSHandler,
-} from "aws-lambda"
-import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-auth"
 import createHttpError from "http-errors"
-import middyJsonBodyParser from "./http-json-body-parser"
-import { JSONSchema } from "./schemas"
+import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-auth"
+import type { APIGatewayProxyEventV2, APIGatewayProxyResult, Handler as AWSHandler } from "aws-lambda"
+import type { Handler, AuthTokenPayload } from "./types"
 import { middyAuditContextManager } from "./auditContext"
-import { insertAudit } from "./db"
+import middyJsonBodyParser from "./http-json-body-parser"
+import middyErrorHandler from "./middy-error-handler"
 
 const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (request) => {
   request.response = {
@@ -29,59 +27,6 @@ const middyPathParamsValidatorAndNormalizer: middy.MiddlewareFn<APIGatewayProxyE
     }
   })
 }
-
-const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) => {
-  const err = (request.error instanceof Error ? request.error : {}) as { statusCode?: number, details?: unknown } & Error
-
-  if (err.statusCode === 401 || err.statusCode === 403) {
-    await insertAudit({
-      action: "security",
-      metadata: { statuscode: err.statusCode, message: err.message },
-    })
-  }
-
-  // Log and hide details of unexpected errors
-  if (typeof err.statusCode !== "number" || typeof err.message !== "string" || err.statusCode >= 500) {
-    console.error("Internal error processing request:")
-    console.error(request.error)
-    err.statusCode = typeof err.statusCode === "number" && err.statusCode > 500 ? err.statusCode : 500
-    err.message = "An internal error occured"
-    err.details = undefined
-  }
-
-  // Strip unstringifyable details
-  if (err.details !== undefined) {
-    try {
-      JSON.stringify(err.details)
-    } catch {
-      console.error("Failed to stringify details for following error:")
-      console.error(request.error)
-      err.details = undefined
-    }
-  }
-
-  request.response = {
-    statusCode: err.statusCode,
-    body: JSON.stringify({ message: err.message, details: err.details }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-}
-
-type AuthTokenPayload = {
-  email: string,
-  groups: string[],
-}
-
-type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
-  event: Omit<APIGatewayProxyEventV2, "body" | "pathParameters"> & {
-    body: RequestSchema extends JSONSchema<infer T> ? T : null,
-    rawBody: RequestSchema extends JSONSchema<unknown> ? string : unknown,
-    pathParameters: Record<string, string>,
-    auth: RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined,
-  },
-  context: Context) => Promise<ResponseSchema extends JSONSchema<infer T> ? T : void>
 
 // TODO: add tests to check this works, particularly checking async error handling works (I don't think it does)
 export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends boolean>(requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth, handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>): AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult> {
