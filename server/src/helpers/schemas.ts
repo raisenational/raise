@@ -154,10 +154,11 @@ export const paymentSchema: JSONSchema<S.Payment> = {
     ...paymentEditsSchema.properties,
     id: ulidSchema,
     donationId: ulidSchema,
+    fundraiserId: ulidSchema,
     method: { enum: ["card", "cash", "direct_to_charity"] },
     status: { enum: ["paid", "pending", "cancelled"] },
   },
-  required: ["id", "donationId", "at", "donationAmount", "contributionAmount", "matchFundingAmount", "method", "reference", "status"],
+  required: ["id", "donationId", "fundraiserId", "at", "donationAmount", "contributionAmount", "matchFundingAmount", "method", "reference", "status"],
   additionalProperties: false,
 }
 

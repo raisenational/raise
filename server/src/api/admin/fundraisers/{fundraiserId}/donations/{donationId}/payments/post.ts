@@ -24,6 +24,7 @@ export const main = middyfy(paymentEditsSchema, ulidSchema, true, async (event) 
     insertT(paymentTable, {
       id: paymentId,
       donationId,
+      fundraiserId,
       at: event.body.at ?? Math.floor(new Date().getTime() / 1000),
       donationAmount,
       contributionAmount: event.body.contributionAmount ?? 0,

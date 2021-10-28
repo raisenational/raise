@@ -192,6 +192,7 @@ export interface Payment {
   reference: string | null;
   id: string;
   donationId: string;
+  fundraiserId: string;
   status: "paid" | "pending" | "cancelled";
 }
 
@@ -204,6 +205,7 @@ export type Payments = {
   reference: string | null;
   id: string;
   donationId: string;
+  fundraiserId: string;
   status: "paid" | "pending" | "cancelled";
 }[];
 
