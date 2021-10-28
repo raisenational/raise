@@ -40,7 +40,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     throw new createHttpError.BadRequest("payment intent amount does not match sum of donationAmount and contributionAmount on payment")
   }
 
-  if (event.body.data.object.id !== payment.reference) {
+  if (payment.reference && event.body.data.object.id !== payment.reference) {
     throw new createHttpError.BadRequest("payment intent id does not match reference on payment")
   }
 
@@ -57,7 +57,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
       },
       payment_method: event.body.data.object.payment_method,
     })
-    await update(donationTable, { fundraiserId, id: donationId }, { stripeCustomerId: stripeCustomer.id })
+    await update(donationTable, { fundraiserId, id: donationId }, { stripeCustomerId: stripeCustomer.id, stripePaymentMethodId: event.body.data.object.payment_method })
   }
 
   await inTransaction([

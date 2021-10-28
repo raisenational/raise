@@ -23,6 +23,7 @@
     "id": "01FK1WKC0Q8BHBPJ1TH5PT7MGG",
     "emailConsentMarketing": true,
     "stripeCustomerId": "cus_KUIrqQxhG7HN3M",
+    "stripePaymentMethodId": "pm_1JpKFoKzqibgSMB7TVly793K",
     "donationAmount": 900
   },
   {
@@ -46,6 +47,7 @@
     "recurringAmount": null,
     "recurrenceFrequency": null,
     "stripeCustomerId": null,
+    "stripePaymentMethodId": null,
     "charity": "AMF",
     "overallPublic": true,
     "namePublic": true,
@@ -71,7 +73,8 @@
     "contributionAmount": 1000,
     "recurringAmount": 3000,
     "recurrenceFrequency": "MONTHLY",
-    "stripeCustomerId": "cus_A1b23",
+    "stripeCustomerId": null,
+    "stripePaymentMethodId": null,
     "charity": "AMF",
     "overallPublic": true,
     "namePublic": true,

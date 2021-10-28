@@ -33,9 +33,7 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
   const paymentIntent = await stripe.paymentIntents.create({
     amount,
     currency: "gbp",
-    payment_method_types: [
-      "card",
-    ],
+    payment_method_types: ["card"],
     statement_descriptor_suffix: "Raise Demo", // TODO: use fundraiser public name
     metadata: {
       fundraiserId: event.pathParameters.fundraiserId,
@@ -71,8 +69,9 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     contributionAmount: 0,
     recurringAmount: event.body.recurrenceFrequency ? event.body.donationAmount : null,
     recurrenceFrequency: event.body.recurrenceFrequency,
-    // If this is a recurring donation, this will be filled in later once Stripe confirms the first payment. Otherwise, this will not be filled in
+    // If this is a recurring donation, these will be filled in later once Stripe confirms the first payment. Otherwise, they will not be filled in
     stripeCustomerId: null,
+    stripePaymentMethodId: null,
     // Donations to other charities should be manually added
     charity: "AMF",
     overallPublic: event.body.overallPublic,
