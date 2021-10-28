@@ -51,6 +51,7 @@ export interface DonationEdits {
   recurringAmount?: number | null;
   recurrenceFrequency?: ("WEEKLY" | "MONTHLY") | null;
   stripeCustomerId?: string | null;
+  stripePaymentMethodId?: string | null;
   charity?: string;
   overallPublic?: boolean;
   namePublic?: boolean;
@@ -76,6 +77,7 @@ export interface Donation {
   recurringAmount: number | null;
   recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
   stripeCustomerId: string | null;
+  stripePaymentMethodId: string | null;
   charity: string;
   overallPublic: boolean;
   namePublic: boolean;
@@ -103,6 +105,7 @@ export type Donations = {
   recurringAmount: number | null;
   recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
   stripeCustomerId: string | null;
+  stripePaymentMethodId: string | null;
   charity: string;
   overallPublic: boolean;
   namePublic: boolean;
