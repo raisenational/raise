@@ -35,7 +35,7 @@ export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends bool
       .use(new JWTAuthMiddleware({
         algorithm: EncryptionAlgorithms.ES256,
         credentialsRequired: requiresAuth,
-        isPayload: (token: any): token is AuthTokenPayload => typeof token === "object" && token !== null && typeof token.email === "string" && Array.isArray(token.groups) && token.groups.every((g: string) => typeof g === "string"),
+        isPayload: (token: AuthTokenPayload): token is AuthTokenPayload => typeof token === "object" && token !== null && typeof token.subject === "string" && Array.isArray(token.groups) && token.groups.every((g: string) => typeof g === "string") && typeof token.iat === "number" && typeof token.exp === "number",
         secretOrPublicKey: process.env.JWT_PUBLIC_KEY!,
       }))
       .use(middyJsonBodyParser())

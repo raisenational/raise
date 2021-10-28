@@ -2,8 +2,10 @@ import type { APIGatewayProxyEventV2, Context } from "aws-lambda"
 import type { JSONSchema } from "./schemas"
 
 export type AuthTokenPayload = {
-  email: string,
+  subject: string,
   groups: string[],
+  iat: number,
+  exp: number,
 }
 
 // The API event we have to handle after our middlewares have run
