@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken"
 import { middyfy } from "../../../helpers/wrapper"
 import { accessTokenSchema, idAndAccessTokenSchema } from "../../../helpers/schemas"
 import { insertAudit } from "../../../helpers/db"
+import { AuthTokenPayload } from "../../../helpers/types"
 
 // Exchanges a Google id and access token for a Raise access token
 export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, async (event) => {
@@ -25,14 +26,16 @@ export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, as
   })
   const now = Math.floor(new Date().getTime() / 1000)
 
+  const authTokenPayload: AuthTokenPayload = {
+    subject: tokenPayload.email,
+    groups: ["National"],
+    iat: now,
+    exp: now + 28800, // 8 hours
+  }
+
   return {
     accessToken: jwt.sign(
-      {
-        email: tokenPayload.email,
-        groups: ["National"],
-        iat: now,
-        exp: now + 28800, // 8 hours
-      },
+      authTokenPayload,
       process.env.JWT_PRIVATE_KEY!,
       { algorithm: "ES256" },
     ),

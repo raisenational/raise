@@ -10,8 +10,7 @@ import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/t
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2020-08-27", typescript: true })
 
 export const main = middyfy(null, null, true, async (event) => {
-  // TODO: rename email property to subject
-  if (event.auth.payload.email !== "scheduler") throw new createHttpError.Forbidden("Only scheduler can call /scheduler endpoints")
+  if (event.auth.payload.subject !== "scheduler") throw new createHttpError.Forbidden("Only scheduler can call /scheduler endpoints")
 
   // TODO: handle the case we have >1MB payments (approx 3500 payments)
   // https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Scan.html

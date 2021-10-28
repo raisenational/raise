@@ -17,7 +17,7 @@ type AuditContext = {
 export const auditContext: AuditContext = { value: undefined }
 
 const extractSubject = (event: APIGatewayEvent): string => {
-  if (event.auth?.payload.email) return event.auth?.payload.email
+  if (event.auth?.payload.subject) return event.auth?.payload.subject
   if (event.requestContext.http.path.startsWith("/stripe/")) return "stripe"
   if (event.requestContext.http.path.startsWith("/scheduler/")) return "scheduler"
   return "public" // NB: covers both /public requests and unauthenticated (and therefore could be the public) requests to the /admin endpoints e.g. for login
