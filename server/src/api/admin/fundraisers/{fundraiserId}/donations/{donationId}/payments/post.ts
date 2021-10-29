@@ -4,10 +4,10 @@ import { middyfy } from "../../../../../../../helpers/wrapper"
 import {
   assertHasGroup, get, inTransaction, insertT, plusT,
 } from "../../../../../../../helpers/db"
-import { paymentEditsSchema, ulidSchema } from "../../../../../../../helpers/schemas"
+import { paymentCreationSchema, ulidSchema } from "../../../../../../../helpers/schemas"
 import { fundraiserTable, donationTable, paymentTable } from "../../../../../../../helpers/tables"
 
-export const main = middyfy(paymentEditsSchema, ulidSchema, true, async (event) => {
+export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
   const paymentId = ulid()
   const { fundraiserId, donationId } = event.pathParameters

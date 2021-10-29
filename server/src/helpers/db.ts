@@ -94,7 +94,7 @@ export const get = async <
   return result.Item as S
 }
 
-type AuditDefinition = Omit<AuditLog, "id" | "at" | "subject" | "object" | "sourceIp" | "userAgent" | "routeRaw" | "metadata">
+export type AuditDefinition = Omit<AuditLog, "id" | "at" | "subject" | "object" | "sourceIp" | "userAgent" | "routeRaw" | "metadata">
   & { object?: AuditLog["object"], metadata?: AuditLog["metadata"] }
 
 // TODO: maybe add ip address and user agent
@@ -155,7 +155,7 @@ export const insert = async <
   return data
 }
 
-type AWSTransactionDefinition = NonNullable<TransactWriteCommandInput["TransactItems"]>[number]
+export type AWSTransactionDefinition = NonNullable<TransactWriteCommandInput["TransactItems"]>[number]
 
 export const insertT = <
   Pa extends string,
