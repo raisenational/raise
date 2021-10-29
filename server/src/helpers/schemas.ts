@@ -135,15 +135,57 @@ export const donationSchema: JSONSchema<S.Donation> = {
 
 export const donationsSchema: JSONSchema<S.Donation[]> = { type: "array", items: donationSchema }
 
-export const paymentEditsSchema: JSONSchema<S.PaymentEdits> = {
+export const paymentPropertyEditsSchema: JSONSchema<S.PaymentPropertyEdits> = {
+  oneOf: [{
+    type: "object",
+    properties: {
+      donationAmount: { type: "integer", minimum: 0 },
+    },
+    required: ["donationAmount"],
+    additionalProperties: false,
+
+  }, {
+    type: "object",
+    properties: {
+      contributionAmount: { type: "integer", minimum: 0 },
+    },
+    required: ["contributionAmount"],
+    additionalProperties: false,
+  }, {
+    type: "object",
+    properties: {
+      matchFundingAmount: { type: ["integer", "null"], minimum: 0 }, // null means we have not calculated/allocated it yet
+    },
+    required: ["matchFundingAmount"],
+    additionalProperties: false,
+  }, {
+    type: "object",
+    properties: {
+      reference: { type: ["string", "null"] },
+    },
+    required: ["reference"],
+    additionalProperties: false,
+  }, {
+    type: "object",
+    properties: {
+      status: { enum: ["paid", "pending", "cancelled", "refunded"] },
+    },
+    required: ["status"],
+    additionalProperties: false,
+  }],
+}
+
+// TODO: rename to paymentCreateSchema
+export const paymentCreationSchema: JSONSchema<S.PaymentCreation> = {
   type: "object",
   properties: {
     at: { type: "integer" },
-    donationAmount: { type: "integer" },
-    contributionAmount: { type: "integer" },
-    matchFundingAmount: { type: ["integer", "null"] }, // null means we have not calculated/allocated it yet
+    donationAmount: { type: "integer", minimum: 0 },
+    contributionAmount: { type: "integer", minimum: 0 },
+    matchFundingAmount: { type: ["integer", "null"], minimum: 0 }, // null means we have not calculated/allocated it yet
     method: { enum: ["cash", "direct_to_charity"] },
     reference: { type: ["string", "null"] },
+    status: { enum: ["paid", "pending", "cancelled", "refunded"] },
   },
   minProperties: 1,
   additionalProperties: false,
@@ -152,12 +194,11 @@ export const paymentEditsSchema: JSONSchema<S.PaymentEdits> = {
 export const paymentSchema: JSONSchema<S.Payment> = {
   type: "object",
   properties: {
-    ...paymentEditsSchema.properties,
+    ...paymentCreationSchema.properties,
     id: ulidSchema,
     donationId: ulidSchema,
     fundraiserId: ulidSchema,
     method: { enum: ["card", "cash", "direct_to_charity"] },
-    status: { enum: ["paid", "pending", "cancelled"] },
   },
   required: ["id", "donationId", "fundraiserId", "at", "donationAmount", "contributionAmount", "matchFundingAmount", "method", "reference", "status"],
   additionalProperties: false,

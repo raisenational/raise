@@ -177,14 +177,32 @@ export interface IdAndAccessToken {
   accessToken: string;
 }
 
-export interface PaymentEdits {
+export interface PaymentCreation {
   at?: number;
   donationAmount?: number;
   contributionAmount?: number;
   matchFundingAmount?: number | null;
   method?: "cash" | "direct_to_charity";
   reference?: string | null;
+  status?: "paid" | "pending" | "cancelled" | "refunded";
 }
+
+export type PaymentPropertyEdits =
+  | {
+      donationAmount: number;
+    }
+  | {
+      contributionAmount: number;
+    }
+  | {
+      matchFundingAmount: number | null;
+    }
+  | {
+      reference: string | null;
+    }
+  | {
+      status: "paid" | "pending" | "cancelled" | "refunded";
+    };
 
 export interface Payment {
   at: number;
@@ -193,10 +211,10 @@ export interface Payment {
   matchFundingAmount: number | null;
   method: "card" | "cash" | "direct_to_charity";
   reference: string | null;
+  status: "paid" | "pending" | "cancelled" | "refunded";
   id: string;
   donationId: string;
   fundraiserId: string;
-  status: "paid" | "pending" | "cancelled";
 }
 
 export type Payments = {
@@ -206,10 +224,10 @@ export type Payments = {
   matchFundingAmount: number | null;
   method: "card" | "cash" | "direct_to_charity";
   reference: string | null;
+  status: "paid" | "pending" | "cancelled" | "refunded";
   id: string;
   donationId: string;
   fundraiserId: string;
-  status: "paid" | "pending" | "cancelled";
 }[];
 
 export interface Profile {
