@@ -35,7 +35,12 @@ export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends bool
       .use(new JWTAuthMiddleware({
         algorithm: EncryptionAlgorithms.ES256,
         credentialsRequired: requiresAuth,
-        isPayload: (token: AuthTokenPayload): token is AuthTokenPayload => typeof token === "object" && token !== null && typeof token.subject === "string" && Array.isArray(token.groups) && token.groups.every((g: string) => typeof g === "string") && typeof token.iat === "number" && typeof token.exp === "number",
+        isPayload: (token: AuthTokenPayload): token is AuthTokenPayload => {
+          const isTokenType = (typeof token === "object" && token !== null && typeof token.subject === "string" && Array.isArray(token.groups) && token.groups.every((g: string) => typeof g === "string") && typeof token.iat === "number" && typeof token.exp === "number")
+          if (!isTokenType) return false
+          if (process.env.JWT_REQUIRE_ISSUED_AT_AFTER && token.iat < parseInt(process.env.JWT_REQUIRE_ISSUED_AT_AFTER, 10)) throw new createHttpError.Forbidden("Your token is too old. Try logging out and in again.")
+          return true
+        },
         secretOrPublicKey: process.env.JWT_PUBLIC_KEY!,
       }))
       .use(middyJsonBodyParser())
