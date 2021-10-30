@@ -30,6 +30,7 @@ export interface AuditLog {
   metadata: {
     [k: string]: AuditLogMetadata;
   };
+  ttl: number | null;
 }
 
 export interface DonationEdits {

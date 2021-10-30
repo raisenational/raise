@@ -1,7 +1,7 @@
 import type { JSONSchema7Definition } from "json-schema"
 import type * as S from "./schemaTypes"
 
-// TODO: It'd be nice to use ajv's JSONSchemaType. However, it has poor performance and is incorrect: https://github.com/ajv-validator/ajv/issues/1664
+// It'd be nice to use ajv's JSONSchemaType. However, it has poor performance and is incorrect: https://github.com/ajv-validator/ajv/issues/1664
 export type JSONSchema<T> = JSONSchema7Definition & { __type?: T };
 
 export const emailSchema: JSONSchema<S.Email> = {
@@ -175,7 +175,6 @@ export const paymentPropertyEditsSchema: JSONSchema<S.PaymentPropertyEdits> = {
   }],
 }
 
-// TODO: rename to paymentCreateSchema
 export const paymentCreationSchema: JSONSchema<S.PaymentCreation> = {
   type: "object",
   properties: {
@@ -211,17 +210,16 @@ export const auditLogSchema: JSONSchema<S.AuditLog> = {
   properties: {
     id: ulidSchema,
     object: { type: "string" }, // a thing that can be created/edited e.g. a donation. If non-existent (e.g. for logins), same as id.
-    subject: { type: "string" }, // e.g. a admin user, a public user, Stripe
+    subject: { type: "string" }, // e.g. a admin user email, "public" | "stripe" | "scheduler"
     action: { enum: ["create", "edit", "login", "plus", "security"] },
     at: { type: "integer" },
     sourceIp: { type: "string" },
     userAgent: { type: "string" },
     routeRaw: { type: "string" },
     metadata: { type: "object", additionalProperties: { $ref: "#/definitions/auditLogMetadata" } },
-    // TODO: potentially store IP address, API route key and/or Lambda invocation id?
-    // TODO: add a TTL so that Amazon deletes old audit logs for us?
+    ttl: { type: ["number", "null"] }, // https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html
   },
-  required: ["id", "object", "subject", "action", "at", "sourceIp", "userAgent", "routeRaw", "metadata"],
+  required: ["id", "object", "subject", "action", "at", "sourceIp", "userAgent", "routeRaw", "metadata", "ttl"],
   additionalProperties: false,
   definitions: {
     auditLogMetadata: {
