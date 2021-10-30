@@ -97,10 +97,10 @@ export const get = async <
 export type AuditDefinition = Omit<AuditLog, "id" | "at" | "subject" | "object" | "sourceIp" | "userAgent" | "routeRaw" | "metadata">
   & { object?: AuditLog["object"], metadata?: AuditLog["metadata"] }
 
-// TODO: maybe add ip address and user agent
 export const insertAudit = async (auditDefinition: AuditDefinition): Promise<void> => {
   const id = ulid()
   try {
+    // TODO: better handle the case where auditContext is undefined: e.g. if there is an authentication problem with the JWT middleware
     if (auditContext.value === undefined) throw new Error("auditContext is undefined")
     await dbClient.send(new PutCommand({
       TableName: auditLogTable.name,

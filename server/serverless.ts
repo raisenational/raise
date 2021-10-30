@@ -87,8 +87,6 @@ const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): 
   return result
 }
 
-const functions = recursivelyFindFunctionsIn(resolve(__dirname, "src", "api"))
-
 const serverlessConfiguration: AWS = {
   service: SERVICE_NAME,
   frameworkVersion: "2",
@@ -170,8 +168,23 @@ const serverlessConfiguration: AWS = {
         })),
       },
     },
+    // https://www.serverless.com/framework/docs/providers/aws/events/event-bridge
+    eventBridge: {
+      useCloudFormation: true,
+    },
   },
-  functions,
+  functions: {
+    ...recursivelyFindFunctionsIn(resolve(__dirname, "src", "api")),
+    schedulerCollectPaymentsRun: {
+      handler: "src/scheduler/collect-payments/run.main",
+      events: [
+        {
+          // schedule: "cron(0 8 * * ? *)", // Every day at 8am UTC
+          schedule: "rate(1 minute)", // Every minute - useful for testing
+        },
+      ],
+    },
+  },
   resources: {
     Resources: {
       // Using multiple DynamoDB tables as a concious choice for maintainability.

@@ -24,6 +24,7 @@
     "@middy/http-json-body-parser": "^2.5.1",
     "@middy/validator": "^2.5.1",
     "ajv": "^8.6.3",
+    "axios": "^0.24.0",
     "google-auth-library": "^7.10.0",
     "http-errors": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
