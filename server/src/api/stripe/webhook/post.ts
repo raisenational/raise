@@ -7,8 +7,9 @@ import {
 } from "../../../helpers/db"
 import { stripeWebhookRequest } from "../../../helpers/schemas"
 import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/tables"
+import env from "../../../env/env"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2020-08-27", typescript: true })
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true })
 
 // TODO: make idempotent (i.e. if the payment is already marked as paid, do nothing) - maybe other considerations too?
 export const main = middyfy(stripeWebhookRequest, null, false, async (event) => {
@@ -18,7 +19,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     stripe.webhooks.constructEvent(
       event.rawBody,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!,
+      env.STRIPE_WEBHOOK_SECRET,
     )
   } catch (err) {
     throw new createHttpError.Unauthorized("Failed to validate webhook signature")

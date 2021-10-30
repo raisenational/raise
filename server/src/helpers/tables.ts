@@ -4,6 +4,7 @@ import {
 import type {
   Donation, Fundraiser, Payment, AuditLog,
 } from "./schemaTypes"
+import env from "../env/env"
 
 export type DBAttributeValue = null | boolean | number | string | DBAttributeValue[] | { [key: string]: DBAttributeValue }
 
@@ -22,7 +23,7 @@ export interface Table<
 }
 
 export const fundraiserTable: Table<"id", "id", Fundraiser> = {
-  name: `raise-server-${process.env.STAGE}-fundraiser`,
+  name: `raise-server-${env.STAGE}-fundraiser`,
   entityName: "fundraiser",
   partitionKey: "id",
   primaryKey: "id",
@@ -30,7 +31,7 @@ export const fundraiserTable: Table<"id", "id", Fundraiser> = {
 }
 
 export const donationTable: Table<"fundraiserId", "id", Donation> = {
-  name: `raise-server-${process.env.STAGE}-donation`,
+  name: `raise-server-${env.STAGE}-donation`,
   entityName: "donation",
   partitionKey: "fundraiserId",
   primaryKey: "id",
@@ -38,7 +39,7 @@ export const donationTable: Table<"fundraiserId", "id", Donation> = {
 }
 
 export const paymentTable: Table<"donationId", "id", Payment> = {
-  name: `raise-server-${process.env.STAGE}-payment`,
+  name: `raise-server-${env.STAGE}-payment`,
   entityName: "payment",
   partitionKey: "donationId",
   primaryKey: "id",
@@ -46,7 +47,7 @@ export const paymentTable: Table<"donationId", "id", Payment> = {
 }
 
 export const auditLogTable: Table<"object", "id", AuditLog> = {
-  name: `raise-server-${process.env.STAGE}-audit-log`,
+  name: `raise-server-${env.STAGE}-audit-log`,
   entityName: "auditLog",
   partitionKey: "object",
   primaryKey: "id",

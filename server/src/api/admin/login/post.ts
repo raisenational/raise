@@ -6,13 +6,14 @@ import { middyfy } from "../../../helpers/wrapper"
 import { accessTokenSchema, idAndAccessTokenSchema } from "../../../helpers/schemas"
 import { insertAudit } from "../../../helpers/db"
 import { AuthTokenPayload } from "../../../helpers/types"
+import env from "../../../env/env"
 
 // Exchanges a Google id and access token for a Raise access token
 export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, async (event) => {
   const client = new OAuth2Client()
   const tokenPayload = (await client.verifyIdToken({
     idToken: event.body.idToken,
-    audience: process.env.GOOGLE_CLIENT_ID,
+    audience: env.GOOGLE_CLIENT_ID,
   }).catch(() => { throw new createHttpError.Unauthorized("idToken: not valid") })).getPayload()
 
   if (!tokenPayload) throw new createHttpError.Unauthorized("idToken: missing payload")
@@ -36,7 +37,7 @@ export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, as
   return {
     accessToken: jwt.sign(
       authTokenPayload,
-      process.env.JWT_PRIVATE_KEY!,
+      env.JWT_PRIVATE_KEY,
       { algorithm: "ES256" },
     ),
     expiresAt: now + 28800,

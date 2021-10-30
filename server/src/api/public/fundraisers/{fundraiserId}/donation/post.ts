@@ -6,8 +6,9 @@ import { middyfy } from "../../../../../helpers/wrapper"
 import { get, insert } from "../../../../../helpers/db"
 import { publicDonationRequest, publicPaymentIntentResponse } from "../../../../../helpers/schemas"
 import { donationTable, fundraiserTable, paymentTable } from "../../../../../helpers/tables"
+import env from "../../../../../env/env"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2020-08-27", typescript: true })
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true })
 
 export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, false, async (event) => {
   const fundraiser = await get(fundraiserTable, { id: event.pathParameters.fundraiserId })

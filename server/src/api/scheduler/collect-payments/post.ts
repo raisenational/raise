@@ -4,8 +4,9 @@ import Stripe from "stripe"
 import { middyfy } from "../../../helpers/wrapper"
 import { get, scan, update } from "../../../helpers/db"
 import { donationTable, paymentTable } from "../../../helpers/tables"
+import env from "../../../env/env"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { apiVersion: "2020-08-27", typescript: true })
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true })
 
 export const main = middyfy(null, null, true, async (event) => {
   if (event.auth.payload.subject !== "scheduler") throw new createHttpError.Forbidden("Only scheduler can call /scheduler endpoints")
