@@ -5,6 +5,8 @@ const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) 
   const err = (request.error instanceof Error ? request.error : {}) as { statusCode?: number, details?: unknown } & Error
 
   if (err.statusCode === 401 || err.statusCode === 403) {
+    console.warn("Security error processing request:")
+    console.warn(request.error)
     await insertAudit({
       action: "security",
       metadata: { statuscode: err.statusCode, message: err.message },
