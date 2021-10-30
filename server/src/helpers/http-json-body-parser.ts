@@ -1,4 +1,4 @@
-// TODO: contribute back to https://github.com/middyjs/middy/blob/main/packages/http-json-body-parser/index.js
+// TODO: use @middy/http-json-body-parser once PR merged: https://github.com/middyjs/middy/pull/741
 
 import middy from "@middy/core"
 
@@ -25,7 +25,7 @@ export default (opts: Options = {}): middy.MiddlewareObj => {
           ? Buffer.from(body, "base64").toString()
           : body
 
-        request.event.rawBody = request.event.body
+        request.event.rawBody = body
         request.event.body = JSON.parse(data, options.reviver)
       } catch (err) {
         // eslint-disable-next-line import/no-extraneous-dependencies,global-require,@typescript-eslint/no-var-requires
