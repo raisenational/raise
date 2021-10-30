@@ -84,8 +84,6 @@ export interface DonationEdits {
     donationAmount?: number;
     matchFundingAmount?: number;
     contributionAmount?: number;
-    recurringAmount?: number | null;
-    recurrenceFrequency?: ("WEEKLY" | "MONTHLY") | null;
   };
 }
 
