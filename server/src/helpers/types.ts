@@ -1,7 +1,7 @@
 import type { APIGatewayProxyEventV2, Context } from "aws-lambda"
 import type { JSONSchema } from "./schemas"
 
-export type AuthTokenPayload = {
+export interface AuthTokenPayload {
   subject: string,
   groups: string[],
   iat: number,
@@ -22,3 +22,20 @@ export type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
     RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined
   >,
   context: Context) => Promise<ResponseSchema extends JSONSchema<infer T> ? T : void>
+
+export interface Env {
+  STAGE: "local" | "dev" | "prod",
+
+  API_BASE_URL: string,
+
+  JWT_PUBLIC_KEY: string,
+  JWT_PRIVATE_KEY: string,
+
+  GOOGLE_CLIENT_ID: string,
+
+  STRIPE_PUBLISHABLE_KEY: string,
+  STRIPE_SECRET_KEY: string,
+  STRIPE_WEBHOOK_SECRET: string,
+
+  JWT_REQUIRE_ISSUED_AT_AFTER: number | undefined,
+}

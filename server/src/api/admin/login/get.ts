@@ -10,8 +10,8 @@ export const main = middyfy(null, profileSchema, true, async (event) => {
   return {
     email: payload.subject,
     groups: payload.groups,
-    issuedAt: payload.iat!,
-    expiresAt: payload.exp!,
+    issuedAt: payload.iat,
+    expiresAt: payload.exp,
     sourceIp: event.requestContext.http.sourceIp,
   }
 })

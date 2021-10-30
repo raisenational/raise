@@ -11,9 +11,10 @@ import { ulid } from "ulid"
 import { auditLogTable, DBAttributeValue, Table } from "./tables"
 import type { JSONSchema } from "./schemas"
 import { auditContext } from "./auditContext"
-import { AuditLog, Ulid } from "./schemaTypes"
+import { AuditLog } from "./schemaTypes"
+import env from "../env/env"
 
-const dynamoDBClient = process.env.IS_OFFLINE
+const dynamoDBClient = env.STAGE === "local"
   ? new DynamoDBClient({ region: "localhost", endpoint: "http://localhost:8004", credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" } })
   : new DynamoDBClient({})
 

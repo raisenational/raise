@@ -8,6 +8,7 @@ import type { Handler, AuthTokenPayload } from "./types"
 import { middyAuditContextManager } from "./auditContext"
 import middyJsonBodyParser from "./http-json-body-parser"
 import middyErrorHandler from "./middy-error-handler"
+import env from "../env/env"
 
 const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (request) => {
   request.response = {
@@ -38,10 +39,10 @@ export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends bool
         isPayload: (token: AuthTokenPayload): token is AuthTokenPayload => {
           const isTokenType = (typeof token === "object" && token !== null && typeof token.subject === "string" && Array.isArray(token.groups) && token.groups.every((g: string) => typeof g === "string") && typeof token.iat === "number" && typeof token.exp === "number")
           if (!isTokenType) return false
-          if (process.env.JWT_REQUIRE_ISSUED_AT_AFTER && token.iat < parseInt(process.env.JWT_REQUIRE_ISSUED_AT_AFTER, 10)) throw new createHttpError.Forbidden("Your token is too old. Try logging out and in again.")
+          if (env.JWT_REQUIRE_ISSUED_AT_AFTER !== undefined && token.iat < env.JWT_REQUIRE_ISSUED_AT_AFTER) throw new createHttpError.Forbidden("Your token is too old. Try logging out and in again.")
           return true
         },
-        secretOrPublicKey: process.env.JWT_PUBLIC_KEY!,
+        secretOrPublicKey: env.JWT_PUBLIC_KEY,
       }))
       .use(middyJsonBodyParser())
       .after(middyJsonBodySerializer)

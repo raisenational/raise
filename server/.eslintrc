@@ -42,6 +42,13 @@
               "DynamoDBDocumentClient"
             ],
             "message": "Use src/helpers/documentClient.ts instead"
+          },
+          {
+            "name": "process",
+            "importNames": [
+              "env"
+            ],
+            "message": "Use src/env/env.ts instead"
           }
         ]
       }

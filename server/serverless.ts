@@ -2,12 +2,9 @@
 import type { AWS } from "@serverless/typescript"
 import { readdirSync } from "fs"
 import { resolve } from "path"
-
-import env from "./env"
+import env from "./src/env/env"
 
 const SERVICE_NAME = "raise-server"
-const STAGE = "dev" // TODO: sort out the stage correctly
-process.env.STAGE = STAGE
 
 // eslint-disable-next-line import/first
 import { Table, tables } from "./src/helpers/tables"
@@ -23,7 +20,7 @@ const createResources = (definitions: Record<string, Table<any, any, any>>): Non
   if (acc[resourceKey] !== undefined) throw new Error(`Duplciate table resource key ${resourceKey}`)
   acc[resourceKey] = {
     Type: "AWS::DynamoDB::Table",
-    DeletionPolicy: STAGE === "dev" ? "Delete" : "Retain",
+    DeletionPolicy: env.STAGE === "prod" ? "Retain" : "Delete",
     Properties: {
       AttributeDefinitions: [{
         AttributeName: table.partitionKey,
@@ -41,7 +38,7 @@ const createResources = (definitions: Record<string, Table<any, any, any>>): Non
       }] : [])],
       BillingMode: "PAY_PER_REQUEST",
       PointInTimeRecoverySpecification: {
-        PointInTimeRecoveryEnabled: STAGE !== "dev",
+        PointInTimeRecoveryEnabled: env.STAGE === "prod",
       },
       TableName: table.name,
     },
@@ -99,6 +96,12 @@ const serverlessConfiguration: AWS = {
           "@aws-sdk/types",
         ],
       },
+      // For security reasons, ensures we never deploy prod config to dev environment etc.
+      excludeFiles: [
+        "src/env/local.ts",
+        "src/env/dev.ts",
+        "src/env/prod.ts",
+      ],
     },
     "serverless-offline": {
       httpPort: 8001,
@@ -106,7 +109,7 @@ const serverlessConfiguration: AWS = {
       lambdaPort: 8003,
     },
     dynamodb: { // serverless-dynamodb-local
-      stages: [STAGE], // https://github.com/99x/serverless-dynamodb-local/issues/225
+      stages: [env.STAGE], // https://github.com/99x/serverless-dynamodb-local/issues/225
       start: {
         port: 8004,
         migrate: true,
@@ -140,7 +143,7 @@ const serverlessConfiguration: AWS = {
     name: "aws",
     runtime: "nodejs14.x",
     region: "eu-west-1",
-    stage: STAGE,
+    stage: env.STAGE,
     apiGateway: {
       minimumCompressionSize: 1024,
       shouldStartNameWithService: true,
@@ -151,8 +154,7 @@ const serverlessConfiguration: AWS = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
-      STAGE,
-      ...env,
+      STAGE: env.STAGE,
     },
     lambdaHashingVersion: "20201221",
     memorySize: 256,
@@ -179,8 +181,9 @@ const serverlessConfiguration: AWS = {
       handler: "src/scheduler/collect-payments/run.main",
       events: [
         {
-          // schedule: "cron(0 8 * * ? *)", // Every day at 8am UTC
-          schedule: "rate(1 minute)", // Every minute - useful for testing
+          schedule: env.STAGE === "local"
+            ? "rate(1 minute)" // Every minute
+            : "cron(0 8 * * ? *)", // Every day at 8am UTC
         },
       ],
     },
