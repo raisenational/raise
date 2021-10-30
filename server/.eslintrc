@@ -9,6 +9,7 @@
   },
   "rules": {
     "max-len": "off",
+    "indent": "off",
     "object-curly-newline": "warn",
     "quotes": [
       "warn",

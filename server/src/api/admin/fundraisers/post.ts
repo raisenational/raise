@@ -2,10 +2,10 @@ import "source-map-support/register"
 import { ulid } from "ulid"
 import { middyfy } from "../../../helpers/wrapper"
 import { insert } from "../../../helpers/db"
-import { fundraiserEditsSchema, ulidSchema } from "../../../helpers/schemas"
+import { fundraiserCreationSchema, ulidSchema } from "../../../helpers/schemas"
 import { fundraiserTable } from "../../../helpers/tables"
 
-export const main = middyfy(fundraiserEditsSchema, ulidSchema, true, async (event) => {
+export const main = middyfy(fundraiserCreationSchema, ulidSchema, true, async (event) => {
   const fundraiser = await insert(fundraiserTable, {
     id: ulid(),
     fundraiserName: event.body.fundraiserName ?? "New Fundraiser",

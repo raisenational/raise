@@ -18,7 +18,7 @@ const dynamoDBClient = env.STAGE === "local"
   ? new DynamoDBClient({ region: "localhost", endpoint: "http://localhost:8004", credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" } })
   : new DynamoDBClient({})
 
-export const dbClient = DynamoDBDocumentClient.from(dynamoDBClient, {
+const dbClient = DynamoDBDocumentClient.from(dynamoDBClient, {
   marshallOptions: {
     convertEmptyValues: false,
     removeUndefinedValues: false,
@@ -34,6 +34,20 @@ const ajv = new Ajv({
   useDefaults: false,
   coerceTypes: false,
 })
+
+const handleDbError = <
+  Pa extends string,
+  Pr extends string,
+  S extends Record<keyof S, DBAttributeValue> & K,
+  K extends Record<Pa | Pr, string>,
+  E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
+  >(table?: Table<Pa, Pr, S, K, E>) => async (err: unknown) => {
+    if (err instanceof Error && err.name === "ConditionalCheckFailedException") {
+      throw new createHttpError.Conflict(`Failed to make edits due to failed conditional expression${table ? ` on ${table.entityName}` : ""}. This is likely the result of an editing conflict. Usually, refreshing the page to get up to date data and trying again should work.`)
+    }
+
+    throw err
+  }
 
 export const assertMatchesSchema = <T>(schema: JSONSchema<T>, data: unknown): void => {
   const validate = ajv.compile(schema)
@@ -56,6 +70,26 @@ export const assertHasGroupIfEditingProperties = <B>(event: { auth: { payload: {
   })
 }
 
+export const checkPrevious = <I extends { [key: string]: NativeAttributeValue }>(item: I): [Partial<I>, string, { [key: string]: NativeAttributeValue }, { [key: string]: NativeAttributeValue }] => {
+  const entries = Object.entries(item.previous || {}).filter(([k, v]) => item[k] && v !== undefined)
+
+  const itemWithoutPrevious = { ...item }
+  delete itemWithoutPrevious.previous
+
+  return [
+    itemWithoutPrevious,
+    entries.map(([k]) => `#${k} = :previous${k}`).join(" AND "),
+    entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
+      acc[`:previous${k}`] = v
+      return acc
+    }, {}),
+    entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k]) => {
+      acc[`#${k}`] = k
+      return acc
+    }, {}),
+  ]
+}
+
 export const scan = async <
   Pa extends string,
   Pr extends string,
@@ -63,7 +97,7 @@ export const scan = async <
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>): Promise<S[]> => {
-  const result = await dbClient.send(new ScanCommand({ TableName: table.name }))
+  const result = await dbClient.send(new ScanCommand({ TableName: table.name })).catch(handleDbError(table))
   assertMatchesSchema<S[]>({ type: "array", items: table.schema }, result.Items)
   return result.Items as S[]
 }
@@ -75,7 +109,7 @@ export const query = async <
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, key: Record<Pa, string>): Promise<S[]> => {
-  const entries = Object.entries(key)
+  const entries = Object.entries(key).filter(([_k, v]) => v !== undefined)
   const result = await dbClient.send(new QueryCommand({
     TableName: table.name,
     KeyConditionExpression: `${entries.map(([k]) => `${k} = :${k}`).join(" AND ")}`,
@@ -84,7 +118,7 @@ export const query = async <
       return acc
     }, {}),
     ScanIndexForward: false, // generally we want newest items first
-  }))
+  })).catch(handleDbError(table))
   assertMatchesSchema<S[]>({ type: "array", items: table.schema }, result.Items)
   return result.Items as S[]
 }
@@ -96,7 +130,7 @@ export const get = async <
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, key: K): Promise<S> => {
-  const result = await dbClient.send(new GetCommand({ TableName: table.name, Key: key }))
+  const result = await dbClient.send(new GetCommand({ TableName: table.name, Key: key })).catch(handleDbError(table))
   if (!result.Item) throw new createHttpError.NotFound(`${table.entityName} not found`)
   assertMatchesSchema<S>(table.schema, result.Item)
   return result.Item as S
@@ -130,8 +164,9 @@ export const insertAudit = async (auditDefinition: AuditDefinition): Promise<voi
       ExpressionAttributeNames: {
         [`#${auditLogTable.primaryKey}`]: auditLogTable.primaryKey,
       },
-    }))
+    })).catch(handleDbError(auditLogTable))
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err)
   }
 }
@@ -153,7 +188,7 @@ export const insert = async <
       [`#${table.primaryKey}`]: table.primaryKey,
       ...extraAttributeNames,
     },
-  }))
+  })).catch(handleDbError(table))
 
   await insertAudit({
     object: data[table.primaryKey],
@@ -202,7 +237,7 @@ export const plusT = <
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, key: K, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): { tDef: AWSTransactionDefinition, auditDef: AuditDefinition } => {
-  const entries = Object.entries(data)
+  const entries = Object.entries(data).filter(([_k, v]) => v !== undefined)
   const tDef: AWSTransactionDefinition = {
     Update: {
       TableName: table.name,
@@ -216,7 +251,7 @@ export const plusT = <
         [`:${table.primaryKey}`]: key[table.primaryKey],
         ...extraAttributeValues,
       }),
-      ExpressionAttributeNames: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
+      ExpressionAttributeNames: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k]) => {
         acc[`#${k}`] = k
         return acc
       }, {
@@ -241,7 +276,7 @@ export const updateT = <
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, key: K, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): { tDef: AWSTransactionDefinition, auditDef: AuditDefinition } => {
-  const entries = Object.entries(data)
+  const entries = Object.entries(data).filter(([_k, v]) => v !== undefined)
   const tDef: AWSTransactionDefinition = {
     Update: {
       TableName: table.name,
@@ -255,7 +290,7 @@ export const updateT = <
         [`:${table.primaryKey}`]: key[table.primaryKey],
         ...extraAttributeValues,
       }),
-      ExpressionAttributeNames: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
+      ExpressionAttributeNames: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k]) => {
         acc[`#${k}`] = k
         return acc
       }, {
@@ -275,7 +310,7 @@ export const updateT = <
 
 export const inTransaction = async (args: { tDef: AWSTransactionDefinition, auditDef: AuditDefinition }[]): Promise<TransactWriteCommandOutput> => {
   const input = { TransactItems: args.map((a) => a.tDef) }
-  const result = await dbClient.send(new TransactWriteCommand(input))
+  const result = await dbClient.send(new TransactWriteCommand(input)).catch(handleDbError())
   await Promise.all(args.map((a) => insertAudit(a.auditDef)))
   return result
 }
@@ -292,7 +327,7 @@ export const appendList = async <
   assertMatchesSchema<E>((table.schema as Required<Pick<JSONSchema7, "properties">>).properties[listProperty], [newItem])
 
   // TODO: do we actually need to check the item exists? we'll probably get an error or lack of Attributes back if it doesn't, maybe check that instead to reduce db accesses.
-  const resultGet = await dbClient.send(new GetCommand({ TableName: table.name, Key: key }))
+  const resultGet = await dbClient.send(new GetCommand({ TableName: table.name, Key: key })).catch(handleDbError(table))
   if (!resultGet.Item) throw new createHttpError.NotFound(`${table.entityName} not found`)
 
   assertMatchesSchema<S>(table.schema, resultGet.Item)
@@ -312,7 +347,7 @@ export const appendList = async <
       ...extraAttributeNames,
     },
     ReturnValues: "ALL_NEW",
-  }))
+  })).catch(handleDbError(table))
   // TODO: assert matches schema here
   await insertAudit({
     object: key[table.primaryKey],
@@ -335,7 +370,7 @@ export const update = async <
   >(table: Table<Pa, Pr, S, K, E>, key: K, edits: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): Promise<S> => {
   assertMatchesSchema<E>({ ...table.schema as Record<string, unknown>, required: [] }, edits)
 
-  const entries = Object.entries(edits)
+  const entries = Object.entries(edits).filter(([_k, v]) => v !== undefined)
   const result = await dbClient.send(new UpdateCommand({
     TableName: table.name,
     Key: key,
@@ -348,7 +383,7 @@ export const update = async <
       [`:${table.primaryKey}`]: key[table.primaryKey],
       ...extraAttributeValues,
     }),
-    ExpressionAttributeNames: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
+    ExpressionAttributeNames: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k]) => {
       acc[`#${k}`] = k
       return acc
     }, {
@@ -356,7 +391,7 @@ export const update = async <
       ...extraAttributeNames,
     }),
     ReturnValues: "ALL_NEW",
-  }))
+  })).catch(handleDbError(table))
   assertMatchesSchema<S>(table.schema, result.Attributes)
   await insertAudit({
     action: "edit",
