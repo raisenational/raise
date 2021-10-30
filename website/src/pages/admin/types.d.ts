@@ -23,15 +23,13 @@ export interface Fundraiser {
   matchFundingPerDonationLimit: number | null,
   matchFundingRemaining: number | null,
   minimumDonationAmount: number | null,
-  groupsWithAccess: string[],
   suggestedDonationAmountOneOff: number,
   suggestedDonationAmountWeekly: number,
-  suggestedContributionAmount: number,
+  suggestedContributionAmount: number | null,
+  groupsWithAccess: string[],
 }
 
 export interface Donation {
-  id: string,
-  fundraiserId: string,
   donorName: string,
   donorEmail: string,
   emailConsentInformational: boolean,
@@ -50,10 +48,13 @@ export interface Donation {
   recurringAmount: number | null,
   recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null,
   stripeCustomerId: string | null,
+  stripePaymentMethodId: string | null,
   charity: string,
   overallPublic: boolean,
   namePublic: boolean,
   donationAmountPublic: boolean,
+  id: string,
+  fundraiserId: string,
 }
 
 export interface Payment {
@@ -63,9 +64,10 @@ export interface Payment {
   matchFundingAmount: number | null,
   method: "card" | "cash" | "direct_to_charity",
   reference: string | null,
+  status: "paid" | "pending" | "cancelled" | "refunded",
   id: string,
   donationId: string,
-  status: "paid" | "pending" | "cancelled",
+  fundraiserId: string,
 }
 
 export interface PublicFundraiser {
