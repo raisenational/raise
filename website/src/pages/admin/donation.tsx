@@ -4,7 +4,7 @@ import { navigate, RouteComponentProps } from "@reach/router"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import { asResponseValues, useAxios, useRawAxios } from "../../components/networking"
 import Section, { SectionTitle } from "../../components/Section"
-import { Donation, Payment } from "./types.d"
+import { Donation, Payment, PaymentCreation } from "./types.d"
 import Table, {
   amountFormatter, booleanFormatter, timestampFormatter,
 } from "../../components/Table"
@@ -84,7 +84,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
         <Button onClick={() => setNewPaymentModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> Record manual payment</Button>
       </div>
       <Modal open={newPaymentModalOpen} onClose={() => setNewPaymentModalOpen(false)}>
-        <Form<Partial<Omit<Payment, "id">>>
+        <Form<PaymentCreation>
           title="New payment"
           definition={{
             at: { inputType: "hidden" },

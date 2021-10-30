@@ -5,7 +5,7 @@ import { DownloadIcon, PlusSmIcon } from "@heroicons/react/outline"
 import jsonexport from "jsonexport/dist"
 import { asResponseValues, useAxios, useRawAxios } from "../../components/networking"
 import Section, { SectionTitle } from "../../components/Section"
-import { Fundraiser, Donation } from "./types.d"
+import { Fundraiser, Donation, DonationEdits } from "./types.d"
 import Table, {
   amountFormatter, booleanFormatter, matchFundingRateFormatter, timestampFormatter,
 } from "../../components/Table"
@@ -78,7 +78,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
         <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> Record manual donation</Button>
       </div>
       <Modal open={newDonationModalOpen} onClose={() => setNewDonationModalOpen(false)}>
-        <Form<Partial<Omit<Donation, "id" | "fundraiserId">>>
+        <Form<DonationEdits>
           title="New donation"
           definition={{
             donorName: { label: "Donor name", inputType: "text" },
