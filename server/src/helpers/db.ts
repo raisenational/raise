@@ -63,7 +63,7 @@ export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } 
   }
 }
 
-export const assertHasGroupIfEditingProperties = <B>(event: { auth: { payload: { groups: string[] } }, body: B }, group: string, properties: (keyof B)[]): void => {
+export const assertHasGroupForProperties = <B>(event: { auth: { payload: { groups: string[] } }, body: B }, group: string, properties: (keyof B)[]): void => {
   if (event.auth.payload.groups.includes(group)) return
   properties.forEach((p) => {
     if (p in event.body) throw new createHttpError.Forbidden(`Only the ${group} team can edit ${p}, but you are only in ${event.auth.payload.groups}`)

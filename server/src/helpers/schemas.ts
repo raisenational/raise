@@ -75,7 +75,6 @@ export const fundraiserCreationSchema: JSONSchema<S.FundraiserCreation> = {
     suggestedContributionAmount: { type: ["integer", "null"], minimum: 0 },
     groupsWithAccess: { type: "array", items: { type: "string" } },
   },
-  minProperties: 1,
   additionalProperties: false,
 }
 
@@ -108,7 +107,7 @@ export const fundraiserSchema: JSONSchema<S.Fundraiser> = {
 
 export const fundraisersSchema: JSONSchema<S.Fundraiser[]> = { type: "array", items: fundraiserSchema }
 
-export const donationEditsSchema: JSONSchema<S.DonationEdits> = {
+export const donationCreationSchema: JSONSchema<S.DonationCreation> = {
   type: "object",
   properties: {
     donorName: { type: "string" },
@@ -123,9 +122,6 @@ export const donationEditsSchema: JSONSchema<S.DonationEdits> = {
     addressCountry: { type: ["string", "null"] },
     giftAid: { type: "boolean" },
     comment: { type: ["string", "null"] },
-    donationAmount: { type: "number", minimum: 0 },
-    matchFundingAmount: { type: "integer", minimum: 0 },
-    contributionAmount: { type: "integer", minimum: 0 },
     recurringAmount: { type: ["integer", "null"], minimum: 0 },
     recurrenceFrequency: { oneOf: [{ enum: ["WEEKLY", "MONTHLY"] }, { type: "null" }] },
     stripeCustomerId: { type: ["string", "null"] },
@@ -135,6 +131,26 @@ export const donationEditsSchema: JSONSchema<S.DonationEdits> = {
     namePublic: { type: "boolean" },
     donationAmountPublic: { type: "boolean" },
   },
+  additionalProperties: false,
+}
+
+export const donationEditsSchema: JSONSchema<S.DonationEdits> = {
+  type: "object",
+  properties: {
+    ...donationCreationSchema.properties,
+    donationAmount: { type: "number", minimum: 0 },
+    matchFundingAmount: { type: "integer", minimum: 0 },
+    contributionAmount: { type: "integer", minimum: 0 },
+    previous: {
+      type: "object",
+      properties: {
+        donationAmount: { type: "number", minimum: 0 },
+        matchFundingAmount: { type: "integer", minimum: 0 },
+        contributionAmount: { type: "integer", minimum: 0 },
+      },
+      additionalProperties: false,
+    },
+  },
   minProperties: 1,
   additionalProperties: false,
 }
@@ -142,9 +158,12 @@ export const donationEditsSchema: JSONSchema<S.DonationEdits> = {
 export const donationSchema: JSONSchema<S.Donation> = {
   type: "object",
   properties: {
-    ...donationEditsSchema.properties,
+    ...donationCreationSchema.properties,
     id: ulidSchema,
     fundraiserId: ulidSchema,
+    donationAmount: { type: "number", minimum: 0 },
+    matchFundingAmount: { type: "integer", minimum: 0 },
+    contributionAmount: { type: "integer", minimum: 0 },
   },
   required: ["id", "fundraiserId", "donorName", "donorEmail", "emailConsentInformational", "emailConsentMarketing", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeCustomerId", "stripePaymentMethodId", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
   additionalProperties: false,
@@ -203,7 +222,6 @@ export const paymentCreationSchema: JSONSchema<S.PaymentCreation> = {
     reference: { type: ["string", "null"] },
     status: { enum: ["paid", "pending", "cancelled", "refunded"] },
   },
-  minProperties: 1,
   additionalProperties: false,
 }
 

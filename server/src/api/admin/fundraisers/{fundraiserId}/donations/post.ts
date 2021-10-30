@@ -1,20 +1,26 @@
 import "source-map-support/register"
 import { ulid } from "ulid"
+import createHttpError from "http-errors"
 import { middyfy } from "../../../../../helpers/wrapper"
 import {
-  assertHasGroup, get, insertT, inTransaction, plusT,
+  assertHasGroup, assertHasGroupForProperties, get, insertT, inTransaction, plusT,
 } from "../../../../../helpers/db"
-import { donationEditsSchema, ulidSchema } from "../../../../../helpers/schemas"
+import { donationCreationSchema, ulidSchema } from "../../../../../helpers/schemas"
 import { donationTable, fundraiserTable } from "../../../../../helpers/tables"
+import { NATIONAL } from "../../../../../helpers/groups"
 
-export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event) => {
+export const main = middyfy(donationCreationSchema, ulidSchema, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
+  assertHasGroupForProperties(event, NATIONAL, ["stripeCustomerId", "stripePaymentMethodId"])
 
   const donationId = ulid()
-  // TODO: validate match funding amount against limit? or not given this is a manual entry?
-  // TODO: validate gift-aid requirements
-  // TODO: add amount to fundraiser totalRaised, subtract amount from fundraiser matchFundingRemaining
-  // TODO: do this in a transaction
+
+  // Validate gift-aid requirements
+  if (event.body.giftAid) {
+    if (!event.body.addressLine1) throw new createHttpError.BadRequest("Gift-aided donation must provide address line 1")
+    if (!event.body.addressPostcode) throw new createHttpError.BadRequest("Gift-aided donation must provide address postcode")
+    if (!event.body.addressCountry) throw new createHttpError.BadRequest("Gift-aided donation must provide address country")
+  }
 
   await inTransaction([
     insertT(
@@ -34,9 +40,9 @@ export const main = middyfy(donationEditsSchema, ulidSchema, true, async (event)
         addressCountry: event.body.addressCountry ?? null,
         giftAid: event.body.giftAid ?? false,
         comment: event.body.comment ?? null,
-        donationAmount: event.body.donationAmount ?? 0,
-        matchFundingAmount: event.body.matchFundingAmount ?? 0,
-        contributionAmount: event.body.contributionAmount ?? 0,
+        donationAmount: 0,
+        matchFundingAmount: 0,
+        contributionAmount: 0,
         recurringAmount: event.body.recurringAmount ?? null,
         recurrenceFrequency: event.body.recurrenceFrequency ?? null,
         stripeCustomerId: event.body.stripeCustomerId ?? null,
