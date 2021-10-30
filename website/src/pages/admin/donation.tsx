@@ -1,5 +1,5 @@
 import * as React from "react"
-import { RouteComponentProps } from "@reach/router"
+import { navigate, RouteComponentProps } from "@reach/router"
 
 import { PlusSmIcon } from "@heroicons/react/outline"
 import { asResponseValues, useAxios, useRawAxios } from "../../components/networking"
@@ -25,6 +25,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
   const amountEditWarning = "Do not edit amounts unless you know what you are doing. This will not update the fundraiser totals."
   const frequencyEditWarning = "Do not edit the frequency of payments unless you know what you are doing. This will not update the payments."
   const stripeCustomerIdWarning = "Do not edit the Stripe customer ID unless you know what you are doing"
+  const stripePaymentMethodIdWarning = "Do not edit the Stripe payment method id unless you know what you are doing"
 
   return (
     <Section>
@@ -57,7 +58,10 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
             label: "Raise contribution amount", formatter: amountFormatter, inputType: "amount", warning: amountEditWarning,
           },
           stripeCustomerId: {
-            label: "Stripe Customer ID", inputType: "text", warning: stripeCustomerIdWarning,
+            label: "Stripe customer ID", inputType: "text", warning: stripeCustomerIdWarning,
+          },
+          stripePaymentMethodId: {
+            label: "Stripe payment method", inputType: "text", warning: stripePaymentMethodIdWarning,
           },
           giftAid: {
             label: "Gift-aided", formatter: booleanFormatter, inputType: "checkbox", warning: giftAidEditWarning,
@@ -113,10 +117,10 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           contributionAmount: { label: "Contribution", formatter: amountFormatter },
           matchFundingAmount: { label: "Match funding", formatter: amountFormatter },
           method: { label: "Method" },
-          reference: { label: "Ref" },
           status: { label: "Status" },
         }}
         items={payments}
+        onClick={(payment) => navigate(`/admin/${fundraiserId}/${donationId}/${payment.id}`)}
       />
 
       {/* TODO: maybe helpful to have a preview of how the user's donation will display on the site? */}

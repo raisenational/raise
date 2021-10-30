@@ -13,6 +13,7 @@ import { useAuthState } from "../../components/networking"
 import Alert from "../../components/Alert"
 import Section from "../../components/Section"
 import DonationPage from "./donation"
+import PaymentPage from "./payment"
 
 const IndexPage = () => (
   <Page className="pb-8">
@@ -74,6 +75,7 @@ const IndexLayout = () => {
             <FundraisersPage path="/" />
             <FundraiserPage path="/:fundraiserId" />
             <DonationPage path="/:fundraiserId/:donationId" />
+            <PaymentPage path="/:fundraiserId/:donationId/:paymentId" />
             <ProfilePage path="/profile" />
             <NotFoundPage default />
           </>
