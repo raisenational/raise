@@ -8,6 +8,7 @@ const schemasSource = readFileSync(new URL("../src/helpers/schemas.ts", import.m
   .replace(/export type .*/g, "")
   .replace(/: JSONSchema<[^>]*>/g, "")
 writeFileSync(new URL("schemas.mjs", import.meta.url), schemasSource)
+// eslint-disable-next-line import/no-unresolved,import/extensions
 const schemas = await import("./schemas.mjs")
 unlinkSync(new URL("schemas.mjs", import.meta.url))
 

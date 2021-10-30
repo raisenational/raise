@@ -80,9 +80,20 @@ async function updateMatchFundingAmount(
         { fundraiserId: fundraiser.id, id: donation.id },
         { matchFundingAmount: matchFundingAdded },
       ))
-    }
-
-    if (fundraiser.matchFundingRemaining !== null) {
+      if (fundraiser.matchFundingRemaining !== null) {
+        updates.push(plusT(fundraiserTable,
+          { id: fundraiser.id },
+          { matchFundingRemaining: -matchFundingAdded, totalRaised: matchFundingAdded },
+          "matchFundingRemaining >= :matchFundingAdded",
+          { ":matchFundingAdded": matchFundingAdded }))
+      } else {
+        updates.push(plusT(
+          fundraiserTable,
+          { id: fundraiser.id },
+          { totalRaised: matchFundingAdded },
+        ))
+      }
+    } else if (fundraiser.matchFundingRemaining !== null) {
       updates.push(plusT(fundraiserTable,
         { id: fundraiser.id },
         { matchFundingRemaining: -matchFundingAdded },
@@ -136,17 +147,18 @@ async function updateStatus(
       { id: donation.id, fundraiserId: fundraiser.id },
       { donationAmount: -payment.donationAmount, contributionAmount: -payment.contributionAmount, matchFundingAmount: -(payment.matchFundingAmount ?? 0) },
     ))
-    updates.push(plusT(
-      fundraiserTable,
-      { id: fundraiser.id },
-      { totalRaised: -(payment.donationAmount + (payment.matchFundingAmount ?? 0)), matchFundingRemaining: (payment.matchFundingAmount ?? 0) },
-    ))
     // TODO: test what this does if fundraiser.matchFundingRemaining has changed to being null since gotten the data
     if (fundraiser.matchFundingRemaining !== null) {
       updates.push(plusT(
         fundraiserTable,
         { id: fundraiser.id },
-        { matchFundingRemaining: (payment.matchFundingAmount ?? 0) },
+        { matchFundingRemaining: (payment.matchFundingAmount ?? 0), totalRaised: -(payment.donationAmount + (payment.matchFundingAmount ?? 0)) },
+      ))
+    } else {
+      updates.push(plusT(
+        fundraiserTable,
+        { id: fundraiser.id },
+        { totalRaised: -(payment.donationAmount + (payment.matchFundingAmount ?? 0)) },
       ))
     }
     await inTransaction(updates)
