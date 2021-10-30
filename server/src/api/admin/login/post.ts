@@ -7,6 +7,7 @@ import { accessTokenSchema, idAndAccessTokenSchema } from "../../../helpers/sche
 import { insertAudit } from "../../../helpers/db"
 import { AuthTokenPayload } from "../../../helpers/types"
 import env from "../../../env/env"
+import { NATIONAL } from "../../../helpers/groups"
 
 // Exchanges a Google id and access token for a Raise access token
 export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, async (event) => {
@@ -29,7 +30,7 @@ export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, as
 
   const authTokenPayload: AuthTokenPayload = {
     subject: tokenPayload.email,
-    groups: ["National"],
+    groups: [NATIONAL],
     iat: now,
     exp: now + 28800, // 8 hours
   }
