@@ -23,8 +23,7 @@ const extractSubject = (event: APIGatewayEvent): string => {
   return "public" // NB: covers both /public requests and unauthenticated (and therefore could be the public) requests to the /admin endpoints e.g. for login
 }
 
-// TODO: better typings
-export const middyAuditContextManager: middy.MiddlewareObj = {
+export const middyAuditContextManager: middy.MiddlewareObj<APIGatewayEvent> = {
   before: ({ event }) => {
     auditContext.value = {
       subject: extractSubject(event),
