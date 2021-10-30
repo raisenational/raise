@@ -5,7 +5,7 @@ import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import { useAxios, useRawAxios } from "../../components/networking"
 import Section, { SectionTitle } from "../../components/Section"
-import { Fundraiser } from "./types.d"
+import { Fundraiser, FundraiserEdits } from "./types.d"
 import Table, {
   amountFormatter, booleanFormatter, dateFormatter, jsonFormatter, matchFundingRateFormatter, timestampFormatter,
 } from "../../components/Table"
@@ -25,7 +25,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
         <Button onClick={() => setNewFundraiserModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New fundraiser</Button>
       </div>
       <Modal open={newFundraiserModalOpen} onClose={() => setNewFundraiserModalOpen(false)}>
-        <Form<Omit<Fundraiser, "id">>
+        <Form<FundraiserEdits>
           title="New fundraiser"
           definition={{
             fundraiserName: { label: "Name", inputType: "text" },
