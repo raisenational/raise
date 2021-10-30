@@ -102,27 +102,30 @@ export const get = async <
   return result.Item as S
 }
 
-export type AuditDefinition = Omit<AuditLog, "id" | "at" | "subject" | "object" | "sourceIp" | "userAgent" | "routeRaw" | "metadata">
-  & { object?: AuditLog["object"], metadata?: AuditLog["metadata"] }
+export type AuditDefinition = { action: AuditLog["action"], object?: AuditLog["object"], metadata?: AuditLog["metadata"] }
 
 export const insertAudit = async (auditDefinition: AuditDefinition): Promise<void> => {
   const id = ulid()
   try {
     // TODO: better handle the case where auditContext is undefined: e.g. if there is an authentication problem with the JWT middleware
     if (auditContext.value === undefined) throw new Error("auditContext is undefined")
+
+    const Item: AuditLog = {
+      id,
+      object: auditDefinition.object ?? id,
+      subject: auditContext.value.subject,
+      action: auditDefinition.action,
+      at: Math.floor(new Date().getTime() / 1000),
+      sourceIp: auditContext.value.sourceIp,
+      userAgent: auditContext.value.userAgent,
+      routeRaw: auditContext.value.routeRaw,
+      metadata: auditDefinition.metadata ?? {},
+      ttl: null,
+    }
+
     await dbClient.send(new PutCommand({
       TableName: auditLogTable.name,
-      Item: {
-        id,
-        object: auditDefinition.object ?? id,
-        subject: auditContext.value.subject,
-        action: auditDefinition.action,
-        at: Math.floor(new Date().getTime() / 1000),
-        sourceIp: auditContext.value.sourceIp,
-        userAgent: auditContext.value.userAgent,
-        routeRaw: auditContext.value.routeRaw,
-        metadata: auditDefinition.metadata ?? {},
-      },
+      Item,
       ConditionExpression: `attribute_not_exists(#${auditLogTable.primaryKey})`,
       ExpressionAttributeNames: {
         [`#${auditLogTable.primaryKey}`]: auditLogTable.primaryKey,

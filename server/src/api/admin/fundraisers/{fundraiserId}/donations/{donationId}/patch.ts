@@ -14,6 +14,4 @@ export const main = middyfy(donationEditsSchema, null, true, async (event) => {
   // TODO: make sure only national team can edit stripe id
 
   await update(donationTable, { fundraiserId: event.pathParameters.fundraiserId, id: event.pathParameters.donationId }, event.body)
-
-  // TODO: add audit log?
 })

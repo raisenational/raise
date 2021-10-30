@@ -41,6 +41,12 @@ const createResources = (definitions: Record<string, Table<any, any, any>>): Non
         PointInTimeRecoveryEnabled: env.STAGE === "prod",
       },
       TableName: table.name,
+      ...((table.schema as any).properties!.ttl ? {
+        TimeToLiveSpecification: {
+          AttributeName: "ttl",
+          Enabled: true,
+        },
+      } : {}),
     },
   }
 
