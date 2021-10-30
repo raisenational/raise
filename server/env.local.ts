@@ -14,4 +14,9 @@ export default {
   STRIPE_PUBLISHABLE_KEY: "pk_test_51JoQv0KzqibgSMB7aaaSq8ZJUsTwC4Hd1rfRwehKncms8iaHsKl941RvdBWNNVGQDcdRZmRaDaMknmBTilFqOhYU00EyfZikdJ",
   STRIPE_SECRET_KEY: "sk_test_51JoQv0KzqibgSMB7Oe3m4t2wcaTp3nMhg0xol8MPHLCBICO96ETErfvwB724kCFoD5MKA9OfzHYL6EdQaaYGh7Az00DdEdhY2z",
   STRIPE_WEBHOOK_SECRET: "whsec_3V5u8MmBEOcDjGdoAPIyWqJonW422WmL",
+
+  // Timestamp which JWTs must be issued after. Either an integer (unix timestamp in seconds) as a string or a blank string (blank means this check is disabled)
+  // For emergency use in case we want to quickly make all tokens invalid but don't have access to a computer with openssl installed to regenerate keys
+  // NB: changing this is pointless if the JWT private key has been exposed
+  JWT_REQUIRE_ISSUED_AT_AFTER: "",
 }
