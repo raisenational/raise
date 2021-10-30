@@ -117,6 +117,24 @@ export type Donations = {
 
 export type Email = string;
 
+export interface FundraiserCreation {
+  fundraiserName?: string;
+  activeFrom?: number;
+  activeTo?: number;
+  paused?: boolean;
+  goal?: number;
+  totalRaised?: number;
+  donationsCount?: number;
+  matchFundingRate?: number;
+  matchFundingPerDonationLimit?: number | null;
+  matchFundingRemaining?: number | null;
+  minimumDonationAmount?: number | null;
+  suggestedDonationAmountOneOff?: number;
+  suggestedDonationAmountWeekly?: number;
+  suggestedContributionAmount?: number | null;
+  groupsWithAccess?: string[];
+}
+
 export interface FundraiserEdits {
   fundraiserName?: string;
   activeFrom?: number;
@@ -133,6 +151,10 @@ export interface FundraiserEdits {
   suggestedDonationAmountWeekly?: number;
   suggestedContributionAmount?: number | null;
   groupsWithAccess?: string[];
+  previous?: {
+    totalRaised?: number;
+    donationsCount?: number;
+  };
 }
 
 export interface Fundraiser {

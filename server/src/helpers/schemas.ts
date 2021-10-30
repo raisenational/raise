@@ -56,7 +56,7 @@ export const profileSchema: JSONSchema<S.Profile> = {
   additionalProperties: false,
 }
 
-export const fundraiserEditsSchema: JSONSchema<S.FundraiserEdits> = {
+export const fundraiserCreationSchema: JSONSchema<S.FundraiserCreation> = {
   type: "object",
   properties: {
     fundraiserName: { type: "string", minLength: 1, maxLength: 128 },
@@ -79,11 +79,28 @@ export const fundraiserEditsSchema: JSONSchema<S.FundraiserEdits> = {
   additionalProperties: false,
 }
 
+export const fundraiserEditsSchema: JSONSchema<S.FundraiserEdits> = {
+  type: "object",
+  properties: {
+    ...fundraiserCreationSchema.properties,
+    previous: {
+      type: "object",
+      properties: {
+        totalRaised: { type: "integer", minimum: 0 },
+        donationsCount: { type: "integer", minimum: 0 },
+      },
+      additionalProperties: false,
+    },
+  },
+  minProperties: 1,
+  additionalProperties: false,
+}
+
 export const fundraiserSchema: JSONSchema<S.Fundraiser> = {
   type: "object",
   properties: {
     id: ulidSchema,
-    ...fundraiserEditsSchema.properties,
+    ...fundraiserCreationSchema.properties,
   },
   required: ["id", "fundraiserName", "activeFrom", "activeTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "groupsWithAccess"],
   additionalProperties: false,
