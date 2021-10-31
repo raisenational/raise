@@ -70,7 +70,7 @@ const mapToInput = <T,>(item: UnpackNestedValue<T>, definition: FormProps<T>["de
 // @ts-ignore
 const mapFromInput = <T,>(item: UnpackNestedValue<T>, definition: FormProps<T>["definition"]): UnpackNestedValue<T> => objMap(item, (k, v) => fromInput(v, definition[k].inputType, definition[k].selectOptions))
 
-export type LabelledInputProps = React.InputHTMLAttributes<HTMLInputElement> & { id: string, label: string } & ({
+export type LabelledInputProps = React.InputHTMLAttributes<HTMLInputElement> & { id: string, label: string, error?: string } & ({
   type: "select" | "multiselect", // | "radio",
   options: string[] | Record<string, string | null>,
   prefix?: never,
@@ -89,9 +89,8 @@ export type LabelledInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 
 // TODO: properly support multiselect inputs. Maybe https://github.com/tailwindlabs/headlessui/pull/648?
 // TODO: support radio inputs
-// TODO: properly support prefix and suffix
 export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputProps>(({
-  id, label, className, type, options, prefix, suffix, ...rest
+  id, label, error, className, type, options, prefix, suffix, ...rest
 }, ref) => {
   if (type === "hidden") return <input id={id} ref={ref} type={type} className={className} {...rest} />
 
@@ -103,9 +102,8 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
       return (
         <div className={className}>
           <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1")}>{label}</label>
-          {prefix}
-          <Select value={value} onChange={(v) => { setValue(v); if (rest.onChange) rest.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>) }} options={options!} />
-          {suffix}
+          <Select value={value} onChange={(v) => { setValue(v); if (rest.onChange) rest.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>) }} error={error} options={options!} />
+          {error && <span className="text-raise-red">{error}</span>}
         </div>
       )
     }
@@ -117,9 +115,8 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
         render={({ field }) => (
           <div className={className}>
             <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1")}>{label}</label>
-            {prefix}
-            <Select value={field.value} onChange={(v) => field.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>)} options={options!} />
-            {suffix}
+            <Select value={field.value} onChange={(v) => field.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>)} error={error} options={options!} />
+            {error && <span className="text-raise-red">{error}</span>}
           </div>
         )}
       />
@@ -129,20 +126,55 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
   return (
     <div className={className}>
       {type === "checkbox" && <input id={id} ref={ref} type={type} className="mt-1 mr-1 mb-3" {...rest} />}
-      <label htmlFor={id} className={classNames("text-gray-700 font-bold", { "block pb-1": type !== "checkbox" })}>{label}</label>
+      <label htmlFor={id} className={classNames("text-gray-700 font-bold", { "block pb-1": type !== "checkbox", "text-raise-red": error })}>{label}</label>
       <div className="flex flex-row mb-1">
-        {prefix && <span className="rounded-l bg-gray-300 py-2 px-3">{prefix}</span>}
-        {type !== "checkbox" && <input id={id} ref={ref} type={type} step={type === "number" ? "any" : undefined} className={classNames("w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 outline-none focus:border-gray-800 focus:bg-white", { "rounded-l": !prefix, "rounded-r": !suffix })} {...rest} />}
-        {suffix && <span className="rounded-r bg-gray-300 py-2 px-3">{suffix}</span>}
+        {prefix && (
+          <span className={classNames("rounded-l py-2 px-3", {
+            "bg-gray-300": !error,
+            "bg-red-200": error,
+          })}
+          >{prefix}
+          </span>
+        )}
+        {type !== "checkbox" && (
+          <input
+            id={id}
+            ref={ref}
+            type={type}
+            step={type === "number" ? "any" : undefined}
+            className={classNames("w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 outline-none", {
+              "rounded-l": !prefix,
+              "rounded-r": !suffix,
+              "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
+              "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": error,
+            })}
+            {...rest}
+          />
+        )}
+        {suffix && (
+          <span className={classNames("rounded-l py-2 px-3", {
+            "bg-gray-300": !error,
+            "bg-red-200": error,
+          })}
+          >{suffix}
+          </span>
+        )}
       </div>
+      {error && <span className="text-raise-red">{error}</span>}
     </div>
   )
 })
 
-const Select: React.FC<{ value?: string, onChange: (s: string) => void, options: string[] | Record<string, string | null> }> = ({ value, onChange, options }) => (
+const Select: React.FC<{ value?: string, onChange: (s: string) => void, options: string[] | Record<string, string | null>, error?: string }> = ({
+  value, onChange, options, error,
+}) => (
   <Listbox value={value} onChange={onChange}>
     <div className="relative">
-      <Listbox.Button className="relative text-left w-full py-2 px-3 mb-1 appearance-none block rounded border cursor-text transition-all text-gray-700 bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 outline-none focus:border-gray-800 focus:bg-white">
+      <Listbox.Button className={classNames("relative text-left w-full py-2 px-3 mb-1 appearance-none block rounded border cursor-text transition-all text-gray-700 outline-none", {
+        "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
+        "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": error,
+      })}
+      >
         <span className={classNames("block truncate", { "text-gray-400": !value })}>{(value && (Array.isArray(options) ? value : options[value])) ?? "(unspecified)"}</span>
         <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
           <ChevronDownIcon
