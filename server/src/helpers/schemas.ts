@@ -131,6 +131,7 @@ export const donationCreationSchema: JSONSchema<S.DonationCreation> = {
     overallPublic: { type: "boolean" },
     namePublic: { type: "boolean" },
     donationAmountPublic: { type: "boolean" },
+    donationCounted: { type: "boolean" },
   },
   additionalProperties: false,
 }
@@ -166,7 +167,7 @@ export const donationSchema: JSONSchema<S.Donation> = {
     matchFundingAmount: { type: "integer", minimum: 0 },
     contributionAmount: { type: "integer", minimum: 0 },
   },
-  required: ["id", "fundraiserId", "donorName", "donorEmail", "emailConsentInformational", "emailConsentMarketing", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeCustomerId", "stripePaymentMethodId", "charity", "overallPublic", "namePublic", "donationAmountPublic"],
+  required: ["id", "fundraiserId", "donorName", "donorEmail", "emailConsentInformational", "emailConsentMarketing", "createdAt", "addressLine1", "addressLine2", "addressLine3", "addressPostcode", "addressCountry", "giftAid", "comment", "donationAmount", "matchFundingAmount", "contributionAmount", "recurringAmount", "recurrenceFrequency", "stripeCustomerId", "stripePaymentMethodId", "charity", "overallPublic", "namePublic", "donationAmountPublic", "donationCounted"],
   additionalProperties: false,
 }
 

@@ -54,6 +54,7 @@ export interface DonationCreation {
   overallPublic?: boolean;
   namePublic?: boolean;
   donationAmountPublic?: boolean;
+  donationCounted?: boolean;
 }
 
 export interface DonationEdits {
@@ -77,6 +78,7 @@ export interface DonationEdits {
   overallPublic?: boolean;
   namePublic?: boolean;
   donationAmountPublic?: boolean;
+  donationCounted?: boolean;
   donationAmount?: number;
   matchFundingAmount?: number;
   contributionAmount?: number;
@@ -108,6 +110,7 @@ export interface Donation {
   overallPublic: boolean;
   namePublic: boolean;
   donationAmountPublic: boolean;
+  donationCounted: boolean;
   id: string;
   fundraiserId: string;
   donationAmount: number;
@@ -136,6 +139,7 @@ export type Donations = {
   overallPublic: boolean;
   namePublic: boolean;
   donationAmountPublic: boolean;
+  donationCounted: boolean;
   id: string;
   fundraiserId: string;
   donationAmount: number;

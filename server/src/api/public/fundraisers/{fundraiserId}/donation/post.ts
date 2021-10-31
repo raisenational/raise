@@ -103,6 +103,7 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     overallPublic: event.body.overallPublic,
     namePublic: event.body.namePublic,
     donationAmountPublic: event.body.donationAmountPublic,
+    donationCounted: false,
   })
 
   // Can insert all the payments in parallel
