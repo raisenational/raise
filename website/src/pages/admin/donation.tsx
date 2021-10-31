@@ -2,7 +2,7 @@ import * as React from "react"
 import { navigate, RouteComponentProps } from "@reach/router"
 
 import { PlusSmIcon } from "@heroicons/react/outline"
-import { asResponseValues, useAxios, useRawAxios } from "../../components/networking"
+import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import { Donation, Payment, PaymentCreation } from "./types.d"
 import Table, {

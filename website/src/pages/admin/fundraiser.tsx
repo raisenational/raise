@@ -3,7 +3,7 @@ import { navigate, RouteComponentProps } from "@reach/router"
 
 import { DownloadIcon, PlusSmIcon } from "@heroicons/react/outline"
 import jsonexport from "jsonexport/dist"
-import { asResponseValues, useAxios, useRawAxios } from "../../components/networking"
+import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import { Fundraiser, Donation, DonationEdits } from "./types.d"
 import Table, {

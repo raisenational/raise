@@ -4,7 +4,7 @@ import { RouteComponentProps } from "@reach/router"
 import Section, { SectionTitle } from "../../components/Section"
 import { timestampFormatter } from "../../components/Table"
 import PropertyEditor from "../../components/PropertyEditor"
-import { useAxios } from "../../components/networking"
+import { useAxios } from "../../helpers/networking"
 import { Profile } from "./types.d"
 
 const ProfilePage: React.FC<RouteComponentProps> = () => {
