@@ -8,6 +8,7 @@ import {
 import { stripeWebhookRequest } from "../../../helpers/schemas"
 import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/tables"
 import env from "../../../env/env"
+import { auditContext } from "../../../helpers/auditContext"
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true })
 
@@ -24,6 +25,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
   } catch (err) {
     throw new createHttpError.Unauthorized("Failed to validate webhook signature")
   }
+  auditContext.value!.subject = "stripe"
 
   if (event.body.data.object.amount !== event.body.data.object.amount_received) {
     throw new createHttpError.BadRequest("amount does not match amount_received")

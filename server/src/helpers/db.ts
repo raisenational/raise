@@ -153,7 +153,6 @@ export type AuditDefinition = { action: AuditLog["action"], object?: AuditLog["o
 export const insertAudit = async (auditDefinition: AuditDefinition): Promise<void> => {
   const id = ulid()
   try {
-    // TODO: better handle the case where auditContext is undefined: e.g. if there is an authentication problem with the JWT middleware
     if (auditContext.value === undefined) throw new Error("auditContext is undefined")
 
     const Item: AuditLog = {
@@ -178,6 +177,9 @@ export const insertAudit = async (auditDefinition: AuditDefinition): Promise<voi
       },
     })).catch(handleDbError(auditLogTable))
   } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("Failed to store audit log:")
+    console.error("Data to log: ", auditDefinition)
     // eslint-disable-next-line no-console
     console.error(err)
   }
