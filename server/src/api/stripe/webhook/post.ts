@@ -10,7 +10,7 @@ import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/t
 import env from "../../../env/env"
 import { auditContext } from "../../../helpers/auditContext"
 
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true })
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
 
 export const main = middyfy(stripeWebhookRequest, null, false, async (event) => {
   const signature = event.headers["Stripe-Signature"]

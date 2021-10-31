@@ -3,6 +3,7 @@ import { DynamoDBClient, TransactionCanceledException } from "@aws-sdk/client-dy
 import {
   DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, ScanCommand, TransactWriteCommand, TransactWriteCommandInput, TransactWriteCommandOutput, UpdateCommand,
 } from "@aws-sdk/lib-dynamodb"
+import { NodeHttpHandler } from "@aws-sdk/node-http-handler"
 import Ajv from "ajv"
 import createHttpError from "http-errors"
 import type { NativeAttributeValue } from "@aws-sdk/util-dynamodb"
@@ -14,9 +15,21 @@ import { auditContext } from "./auditContext"
 import { AuditLog } from "./schemaTypes"
 import env from "../env/env"
 
+const requestHandler = new NodeHttpHandler({
+  connectionTimeout: 30_000,
+  socketTimeout: 30_000,
+})
+
 const dynamoDBClient = env.STAGE === "local"
-  ? new DynamoDBClient({ region: "localhost", endpoint: "http://localhost:8004", credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" } })
-  : new DynamoDBClient({})
+  ? new DynamoDBClient({
+    region: "localhost",
+    endpoint: "http://localhost:8004",
+    credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" },
+    requestHandler,
+  })
+  : new DynamoDBClient({
+    requestHandler,
+  })
 
 const dbClient = DynamoDBDocumentClient.from(dynamoDBClient, {
   marshallOptions: {

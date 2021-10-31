@@ -9,7 +9,7 @@ import { donationTable, fundraiserTable, paymentTable } from "../../../../../hel
 import env from "../../../../../env/env"
 import { Fundraiser, PublicDonationRequest } from "../../../../../helpers/schemaTypes"
 
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true })
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
 
 export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, false, async (event) => {
   const now = Math.floor(new Date().getTime() / 1000)
