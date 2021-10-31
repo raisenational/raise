@@ -42,7 +42,7 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
 
   return (
     <div ref={ref}>
-      <div className="grid gap-8 md:grid-cols-2 md:gap-32">
+      <div className="grid gap-8 md:grid-cols-2 md:gap-16 lg:gap-32">
         <div className="md:text-left self-center">
           <img alt="" src={logo} height={60} width={95} className="mb-8" />
           <h1 className="text-5xl md:text-7xl font-raise-header font-black">{title}</h1>

@@ -2,6 +2,7 @@ import * as React from "react"
 import { Dialog } from "@headlessui/react"
 import classNames from "classnames"
 
+import { XIcon } from "@heroicons/react/outline"
 import Section from "./Section"
 
 interface Props {
@@ -27,7 +28,8 @@ const Modal: React.FC<Props> = ({ open, onClose, children }) => {
 
       {/* TODO: add a close button */}
 
-      <Section ref={ref} className="transform p-8 my-16 bg-white rounded shadow relative z-10 overflow-auto">
+      <Section ref={ref} className="transform p-8 my-16 bg-white rounded shadow relative z-10 overflow-auto relative">
+        <XIcon onClick={onClose} className="w-8 h-8 sm:w-12 sm:h-12 absolute right-8 cursor-pointer" />
         {children}
       </Section>
     </Dialog>

@@ -35,10 +35,18 @@ const Link: React.FC<Props> = ({
     )
   }
 
+  if (href !== undefined) {
+    return (
+      <a href={href} onClick={onClick} className={classNames("cursor-pointer", className)}>
+        {children}
+      </a>
+    )
+  }
+
   return (
-    <a href={href} onClick={onClick} className={classNames("cursor-pointer", className)}>
+    <button type="button" onClick={onClick} className={classNames("cursor-pointer", className)}>
       {children}
-    </a>
+    </button>
   )
 }
 
