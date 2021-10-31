@@ -5,7 +5,7 @@ import { GoogleLogin, GoogleLoginResponse } from "react-google-login"
 import Section, { SectionTitle } from "../../components/Section"
 import Alert from "../../components/Alert"
 import logo from "../../images/logo.png"
-import { useAuthState, useRawAxios } from "../../components/networking"
+import { useAuthState, useRawAxios } from "../../helpers/networking"
 
 const requiredScopes = [
   "email",

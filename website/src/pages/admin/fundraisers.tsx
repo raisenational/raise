@@ -3,7 +3,7 @@ import { RouteComponentProps } from "@reach/router"
 import { navigate } from "gatsby"
 
 import { PlusSmIcon } from "@heroicons/react/outline"
-import { useAxios, useRawAxios } from "../../components/networking"
+import { useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import { Fundraiser, FundraiserEdits } from "./types.d"
 import Table, {
