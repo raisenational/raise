@@ -24,7 +24,8 @@
     "emailConsentMarketing": true,
     "stripeCustomerId": "cus_KUIrqQxhG7HN3M",
     "stripePaymentMethodId": "pm_1JpKFoKzqibgSMB7TVly793K",
-    "donationAmount": 900
+    "donationAmount": 900,
+    "donationCounted": true
   },
   {
     "id": "01FGPDQQ9RNX77QX5V62MA2X81",
@@ -51,7 +52,8 @@
     "charity": "AMF",
     "overallPublic": true,
     "namePublic": true,
-    "donationAmountPublic": false
+    "donationAmountPublic": false,
+    "donationCounted": true
   },
   {
     "id": "01FGP6MMPGGVY0MH9GE9DRRNKG",
@@ -78,6 +80,7 @@
     "charity": "AMF",
     "overallPublic": true,
     "namePublic": true,
-    "donationAmountPublic": true
+    "donationAmountPublic": true,
+    "donationCounted": true
   }
 ]

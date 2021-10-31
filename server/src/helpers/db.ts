@@ -275,7 +275,7 @@ export const plusT = <
       TableName: table.name,
       Key: key,
       ConditionExpression: `#${table.primaryKey} = :${table.primaryKey}${extraConditionExpression ? ` AND ${extraConditionExpression}` : ""}`, // primaryKey check ensures we don't create a new item
-      UpdateExpression: `SET ${entries.map(([k]) => `#${k} = #${k} + :${k}`).join(", ")}`,
+      UpdateExpression: `SET ${entries.map(([k, v]) => (typeof v === "number" ? `#${k} = #${k} + :${k}` : `#${k} = :${k}`)).join(", ")}`,
       ExpressionAttributeValues: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
         acc[`:${k}`] = v
         return acc
