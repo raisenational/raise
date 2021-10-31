@@ -109,9 +109,27 @@ export const scan = async <
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>): Promise<S[]> => {
-  const result = await dbClient.send(new ScanCommand({ TableName: table.name })).catch(handleDbError(table))
-  assertMatchesSchema<S[]>({ type: "array", items: table.schema }, result.Items)
-  return result.Items as S[]
+  const itemss = []
+  let key: { [key: string]: NativeAttributeValue } | undefined
+  let calls = 0
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    // eslint-disable-next-line no-await-in-loop
+    const result = await dbClient.send(new ScanCommand({
+      TableName: table.name,
+      ExclusiveStartKey: key,
+    })).catch(handleDbError(table))
+    itemss.push(result.Items ?? [])
+
+    if (!result.LastEvaluatedKey || Object.keys(result.LastEvaluatedKey).length === 0) break
+    key = result.LastEvaluatedKey
+
+    calls += 1
+    if (calls > 10) throw new createHttpError.InternalServerError(`Scan of ${table.entityName} exceeded call limit`)
+  }
+  const items = itemss.flat(1)
+  assertMatchesSchema<S[]>({ type: "array", items: table.schema }, items)
+  return items as S[]
 }
 
 export const query = async <

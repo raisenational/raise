@@ -2,8 +2,10 @@ import "source-map-support/register"
 import createHttpError from "http-errors"
 import Stripe from "stripe"
 import { middyfy } from "../../../helpers/wrapper"
-import { get, scan, update } from "../../../helpers/db"
-import { donationTable, paymentTable } from "../../../helpers/tables"
+import {
+  get, inTransaction, plusT, scan, update, updateT,
+} from "../../../helpers/db"
+import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/tables"
 import env from "../../../env/env"
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true })
@@ -11,34 +13,74 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typ
 export const main = middyfy(null, null, true, async (event) => {
   if (event.auth.payload.subject !== "scheduler") throw new createHttpError.Forbidden("Only scheduler can call /scheduler endpoints")
 
-  // TODO: handle the case we have >1MB payments (approx 3500 payments)
-  // https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_Scan.html
-  // We'll definitely want pagination at some point
-  // Additionally, we'll probably want to add a secondary index to the payment table to get pending payments efficiently
+  // When this becomes slow, we probably want to add a secondary index to the payment table to get pending payments efficiently e.g.:
+  // GlobalSecondaryIndexes: [{
+  //   IndexName: "pending-payment",
+  //   KeySchema: [{
+  //     AttributeName: "isPending", // a boolean property (always true) only present on pending payments to minimize index size
+  //     KeyType: "HASH",
+  //   }, {
+  //     AttributeName: "at",
+  //     KeyType: "RANGE",
+  //   }],
+  //   Projection: {
+  //     ProjectionType: "ALL", // maybe KEYS_ONLY, but then we'd need to fetch each payment again
+  //   },
+  // }],
   const payments = await scan(paymentTable)
 
   const now = Math.floor(new Date().getTime() / 1000)
   const pendingCardPaymentsDue = payments.filter((p) => p.status === "pending" && p.method === "card" && p.at <= now)
 
-  // TODO: handle Stripe rate limiting (<25reqs/s in test mode, <100reqs/s in live mode)
-  // TODO: consider how doing many writes to the same tables in quick succession may hit AWS rate limits, or at least cause other concurrency related failures
-  // Possible mitigations: use the async-sema library, do request sequentially (given our low volumes) or just wait one second between batches
-  const results = await Promise.allSettled(pendingCardPaymentsDue.map(async (payment) => {
+  console.log(`Found ${pendingCardPaymentsDue.length} pending card payments due`)
+
+  const results = (await Promise.allSettled(pendingCardPaymentsDue.map(async (payment, index) => {
+    // To avoid hitting Stripe rate limits (25reqs/s in test mode, 100reqs/s in live mode)
+    await wait(index * 50)
+
     const donation = await get(donationTable, { id: payment.donationId, fundraiserId: payment.fundraiserId })
 
     // Without these stripe ids we cannot make this payment - this payment is probably a one-off payment they haven't completed yet
     if (!donation.stripeCustomerId || !donation.stripePaymentMethodId) return
 
+    // If there's nothing to capture, mark the payment as paid and handle match funding
     if (payment.donationAmount + payment.contributionAmount === 0) {
-      // TODO: in future, maybe just log this as a warning and mark the payment as paid?
-      throw new Error(`Payment ${payment.id}: Nothing to capture`)
+      console.warn(`Payment ${payment.id}: Nothing to capture, marking as paid.`)
+
+      if (payment.matchFundingAmount === null || payment.matchFundingAmount === 0) {
+        await update(paymentTable,
+          { id: payment.id, donationId: payment.donationId },
+          { status: "paid", matchFundingAmount: 0 },
+          "status = :previousStatus AND donationAmount = :previousDonationAmount AND contributionAmount = :previousContributionAmount AND matchFundingAmount = :previousMatchFundingAmount",
+          {
+            ":previousStatus": payment.status, ":previousDonationAmount": payment.donationAmount, ":previousContributionAmount": payment.contributionAmount, ":previousMatchFundingAmount": payment.matchFundingAmount,
+          })
+      } else {
+        const matchFundingAdded = payment.matchFundingAmount
+        await inTransaction([
+          updateT(paymentTable,
+            { id: payment.id, donationId: payment.donationId },
+            { status: "paid" },
+            "status = :previousStatus AND donationAmount = :previousDonationAmount AND contributionAmount = :previousContributionAmount AND matchFundingAmount = :previousMatchFundingAmount",
+            {
+              ":previousStatus": payment.status, ":previousDonationAmount": payment.donationAmount, ":previousContributionAmount": payment.contributionAmount, ":previousMatchFundingAmount": payment.matchFundingAmount,
+            }),
+          plusT(donationTable,
+            { id: payment.donationId, fundraiserId: payment.fundraiserId },
+            { matchFundingAmount: matchFundingAdded }),
+          plusT(fundraiserTable,
+            { id: payment.fundraiserId },
+            { totalRaised: matchFundingAdded }),
+        ])
+      }
+
+      return
     }
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: payment.donationAmount + payment.contributionAmount,
       currency: "gbp",
       payment_method_types: ["card"],
-      statement_descriptor_suffix: "Raise", // TODO: use fundraiser public name (or maybe have it dynamic, appearing like "RAISE* HELP 250 PEOPLE" or "RAISE* HELPING 250 PPL" etc.?)
       metadata: {
         fundraiserId: payment.fundraiserId,
         donationId: payment.donationId,
@@ -54,7 +96,19 @@ export const main = middyfy(null, null, true, async (event) => {
     await update(paymentTable, { id: payment.id, donationId: payment.donationId }, { reference: paymentIntent.id })
 
     // NB: the rest of the processing (validating amounts, marking the payment as paid, updating amounts on donation and fundraiser etc. are done when we get the stripe webhook confirming successful payment)
+  }))).map((r, i) => ({
+    ...r, paymentId: payments[i].id, donationId: payments[i].donationId, fundraiserId: payments[i].fundraiserId,
   }))
 
-  // TODO: some kind of logging or reporting on how it went?
+  const successes = results.filter((r) => r.status === "fulfilled")
+  const failures = results.filter((r) => r.status === "rejected")
+
+  // Log how everything went
+  console.log(`Tried to collect ${pendingCardPaymentsDue.length} payments: ${successes.length} succeeded, ${failures.length} failed`)
+  failures.forEach((failure) => {
+    console.error(`Payment ${failure.paymentId} (donation ${failure.donationId}, fundraiser ${failure.fundraiserId}) failed:`)
+    console.error((failure as PromiseRejectedResult).reason)
+  })
 })
+
+const wait = async (timeInMilliseconds: number) => new Promise((resolve) => setTimeout(resolve, timeInMilliseconds))

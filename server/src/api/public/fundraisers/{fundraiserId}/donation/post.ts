@@ -61,7 +61,6 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     amount: paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount,
     currency: "gbp",
     payment_method_types: ["card"],
-    statement_descriptor_suffix: "Raise", // TODO: use fundraiser public name (or maybe have it dynamic, appearing like "RAISE* HELP 250 PEOPLE" or "RAISE* HELPING 250 PPL" etc.?)
     metadata: {
       fundraiserId: event.pathParameters.fundraiserId,
       donationId,
