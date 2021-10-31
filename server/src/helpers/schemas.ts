@@ -6,6 +6,7 @@ export type JSONSchema<T> = JSONSchema7Definition & { __type?: T };
 
 export const emailSchema: JSONSchema<S.Email> = {
   type: "string",
+  // Regex from https://html.spec.whatwg.org/multipage/forms.html#e-mail-state-(type=email)
   pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
 }
 
