@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb"
+import { DynamoDBClient, TransactionCanceledException } from "@aws-sdk/client-dynamodb"
 import {
   DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, ScanCommand, TransactWriteCommand, TransactWriteCommandInput, TransactWriteCommandOutput, UpdateCommand,
 } from "@aws-sdk/lib-dynamodb"
@@ -42,10 +42,22 @@ const handleDbError = <
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table?: Table<Pa, Pr, S, K, E>) => async (err: unknown) => {
-    if (err instanceof Error && err.name === "ConditionalCheckFailedException") {
-      throw new createHttpError.Conflict(`Failed to make edits due to failed conditional expression${table ? ` on ${table.entityName}` : ""}. This is likely the result of an editing conflict. Usually, refreshing the page to get up to date data and trying again should work.`)
+    if (err instanceof Error) {
+      if (err.name === "ConditionalCheckFailedException") {
+        console.warn(`ConditionalCheckFailedException returned from DynamoDB${table ? ` for table ${table.entityName}` : ""}:`)
+        console.warn(err)
+        throw new createHttpError.Conflict(`Failed to make edits due to failed conditional expression${table ? ` on ${table.entityName}` : ""}. This is likely the result of an editing conflict. Usually, trying again or refreshing the page and trying again should work.`)
+      }
+
+      if (err.name === "TransactionCanceledException" && (err as unknown as TransactionCanceledException).CancellationReasons?.filter((r) => r.Code !== "None").every((r) => r.Code === "ConditionalCheckFailed")) {
+        console.warn(`TransactionCanceledException returned from DynamoDB${table ? ` for table ${table.entityName}` : ""}:`)
+        console.warn(err)
+        throw new createHttpError.Conflict(`Failed to make edits due to failed conditional expression${table ? ` on ${table.entityName}` : ""}. This is likely the result of an editing conflict. Usually, trying again or refreshing the page and trying again should work.`)
+      }
     }
 
+    console.error(`Database error${table ? ` for table ${table.entityName}` : ""}:`)
+    console.error(err)
     throw err
   }
 

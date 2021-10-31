@@ -50,8 +50,7 @@ export const main = middyfy(paymentPropertyEditsSchema, null, true, async (event
   // match funding amounts are reflected in the remaining balance on the fundraiser iff status is pending or paid
   // donation and contribution amounts are reflected in the donation iff status is paid
   // donation and match funding amounts are reflected in the totalRaised on the fundraiser iff status is paid
-
-  // TODO: what do we do about number of people that donated if one-off payment refunded
+  // we don't update the fundraiser donationsCount in this endpoint
 })
 
 // Allocate new matchfunding (if available) and update matchfunding amount on donation
@@ -147,12 +146,14 @@ async function updateStatus(
       { id: donation.id, fundraiserId: fundraiser.id },
       { donationAmount: -payment.donationAmount, contributionAmount: -payment.contributionAmount, matchFundingAmount: -(payment.matchFundingAmount ?? 0) },
     ))
-    // TODO: test what this does if fundraiser.matchFundingRemaining has changed to being null since gotten the data
     if (fundraiser.matchFundingRemaining !== null) {
+      // If fundraiser.matchFundingRemaining has changed to null since got the data this would explode. We add a condition expression to ensure it hasn't.
       updates.push(plusT(
         fundraiserTable,
         { id: fundraiser.id },
         { matchFundingRemaining: (payment.matchFundingAmount ?? 0), totalRaised: -(payment.donationAmount + (payment.matchFundingAmount ?? 0)) },
+        "matchFundingRemaining <> :null",
+        { ":null": null },
       ))
     } else {
       updates.push(plusT(
