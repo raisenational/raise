@@ -38,7 +38,7 @@ export const main = middyfy(null, null, true, async (event) => {
       amount: payment.donationAmount + payment.contributionAmount,
       currency: "gbp",
       payment_method_types: ["card"],
-      statement_descriptor_suffix: "Raise Demo", // TODO: use fundraiser public name
+      statement_descriptor_suffix: "Raise", // TODO: use fundraiser public name (or maybe have it dynamic, appearing like "RAISE* HELP 250 PEOPLE" or "RAISE* HELPING 250 PPL" etc.?)
       metadata: {
         fundraiserId: payment.fundraiserId,
         donationId: payment.donationId,
