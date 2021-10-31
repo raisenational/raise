@@ -43,38 +43,9 @@ export const main = middyfy(null, null, true, async (event) => {
     // Without these stripe ids we cannot make this payment - this payment is probably a one-off payment they haven't completed yet
     if (!donation.stripeCustomerId || !donation.stripePaymentMethodId) return
 
-    // If there's nothing to capture, mark the payment as paid and handle match funding
-    if (payment.donationAmount + payment.contributionAmount === 0) {
-      console.warn(`Payment ${payment.id}: Nothing to capture, marking as paid.`)
-
-      if (payment.matchFundingAmount === null || payment.matchFundingAmount === 0) {
-        await update(paymentTable,
-          { id: payment.id, donationId: payment.donationId },
-          { status: "paid", matchFundingAmount: 0 },
-          "status = :previousStatus AND donationAmount = :previousDonationAmount AND contributionAmount = :previousContributionAmount AND matchFundingAmount = :previousMatchFundingAmount",
-          {
-            ":previousStatus": payment.status, ":previousDonationAmount": payment.donationAmount, ":previousContributionAmount": payment.contributionAmount, ":previousMatchFundingAmount": payment.matchFundingAmount,
-          })
-      } else {
-        const matchFundingAdded = payment.matchFundingAmount
-        await inTransaction([
-          updateT(paymentTable,
-            { id: payment.id, donationId: payment.donationId },
-            { status: "paid" },
-            "status = :previousStatus AND donationAmount = :previousDonationAmount AND contributionAmount = :previousContributionAmount AND matchFundingAmount = :previousMatchFundingAmount",
-            {
-              ":previousStatus": payment.status, ":previousDonationAmount": payment.donationAmount, ":previousContributionAmount": payment.contributionAmount, ":previousMatchFundingAmount": payment.matchFundingAmount,
-            }),
-          plusT(donationTable,
-            { id: payment.donationId, fundraiserId: payment.fundraiserId },
-            { matchFundingAmount: matchFundingAdded }),
-          plusT(fundraiserTable,
-            { id: payment.fundraiserId },
-            { totalRaised: matchFundingAdded }),
-        ])
-      }
-
-      return
+    // If there's nothing to capture, we're in a weird state and should report this to be handled manually
+    if (payment.donationAmount === 0 && payment.contributionAmount === 0) {
+      throw new createHttpError.InternalServerError("Nothing to capture on pending card payment as donation amount and contribution amount are zero")
     }
 
     const paymentIntent = await stripe.paymentIntents.create({
