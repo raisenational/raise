@@ -16,7 +16,6 @@ type Props = {
 }
 
 // TODO: refactor to make the logic clearer, and add some unit tests around it
-// TODO: handle overflow with really long words
 const DonationCard: React.FC<Props> = ({
   donorName,
   createdAt,
@@ -32,7 +31,7 @@ const DonationCard: React.FC<Props> = ({
     <p>{donorName || "Someone"} donated {donationAmount !== undefined && amountDropPenceIfZeroFormatter(donationAmount)}</p>
     {(recurringAmount !== undefined && recurringAmount !== null && recurrenceFrequency !== undefined && recurrenceFrequency !== null) && <p className="text-base opacity-80">giving {amountDropPenceIfZeroFormatter(recurringAmount)} {recurrenceFrequency.toLowerCase()}</p>}
     {(giftAid || (matchFundingAmount !== undefined && matchFundingAmount > 0)) && <p className="text-base opacity-80"> ({(matchFundingAmount !== undefined && matchFundingAmount > 0) && `+${amountDropPenceIfZeroFormatter(matchFundingAmount)} matched`}{giftAid && (matchFundingAmount !== undefined && matchFundingAmount > 0) && ", "}{giftAid && donationAmount !== undefined && `+${amountDropPenceIfZeroFormatter(donationAmount * 0.25)} gift-aided`})</p>}
-    {comment && <p className="text-base mt-2">{comment}</p>}
+    {comment && <p className="text-base mt-2 break-words">{comment}</p>}
     <p className="text-base opacity-80 mt-auto pt-2 text-right">{typeof createdAt === "string" ? createdAt : <TimeAgo date={createdAt * 1000} />}</p>
   </div>
 )
