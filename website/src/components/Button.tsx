@@ -5,7 +5,7 @@ import Link from "./Link"
 interface Props {
   href?: string,
   onClick?: React.MouseEventHandler,
-  variant?: "red" | "outline" | "blue",
+  variant?: "red" | "outline" | "blue" | "gray",
   size?: "normal" | "small",
   className?: string,
   disabled?: boolean,
@@ -19,8 +19,9 @@ const Button: React.FC<Props> = ({
     onClick={onClick}
     className={classNames("Button", {
       "bg-raise-red border-raise-red hover:text-gray-200": variant === "red",
-      "bg-raise-blue border-raise-blue hover:text-gray-200": variant === "blue",
       "border-white hover:text-raise-blue hover:bg-white": variant === "outline",
+      "bg-raise-blue border-raise-blue hover:text-gray-200": variant === "blue",
+      "bg-gray-400 border-gray-400 hover:text-gray-200": variant === "gray",
       "px-2 py-0": size === "small",
       "border-4": size === "normal",
     }, className)}

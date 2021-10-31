@@ -16,6 +16,7 @@ type Props = {
 }
 
 // TODO: refactor to make the logic clearer, and add some unit tests around it
+// TODO: handle overflow with really long words
 const DonationCard: React.FC<Props> = ({
   donorName,
   createdAt,
