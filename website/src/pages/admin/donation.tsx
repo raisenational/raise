@@ -5,13 +5,12 @@ import { PlusSmIcon } from "@heroicons/react/outline"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import { Donation, Payment, PaymentCreation } from "./types.d"
-import Table, {
-  amountFormatter, booleanFormatter, timestampFormatter,
-} from "../../components/Table"
+import Table from "../../components/Table"
 import PropertyEditor from "../../components/PropertyEditor"
 import Button from "../../components/Button"
 import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
+import { amountFormatter, booleanFormatter, timestampFormatter } from "../../helpers/format"
 
 const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string }> = ({ fundraiserId, donationId }) => {
   const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
