@@ -25,5 +25,6 @@ export const main: ScheduledHandler<unknown> = async (event) => {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    timeout: 300_000, // 5 minutes
   })
 }

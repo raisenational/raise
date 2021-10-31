@@ -20,6 +20,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.34.0",
     "@aws-sdk/lib-dynamodb": "^3.34.0",
+    "@aws-sdk/node-http-handler": "^3.38.0",
     "@middy/core": "^2.5.1",
     "@middy/http-json-body-parser": "^2.5.1",
     "@middy/validator": "^2.5.1",
