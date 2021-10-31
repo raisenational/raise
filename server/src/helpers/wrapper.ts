@@ -5,7 +5,7 @@ import createHttpError from "http-errors"
 import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-auth"
 import type { APIGatewayProxyEventV2, APIGatewayProxyResult, Handler as AWSHandler } from "aws-lambda"
 import type { Handler, AuthTokenPayload } from "./types"
-import { middyAuditContextManager } from "./auditContext"
+import { middyAuditContextManagerAfter, middyAuditContextManagerBefore } from "./auditContext"
 import middyJsonBodyParser from "./http-json-body-parser"
 import middyErrorHandler from "./middy-error-handler"
 import env from "../env/env"
@@ -33,6 +33,8 @@ const middyPathParamsValidatorAndNormalizer: middy.MiddlewareFn<APIGatewayProxyE
 export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends boolean>(requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth, handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>): AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult> {
   try {
     return middy(handler)
+      .before(middyAuditContextManagerBefore)
+      .after(middyAuditContextManagerAfter)
       .use(new JWTAuthMiddleware({
         algorithm: EncryptionAlgorithms.ES256,
         credentialsRequired: requiresAuth,
@@ -57,7 +59,7 @@ export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends bool
         },
       }))
       .before(middyPathParamsValidatorAndNormalizer)
-      .use(middyAuditContextManager)
+      .before(middyAuditContextManagerBefore)
       .onError(middyErrorHandler) as unknown as AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult>
   } catch (err) {
     console.error("Severe internal error processing request:")
