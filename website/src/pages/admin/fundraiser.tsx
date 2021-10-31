@@ -6,13 +6,14 @@ import jsonexport from "jsonexport/dist"
 import { asResponseValues, useAxios, useRawAxios } from "../../components/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import { Fundraiser, Donation, DonationEdits } from "./types.d"
-import Table, {
-  amountFormatter, booleanFormatter, matchFundingRateFormatter, timestampFormatter,
-} from "../../components/Table"
+import Table from "../../components/Table"
 import PropertyEditor from "../../components/PropertyEditor"
 import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
 import Button from "../../components/Button"
+import {
+  amountFormatter, booleanFormatter, matchFundingRateFormatter, timestampFormatter,
+} from "../../helpers/format"
 
 const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> = ({ fundraiserId }) => {
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")

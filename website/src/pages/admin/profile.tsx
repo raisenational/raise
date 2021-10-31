@@ -2,7 +2,7 @@ import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 
 import Section, { SectionTitle } from "../../components/Section"
-import { timestampFormatter } from "../../components/Table"
+import { timestampFormatter } from "../../helpers/format"
 import PropertyEditor from "../../components/PropertyEditor"
 import { useAxios } from "../../components/networking"
 import { Profile } from "./types.d"

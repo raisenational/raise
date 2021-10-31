@@ -3,9 +3,7 @@ import { RouteComponentProps } from "@reach/router"
 import { asResponseValues, useAxios, useRawAxios } from "../../components/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import { Donation, Payment } from "./types.d"
-import {
-  amountFormatter, timestampFormatter,
-} from "../../components/Table"
+import { amountFormatter, timestampFormatter } from "../../helpers/format"
 import PropertyEditor from "../../components/PropertyEditor"
 
 const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string, paymentId?: string }> = ({ fundraiserId, donationId, paymentId }) => {

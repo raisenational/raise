@@ -1,7 +1,7 @@
 import * as React from "react"
 import TimeAgo from "react-timeago"
 import classNames from "classnames"
-import { amountDropPenceIfZeroFormatter } from "./Table"
+import { amountDropPenceIfZeroFormatter } from "../helpers/format"
 
 type Props = {
   donorName?: string,
