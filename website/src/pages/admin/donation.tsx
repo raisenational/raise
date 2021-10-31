@@ -74,7 +74,14 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
         }}
         item={donation}
         onSave={async (data) => {
-          await axios.patch(`/admin/fundraisers/${fundraiserId}/donations/${donationId}`, data)
+          await axios.patch(`/admin/fundraisers/${fundraiserId}/donations/${donationId}`, {
+            ...data,
+            previous: {
+              donationAmount: donation.data?.donationAmount,
+              contributionAmount: donation.data?.contributionAmount,
+              matchFundingAmount: donation.data?.matchFundingAmount,
+            },
+          })
           refetchDonations()
         }}
       />
