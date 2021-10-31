@@ -14,7 +14,6 @@ import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
 import Button from "../../components/Button"
 
-// TODO: improve types so fundraiser is correctly typed as string, not string | undefined, while still being able to use it similarly to how we are in the router
 const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> = ({ fundraiserId }) => {
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
   const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
@@ -67,7 +66,13 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
         }}
         item={fundraiser}
         onSave={async (data) => {
-          await axios.patch(`/admin/fundraisers/${fundraiserId}`, data)
+          await axios.patch(`/admin/fundraisers/${fundraiserId}`, {
+            ...data,
+            previous: {
+              totalRaised: fundraiser.data?.totalRaised,
+              donationsCount: fundraiser.data?.donationsCount,
+            },
+          })
           refetchFundraisers()
         }}
       />

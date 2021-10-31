@@ -6,6 +6,7 @@
 * This file was automatically generated. DO NOT MODIFY IT BY HAND.
 * Instead, copy it from the back-end and retain this message.
 */
+
 export interface AccessToken {
   accessToken: string;
   expiresAt: number;
@@ -36,6 +37,29 @@ export interface AuditLog {
   ttl: number | null;
 }
 
+export interface DonationCreation {
+  donorName?: string;
+  donorEmail?: string;
+  emailConsentInformational?: boolean;
+  emailConsentMarketing?: boolean;
+  createdAt?: number;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
+  addressLine3?: string | null;
+  addressPostcode?: string | null;
+  addressCountry?: string | null;
+  giftAid?: boolean;
+  comment?: string | null;
+  recurringAmount?: number | null;
+  recurrenceFrequency?: ("WEEKLY" | "MONTHLY") | null;
+  stripeCustomerId?: string | null;
+  stripePaymentMethodId?: string | null;
+  charity?: string;
+  overallPublic?: boolean;
+  namePublic?: boolean;
+  donationAmountPublic?: boolean;
+}
+
 export interface DonationEdits {
   donorName?: string;
   donorEmail?: string;
@@ -49,9 +73,6 @@ export interface DonationEdits {
   addressCountry?: string | null;
   giftAid?: boolean;
   comment?: string | null;
-  donationAmount?: number;
-  matchFundingAmount?: number;
-  contributionAmount?: number;
   recurringAmount?: number | null;
   recurrenceFrequency?: ("WEEKLY" | "MONTHLY") | null;
   stripeCustomerId?: string | null;
@@ -60,6 +81,14 @@ export interface DonationEdits {
   overallPublic?: boolean;
   namePublic?: boolean;
   donationAmountPublic?: boolean;
+  donationAmount?: number;
+  matchFundingAmount?: number;
+  contributionAmount?: number;
+  previous?: {
+    donationAmount?: number;
+    matchFundingAmount?: number;
+    contributionAmount?: number;
+  };
 }
 
 export interface Donation {
@@ -75,9 +104,6 @@ export interface Donation {
   addressCountry: string | null;
   giftAid: boolean;
   comment: string | null;
-  donationAmount: number;
-  matchFundingAmount: number;
-  contributionAmount: number;
   recurringAmount: number | null;
   recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
   stripeCustomerId: string | null;
@@ -88,6 +114,9 @@ export interface Donation {
   donationAmountPublic: boolean;
   id: string;
   fundraiserId: string;
+  donationAmount: number;
+  matchFundingAmount: number;
+  contributionAmount: number;
 }
 
 export type Donations = {
@@ -103,9 +132,6 @@ export type Donations = {
   addressCountry: string | null;
   giftAid: boolean;
   comment: string | null;
-  donationAmount: number;
-  matchFundingAmount: number;
-  contributionAmount: number;
   recurringAmount: number | null;
   recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
   stripeCustomerId: string | null;
@@ -116,9 +142,30 @@ export type Donations = {
   donationAmountPublic: boolean;
   id: string;
   fundraiserId: string;
+  donationAmount: number;
+  matchFundingAmount: number;
+  contributionAmount: number;
 }[];
 
 export type Email = string;
+
+export interface FundraiserCreation {
+  fundraiserName?: string;
+  activeFrom?: number;
+  activeTo?: number;
+  paused?: boolean;
+  goal?: number;
+  totalRaised?: number;
+  donationsCount?: number;
+  matchFundingRate?: number;
+  matchFundingPerDonationLimit?: number | null;
+  matchFundingRemaining?: number | null;
+  minimumDonationAmount?: number | null;
+  suggestedDonationAmountOneOff?: number;
+  suggestedDonationAmountWeekly?: number;
+  suggestedContributionAmount?: number | null;
+  groupsWithAccess?: string[];
+}
 
 export interface FundraiserEdits {
   fundraiserName?: string;
@@ -136,6 +183,10 @@ export interface FundraiserEdits {
   suggestedDonationAmountWeekly?: number;
   suggestedContributionAmount?: number | null;
   groupsWithAccess?: string[];
+  previous?: {
+    totalRaised?: number;
+    donationsCount?: number;
+  };
 }
 
 export interface Fundraiser {
