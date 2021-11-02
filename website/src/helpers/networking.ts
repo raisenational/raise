@@ -4,6 +4,7 @@ import {
   makeUseAxios, Options, ResponseValues, UseAxios,
 } from "axios-hooks"
 import { useEffect, useState } from "react"
+import env from "../env/env"
 
 export interface AuthState {
   token: string,
@@ -60,9 +61,7 @@ export const useAuthState = () => {
 }
 
 const defaultConfig: AxiosRequestConfig = {
-  baseURL: typeof window !== "undefined" && window.location.host.startsWith("localhost")
-    ? "http://localhost:8001/"
-    : "https://bblp6lj50j.execute-api.eu-west-1.amazonaws.com/",
+  baseURL: env.API_BASE_URL,
   timeout: 60000,
 }
 

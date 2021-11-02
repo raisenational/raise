@@ -18,6 +18,7 @@ import { SectionTitle } from "./Section"
 import { LabelledInput } from "./Form"
 import Alert from "./Alert"
 import { parseMoney } from "../helpers/parse"
+import env from "../env/env"
 
 interface Props {
   title: string,
@@ -75,8 +76,7 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
   )
 }
 
-// TODO: move publishable key into config (along with API endpoint)
-const stripePromise = loadStripe("pk_test_51JoQv0KzqibgSMB7aaaSq8ZJUsTwC4Hd1rfRwehKncms8iaHsKl941RvdBWNNVGQDcdRZmRaDaMknmBTilFqOhYU00EyfZikdJ")
+const stripePromise = loadStripe(env.STRIPE_PUBLISHABLE_KEY)
 
 interface DonationFormResponses {
   donationAmount: string,

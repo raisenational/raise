@@ -4,11 +4,14 @@
   "author": "Adam Jones <domdomegg+git@gmail.com>",
   "main": "n/a",
   "scripts": {
-    "build": "gatsby build",
+    "postinstall": "cp -n src/env/local.template.ts src/env/local.ts && cp -n src/env/local.ts src/env/env.ts",
+    "start": "npm run start:local",
+    "start:local": "gatsby develop --port 8000",
+    "build": "npm run build:local",
+    "build:local": "cp src/env/local.ts src/env/env.ts && gatsby build",
+    "build:dev": "cp src/env/dev.ts src/env/env.ts && gatsby build",
     "clean": "rimraf public",
-    "dev": "gatsby develop --port 8000",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "start": "npm run dev",
     "test": "npm run type-check && npm run lint && npm run codeowners",
     "type-check": "tsc",
     "codeowners": "node codeowners.js"
