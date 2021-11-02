@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "serverless.ts",
   "scripts": {
-    "postinstall": "cp -n src/env/local.ts src/env/env.ts && serverless dynamodb install",
+    "postinstall": "cp -n src/env/local.template.ts src/env/local.ts && cp -n src/env/local.ts src/env/env.ts && serverless dynamodb install",
     "start": "npm run start:local",
     "start:local": "cp src/env/local.ts src/env/env.ts && serverless offline start",
     "deploy:dev": "cp src/env/dev.ts src/env/env.ts && serverless deploy --verbose",
