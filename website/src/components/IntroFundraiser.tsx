@@ -62,7 +62,7 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
 
           <Button variant="outline" className="block mx-2 md:inline-block md:mx-0" disabled={!fundraiser.data} onClick={() => setModalOpen(true)}>Donate</Button>
           <Modal open={modalOpen} onClose={() => { setModalOpen(false); refetchFundraiser() }}>
-            {fundraiser.data && <DonationForm fundraiser={fundraiser.data} />}
+            {fundraiser.data && <DonationForm fundraiser={fundraiser.data} setModalOpen={setModalOpen} refetchFundraiser={refetchFundraiser} />}
           </Modal>
         </div>
       </div>
@@ -74,6 +74,11 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
       </div>
     </div>
   )
+}
+
+const closeModal = (setModalOpen: (x: boolean) => void, refetchFundraiser: () => void) => {
+  setModalOpen(false)
+  refetchFundraiser()
 }
 
 const stripePromise = loadStripe(env.STRIPE_PUBLISHABLE_KEY)
@@ -98,7 +103,7 @@ interface DonationFormResponses {
 }
 
 // TODO: error handling
-const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }) => {
+const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: boolean) => void, refetchFundraiser: () => void }> = ({ fundraiser, setModalOpen, refetchFundraiser }) => {
   const formMethods = useForm<DonationFormResponses>({
     mode: "onTouched",
     defaultValues: {
@@ -138,6 +143,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }
         {page !== 0 && page !== 4 && <Button variant="gray" onClick={() => setPage(page - 1)}>Back</Button>}
         {page !== 3 && page !== 4 && <Button variant="blue" onClick={async () => await formMethods.trigger() && setPage(page + 1)}>Next</Button>}
         {page === 3 && payButton}
+        {page === 4 && <Button variant="gray" onClick={() => closeModal(setModalOpen, refetchFundraiser)}>Close</Button>}
       </div>
     </FormProvider>
   )
@@ -497,10 +503,11 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
     </>
   )
 }
+// TODO: do social sharing button
 const DonationFormComplete: React.FC<{ watches: DonationFormResponses }> = ({ watches }) => (
   <>
     <h3 className="text-2xl">Payment Succesful! </h3>
-    <div> Thank you for donating £{watches.donationAmount}! Your money will help in the fight against Malaria</div>
+    <div> Thank you for donating, we received your payment!</div>
   </>
 )
 
