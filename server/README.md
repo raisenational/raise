@@ -30,6 +30,7 @@ The ports the local server hosts on are:
 - `8002`: serverless-offline websockets
 - `8003`: serverless-offline AWS Lambda API
 - `8004`: serverless-dynamodb-local instance of DynamoDB
+- `8005`: serverless-offline-ses instance of ses
 
 ### 📝 Making changes
 

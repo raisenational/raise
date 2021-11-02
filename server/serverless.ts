@@ -139,11 +139,17 @@ const serverlessConfiguration: AWS = {
         },
       },
     },
+    ses: {
+      port: 8005,
+      outputDir: "./.ses",
+      clean: true,
+    },
   },
   plugins: [
     "serverless-webpack",
     "serverless-dynamodb-local",
     "serverless-offline",
+    "serverless-offline-ses",
   ],
   provider: {
     name: "aws",

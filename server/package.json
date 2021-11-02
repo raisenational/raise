@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.34.0",
+    "@aws-sdk/client-sesv2": "^3.39.0",
     "@aws-sdk/lib-dynamodb": "^3.34.0",
     "@aws-sdk/node-http-handler": "^3.38.0",
     "@middy/core": "^2.5.1",
@@ -50,6 +51,7 @@
     "json-schema-to-typescript": "^10.1.5",
     "serverless": "^2.64.1",
     "serverless-offline": "^8.2.0",
+    "serverless-offline-ses": "^0.0.7",
     "serverless-webpack": "^5.5.4",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.2.1",
