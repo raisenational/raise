@@ -6,6 +6,7 @@ import Section, { SectionTitle } from "../../components/Section"
 import Alert from "../../components/Alert"
 import logo from "../../images/logo.png"
 import { useAuthState, useRawAxios } from "../../helpers/networking"
+import env from "../../env/env"
 
 const requiredScopes = [
   "email",
@@ -27,7 +28,7 @@ const Login: React.FC<RouteComponentProps> = () => {
         <SectionTitle>Admin Login</SectionTitle>
         {error && <Alert variant="error" className="-mt-2 mb-4">{error}</Alert>}
         <GoogleLogin
-          clientId="730827052132-u1tatnr4anip3vf7j5tq82k33gb5okpe.apps.googleusercontent.com"
+          clientId={env.GOOGLE_CLIENT_ID}
           scope={requiredScopes.join(" ")}
           onRequest={() => {
             setError(undefined)
