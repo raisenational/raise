@@ -61,7 +61,7 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
           </div>
 
           <Button variant="outline" className="block mx-2 md:inline-block md:mx-0" disabled={!fundraiser.data} onClick={() => setModalOpen(true)}>Donate</Button>
-          <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+          <Modal open={modalOpen} onClose={() => { setModalOpen(false); refetchFundraiser() }}>
             {fundraiser.data && <DonationForm fundraiser={fundraiser.data} />}
           </Modal>
         </div>
@@ -131,11 +131,12 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser }> = ({ fundraiser }
         {page === 0 && <DonationFormAmounts formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 1 && <DonationFormDetails formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 2 && <DonationFormMessage formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-        {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} />}
+        {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} onPaymentSuccess={() => setPage(page + 1)} />}
+        {page === 4 && <DonationFormComplete watches={watches} />}
       </div>
       <div className="float-right">
-        {page !== 0 && <Button variant="gray" onClick={() => setPage(page - 1)}>Back</Button>}
-        {page !== 3 && <Button variant="blue" onClick={async () => await formMethods.trigger() && setPage(page + 1)}>Next</Button>}
+        {page !== 0 && page !== 4 && <Button variant="gray" onClick={() => setPage(page - 1)}>Back</Button>}
+        {page !== 3 && page !== 4 && <Button variant="blue" onClick={async () => await formMethods.trigger() && setPage(page + 1)}>Next</Button>}
         {page === 3 && payButton}
       </div>
     </FormProvider>
@@ -296,8 +297,8 @@ const DonationFormMessage: React.FC<{ formMethods: UseFormReturn<DonationFormRes
   </>
 )
 
-const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, setPayButton: (e: JSX.Element) => void }> = ({
-  formMethods, watches, fundraiser, setPayButton,
+const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, setPayButton: (e: JSX.Element) => void, onPaymentSuccess: () => void }> = ({
+  formMethods, watches, fundraiser, setPayButton, onPaymentSuccess,
 }) => {
   const [piResponse, fetchPiResponse] = useAxios<PublicPaymentIntentResponse>({
     url: `/public/fundraisers/${fundraiser.id}/donation`,
@@ -360,16 +361,16 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
         options={{ clientSecret: piResponse.data.stripeClientSecret }}
         stripe={stripePromise}
       >
-        <DonationFormPaymentInner formMethods={formMethods} fundraiser={fundraiser} watches={watches} stripeClientSecret={piResponse.data.stripeClientSecret} setPayButton={setPayButton} />
+        <DonationFormPaymentInner formMethods={formMethods} fundraiser={fundraiser} watches={watches} stripeClientSecret={piResponse.data.stripeClientSecret} setPayButton={setPayButton} onPaymentSuccess={onPaymentSuccess} />
       </Elements>
     </>
   )
 }
 
-const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, stripeClientSecret: string, setPayButton: (e: JSX.Element) => void }> = ({
+const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, stripeClientSecret: string, setPayButton: (e: JSX.Element) => void, onPaymentSuccess: () => void }> = ({
   formMethods: {
     handleSubmit, formState: { isSubmitting },
-  }, watches, fundraiser, stripeClientSecret, setPayButton,
+  }, watches, fundraiser, stripeClientSecret, setPayButton, onPaymentSuccess,
 }) => {
   const stripe = useStripe()
   const elements = useElements()
@@ -410,8 +411,9 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
         setError("An unexpected error occured with your payment")
       }
     } else if (response.paymentIntent.status === "succeeded") {
-      alert("Success!")
+      // alert("Success!")
       console.log(response.paymentIntent)
+      onPaymentSuccess()
     } else {
       setError("An unexpected error occured with your payment")
     }
@@ -495,5 +497,11 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
     </>
   )
 }
+const DonationFormComplete: React.FC<{ watches: DonationFormResponses }> = ({ watches }) => (
+  <>
+    <h3 className="text-2xl">Payment Succesful! </h3>
+    <div> Thank you for donating £{watches.donationAmount}! Your money will help in the fight against Malaria</div>
+  </>
+)
 
 export default IntroFundraiser

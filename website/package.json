@@ -6,7 +6,7 @@
   "scripts": {
     "postinstall": "cp -n src/env/local.template.ts src/env/local.ts && cp -n src/env/local.ts src/env/env.ts",
     "start": "npm run start:local",
-    "start:local": "gatsby develop --port 8000",
+    "start:local": "cp src/env/local.ts src/env/env.ts && gatsby develop --port 8000",
     "build": "npm run build:local",
     "build:local": "cp src/env/local.ts src/env/env.ts && gatsby build",
     "build:dev": "cp src/env/dev.ts src/env/env.ts && gatsby build",
