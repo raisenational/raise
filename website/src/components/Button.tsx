@@ -4,7 +4,7 @@ import Link from "./Link"
 
 interface Props {
   href?: string,
-  onClick?: React.MouseEventHandler,
+  onClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
   variant?: "red" | "outline" | "blue" | "gray",
   size?: "normal" | "small",
   className?: string,
