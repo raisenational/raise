@@ -70,6 +70,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           overallPublic: { label: "Donation is public", formatter: booleanFormatter, inputType: "checkbox" },
           namePublic: { label: "Donor name is public", formatter: booleanFormatter, inputType: "checkbox" },
           donationAmountPublic: { label: "Donation amount is public", formatter: booleanFormatter, inputType: "checkbox" },
+          donationCounted: { label: "Donation counted", formatter: booleanFormatter, inputType: "checkbox" },
         }}
         item={donation}
         onSave={async (data) => {
