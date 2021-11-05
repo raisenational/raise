@@ -139,17 +139,15 @@ const serverlessConfiguration: AWS = {
         },
       },
     },
-    ses: {
+    "serverless-offline-ses-v2": {
       port: 8005,
-      outputDir: "./.ses",
-      clean: true,
     },
   },
   plugins: [
     "serverless-webpack",
     "serverless-dynamodb-local",
     "serverless-offline",
-    "serverless-offline-ses",
+    "serverless-offline-ses-v2",
   ],
   provider: {
     name: "aws",
@@ -173,13 +171,22 @@ const serverlessConfiguration: AWS = {
     timeout: 10,
     iam: {
       role: {
-        statements: Object.keys(tableResources).map((cloudformationName) => ({
-          Effect: "Allow",
-          Action: "dynamodb:*",
-          Resource: {
-            "Fn::GetAtt": [cloudformationName, "Arn"],
+        statements: [
+          ...Object.keys(tableResources).map((cloudformationName) => ({
+            Effect: "Allow",
+            Action: "dynamodb:*",
+            Resource: {
+              "Fn::GetAtt": [cloudformationName, "Arn"],
+            },
+          })),
+          {
+            Effect: "Allow",
+            Action: [
+              "ses:SendEmail",
+            ],
+            Resource: "*",
           },
-        })),
+        ],
       },
     },
     // https://www.serverless.com/framework/docs/providers/aws/events/event-bridge
