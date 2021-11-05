@@ -12,7 +12,7 @@ import DonationCard from "./DonationCard"
 import { animateStatsIn } from "./IntroStats"
 import { useAxios } from "../helpers/networking"
 import { PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse } from "../pages/admin/types.d"
-import { amountDropPenceIfZeroFormatter } from "../helpers/format"
+import { amountDropPenceIfZeroFormatter, dateFormatter } from "../helpers/format"
 import Modal from "./Modal"
 import { SectionTitle } from "./Section"
 import { LabelledInput } from "./Form"
@@ -102,7 +102,6 @@ interface DonationFormResponses {
   comment: string,
 }
 
-// TODO: error handling
 const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: boolean) => void, refetchFundraiser: () => void }> = ({ fundraiser, setModalOpen, refetchFundraiser }) => {
   const formMethods = useForm<DonationFormResponses>({
     mode: "onTouched",
@@ -351,23 +350,38 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
     )
   }
 
-  // TODO: display piResponse.data.futurePayments properly
   return (
     <>
-      <h3 className="text-2xl">Payment</h3>
-      <p>Amount due: {amountDropPenceIfZeroFormatter(piResponse.data.amount)}{watches.recurrenceFrequency !== "ONE_OFF" && ` now, then £${watches.donationAmount} ${watches.recurrenceFrequency?.toLowerCase()} (you can cancel your ${watches.recurrenceFrequency?.toLowerCase()} payments at any time)`}</p>
-      <Alert className="mt-2" variant="warning">
+      <Alert className="mb-4" variant="warning">
         This system is in development. Avoid using real cards and instead use a <a href="https://stripe.com/docs/testing#cards" target="_blank" rel="noreferrer">Stripe test card</a>, e.g.:<br />
         Card number: <code className="select-all">4242 4242 4242 4242</code><br />
         Expiry date (any future date): <code className="select-all">01 / {(new Date().getFullYear() + 1).toFixed(0).slice(2)}</code><br />
         Security code (any 3 digits): <code className="select-all">123</code>
       </Alert>
+      <h3 className="text-2xl">Payment</h3>
+      <DonationFormPaymentAmount piResponse={piResponse.data} />
       <Elements
         options={{ clientSecret: piResponse.data.stripeClientSecret }}
         stripe={stripePromise}
       >
         <DonationFormPaymentInner formMethods={formMethods} fundraiser={fundraiser} watches={watches} stripeClientSecret={piResponse.data.stripeClientSecret} setPayButton={setPayButton} onPaymentSuccess={onPaymentSuccess} />
       </Elements>
+    </>
+  )
+}
+
+const DonationFormPaymentAmount: React.FC<{ piResponse: PublicPaymentIntentResponse }> = ({ piResponse }) => {
+  if (piResponse.futurePayments.length === 0) {
+    return <p>Amount due: {amountDropPenceIfZeroFormatter(piResponse.amount)}</p>
+  }
+
+  return (
+    <>
+      <p>Amount due: {amountDropPenceIfZeroFormatter(piResponse.amount)} now, then:</p>
+      <ul className="list-disc pl-8 mb-1">
+        {piResponse.futurePayments.map((p) => <li>{amountDropPenceIfZeroFormatter(p.amount)} on {dateFormatter(p.at)}</li>)}
+      </ul>
+      <p>(you can cancel your future payments at any time by contacting us)</p>
     </>
   )
 }
@@ -402,7 +416,6 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
           billing_details: {
             name: watches.donorName,
             email: watches.donorEmail,
-            // TODO: provide address if we have it
           },
         },
       },
