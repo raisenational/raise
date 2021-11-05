@@ -12,7 +12,7 @@
     "build:dev": "cp src/env/dev.ts src/env/env.ts && gatsby build",
     "clean": "rimraf public",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "test": "npm run type-check && npm run lint && npm run codeowners",
+    "test": "npm run type-check && npm run lint && npm run codeowners && jest",
     "type-check": "tsc",
     "codeowners": "node codeowners.js"
   },
@@ -58,6 +58,7 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.8",
+    "@types/jest": "^27.0.2",
     "@types/jsonexport": "^3.0.2",
     "@types/node": "^12.0.10",
     "@types/react": "^16.8.22",
@@ -69,8 +70,14 @@
     "autoprefixer": "^10.3.4",
     "eslint": "^7.32.0",
     "gatsby-plugin-postcss": "^4.13.0",
+    "jest": "^27.3.1",
     "postcss": "^8.3.6",
     "rimraf": "^2.6.3",
-    "tailwindcss": "^2.2.15"
+    "tailwindcss": "^2.2.15",
+    "ts-jest": "^27.0.7"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
   }
 }

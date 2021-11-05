@@ -254,7 +254,6 @@ const DonationFormDetails: React.FC<{ formMethods: UseFormReturn<DonationFormRes
       </div>
       {watches.giftAid && (
         <>
-          {/* TODO: make these fields required if giftaid enabled */}
           <LabelledInput id="addressLine1" label="Address line 1" type="text" autoComplete="address-line1" error={errors.addressLine1?.message} {...register("addressLine1", { validate: (s) => (s ? true : "Please enter the first line of your address") })} />
           <LabelledInput id="addressLine2" label="Address line 2 (optional)" type="text" autoComplete="address-line2" {...register("addressLine2")} />
           <div className="grid md:grid-cols-2 md:gap-2">
