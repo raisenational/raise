@@ -51,7 +51,7 @@
     "json-schema-to-typescript": "^10.1.5",
     "serverless": "^2.64.1",
     "serverless-offline": "^8.2.0",
-    "serverless-offline-ses": "^0.0.7",
+    "serverless-offline-ses-v2": "^1.0.0",
     "serverless-webpack": "^5.5.4",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.2.1",
