@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 import middy from "@middy/core"
 import middyValidator from "@middy/validator"
+import middyJsonBodyParser from "@middy/http-json-body-parser"
 import createHttpError from "http-errors"
 import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-auth"
 import type { APIGatewayProxyEventV2, APIGatewayProxyResult, Handler as AWSHandler } from "aws-lambda"
 import type { Handler, AuthTokenPayload } from "./types"
 import { middyAuditContextManagerAfter, middyAuditContextManagerBefore } from "./auditContext"
-import middyJsonBodyParser from "./http-json-body-parser"
 import middyErrorHandler from "./middy-error-handler"
 import env from "../env/env"
 

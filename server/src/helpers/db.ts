@@ -370,12 +370,6 @@ export const appendList = async <
   I extends (S[P] extends (infer _I)[] ? _I : never)
 >(table: Table<Pa, Pr, S, K, E>, key: K, listProperty: P, newItem: I, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): Promise<S> => {
   assertMatchesSchema<E>((table.schema as Required<Pick<JSONSchema7, "properties">>).properties[listProperty], [newItem])
-
-  // TODO: do we actually need to check the item exists? we'll probably get an error or lack of Attributes back if it doesn't, maybe check that instead to reduce db accesses.
-  const resultGet = await dbClient.send(new GetCommand({ TableName: table.name, Key: key })).catch(handleDbError(table))
-  if (!resultGet.Item) throw new createHttpError.NotFound(`${table.entityName} not found`)
-
-  assertMatchesSchema<S>(table.schema, resultGet.Item)
   const result = await dbClient.send(new UpdateCommand({
     TableName: table.name,
     Key: key,
@@ -393,7 +387,6 @@ export const appendList = async <
     },
     ReturnValues: "ALL_NEW",
   })).catch(handleDbError(table))
-  // TODO: assert matches schema here
   await insertAudit({
     object: key[table.primaryKey],
     action: "plus",
