@@ -26,8 +26,6 @@ const Modal: React.FC<Props> = ({ open, onClose, children }) => {
     >
       <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-80 z-0" />
 
-      {/* TODO: add a close button */}
-
       <Section ref={ref} className="transform p-8 my-16 bg-white rounded shadow relative z-10 overflow-auto relative">
         <XIcon onClick={onClose} className="w-8 h-8 sm:w-12 sm:h-12 absolute right-8 cursor-pointer" />
         {children}
