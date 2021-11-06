@@ -1,5 +1,114 @@
 import * as format from "./format"
 
-test("amountFormatter on whole pound input", () => {
-  expect(format.amountFormatter(1000)).toEqual("£10.00")
+describe("amountFormatter", () => {
+  test.each([
+    [0, "£0.00"],
+    [1, "£0.01"],
+    [10, "£0.10"],
+    [1_00, "£1.00"],
+    [10_00, "£10.00"],
+    [100_00, "£100.00"],
+    [12_34, "£12.34"],
+    [-56_78, "£-56.78"],
+    [undefined, "—"],
+    [null, "—"],
+  ])("%s → %s", (value, expected) => {
+    expect(format.amountFormatter(value)).toEqual(expected)
+  })
+})
+
+describe("amountDropPenceIfZeroFormatter", () => {
+  test.each([
+    [0, "£0"],
+    [1, "£0.01"],
+    [10, "£0.10"],
+    [1_00, "£1"],
+    [10_00, "£10"],
+    [100_00, "£100"],
+    [12_34, "£12.34"],
+    [-56_78, "£-56.78"],
+    [undefined, "—"],
+    [null, "—"],
+  ])("%s → %s", (value, expected) => {
+    expect(format.amountDropPenceIfZeroFormatter(value)).toEqual(expected)
+  })
+})
+
+describe("booleanFormatter", () => {
+  test.each([
+    [true, "Yes"],
+    [false, "No"],
+    [undefined, "—"],
+    [null, "—"],
+  ])("%s → %s", (value, expected) => {
+    expect(format.booleanFormatter(value)).toEqual(expected)
+  })
+})
+
+describe("dateFormatter", () => {
+  test.each([
+    [0, "01/01/1970"],
+    [1632959999, "29/09/2021"],
+    [1632960000, "30/09/2021"],
+    [-86400, "31/12/1969"],
+    [undefined, "—"],
+    [null, "—"],
+  ])("%s → %s", (value, expected) => {
+    expect(format.dateFormatter(value)).toEqual(expected)
+  })
+})
+
+describe("matchFundingRateFormatter", () => {
+  test.each([
+    [0, "0% (i.e. £1 donated, £0 matched, £1 total)"],
+    [50, "50% (i.e. £1 donated, £0.50 matched, £1.50 total)"],
+    [100, "100% (i.e. £1 donated, £1 matched, £2 total)"],
+    [200, "200% (i.e. £1 donated, £2 matched, £3 total)"],
+    [123, "123% (i.e. £1 donated, £1.23 matched, £2.23 total)"],
+    [undefined, "—"],
+    [null, "—"],
+  ])("%s → %s", (value, expected) => {
+    expect(format.matchFundingRateFormatter(value)).toEqual(expected)
+  })
+})
+
+describe("percentFormatter", () => {
+  test.each([
+    [0, "0%"],
+    [50, "50%"],
+    [100, "100%"],
+    [200, "200%"],
+    [123, "123%"],
+    [undefined, "—"],
+    [null, "—"],
+  ])("%s → %s", (value, expected) => {
+    expect(format.percentFormatter(value)).toEqual(expected)
+  })
+})
+
+describe("timestampFormatter", () => {
+  test.each([
+    [0, "01/01/1970, 00:00:00"],
+    [123456, "02/01/1970, 10:17:36"],
+    [1632959999, "29/09/2021, 23:59:59"],
+    [1632960000, "30/09/2021, 00:00:00"],
+    [-86400, "31/12/1969, 00:00:00"],
+    [undefined, "—"],
+    [null, "—"],
+  ])("%s → %s", (value, expected) => {
+    expect(format.timestampFormatter(value)).toEqual(expected)
+  })
+})
+
+describe("jsonFormatter", () => {
+  test.each([
+    [0, "0"],
+    ["hello", "\"hello\""],
+    [true, "true"],
+    [{ p: "v" }, "{\"p\":\"v\"}"],
+    [undefined, "undefined"],
+    [null, "null"],
+  ])("%s → %s", (value, expected) => {
+    expect(format.jsonFormatter(value)).toEqual(expected)
+  })
 })

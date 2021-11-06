@@ -1,0 +1,489 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders with a custom class name 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise bg-raise-red"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Someone
+         donated
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with a date 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Someone
+         donated
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with a date string 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Someone
+         donated
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        5 minutes ago
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with a loading state 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise bg-raise-red"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Namey McNameface
+         donated
+         £45
+      </span>
+    </p>
+    <p
+      class="fade-in text-base opacity-80"
+    >
+      giving 
+      £15
+       
+      weekly
+    </p>
+    <p
+      class="text-base fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+         (
+        +£45 matched
+        , 
+        +£11.25 gift-aided
+        )
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with a name and date 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Namey McNameface
+         donated
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with a name and date 2`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Namey McNameface
+         donated
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with a recurring amount and a date 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Someone
+         donated
+         £45
+      </span>
+    </p>
+    <p
+      class="fade-in text-base opacity-80"
+    >
+      giving 
+      £15
+       
+      weekly
+    </p>
+    <p
+      class="text-base fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+         (
+        +£45 matched
+        , 
+        +£11.25 gift-aided
+        )
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with amounts (match funding and gift-aid) and a date 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Someone
+         donated
+         £12.34
+      </span>
+    </p>
+    <p
+      class="text-base fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+         (
+        +£12.34 matched
+        , 
+        +£3.08 gift-aided
+        )
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with amounts (match funding and no gift-aid) and a date 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Someone
+         donated
+         £12.34
+      </span>
+    </p>
+    <p
+      class="text-base fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+         (
+        +£12.34 matched
+        )
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with amounts (no match funding and gift-aid) and a date 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Someone
+         donated
+         £12.34
+      </span>
+    </p>
+    <p
+      class="text-base fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+         (
+        +£3.08 gift-aided
+        )
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with amounts (no match funding and no gift-aid) and a date 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Someone
+         donated
+         £12.34
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`renders with amounts (whole numbers) and a date 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Someone
+         donated
+         £200
+      </span>
+    </p>
+    <p
+      class="text-base fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+         (
+        +£200 matched
+        , 
+        +£50 gift-aided
+        )
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
