@@ -40,7 +40,11 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
     }
   })
 
-  // TODO:  loading and error states
+  if (fundraiser.error && !fundraiser.loading) {
+    return (
+      <Alert>{fundraiser.error}</Alert>
+    )
+  }
 
   return (
     <div ref={ref}>
@@ -51,7 +55,7 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
           <p className="text-2xl md:text-3xl">{tagline}</p>
         </div>
         <div className="self-center">
-          <p className="text-2xl"><span className="text-5xl md:text-7xl stat-animate">{amountDropPenceIfZeroFormatter(fundraiser.data?.totalRaised)}</span><br /> raised by {fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? "" : "s"} of a {amountDropPenceIfZeroFormatter(fundraiser.data?.goal)} goal</p>
+          <p className="text-2xl"><span className="text-5xl md:text-7xl stat-animate">{amountDropPenceIfZeroFormatter(fundraiser.data?.totalRaised)}</span><br /> raised by {fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? "" : "s"}{fundraiser.data ? ` of a ${amountDropPenceIfZeroFormatter(fundraiser.data?.goal)} goal` : ""}</p>
 
           <div className="mx-2 -mt-4 mb-8">
             <div className="flex transform -skew-x-15 shadow-raise mt-8 rounded overflow-hidden">
@@ -70,7 +74,8 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
       <div className="grid gap-4 md:grid-cols-3 md:gap-8 text-left mt-16">
         {/* Show the first six donations */}
         {/* TODO: add a 'show all donations' button that toggles displaying all the donations */}
-        {fundraiser.data?.donations.slice(0, 6).map((d) => <DonationCard key={d.createdAt} className="bg-raise-red" {...d} />)}
+        {fundraiser.data ? fundraiser.data?.donations.slice(0, 6).map((d) => <DonationCard key={d.createdAt} className="bg-raise-red" {...d} />)
+          : [12, 10, 14].map((d) => <DonationCard loading createdAt="1 hour ago" className="bg-raise-red" donorName={"a".repeat(d)} matchFundingAmount={1234} comment={"a".repeat(d * 2)} />)}
       </div>
     </div>
   )
@@ -427,6 +432,9 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
       } else {
         console.error(response.error)
         setError("An unexpected error occured with your payment")
+        if (response.error.code === "resource_missing") {
+          console.error("This error might occur because your Stripe credientials on the frontend do not match the ones on the backend. Check out the env.ts file to fix this.")
+        }
       }
     } else if (response.paymentIntent.status === "succeeded") {
       // alert("Success!")

@@ -83,4 +83,18 @@
   .bg-white-important {
     @apply bg-white !important
   }
+
+  .skeleton {
+    @apply animate-pulse text-transparent bg-clip-padding bg-gray-300 bg-opacity-30 border-gray-300 border-opacity-30 rounded shadow-none pointer-events-none select-none cursor-default;
+  }
+
+  .fade-in {
+    animation-name: fade-in;
+    animation-duration: 0.4s;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+  }
 }
