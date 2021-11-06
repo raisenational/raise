@@ -17,7 +17,9 @@ test:
   script:
     - npm ci
     - npm run build:dev
+    - npm run lint
     - npm test
+    - npm run codeowners
 
 pages:
   stage: deploy

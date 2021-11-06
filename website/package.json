@@ -8,11 +8,12 @@
     "start": "npm run start:local",
     "start:local": "cp src/env/local.ts src/env/env.ts && gatsby develop --port 8000",
     "build": "npm run build:local",
-    "build:local": "cp src/env/local.ts src/env/env.ts && gatsby build",
-    "build:dev": "cp src/env/dev.ts src/env/env.ts && gatsby build",
+    "build:local": "cp src/env/local.ts src/env/env.ts && npm run type-check && gatsby build",
+    "build:dev": "cp src/env/dev.ts src/env/env.ts && npm run type-check && gatsby build",
     "clean": "rimraf public",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "test": "npm run type-check && npm run lint && npm run codeowners && jest",
+    "test": "TZ=utc jest",
+    "test:watch": "TZ=utc jest --watch",
     "type-check": "tsc",
     "codeowners": "node codeowners.js"
   },
@@ -57,6 +58,7 @@
     "typescript": "^4.4.3"
   },
   "devDependencies": {
+    "@testing-library/react": "^12.1.2",
     "@types/classnames": "^2.2.8",
     "@types/jest": "^27.0.2",
     "@types/jsonexport": "^3.0.2",
@@ -78,6 +80,6 @@
   },
   "jest": {
     "preset": "ts-jest",
-    "testEnvironment": "node"
+    "testEnvironment": "jsdom"
   }
 }
