@@ -29,7 +29,6 @@ const middyPathParamsValidatorAndNormalizer: middy.MiddlewareFn<APIGatewayProxyE
   })
 }
 
-// TODO: add tests to check this works, particularly checking async error handling works (I don't think it does)
 export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends boolean>(requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth, handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>): AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult> {
   try {
     return middy(handler)
