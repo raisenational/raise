@@ -8,8 +8,9 @@
     "start:local": "cp src/env/local.ts src/env/env.ts && serverless offline start",
     "deploy:dev": "cp src/env/dev.ts src/env/env.ts && serverless deploy --verbose",
     "teardown:dev": "serverless remove --verbose",
-    "build": "serverless package",
-    "test": "npm run type-check && npm run lint",
+    "build": "npm run type-check && serverless package",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "type-check": "tsc",
     "lint": "eslint 'src/**/*.ts' 'serverless.ts'",
     "schemas": "node local/schemasToTS.mjs"
@@ -40,6 +41,7 @@
     "@serverless/typescript": "^2.61.0",
     "@types/aws-lambda": "^8.10.71",
     "@types/http-errors": "^1.8.1",
+    "@types/jest": "^27.0.2",
     "@types/json-schema": "^7.0.9",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/node": "^14.14.25",
@@ -48,15 +50,21 @@
     "aws-lambda": "^1.0.6",
     "eslint": "^7.32.0",
     "eslint-config-blvd": "^1.2.1",
+    "jest": "^27.3.1",
     "json-schema-to-typescript": "^10.1.5",
     "serverless": "^2.64.1",
     "serverless-offline": "^8.2.0",
     "serverless-offline-ses-v2": "^1.0.0",
     "serverless-webpack": "^5.5.4",
+    "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3",
     "webpack": "^5.57.1",
     "webpack-node-externals": "^3.0.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
   }
 }
