@@ -23,14 +23,14 @@ You only need to do this once.
 
 Run the command `npm start`
 
-To run with Stripe webhooks, you may need to [set up your own Stripe account for testing](https://dashboard.stripe.com/register) or get access to a shared one. Then update the environment variables in `src/env/local.ts` to [your test API keys](https://stripe.com/docs/keys), install [the Stripe CLI](https://stripe.com/docs/stripe-cli) and follow the [instructions to listen to webhook events with the Stripe CLI](https://stripe.com/docs/stripe-cli/webhooks).
+To run with Stripe webhooks, you may need to [set up your own Stripe account for testing](https://dashboard.stripe.com/register) or get access to a shared one. Then update the environment variables in `src/env/local.ts` to [your test API keys](https://stripe.com/docs/keys), install [the Stripe CLI](https://stripe.com/docs/stripe-cli) and follow the [instructions to listen to webhook events with the Stripe CLI](https://stripe.com/docs/stripe-cli/webhooks) (probably `stripe listen --forward-to localhost:8001/stripe/webhook`).
 
 The ports the local server hosts on are:
 - `8001`: the API (this is probably what you want most of the time)
 - `8002`: serverless-offline websockets
 - `8003`: serverless-offline AWS Lambda API
 - `8004`: serverless-dynamodb-local instance of DynamoDB
-- `8005`: serverless-offline-ses instance of ses
+- `8005`: serverless-offline-ses-v2 instance of ses
 
 ### 📝 Making changes
 
