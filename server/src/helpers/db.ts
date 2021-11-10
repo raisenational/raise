@@ -31,7 +31,7 @@ const dynamoDBClient = env.STAGE === "local"
     requestHandler,
   })
 
-const dbClient = DynamoDBDocumentClient.from(dynamoDBClient, {
+export const dbClient = DynamoDBDocumentClient.from(dynamoDBClient, {
   marshallOptions: {
     convertEmptyValues: false,
     removeUndefinedValues: false,
