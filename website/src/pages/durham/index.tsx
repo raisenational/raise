@@ -64,7 +64,7 @@ const IndexPage = () => (
         <Panel
           image={moneyBox}
           title="Donate"
-          text="We invite students to make a personally significant donation to charity as an additional way of celebrating the end of the academic year. We recommend a donation of £100 to the Against Malaria Foundation, but welcome any amount that is significant to you."
+          text="We invite students to make a personally significant donation to charity as a way of celebrating the end of the academic year. We recommend a donation of £100 to the Against Malaria Foundation, but welcome any amount that is significant to you."
           className="bg-raise-purple"
         />
         <Panel
