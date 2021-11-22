@@ -23,6 +23,8 @@ const IndexPage = () => (
           { text: "Durham", href: "/durham/" },
           { text: "Glasgow", href: "/glasgow/" },
           { text: "Oxford", href: "/oxford/" },
+          { text: "Sheffield", href: "/sheffield/" },
+          { text: "Warwick", href: "/warwick/" },
         ]}
         right={[
         ]}
@@ -30,7 +32,7 @@ const IndexPage = () => (
       <Section className="px-8">
         <IntroStats
           title="Raise: A Celebration of Giving"
-          tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our four chapter websites to learn more about what we do."
+          tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our chapter websites to learn more about what we do."
           statistics={{
             years: 4,
             students: 1366,
