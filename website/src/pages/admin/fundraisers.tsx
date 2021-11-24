@@ -5,7 +5,7 @@ import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import { useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
-import { Fundraiser, FundraiserEdits } from "./types.d"
+import { Fundraiser, FundraiserEdits } from "../../helpers/schemaTypes"
 import Table from "../../components/Table"
 import Button from "../../components/Button"
 import Modal from "../../components/Modal"
@@ -32,6 +32,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             fundraiserName: { label: "Name", inputType: "text" },
             activeFrom: { label: "From", formatter: timestampFormatter, inputType: "datetime-local" },
             activeTo: { label: "To", formatter: timestampFormatter, inputType: "datetime-local" },
+            recurringDonationsTo: { label: "Recurring donations to", formatter: timestampFormatter, inputType: "datetime-local" },
             paused: { label: "Paused", formatter: booleanFormatter, inputType: "checkbox" },
             goal: { label: "Goal", formatter: amountFormatter, inputType: "amount" },
             totalRaised: { inputType: "hidden" },
@@ -51,6 +52,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             fundraiserName: "New Fundraiser",
             activeFrom: Math.floor(new Date().getTime() / 1000),
             activeTo: Math.floor(new Date().getTime() / 1000),
+            recurringDonationsTo: Math.floor(new Date().getTime() / 1000),
             paused: false,
             goal: 1_00,
             totalRaised: 0,

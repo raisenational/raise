@@ -5,7 +5,7 @@ import Section, { SectionTitle } from "../../components/Section"
 import { timestampFormatter } from "../../helpers/format"
 import PropertyEditor from "../../components/PropertyEditor"
 import { useAxios } from "../../helpers/networking"
-import { Profile } from "./types.d"
+import { Profile } from "../../helpers/schemaTypes"
 
 const ProfilePage: React.FC<RouteComponentProps> = () => {
   const [profile] = useAxios<Profile>("/admin/login")

@@ -5,7 +5,7 @@ import { DownloadIcon, PlusSmIcon } from "@heroicons/react/outline"
 import jsonexport from "jsonexport/dist"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
-import { Fundraiser, Donation, DonationEdits } from "./types.d"
+import { Fundraiser, Donation, DonationEdits } from "../../helpers/schemaTypes"
 import Table from "../../components/Table"
 import PropertyEditor from "../../components/PropertyEditor"
 import Modal from "../../components/Modal"
@@ -44,6 +44,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           fundraiserName: { label: "Name", inputType: "text" },
           activeFrom: { label: "From", formatter: timestampFormatter, inputType: "datetime-local" },
           activeTo: { label: "To", formatter: timestampFormatter, inputType: "datetime-local" },
+          recurringDonationsTo: { label: "Recurring donations to", formatter: timestampFormatter, inputType: "datetime-local" },
           paused: { label: "Paused", formatter: booleanFormatter, inputType: "checkbox" },
           goal: { label: "Goal", formatter: amountFormatter, inputType: "amount" },
           totalRaised: {

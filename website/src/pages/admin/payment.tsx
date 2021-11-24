@@ -2,7 +2,7 @@ import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
-import { Donation, Payment } from "./types.d"
+import { Donation, Payment } from "../../helpers/schemaTypes"
 import { amountFormatter, timestampFormatter } from "../../helpers/format"
 import PropertyEditor from "../../components/PropertyEditor"
 

@@ -1,12 +1,8 @@
 // TODO: consume the types directly from raise-server somehow
-// TODO: make this a pure ts file (as opposed to d.ts)
-// TODO: move this out of admin
 /* eslint-disable */
 /**
 * This file was automatically generated. DO NOT MODIFY IT BY HAND.
-* Instead, copy it from the back-end and retain this message.
 */
-
 export interface AccessToken {
   accessToken: string;
   expiresAt: number;
@@ -157,6 +153,7 @@ export interface FundraiserCreation {
   fundraiserName?: string;
   activeFrom?: number;
   activeTo?: number;
+  recurringDonationsTo?: number;
   paused?: boolean;
   goal?: number;
   totalRaised?: number;
@@ -175,6 +172,7 @@ export interface FundraiserEdits {
   fundraiserName?: string;
   activeFrom?: number;
   activeTo?: number;
+  recurringDonationsTo?: number;
   paused?: boolean;
   goal?: number;
   totalRaised?: number;
@@ -198,6 +196,7 @@ export interface Fundraiser {
   fundraiserName: string;
   activeFrom: number;
   activeTo: number;
+  recurringDonationsTo: number;
   paused: boolean;
   goal: number;
   totalRaised: number;
@@ -217,6 +216,7 @@ export type Fundraisers = {
   fundraiserName: string;
   activeFrom: number;
   activeTo: number;
+  recurringDonationsTo: number;
   paused: boolean;
   goal: number;
   totalRaised: number;
@@ -320,7 +320,8 @@ export interface PublicDonationRequest {
 export interface PublicFundraiser {
   id: string;
   activeFrom: number;
-  activeTo: number | null;
+  activeTo: number;
+  recurringDonationsTo: number;
   paused: boolean;
   goal: number;
   totalRaised: number;
