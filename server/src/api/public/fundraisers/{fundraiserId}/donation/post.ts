@@ -15,12 +15,10 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
   const now = Math.floor(new Date().getTime() / 1000)
   const fundraiser = await get(fundraiserTable, { id: event.pathParameters.fundraiserId })
 
-  // Validate the fundraiser is within its active period
+  // Validate the fundraiser has started
+  // NB: we intentionally do not validate the activeTo deadline as we prefer to be flexible on when donations can come in
   if (fundraiser.activeFrom > now) {
     throw new createHttpError.BadRequest("This fundraiser has not started and is not taking donations yet")
-  }
-  if (fundraiser.activeTo < now) {
-    throw new createHttpError.BadRequest("This fundraiser has ended and is no longer taking donations")
   }
 
   // Validate the fundraiser is not paused
