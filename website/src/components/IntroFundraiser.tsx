@@ -256,16 +256,12 @@ const DonationFormDetails: React.FC<{ formMethods: UseFormReturn<DonationFormRes
         <LabelledInput id="emailConsentInformational" label="Tell me exactly where my donation goes (recommended)" type="checkbox" {...register("emailConsentInformational")} />
         <LabelledInput id="emailConsentMarketing" label="Send me updates about Raise (recommended)" className="-mt-2" type="checkbox" {...register("emailConsentMarketing")} />
       </div>
-      {watches.giftAid && (
-        <>
-          <LabelledInput id="addressLine1" label="Address line 1" type="text" autoComplete="address-line1" error={errors.addressLine1?.message} {...register("addressLine1", { validate: (s) => (s ? true : "Please enter the first line of your address") })} />
-          <LabelledInput id="addressLine2" label="Address line 2 (optional)" type="text" autoComplete="address-line2" {...register("addressLine2")} />
-          <div className="grid md:grid-cols-2 md:gap-2">
-            <LabelledInput id="addressLine3" label="Address line 3 (optional)" type="text" autoComplete="address-line3" {...register("addressLine3")} />
-            <LabelledInput id="addressPostcode" label="Address postcode" type="text" autoComplete="postal-code" error={errors.addressPostcode?.message} {...register("addressPostcode", { validate: (s) => (s ? true : "Please enter your postcode") })} />
-          </div>
-        </>
-      )}
+      <LabelledInput id="addressLine1" label={`Address line 1 (${watches.giftAid ? "for gift-aid" : "optional"})`} type="text" autoComplete="address-line1" error={errors.addressLine1?.message} {...register("addressLine1", { validate: (s) => (!watches.giftAid || s ? true : "Please enter the first line of your address") })} />
+      <LabelledInput id="addressLine2" label="Address line 2 (optional)" type="text" autoComplete="address-line2" {...register("addressLine2")} />
+      <div className="grid md:grid-cols-2 md:gap-2">
+        <LabelledInput id="addressLine3" label="Address line 3 (optional)" type="text" autoComplete="address-line3" {...register("addressLine3")} />
+        <LabelledInput id="addressPostcode" label={`Address postcode (${watches.giftAid ? "for gift-aid" : "optional"})`} type="text" autoComplete="postal-code" error={errors.addressPostcode?.message} {...register("addressPostcode", { validate: (s) => (!watches.giftAid || s ? true : "Please enter your postcode") })} />
+      </div>
     </div>
   </>
 )
@@ -324,11 +320,11 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
       donorEmail: watches.donorEmail,
       emailConsentInformational: watches.emailConsentInformational,
       emailConsentMarketing: watches.emailConsentMarketing,
-      addressLine1: watches.giftAid ? (watches.addressLine1 || null) : null,
-      addressLine2: watches.giftAid ? (watches.addressLine2 || null) : null,
-      addressLine3: watches.giftAid ? (watches.addressLine3 || null) : null,
-      addressPostcode: watches.giftAid ? (watches.addressPostcode || null) : null,
-      addressCountry: watches.giftAid ? "United Kingdom" : null,
+      addressLine1: watches.addressLine1 || null,
+      addressLine2: watches.addressLine2 || null,
+      addressLine3: watches.addressLine3 || null,
+      addressPostcode: watches.addressPostcode || null,
+      addressCountry: watches.addressPostcode ? "United Kingdom" : null,
       overallPublic: watches.overallPublic,
       namePublic: watches.namePublic,
       donationAmountPublic: watches.donationAmountPublic,
