@@ -6,7 +6,7 @@ tasks:
     command: |
       [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]] && git checkout -b "$GITPOD_WORKSPACE_ID/$(date +%s)"
       gp open src/pages/index.tsx
-      npm run dev
+      npm start
 
 ports:
   - port: 8000

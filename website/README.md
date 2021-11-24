@@ -20,21 +20,34 @@ The general pattern for edits is:
 
 - Updating statistics (years, students, amount raised, people protected): search for `IntroStats` and change the numbers.
 - Updating links: find the link you want to update based on its text content or destination. Find the related tag and change the `to` attribute.
-- Hiding stuff temporarily: in `tsx` files comment out the section by beginning it with `{/*` and ending it with `*/}`, for example `{/* <div>Things here to hide</div> */}`. NB: this is still visible in the source code and is therefore not suitable for hiding sensitive information.
+- Hiding stuff temporarily: in `tsx` files comment out the section by beginning it with `{/*` and ending it with `*/}`, for example `{/* <div>Things here to hide</div> */}`. NB: this may still be visible in the source code and is therefore not suitable for hiding sensitive information.
 - Adding a FAQ: copy and paste a `FAQ` component and make changes.
 
 ### Advanced
 
-If you're going to be making a number of edits you'll likely find it easier to work in a code editor. We currently recommend VS Code or Gitpod - we're looking into making this process as easy as possible before solidifying this documentation.
+If you're going to be making a number of edits you'll likely find it easier to work in a code editor. We currently recommend VS Code.
 
 The super rough setup guide is:
-- Either:
-  - install [Node.js](https://nodejs.org/en/download/), clone this repository and open it with VS Code
-  - open it in Gitpod
-- Run `npm install` in the terminal
+- install [Node.js](https://nodejs.org/en/download/)
+- clone this repository and open it with VS Code
+- run `npm install` in the terminal
 
 Once that's set up, when you want to make edits:
 - Run `npm start` in the terminal
 - Open the address displayed in the terminal in a browser
 
-Get in touch with the National team if this would be something of interest.
+Alternatively, you should be able to just open this repository [with Gitpod](https://gitpod.io/#https://gitlab.com/joebenton/raise-website) by logging in with GitLab and this will do the steps above for you.
+
+If you'd like more guidance or training on how everything works, get in touch with the National team - we'd love to enable people to make their own edits to all parts of the code as long as there are the appropriate measures to keep everything working as it should :)
+
+#### Technical details
+
+The site is built in the TypeScript language with the React framework. We use Gatsby to bundle this into a static site that loads quickly and supports a wide range of browsers.
+
+For the donations platform, the site communicates with [the server](https://gitlab.com/raisenational/server) using Axios.
+
+Generally we put the clever bits in the `components` and `helpers` folder. These are reused across the site, with the most obvious example of this being the templatised chapter homepages.
+
+The pages themselves are stored in the `pages` folder, which correspond to paths off the root of the site, apart from the `admin` subfolder which uses Reach Router given its use of path parameters. This `admin` folder is the internal-facing management system for the donations platform.
+
+The `env` folder holds configuration for deploying the site to different environments, most relevant to donations platform stuff.
