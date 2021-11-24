@@ -157,7 +157,7 @@ const calculatePaymentSchedule = (request: PublicDonationRequest, fundraiser: Fu
     const date = new Date()
     date.setHours(0, 0, 0, 0)
     addRecurrencePeriod(date, request.recurrenceFrequency)
-    while (Math.floor(date.getTime() / 1000) < fundraiser.activeTo) {
+    while (Math.floor(date.getTime() / 1000) < fundraiser.recurringDonationsTo) {
       future.push({ at: Math.floor(date.getTime() / 1000), donationAmount: request.donationAmount, contributionAmount: 0 })
       addRecurrencePeriod(date, request.recurrenceFrequency)
     }

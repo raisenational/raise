@@ -11,6 +11,7 @@ export const main = middyfy(fundraiserCreationSchema, ulidSchema, true, async (e
     fundraiserName: event.body.fundraiserName ?? "New Fundraiser",
     activeFrom: event.body.activeFrom ?? Math.floor(new Date().getTime() / 1000),
     activeTo: event.body.activeTo ?? Math.floor(new Date().getTime() / 1000),
+    recurringDonationsTo: event.body.recurringDonationsTo ?? Math.floor(new Date().getTime() / 1000),
     paused: event.body.paused ?? false,
     goal: event.body.goal ?? 1_00,
     totalRaised: event.body.totalRaised ?? 0,

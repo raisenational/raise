@@ -14,6 +14,7 @@ export const main = middyfy(null, publicFundraiserSchema, false, async (event) =
     id: fundraiser.id,
     activeFrom: fundraiser.activeFrom,
     activeTo: fundraiser.activeTo,
+    recurringDonationsTo: fundraiser.recurringDonationsTo,
     paused: fundraiser.paused,
     goal: fundraiser.goal,
     totalRaised: fundraiser.totalRaised,
