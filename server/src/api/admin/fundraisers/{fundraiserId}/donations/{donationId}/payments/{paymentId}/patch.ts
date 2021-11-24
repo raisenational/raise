@@ -43,7 +43,7 @@ export const main = middyfy(paymentPropertyEditsSchema, null, true, async (event
   } else if ("reference" in event.body) {
     await updateReference(event.body.reference, donation, payment)
   } else {
-    throw new createHttpError.BadRequest("You can only edit matchFundingAmount, status, donationAmount, contributionAmout and reference on a payment")
+    throw new createHttpError.BadRequest("You can only edit matchFundingAmount, status, donationAmount, contributionAmount and reference on a payment")
   }
 
   // Some notes on the logic here:
