@@ -153,6 +153,7 @@ export interface FundraiserCreation {
   fundraiserName?: string;
   activeFrom?: number;
   activeTo?: number;
+  recurringDonationsTo?: number;
   paused?: boolean;
   goal?: number;
   totalRaised?: number;
@@ -171,6 +172,7 @@ export interface FundraiserEdits {
   fundraiserName?: string;
   activeFrom?: number;
   activeTo?: number;
+  recurringDonationsTo?: number;
   paused?: boolean;
   goal?: number;
   totalRaised?: number;
@@ -194,6 +196,7 @@ export interface Fundraiser {
   fundraiserName: string;
   activeFrom: number;
   activeTo: number;
+  recurringDonationsTo: number;
   paused: boolean;
   goal: number;
   totalRaised: number;
@@ -213,6 +216,7 @@ export type Fundraisers = {
   fundraiserName: string;
   activeFrom: number;
   activeTo: number;
+  recurringDonationsTo: number;
   paused: boolean;
   goal: number;
   totalRaised: number;
@@ -316,7 +320,8 @@ export interface PublicDonationRequest {
 export interface PublicFundraiser {
   id: string;
   activeFrom: number;
-  activeTo: number | null;
+  activeTo: number;
+  recurringDonationsTo: number;
   paused: boolean;
   goal: number;
   totalRaised: number;
