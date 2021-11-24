@@ -6,6 +6,7 @@ import {
 } from "../../../../../../../helpers/db"
 import { paymentCreationSchema, ulidSchema } from "../../../../../../../helpers/schemas"
 import { fundraiserTable, donationTable, paymentTable } from "../../../../../../../helpers/tables"
+import matchFunding from "../../../../../../../helpers/matchFunding"
 
 export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
@@ -18,7 +19,13 @@ export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (even
     get(donationTable, { fundraiserId, id: donationId }),
   ])
 
-  const matchFundingAdded = Math.max(Math.min(Math.floor(donationAmount * (fundraiser.matchFundingRate / 100)), fundraiser.matchFundingRemaining ?? Infinity, (fundraiser.matchFundingPerDonationLimit ?? Infinity) - donation.matchFundingAmount), 0)
+  const matchFundingAdded = matchFunding({
+    donationAmount,
+    alreadyMatchFunded: donation.matchFundingAmount,
+    matchFundingRate: fundraiser.matchFundingRate,
+    matchFundingRemaining: fundraiser.matchFundingRemaining,
+    matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
+  })
 
   await inTransaction([
     insertT(paymentTable, {

@@ -9,6 +9,7 @@ import { stripeWebhookRequest } from "../../../helpers/schemas"
 import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/tables"
 import env from "../../../env/env"
 import { auditContext } from "../../../helpers/auditContext"
+import matchFunding from "../../../helpers/matchFunding"
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
 
@@ -53,7 +54,13 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
 
   // If the payment is not pending, we've already done this. We should only do this if the payment is still pending.
   if (payment.status === "pending") {
-    const matchFundingAdded = payment.matchFundingAmount !== null ? payment.matchFundingAmount : Math.max(Math.min(Math.floor(payment.donationAmount * (fundraiser.matchFundingRate / 100)), fundraiser.matchFundingRemaining ?? Infinity, (fundraiser.matchFundingPerDonationLimit ?? Infinity) - donation.matchFundingAmount), 0)
+    const matchFundingAdded = payment.matchFundingAmount !== null ? payment.matchFundingAmount : matchFunding({
+      donationAmount: payment.donationAmount,
+      alreadyMatchFunded: donation.matchFundingAmount,
+      matchFundingRate: fundraiser.matchFundingRate,
+      matchFundingRemaining: fundraiser.matchFundingRemaining,
+      matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
+    })
 
     // If recurring, create a Stripe customer and attach this payment method to them
     if (event.body.data.object.setup_future_usage !== null) {
