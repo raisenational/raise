@@ -19,6 +19,7 @@ import { LabelledInput } from "./Form"
 import Alert from "./Alert"
 import { parseMoney } from "../helpers/parse"
 import env from "../env/env"
+import matchFunding from "../helpers/matchFunding"
 
 interface Props {
   title: string,
@@ -291,8 +292,12 @@ const DonationFormMessage: React.FC<{ formMethods: UseFormReturn<DonationFormRes
           giftAid={watches.donationAmountPublic ? watches.giftAid : undefined}
           comment={watches.comment || null}
           donationAmount={watches.donationAmountPublic ? parseMoney(watches.donationAmount) : undefined}
-          // TODO: calculate match funding amount (more) properly, and maybe add a warning about this
-          matchFundingAmount={watches.donationAmountPublic ? parseMoney(watches.donationAmount) : undefined}
+          matchFundingAmount={watches.donationAmountPublic ? matchFunding({
+            donationAmount: parseMoney(watches.donationAmount),
+            matchFundingRate: fundraiser.matchFundingRate,
+            matchFundingRemaining: fundraiser.matchFundingRemaining,
+            matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
+          }) : undefined}
           recurringAmount={watches.donationAmountPublic && watches.recurrenceFrequency !== "ONE_OFF" ? parseMoney(watches.donationAmount) : null}
           recurrenceFrequency={watches.recurrenceFrequency !== "ONE_OFF" ? watches.recurrenceFrequency : null}
           className="bg-raise-red text-2xl text-white font-raise-content max-w-md mt-2"
