@@ -155,7 +155,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
 
 const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({
   formMethods: {
-    setValue, register, formState: { errors }, trigger,
+    setValue, register, formState: { errors }, trigger, getValues,
   }, watches, fundraiser,
 }) => (
   <>
@@ -180,10 +180,19 @@ const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormRes
         {...register("donationAmount", {
           validate: (s) => {
             try {
-              parseMoney(s)
-              // TODO: figure out how to check against minimum amount while accounting for recurring donations - even ignoring recurring donations we generally run into problems when using the recommended donation buttons despite fiddling with calls to trigger
+              const donationAmount = parseMoney(s)
+              if (donationAmount < 1_00) {
+                return "The donation amount must be greater than £1 to avoid excessive card transaction fees"
+              }
+
+              const recurrenceFrequency = getValues("recurrenceFrequency")
+              if (recurrenceFrequency === "ONE_OFF") {
+                if (fundraiser.minimumDonationAmount && donationAmount < fundraiser.minimumDonationAmount) {
+                  return `The donation amount must be greater than ${amountDropPenceIfZeroFormatter(fundraiser.minimumDonationAmount)}`
+                }
+              }
             } catch {
-              return "Donation amount must be a monetary value"
+              return "The donation amount must be a monetary value"
             }
             return true
           },
@@ -216,7 +225,7 @@ const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormRes
             try {
               parseMoney(s)
             } catch {
-              return "Contribution amount must be a monetary value"
+              return "The contribution amount must be a monetary value"
             }
             return true
           },
