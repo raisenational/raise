@@ -24,7 +24,7 @@ beforeEach(async () => {
       // The first time, we lazy initiate the clients and create the tables
       dynamoDBClient = new DynamoDBClient({
         region: "localhost",
-        endpoint: "http://localhost:8004",
+        endpoint: "http://localhost:8005",
         credentials: { accessKeyId: `DEFAULT_ACCESS_KEY${Math.random()}`, secretAccessKey: "DEFAULT_SECRET" },
       })
       internalDbClient = DynamoDBDocumentClient.from(dynamoDBClient, {

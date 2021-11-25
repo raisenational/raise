@@ -140,7 +140,7 @@ const serverlessConfiguration: AWS = {
       },
     },
     "serverless-offline-ses-v2": {
-      port: 8005,
+      port: 8006,
     },
   },
   plugins: [
