@@ -9,7 +9,7 @@ const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) 
     console.warn(request.error)
     await insertAudit({
       action: "security",
-      metadata: { statuscode: err.statusCode, message: err.message },
+      metadata: { statusCode: err.statusCode, message: err.message },
     })
   }
 
