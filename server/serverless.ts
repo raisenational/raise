@@ -59,7 +59,7 @@ const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): 
   const result: AWS["functions"] = {}
   const files = readdirSync(path, { withFileTypes: true })
   for (const file of files) {
-    if (file.name.startsWith("_")) {
+    if (file.name.startsWith("_") || file.name.endsWith(".test.ts")) {
       // ignore
     } else if (file.isFile()) {
       const method = file.name.slice(0, file.name.lastIndexOf("."))
