@@ -18,6 +18,7 @@ beforeEach(async () => {
   // Variables to be lazy initialized
   let dynamoDBClient: DynamoDBClient
   let internalDbClient: DynamoDBDocumentClient
+  let ready = false
 
   dbClient.send = jest.fn()
     .mockImplementationOnce(async (command) => {
@@ -37,9 +38,22 @@ beforeEach(async () => {
         },
       })
       await Promise.all(DYNAMODB_TABLES.map((table: any) => dynamoDBClient.send(new CreateTableCommand(table))))
+      ready = true
 
       // Call ourself, so we use the mockImplementation below
       return dbClient.send(command)
     })
-    .mockImplementation((command) => internalDbClient.send(command))
+    .mockImplementation(async (command) => {
+      if (!ready) {
+        await new Promise<void>((resolve) => {
+          const timeout = setInterval(() => {
+            if (ready) {
+              clearInterval(timeout)
+              resolve()
+            }
+          }, 50)
+        })
+      }
+      return internalDbClient.send(command)
+    })
 })
