@@ -14,7 +14,7 @@ module.exports = async () => {
 
   // Start dynamodb-localhost
   dynamodbLocal.start({
-    port: 8004,
+    port: 8005,
     install_path: serverless.config && path.join(__dirname, '../.dynamodb'),
     sharedDb: false, // So each test gets its own database
   })

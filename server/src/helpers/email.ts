@@ -13,7 +13,7 @@ const requestHandler = new NodeHttpHandler({
 const sesClient = env.STAGE === "local"
   ? new SESv2Client({
     region: "localhost",
-    endpoint: "http://localhost:8005",
+    endpoint: "http://localhost:8006",
     credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" },
     requestHandler,
   })

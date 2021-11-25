@@ -29,8 +29,9 @@ The ports the local server hosts on are:
 - `8001`: the API (this is probably what you want most of the time)
 - `8002`: serverless-offline websockets
 - `8003`: serverless-offline AWS Lambda API
-- `8004`: serverless-dynamodb-local instance of DynamoDB
-- `8005`: serverless-offline-ses-v2 instance of ses
+- `8004`: serverless-dynamodb-local instance of DynamoDB for serverless-offline
+- `8005`: serverless-dynamodb-local instance of DynamoDB for tests
+- `8006`: serverless-offline-ses-v2 instance of ses
 
 ### 📝 Making changes
 
