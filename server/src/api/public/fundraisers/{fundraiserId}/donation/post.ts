@@ -69,7 +69,6 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
   const stripeClientSecret = paymentIntent.client_secret
   if (!stripeClientSecret) throw new Error("Failed to create Stripe client secret")
 
-  // TODO: delete unpaid/failed donations after some timeout?
   // Insert the donation
   await insert(donationTable, {
     id: donationId,

@@ -57,8 +57,13 @@ test.each([401, 403])("handles %s security error", async (status) => {
   expect(request.response.body).toContain("public message")
   expect(console.warn).toHaveBeenCalledWith("Security error processing request:")
   expect(console.warn).toHaveBeenCalledWith(err)
-  // TODO: should we check the actual database?
-  expect(insertAudit).toHaveBeenCalled()
+  expect(insertAudit).toHaveBeenCalledWith({
+    action: "security",
+    metadata: {
+      message: "public message",
+      statusCode: status,
+    },
+  })
 })
 
 test("handles error with details", async () => {
