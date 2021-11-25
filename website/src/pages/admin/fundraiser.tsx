@@ -1,7 +1,9 @@
 import * as React from "react"
 import { navigate, RouteComponentProps } from "@reach/router"
 
-import { DownloadIcon, PlusSmIcon } from "@heroicons/react/outline"
+import {
+  DownloadIcon, EyeIcon, EyeOffIcon, PlusSmIcon,
+} from "@heroicons/react/outline"
 import jsonexport from "jsonexport/dist"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
@@ -21,6 +23,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
   const axios = useRawAxios()
 
   const [newDonationModalOpen, setNewDonationModalOpen] = React.useState(false)
+  const [showUncounted, setShowUncounted] = React.useState(false)
 
   const fundraiser = asResponseValues(fundraisers.data?.find((f) => f.id === fundraiserId), fundraisers)
 
@@ -81,8 +84,10 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
 
       <div className="flex mt-12">
         <SectionTitle className="flex-1">Donations</SectionTitle>
-        <Button onClick={() => downloadDonationsCSV()}><DownloadIcon className="h-6 mb-1" /> Download CSV</Button>
-        <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> Record manual donation</Button>
+        {!showUncounted && <Button onClick={() => setShowUncounted(true)}><EyeIcon className="h-6 mb-1" /> Show uncounted</Button>}
+        {showUncounted && <Button onClick={() => setShowUncounted(false)}><EyeOffIcon className="h-6 mb-1" /> Hide uncounted</Button>}
+        <Button onClick={() => downloadDonationsCSV()}><DownloadIcon className="h-6 mb-1" /> CSV</Button>
+        <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New manual donation</Button>
       </div>
       <Modal open={newDonationModalOpen} onClose={() => setNewDonationModalOpen(false)}>
         <Form<DonationEdits>
@@ -139,7 +144,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           donationAmount: { label: "Donated", formatter: amountFormatter },
           matchFundingAmount: { label: "Matched", formatter: amountFormatter },
         }}
-        items={donations}
+        items={showUncounted ? donations : asResponseValues(donations.data?.filter((d) => d.donationCounted), donations)}
         onClick={(donation) => navigate(`/admin/${fundraiserId}/${donation.id}/`)}
       />
     </Section>
