@@ -3,7 +3,7 @@ import createHttpError from "http-errors"
 import Stripe from "stripe"
 import { middyfy } from "../../../helpers/wrapper"
 import {
-  get, inTransaction, plusT, update, updateT,
+  get, inTransaction, plusT, query, update, updateT,
 } from "../../../helpers/db"
 import { stripeWebhookRequest } from "../../../helpers/schemas"
 import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/tables"
@@ -52,16 +52,16 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     throw new createHttpError.BadRequest(`payment in invalid state ${payment.status} to be confirmed`)
   }
 
+  const matchFundingAdded = payment.matchFundingAmount !== null ? payment.matchFundingAmount : matchFunding({
+    donationAmount: payment.donationAmount,
+    alreadyMatchFunded: donation.matchFundingAmount,
+    matchFundingRate: fundraiser.matchFundingRate,
+    matchFundingRemaining: fundraiser.matchFundingRemaining,
+    matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
+  })
+
   // If the payment is not pending, we've already done this. We should only do this if the payment is still pending.
   if (payment.status === "pending") {
-    const matchFundingAdded = payment.matchFundingAmount !== null ? payment.matchFundingAmount : matchFunding({
-      donationAmount: payment.donationAmount,
-      alreadyMatchFunded: donation.matchFundingAmount,
-      matchFundingRate: fundraiser.matchFundingRate,
-      matchFundingRemaining: fundraiser.matchFundingRemaining,
-      matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
-    })
-
     // If recurring, create a Stripe customer and attach this payment method to them
     if (event.body.data.object.setup_future_usage !== null) {
       const stripeCustomer = await stripe.customers.create({
@@ -112,7 +112,41 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     ])
   }
 
-  // TODO: send a confirmation email if they've consented to receiving informational emails
+  // For the first of a series of recurring donations, confirm future payments' matchFundingAmounts now
+  const payments = await query(paymentTable, { donationId })
+  const donationMatchFundingAlready = payments.reduce((acc, p) => acc + (p.matchFundingAmount ?? 0), 0)
+  let donationMatchFundingAdded = 0
+  const paymentTransactions = payments.filter((p) => p.status === "pending" && p.matchFundingAmount === null).sort((a, b) => a.at - b.at).map((p) => {
+    const matchFundingAmount = matchFunding({
+      donationAmount: p.donationAmount,
+      alreadyMatchFunded: donationMatchFundingAlready + donationMatchFundingAdded,
+      matchFundingRate: fundraiser.matchFundingRate,
+      matchFundingRemaining: fundraiser.matchFundingRemaining === null ? null : fundraiser.matchFundingRemaining - matchFundingAdded - donationMatchFundingAdded,
+      matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
+    })
+    donationMatchFundingAdded += matchFundingAmount
+    return updateT(paymentTable, { donationId, id: p.id }, { matchFundingAmount },
+      // Validate the amounts and status have not changed since we got the data
+      "#donationAmount = :pDonationAmount AND #matchFundingAmount = :pMatchFundingAmount AND #status = :pStatus",
+      {
+        ":pDonationAmount": p.donationAmount, ":pMatchFundingAmount": p.matchFundingAmount, ":pStatus": "pending",
+      },
+      {
+        "#donationAmount": "donationAmount", "#matchFundingAmount": "matchFundingAmount", "#status": "status",
+      })
+  })
+  if (paymentTransactions.length > 0) {
+    await inTransaction([
+      ...paymentTransactions,
+      // If matchFundingRemaining === null there is no overall limit on match funding
+      //   If this is the case, we need to check that is still the case at the point of crediting the amount on the donation
+      //   Otherwise, we need to check that there is still enough match funding left for this payment
+      // We also validate that the matchFundingPerDonationLimit has not changed since we just got the data
+      fundraiser.matchFundingRemaining === null
+        ? plusT(fundraiserTable, { id: fundraiserId }, { donationsCount: 0 /* noop hack */ }, "matchFundingRemaining = :matchFundingRemaining AND matchFundingPerDonationLimit = :matchFundingPerDonationLimit", { ":matchFundingRemaining": fundraiser.matchFundingRemaining, ":matchFundingPerDonationLimit": fundraiser.matchFundingPerDonationLimit })
+        : plusT(fundraiserTable, { id: fundraiserId }, { matchFundingRemaining: -donationMatchFundingAdded }, "matchFundingRemaining >= :matchFundingAdded AND matchFundingPerDonationLimit = :matchFundingPerDonationLimit", { ":matchFundingAdded": donationMatchFundingAdded, ":matchFundingPerDonationLimit": fundraiser.matchFundingPerDonationLimit }),
+    ])
+  }
 
-  // TODO: for the first of a series of recurring donations, maybe confirm future payments' matchFundingAmounts now?
+  // TODO: send a confirmation email if they've consented to receiving informational emails
 })
