@@ -19,6 +19,7 @@ test.each([
   [15, 20, 100, null, 20, 5],
   [10, 20, 100, null, 20, 10],
   [20, 20, 100, null, null, 10],
+  [10, 30, 100, null, 100, 90],
 
   // Limit to match funding remaining
   [10, 10, 100, 15, null, undefined],
