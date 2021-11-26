@@ -82,9 +82,14 @@ export const assertMatchesSchema = <T>(schema: JSONSchema<T>, data: unknown): vo
   throw error
 }
 
-export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } }, subject: { groupsWithAccess: string[] }): void => {
-  if (!event.auth.payload.groups.some((g) => subject.groupsWithAccess.includes(g))) {
-    throw new createHttpError.Forbidden(`This endpoint requires you to be in one of the groups [${subject.groupsWithAccess.join(", ")}] but you are in [${event.auth.payload.groups.join(", ")}]`)
+export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } }, groupDefinition: string | string[] | { groupsWithAccess: string[] }): void => {
+  // eslint-disable-next-line no-nested-ternary
+  const groupsWithAccess = typeof groupDefinition === "string" ? [groupDefinition]
+    : (Array.isArray(groupDefinition) ? groupDefinition
+      : groupDefinition.groupsWithAccess)
+
+  if (!event.auth.payload.groups.some((g) => groupsWithAccess.includes(g))) {
+    throw new createHttpError.Forbidden(`This endpoint requires you to be in one of the groups [${groupsWithAccess.join(", ")}] but you are in [${event.auth.payload.groups.join(", ")}]`)
   }
 }
 
