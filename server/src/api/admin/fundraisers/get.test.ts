@@ -4,7 +4,7 @@
 import { ulid } from "ulid"
 import { insert } from "../../../helpers/db"
 import { fundraiserTable } from "../../../helpers/tables"
-import { callWithAuth, makeFundraiser } from "../../../helpers/testHelpers.test"
+import { callWithAuth, makeFundraiser } from "../../../../local/testHelpers"
 import { main } from "./get"
 
 test("retrieves no fundraisers", async () => {
@@ -44,8 +44,6 @@ test("retrives multiple fundraisers", async () => {
 })
 
 test("validates schema before return", async () => {
-  const consoleSpy = jest.spyOn(console, "error").mockImplementation()
-
   // given an invalid fundraiser in the db (missing properties)
   await insert({ ...fundraiserTable, schema: { type: "object", properties: { id: { type: "string" } } } }, { id: ulid() })
 
@@ -54,6 +52,4 @@ test("validates schema before return", async () => {
 
   // we get back an error
   expect(response.statusCode).toEqual(500)
-
-  consoleSpy.mockRestore()
 })

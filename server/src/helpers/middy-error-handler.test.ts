@@ -5,17 +5,8 @@ import { insertAudit } from "./db"
 
 jest.mock("./db")
 
-beforeAll(() => {
-  jest.spyOn(console, "error").mockImplementation()
-  jest.spyOn(console, "warn").mockImplementation()
-})
-
 afterEach(() => {
   jest.clearAllMocks()
-})
-
-afterAll(() => {
-  jest.restoreAllMocks()
 })
 
 const makeRequestFromError = (error: unknown) => ({ error } as middy.Request)

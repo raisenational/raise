@@ -7,13 +7,20 @@ import { dbClient } from "../src/helpers/db"
 const DYNAMODB_TABLES = JSON.parse(process.env.__DYNAMODB_TABLES!)
 
 beforeEach(async () => {
-  auditContext.value = process.env.DISABLE_MOCK_AUDIT_CONTEXT ? undefined : {
+  // Mock audit context (you can override this by setting auditContext.value)
+  auditContext.value = {
     subject: "test",
     sourceIp: "127.0.0.1",
     userAgent: "test",
     route: "unknown",
     routeRaw: "unknown",
   }
+
+  // Suppress logging (you can override this with unsupressConsole from test helpers)
+  jest.spyOn(console, "error").mockImplementation()
+  jest.spyOn(console, "warn").mockImplementation()
+  jest.spyOn(console, "info").mockImplementation()
+  jest.spyOn(console, "log").mockImplementation()
 
   // Variables to be lazy initialized
   let dynamoDBClient: DynamoDBClient

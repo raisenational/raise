@@ -1,11 +1,14 @@
 import "source-map-support/register"
 import { ulid } from "ulid"
 import { middyfy } from "../../../helpers/wrapper"
-import { insert } from "../../../helpers/db"
+import { assertHasGroup, insert } from "../../../helpers/db"
 import { fundraiserCreationSchema, ulidSchema } from "../../../helpers/schemas"
 import { fundraiserTable } from "../../../helpers/tables"
+import { NATIONAL } from "../../../helpers/groups"
 
 export const main = middyfy(fundraiserCreationSchema, ulidSchema, true, async (event) => {
+  assertHasGroup(event, NATIONAL)
+
   const fundraiser = await insert(fundraiserTable, {
     id: ulid(),
     fundraiserName: event.body.fundraiserName ?? "New Fundraiser",
