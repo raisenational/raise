@@ -36,7 +36,7 @@ const IndexPage = () => (
           { text: "Contact", href: "/sheffield/#contact" },
         ]}
         right={[
-          // { text: "Join the 2021/22 committee", href: "https://forms.gle/abcd" },
+          { text: "Become a Rep", href: "https://docs.google.com/forms/d/e/1FAIpQLSfbeRgBxMW86fnw_qxZBZ8Glzm7qa5-FwjACjYw3F0NgBEIiw/viewform" },
         ]}
       />
       <Section className="px-8">
