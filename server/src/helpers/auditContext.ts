@@ -1,7 +1,7 @@
 import type { APIGatewayProxyEventV2 } from "aws-lambda"
 import type { APIGatewayEvent } from "./types"
 
-type AuditContext = {
+export type AuditContext = {
   value: undefined | {
     subject: string,
     sourceIp: string,
