@@ -10,34 +10,38 @@ import { NATIONAL } from "../src/helpers/groups"
 
 interface CallOptions {
   path?: string,
-  pathParameters?: Record<string, string>,
+  routeKey?: string,
+  pathParameters?: Record<string, string | undefined>,
+  headers?: Record<string, string | undefined>,
   rawResponse?: boolean,
-  groups?: string[],
+  auth?: Partial<AuthTokenPayload> | false | string,
+  authKey?: string
+  rawBody?: boolean,
 }
 
-export const callWithAuth = (handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyResult>, options: CallOptions = {}) => async (body: any): Promise<any> => {
+export const call = (handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyResult>, options: CallOptions = {}) => async (body: any): Promise<any> => {
   const now = Math.floor(new Date().getTime() / 1000)
-  const authTokenPayload: AuthTokenPayload = {
-    subject: "tests",
-    groups: options.groups ?? [NATIONAL, "Test"],
-    iat: now,
-    exp: now + 60, // 1 minute
-  }
-
-  const token = jwt.sign(
-    authTokenPayload,
-    env.JWT_PRIVATE_KEY,
+  const token = typeof options.auth === "string" ? options.auth : jwt.sign(
+    {
+      subject: "tests",
+      groups: [NATIONAL, "Test"],
+      iat: now,
+      exp: now + 60, // 1 minute
+      ...options.auth
+    },
+    options.authKey ?? env.JWT_PRIVATE_KEY,
     { algorithm: "ES256" },
   )
 
   const response = await handler(
     {
-      routeKey: `UNKNOWN ${options.path ?? "/unknown"}`,
+      routeKey: options.routeKey ?? `UNKNOWN ${options.path ?? "/unknown"}`,
       rawPath: options.path ?? "/unknown",
       rawQueryString: "",
       headers: {
-        authorization: `Bearer ${token}`,
+        authorization: options.auth === false ? undefined : `Bearer ${token}`,
         "content-type": "application/json",
+        ...options.headers,
       } as APIGatewayProxyEventHeaders,
       requestContext: {
         accountId: "12345678",
@@ -49,7 +53,7 @@ export const callWithAuth = (handler: Handler<APIGatewayProxyEventV2, APIGateway
           userAgent: "some browser",
         },
       },
-      body: body ? JSON.stringify(body) : null,
+      body: body ? (options.rawBody ? body : JSON.stringify(body)) : null,
       pathParameters: options.pathParameters ?? {},
     } as APIGatewayProxyEventV2,
     {

@@ -5,7 +5,7 @@ import { ulid } from "ulid"
 import { get, scan } from "../../../helpers/db"
 import { NATIONAL } from "../../../helpers/groups"
 import { fundraiserTable } from "../../../helpers/tables"
-import { callWithAuth, makeFundraiser } from "../../../../local/testHelpers"
+import { call, makeFundraiser } from "../../../../local/testHelpers"
 import { main } from "./post"
 
 test.each([
@@ -13,7 +13,7 @@ test.each([
   ["using defaults", {}],
 ])("national team member can create a fundraiser %s", async (description, fundraiser) => {
   // when we call the endpoint
-  const response = await callWithAuth(main, { groups: [NATIONAL] })(fundraiser)
+  const response = await call(main, { auth: { groups: [NATIONAL] } })(fundraiser)
 
   // then we get back our new fundraiser's id
   expect(response).toMatch(/^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$/)
@@ -22,11 +22,10 @@ test.each([
 
 test("non-national team member cannot create a fundraiser", async () => {
   // when we call the endpoint
-  const response = await callWithAuth(main, { groups: ["Test"], rawResponse: true })({})
+  const response = await call(main, { auth: { groups: ["Test"] }, rawResponse: true })({})
 
   // then an error response is returned
   expect(response.statusCode).toBe(403)
-  expect(() => JSON.parse(response.body)).not.toThrow()
   expect(response.body).toContain("groups")
 })
 
@@ -39,11 +38,10 @@ test.each([
   ["specifying id property", { id: ulid() }],
 ])("rejects invalid fundraiser: %s", async (description, fundraiser) => {
   // when we call the endpoint
-  const response = await callWithAuth(main, { rawResponse: true })(fundraiser)
+  const response = await call(main, { rawResponse: true })(fundraiser)
 
   // then an error response is returned
   expect(response.statusCode).toBe(400)
-  expect(() => JSON.parse(response.body)).not.toThrow()
   expect(response.body).toContain("Event object failed validation")
 
   // and we have not created a new fundraiser
