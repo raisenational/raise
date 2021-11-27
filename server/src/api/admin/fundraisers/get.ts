@@ -1,5 +1,3 @@
-import "source-map-support/register"
-
 import { scan } from "../../../helpers/db"
 import { fundraisersSchema } from "../../../helpers/schemas"
 import { fundraiserTable } from "../../../helpers/tables"

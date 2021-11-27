@@ -1,4 +1,3 @@
-import "source-map-support/register"
 import { middyfy } from "../../../../../../../helpers/wrapper"
 import { paymentsSchema } from "../../../../../../../helpers/schemas"
 import { fundraiserTable, paymentTable } from "../../../../../../../helpers/tables"

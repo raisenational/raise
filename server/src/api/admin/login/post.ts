@@ -1,4 +1,3 @@
-import "source-map-support/register"
 import { OAuth2Client } from "google-auth-library"
 import createHttpError from "http-errors"
 import jwt from "jsonwebtoken"

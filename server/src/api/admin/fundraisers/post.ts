@@ -1,4 +1,3 @@
-import "source-map-support/register"
 import { ulid } from "ulid"
 import { middyfy } from "../../../helpers/wrapper"
 import { assertHasGroup, insert } from "../../../helpers/db"

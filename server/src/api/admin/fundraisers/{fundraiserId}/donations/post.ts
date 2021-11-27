@@ -1,4 +1,3 @@
-import "source-map-support/register"
 import { ulid } from "ulid"
 import createHttpError from "http-errors"
 import { middyfy } from "../../../../../helpers/wrapper"
