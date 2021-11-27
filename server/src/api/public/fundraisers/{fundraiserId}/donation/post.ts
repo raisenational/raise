@@ -1,4 +1,3 @@
-import "source-map-support/register"
 import createHttpError from "http-errors"
 import { ulid } from "ulid"
 import Stripe from "stripe"

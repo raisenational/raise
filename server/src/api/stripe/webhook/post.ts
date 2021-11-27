@@ -1,4 +1,3 @@
-import "source-map-support/register"
 import createHttpError from "http-errors"
 import Stripe from "stripe"
 import { middyfy } from "../../../helpers/wrapper"

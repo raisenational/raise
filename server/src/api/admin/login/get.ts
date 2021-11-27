@@ -1,4 +1,3 @@
-import "source-map-support/register"
 import jwt from "jsonwebtoken"
 import { middyfy } from "../../../helpers/wrapper"
 import { profileSchema } from "../../../helpers/schemas"
