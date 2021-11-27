@@ -34,6 +34,13 @@ export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends bool
     return middy(handler)
       .before(middyAuditContextManagerBefore)
       .after(middyAuditContextManagerAfter)
+      // Remove this after serverless-offline fixed: https://github.com/dherault/serverless-offline/pull/1288
+      .before(({ event }: { event: APIGatewayEvent }) => {
+        if (env.STAGE === "local") {
+          // eslint-disable-next-line no-param-reassign
+          event.headers = Object.fromEntries(Object.entries(event.headers).map(([k, v]) => ([k.toLowerCase(), v])))
+        }
+      })
       .use(new JWTAuthMiddleware({
         algorithm: EncryptionAlgorithms.ES256,
         credentialsRequired: requiresAuth,

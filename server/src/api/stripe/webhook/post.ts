@@ -14,8 +14,7 @@ import matchFunding from "../../../helpers/matchFunding"
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
 
 export const main = middyfy(stripeWebhookRequest, null, false, async (event) => {
-  // Remove this after serverless-offline fixed: https://github.com/dherault/serverless-offline/pull/1288
-  const signature = env.STAGE === "local" ? event.headers["Stripe-Signature"] || event.headers["stripe-signature"] : event.headers["stripe-signature"]
+  const signature = event.headers["stripe-signature"]
   if (!signature) throw new createHttpError.Unauthorized("Missing Stripe-Signature header")
   try {
     stripe.webhooks.constructEvent(
