@@ -5,10 +5,6 @@ import { insertAudit } from "./db"
 
 jest.mock("./db")
 
-afterEach(() => {
-  jest.clearAllMocks()
-})
-
 const makeRequestFromError = (error: unknown) => ({ error } as middy.Request)
 
 test("handles 400 error with a message", async () => {
