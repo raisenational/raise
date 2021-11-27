@@ -71,6 +71,7 @@
     "globalTeardown": "./local/test-teardown.js",
     "setupFilesAfterEnv": [
       "./local/test-setup-each.ts"
-    ]
+    ],
+    "clearMocks": true
   }
 }
