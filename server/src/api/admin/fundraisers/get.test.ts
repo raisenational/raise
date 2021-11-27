@@ -4,14 +4,14 @@
 import { ulid } from "ulid"
 import { insert } from "../../../helpers/db"
 import { fundraiserTable } from "../../../helpers/tables"
-import { callWithAuth, makeFundraiser } from "../../../../local/testHelpers"
+import { call, makeFundraiser } from "../../../../local/testHelpers"
 import { main } from "./get"
 
 test("retrieves no fundraisers", async () => {
   // given no fundraisers in the db
 
   // when we call the endpoint
-  const response = await callWithAuth(main)(null)
+  const response = await call(main)(null)
 
   // we get back an empty array
   expect(response).toEqual([])
@@ -23,7 +23,7 @@ test("retrives one fundraiser", async () => {
   await insert(fundraiserTable, fundraiser)
 
   // when we call the endpoint
-  const response = await callWithAuth(main)(null)
+  const response = await call(main)(null)
 
   // we get back an empty array
   expect(response).toEqual([fundraiser])
@@ -35,7 +35,7 @@ test("retrives multiple fundraisers", async () => {
   await Promise.all(fundraisers.map((f) => insert(fundraiserTable, f)))
 
   // when we call the endpoint
-  const response = await callWithAuth(main)(null)
+  const response = await call(main)(null)
 
   // we get back the fundraisers
   expect(response).toHaveLength(2)
@@ -48,7 +48,7 @@ test("validates schema before return", async () => {
   await insert({ ...fundraiserTable, schema: { type: "object", properties: { id: { type: "string" } } } }, { id: ulid() })
 
   // when we call the endpoint
-  const response = await callWithAuth(main, { rawResponse: true })(null)
+  const response = await call(main, { rawResponse: true })(null)
 
   // we get back an error
   expect(response.statusCode).toEqual(500)
