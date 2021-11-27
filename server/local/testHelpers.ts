@@ -65,6 +65,7 @@ export const call = (handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyRes
 
   if (options.rawResponse) return response
   if (response.statusCode > 300) throw new Error(`Unexpected status: ${response.statusCode}, body is ${response.body}`)
+  if (response.body === undefined) return undefined
   return JSON.parse(response.body)
 }
 
