@@ -6,6 +6,9 @@ node_modules
 .webpack
 .dynamodb
 
+# jest output
+coverage
+
 # Custom environment
 src/env/env.ts
 src/env/local.ts
