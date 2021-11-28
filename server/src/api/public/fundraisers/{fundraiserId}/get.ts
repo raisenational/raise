@@ -25,7 +25,7 @@ export const main = middyfy(null, publicFundraiserSchema, false, async (event) =
     suggestedDonationAmountOneOff: fundraiser.suggestedDonationAmountOneOff,
     suggestedDonationAmountWeekly: fundraiser.suggestedDonationAmountWeekly,
     suggestedContributionAmount: fundraiser.suggestedContributionAmount,
-    donations: donations.filter((d) => d.overallPublic && d.donationAmount > 0).map((d) => ({
+    donations: donations.filter((d) => d.overallPublic && d.donationCounted).map((d) => ({
       donorName: d.namePublic ? d.donorName : undefined,
       createdAt: d.createdAt,
       giftAid: d.donationAmountPublic ? d.giftAid : undefined,
