@@ -7,6 +7,7 @@ import { AuthTokenPayload } from "../src/helpers/types"
 import env from "../src/env/env"
 import { Donation, Fundraiser, Payment } from "../src/helpers/schemaTypes"
 import { NATIONAL } from "../src/helpers/groups"
+import MockDate from 'mockdate';
 
 interface CallOptions {
   path?: string,
@@ -73,8 +74,8 @@ export const makeFundraiser = (override: Partial<Fundraiser> = {}): Fundraiser =
   id: ulid(),
   fundraiserName: "Test Fundraiser",
   activeFrom: Math.floor(new Date().getTime() / 1000),
-  activeTo: Math.floor(new Date().getTime() / 1000) + 10000,
-  recurringDonationsTo: Math.floor(new Date().getTime() / 1000) + 20000,
+  activeTo: Math.floor(new Date().getTime() / 1000) + 604800, // 1 week
+  recurringDonationsTo: Math.floor(new Date().getTime() / 1000) + 2419200, // 4 weeks
   paused: false,
   goal: Math.ceil(Math.random() * 4) * 500_00,
   totalRaised: 0,
@@ -139,4 +140,8 @@ export const unsupressConsole = (): void => {
   (console.warn as jest.MockedFunction<typeof console.warn>).mockRestore();
   (console.info as jest.MockedFunction<typeof console.info>).mockRestore();
   (console.log as jest.MockedFunction<typeof console.log>).mockRestore()
+}
+
+export const setMockDate = (value: Date | number) => {
+  MockDate.set(typeof value === "number" ? value * 1000 : value)
 }

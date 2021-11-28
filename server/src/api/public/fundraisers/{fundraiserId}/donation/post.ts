@@ -36,7 +36,7 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
 
   // Validate payment amounts are greater than a global minimum (https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts)
   if (paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount < 1_00) {
-    throw new createHttpError.BadRequest("Donation amount must be greater than £1 to avoid excessive card transaction fees")
+    throw new createHttpError.BadRequest("Payment amount must be greater than £1 to avoid excessive card transaction fees")
   }
   if (paymentSchedule.future.some((p) => p.donationAmount + p.contributionAmount < 1_00)) {
     throw new createHttpError.BadRequest("Future payments must be greater than £1 to avoid excessive card transaction fees")
