@@ -146,7 +146,7 @@ export const scan = async <
     if (calls > 10) throw new createHttpError.InternalServerError(`Scan of ${table.entityName} exceeded call limit`)
   }
   const items = itemss.flat(1)
-  assertMatchesSchema<S[]>({ type: "array", items: table.schema }, items)
+  assertMatchesSchema<S[]>({ type: "array", items: table.schema, definitions: "definitions" in table.schema ? table.schema.definitions : undefined }, items)
   return items as S[]
 }
 
@@ -167,7 +167,7 @@ export const query = async <
     }, {}),
     ScanIndexForward: false, // generally we want newest items first
   })).catch(handleDbError(table))
-  assertMatchesSchema<S[]>({ type: "array", items: table.schema }, result.Items)
+  assertMatchesSchema<S[]>({ type: "array", items: table.schema, definitions: "definitions" in table.schema ? table.schema.definitions : undefined }, result.Items)
   return result.Items as S[]
 }
 
