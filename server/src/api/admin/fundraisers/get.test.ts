@@ -53,3 +53,21 @@ test("validates schema before return", async () => {
   // we get back an error
   expect(response.statusCode).toEqual(500)
 })
+
+test("cannot retrieve fundraisers without auth", async () => {
+  const response = await call(main, { auth: false, rawResponse: true })(null)
+
+  expect(response.statusCode).toEqual(401)
+})
+
+test("cannot retrieve fundraisers with invalid auth", async () => {
+  const response = await call(main, { auth: "abcd", rawResponse: true })(null)
+
+  expect(response.statusCode).toEqual(401)
+})
+
+test("cannot retrieve fundraisers with wrongly signed auth", async () => {
+  const response = await call(main, { authKey: "-----BEGIN EC PRIVATE KEY-----\nMHcCAQEEIKxho5EgKIJI8ShaqMqrzZBBeUZheOGEVALl1QNFbzpCoAoGCCqGSM49\nAwEHoUQDQgAEytwpbd5LVbsdaiJ8Gq9U395QtYmqcMFmAEx0rJ/n4QdaScVrBj9q\nuDP7n68ZQhU1KD4xIuv9Rk35kB8xW02wEQ==\n-----END EC PRIVATE KEY-----", rawResponse: true })(null)
+
+  expect(response.statusCode).toEqual(401)
+})
