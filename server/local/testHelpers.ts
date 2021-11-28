@@ -8,6 +8,7 @@ import env from "../src/env/env"
 import { Donation, Fundraiser, Payment } from "../src/helpers/schemaTypes"
 import { NATIONAL } from "../src/helpers/groups"
 import MockDate from 'mockdate';
+import * as db from "../src/helpers/db"
 
 interface CallOptions {
   path?: string,
@@ -80,7 +81,7 @@ export const makeFundraiser = (override: Partial<Fundraiser> = {}): Fundraiser =
   goal: Math.ceil(Math.random() * 4) * 500_00,
   totalRaised: 0,
   donationsCount: 0,
-  matchFundingRate: 0,
+  matchFundingRate: Math.floor(Math.random() * 6) * 50,
   matchFundingPerDonationLimit: null,
   matchFundingRemaining: null,
   minimumDonationAmount: null,
@@ -144,4 +145,21 @@ export const unsupressConsole = (): void => {
 
 export const setMockDate = (value: Date | number) => {
   MockDate.set(typeof value === "number" ? value * 1000 : value)
+}
+
+const withDelay = <Y extends any[], T>(fn: (...args: Y) => Promise<T>) => async (...args: Y): Promise<T> => {
+  await new Promise((resolve) => setTimeout(resolve, Math.random() * 20))
+  const result = await fn(...args)
+  await new Promise((resolve) => setTimeout(resolve, Math.random() * 20))
+  return result
+}
+
+export const delayDb = () => {
+  const { scan, get, query, insert, update, inTransaction, } = db
+  jest.spyOn(db, "scan").mockImplementation(withDelay(scan))
+  jest.spyOn(db, "get").mockImplementation(withDelay(get))
+  jest.spyOn(db, "query").mockImplementation(withDelay(query))
+  jest.spyOn(db, "insert").mockImplementation(withDelay(insert))
+  jest.spyOn(db, "update").mockImplementation(withDelay(update))
+  jest.spyOn(db, "inTransaction").mockImplementation(withDelay(inTransaction))
 }

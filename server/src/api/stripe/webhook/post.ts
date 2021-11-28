@@ -42,12 +42,16 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     throw new createHttpError.BadRequest("payment intent amount does not match sum of donationAmount and contributionAmount on payment")
   }
 
+  if (payment.method !== "card") {
+    throw new createHttpError.BadRequest(`payment method is '${payment.method}', not card`)
+  }
+
   if (payment.reference && event.body.data.object.id !== payment.reference) {
     throw new createHttpError.BadRequest("payment intent id does not match reference on payment")
   }
 
   if (payment.status !== "pending" && payment.status !== "paid") {
-    throw new createHttpError.BadRequest(`payment in invalid state ${payment.status} to be confirmed`)
+    throw new createHttpError.BadRequest(`payment in invalid state '${payment.status}' to be confirmed`)
   }
 
   const matchFundingAdded = payment.matchFundingAmount !== null ? payment.matchFundingAmount : matchFunding({
@@ -104,9 +108,10 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
       //   If this is the case, we need to check that is still the case at the point of crediting the amount on the donation
       //   Otherwise, we need to check that there is still enough match funding left for this payment
       // We also validate that the matchFundingPerDonationLimit has not changed since we just got the data
+      // We only take off the match funding we did't commit before this point - i.e. if the payment already had a match funding amount on it this has already been accounted for in the match funding remaining of the fundraiser
       fundraiser.matchFundingRemaining === null
         ? plusT(fundraiserTable, { id: fundraiserId }, { totalRaised: payment.donationAmount + matchFundingAdded, donationsCount: donation.donationCounted ? 0 : 1 }, "matchFundingRemaining = :matchFundingRemaining AND matchFundingPerDonationLimit = :matchFundingPerDonationLimit", { ":matchFundingRemaining": fundraiser.matchFundingRemaining, ":matchFundingPerDonationLimit": fundraiser.matchFundingPerDonationLimit })
-        : plusT(fundraiserTable, { id: fundraiserId }, { totalRaised: payment.donationAmount + matchFundingAdded, matchFundingRemaining: -matchFundingAdded, donationsCount: donation.donationCounted ? 0 : 1 }, "matchFundingRemaining >= :matchFundingAdded AND matchFundingPerDonationLimit = :matchFundingPerDonationLimit", { ":matchFundingAdded": matchFundingAdded, ":matchFundingPerDonationLimit": fundraiser.matchFundingPerDonationLimit }),
+        : plusT(fundraiserTable, { id: fundraiserId }, { totalRaised: payment.donationAmount + matchFundingAdded, matchFundingRemaining: payment.matchFundingAmount !== null ? 0 : -matchFundingAdded, donationsCount: donation.donationCounted ? 0 : 1 }, "matchFundingRemaining >= :matchFundingAdded AND matchFundingPerDonationLimit = :matchFundingPerDonationLimit", { ":matchFundingAdded": matchFundingAdded, ":matchFundingPerDonationLimit": fundraiser.matchFundingPerDonationLimit }),
     ])
   }
 
