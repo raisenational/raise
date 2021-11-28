@@ -22,10 +22,20 @@ const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (req
 
 const middyPathParamsValidatorAndNormalizer: middy.MiddlewareFn<APIGatewayProxyEventV2, unknown> = async (request) => {
   request.event.pathParameters = request.event.pathParameters ?? {}
+
+  // check we have the path parameters defined in the url
   request.event.routeKey.match(/\{[a-zA-Z0-9]*\}/g)?.map((k) => k.slice(1, -1)).forEach((k) => {
     if (request.event.pathParameters![k] === undefined) {
       throw new createHttpError.BadRequest(`Missing path parameter ${k}`)
     }
+  })
+
+  // throw an internal server error if we try to access a missing path parameter after this check
+  request.event.pathParameters = new Proxy(request.event.pathParameters, {
+    get: (pathParameters, k: string) => {
+      if (pathParameters[k]) return pathParameters[k]
+      throw new createHttpError.InternalServerError(`Missing path parameter ${k}`)
+    },
   })
 }
 

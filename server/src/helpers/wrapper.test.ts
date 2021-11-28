@@ -24,8 +24,8 @@ const greetResponseSchema: JSONSchema<{ greeting: string }> = {
   required: ["greeting"],
 }
 
-const publicHandler = middyfy(greetRequestSchema, greetResponseSchema, false, async (event) => ({ greeting: `${event.body.greetingWord ?? event.pathParameters.greetingWord ?? "Hello"} ${event.body.greetee}!` }))
-const authReqHandler = middyfy(greetRequestSchema, greetResponseSchema, true, async (event) => ({ greeting: `${event.body.greetingWord ?? event.pathParameters.greetingWord ?? "Hello"} ${event.body.greetee}!` }))
+const publicHandler = middyfy(greetRequestSchema, greetResponseSchema, false, async (event) => ({ greeting: `${event.body.greetingWord ?? "Hello"} ${event.body.greetee}!` }))
+const authReqHandler = middyfy(greetRequestSchema, greetResponseSchema, true, async (event) => ({ greeting: `${event.body.greetingWord ?? "Hello"} ${event.body.greetee}!` }))
 
 describe("public endpoint", () => {
   test("can be called without an auth token", async () => {
@@ -315,17 +315,28 @@ describe("request body validation", () => {
 })
 
 describe("path parameters", () => {
-  test("can provide path parameters", async () => {
-    const response = await call(publicHandler, { routeKey: "/{greetingWord}", path: "/Hey", pathParameters: { greetingWord: "Hey" } })({ greetee: "world" })
+  const handler = middyfy(null, greetResponseSchema, false, async (event) => ({ greeting: `Hello ${event.pathParameters.greetee}!` }))
 
-    expect(response).toEqual({ greeting: "Hey world!" })
+  test("can provide path parameters", async () => {
+    const response = await call(handler, { routeKey: "GET /greet/{greetee}", path: "/greet/world", pathParameters: { greetee: "world" } })(null)
+
+    expect(response).toEqual({ greeting: "Hello world!" })
   })
 
   test("rejects missing path parameter", async () => {
-    const response = await call(publicHandler, { rawResponse: true, routeKey: "UNKNOWN /{greetingWord}", path: "/" })({ greetee: "world" })
+    const response = await call(handler, { rawResponse: true, routeKey: "GET /greet/{greetee}", path: "/greet/" })(null)
 
     expect(response.statusCode).toBe(400)
-    expect(response.body).toContain("Missing path parameter greetingWord")
+    expect(response.body).toContain("Missing path parameter greetee")
+  })
+
+  test("throws internal server error if trying to use non-existent path parameter", async () => {
+    const badHandler = middyfy(null, greetResponseSchema, false, async (event) => ({ greeting: `Hello ${event.pathParameters.misspeltParam}!` }))
+    const response = await call(badHandler, {
+      rawResponse: true, routeKey: "GET /greet/{misspelledParam}", path: "/greet/world", pathParameters: { misspelledParam: "world" },
+    })(null)
+
+    expect(response.statusCode).toBe(500)
   })
 })
 
