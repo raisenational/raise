@@ -26,12 +26,13 @@ export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, as
     action: "login",
   })
   const now = Math.floor(new Date().getTime() / 1000)
+  const expiresAt = now + 3600 // 1 hour
 
   const authTokenPayload: AuthTokenPayload = {
     subject: tokenPayload.email,
     groups: [NATIONAL],
     iat: now,
-    exp: now + 28800, // 8 hours
+    exp: expiresAt,
   }
 
   return {
@@ -40,6 +41,6 @@ export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, as
       env.JWT_PRIVATE_KEY,
       { algorithm: "ES256" },
     ),
-    expiresAt: now + 28800,
+    expiresAt,
   }
 })
