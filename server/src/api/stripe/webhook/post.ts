@@ -65,7 +65,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
   // If the payment is not pending, we've already done this. We should only do this if the payment is still pending.
   if (payment.status === "pending") {
     // If recurring, create a Stripe customer and attach this payment method to them
-    if (event.body.data.object.setup_future_usage !== null) {
+    if (event.body.data.object.setup_future_usage !== null && (donation.stripeCustomerId === null || donation.stripePaymentMethodId === null)) {
       const stripeCustomer = await stripe.customers.create({
         name: donation.donorName,
         email: donation.donorEmail,
@@ -74,8 +74,14 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
           donationId,
         },
         payment_method: event.body.data.object.payment_method,
-      })
-      await update(donationTable, { fundraiserId, id: donationId }, { stripeCustomerId: stripeCustomer.id, stripePaymentMethodId: event.body.data.object.payment_method })
+      }, { idempotencyKey: donation.id })
+      await update(
+        donationTable,
+        { fundraiserId, id: donationId },
+        { stripeCustomerId: stripeCustomer.id, stripePaymentMethodId: event.body.data.object.payment_method },
+        "stripeCustomerId = :cStripeCustomerId AND stripePaymentMethodId = :cStripePaymentMethodId",
+        { ":cStripeCustomerId": donation.stripeCustomerId, ":cStripePaymentMethodId": donation.stripePaymentMethodId },
+      )
     }
 
     await inTransaction([
