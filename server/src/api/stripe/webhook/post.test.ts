@@ -178,14 +178,14 @@ test("can make first recurring donation without matchFundingPerDonationLimit", a
     donationAmount: 30_00,
     contributionAmount: 0,
     matchFundingAmount: 30_00,
-    status: "pending",
+    status: "scheduled",
   })
   expect(await get(paymentTable, { donationId: donation.id, id: payments[2].id })).toEqual({
     ...payments[2],
     donationAmount: 30_00,
     contributionAmount: 0,
     matchFundingAmount: 30_00,
-    status: "pending",
+    status: "scheduled",
   })
 })
 
@@ -272,14 +272,14 @@ test("can make first recurring donation with matchFundingPerDonationLimit", asyn
     donationAmount: 30_00,
     contributionAmount: 0,
     matchFundingAmount: 20_00,
-    status: "pending",
+    status: "scheduled",
   })
   expect(await get(paymentTable, { donationId: donation.id, id: payments[2].id })).toEqual({
     ...payments[2],
     donationAmount: 30_00,
     contributionAmount: 0,
     matchFundingAmount: 0,
-    status: "pending",
+    status: "scheduled",
   })
 })
 
@@ -312,7 +312,7 @@ test("can make later recurring donation with match funding committed previously"
     fundraiserId: fundraiser.id,
     donationId: donation.id,
     method: "card",
-    status: "pending",
+    status: "scheduled",
     reference: `pi_${ulid()}`,
     donationAmount: 30_00,
     contributionAmount: 0,
@@ -322,7 +322,7 @@ test("can make later recurring donation with match funding committed previously"
     fundraiserId: fundraiser.id,
     donationId: donation.id,
     method: "card",
-    status: "pending",
+    status: "scheduled",
     reference: `pi_${ulid()}`,
     donationAmount: 30_00,
     contributionAmount: 0,
@@ -385,7 +385,7 @@ test("can make later recurring donation with match funding committed previously"
     donationAmount: 30_00,
     contributionAmount: 0,
     matchFundingAmount: 0,
-    status: "pending",
+    status: "scheduled",
   })
 })
 
@@ -420,7 +420,7 @@ test("can make later recurring donation with match funding committed previously 
     fundraiserId: fundraiser.id,
     donationId: donation.id,
     method: "card",
-    status: "pending",
+    status: "scheduled",
     reference: `pi_${ulid()}`,
     donationAmount: 30_00,
     contributionAmount: 0,
@@ -430,7 +430,7 @@ test("can make later recurring donation with match funding committed previously 
     fundraiserId: fundraiser.id,
     donationId: donation.id,
     method: "card",
-    status: "pending",
+    status: "scheduled",
     reference: `pi_${ulid()}`,
     donationAmount: 30_00,
     contributionAmount: 0,
@@ -484,7 +484,7 @@ test("can make later recurring donation with match funding committed previously 
     donationAmount: 30_00,
     contributionAmount: 0,
     matchFundingAmount: 0,
-    status: "pending",
+    status: "scheduled",
   })
 })
 
@@ -590,7 +590,7 @@ test("can make later recurring donation without match funding committed previous
     donationAmount: 30_00,
     contributionAmount: 0,
     matchFundingAmount: 0,
-    status: "pending",
+    status: "scheduled",
   })
 })
 
@@ -929,14 +929,14 @@ test("handles parallel webhook calls for same first recurring payment", async ()
     donationAmount: 30_00,
     contributionAmount: 0,
     matchFundingAmount: 20_00,
-    status: "pending",
+    status: "scheduled",
   })
   expect(await get(paymentTable, { donationId: donation.id, id: payments[2].id })).toEqual({
     ...payments[2],
     donationAmount: 30_00,
     contributionAmount: 0,
     matchFundingAmount: 0,
-    status: "pending",
+    status: "scheduled",
   })
 })
 

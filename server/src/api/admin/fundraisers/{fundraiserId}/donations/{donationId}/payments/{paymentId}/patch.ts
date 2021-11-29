@@ -103,15 +103,14 @@ async function updateMatchFundingAmount(
 }
 
 async function updateStatus(
-  newStatus: "paid" | "pending" | "cancelled" | "refunded",
+  newStatus: Payment["status"],
   fundraiser: Fundraiser,
   donation: Donation,
   payment: Payment,
 ) {
-  // for pending card transactions you can cancel them: set status to cancelled, reallocate match funding amount
-  // donation and contribution amounts are reflected in the donation iff status is paid
+  // you can cancel pending or scheduled payments: set status to cancelled, reallocate match funding amount
   const updates: { tDef: AWSTransactionDefinition, auditDef: AuditDefinition }[] = []
-  if (newStatus === "cancelled" && payment.status === "pending" && payment.method === "card") {
+  if (newStatus === "cancelled" && (payment.status === "pending" || payment.status === "scheduled") && payment.method === "card") {
     updates.push(updateT(
       paymentTable,
       { id: payment.id, donationId: donation.id },
@@ -128,42 +127,8 @@ async function updateStatus(
       ))
     }
     await inTransaction(updates)
-  } else if (newStatus === "refunded" && payment.status === "paid") {
-    // for all paid payments you can mark them as refunded: reallocate all amounts
-    updates.push(updateT(
-      paymentTable,
-      { id: payment.id, donationId: donation.id },
-      { status: newStatus },
-      "#status = :currentStatus AND donationAmount = :currentDonationAmount AND contributionAmount = :currentContributionAmount AND matchFundingAmount = :currentMatchFundingAmount",
-      {
-        ":currentStatus": payment.status, ":currentDonationAmount": payment.donationAmount, ":currentContributionAmount": payment.contributionAmount, ":currentMatchFundingAmount": payment.matchFundingAmount,
-      },
-      { "#status": "status" },
-    ))
-    updates.push(plusT(
-      donationTable,
-      { id: donation.id, fundraiserId: fundraiser.id },
-      { donationAmount: -payment.donationAmount, contributionAmount: -payment.contributionAmount, matchFundingAmount: -(payment.matchFundingAmount ?? 0) },
-    ))
-    if (fundraiser.matchFundingRemaining !== null) {
-      // If fundraiser.matchFundingRemaining has changed to null since got the data this would explode. We add a condition expression to ensure it hasn't.
-      updates.push(plusT(
-        fundraiserTable,
-        { id: fundraiser.id },
-        { matchFundingRemaining: (payment.matchFundingAmount ?? 0), totalRaised: -(payment.donationAmount + (payment.matchFundingAmount ?? 0)) },
-        "matchFundingRemaining <> :null",
-        { ":null": null },
-      ))
-    } else {
-      updates.push(plusT(
-        fundraiserTable,
-        { id: fundraiser.id },
-        { totalRaised: -(payment.donationAmount + (payment.matchFundingAmount ?? 0)) },
-      ))
-    }
-    await inTransaction(updates)
   } else {
-    throw new createHttpError.BadRequest("You can only change the status to cancelled (on pending card payments) or to refunded (on all paid payments)")
+    throw new createHttpError.BadRequest("You can only change the status to cancelled (on pending or scheduled card payments)")
   }
 }
 

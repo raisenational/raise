@@ -178,7 +178,7 @@ export const paymentPropertyEditsSchema: JSONSchema<S.PaymentPropertyEdits> = {
   oneOf: [{
     type: "object",
     properties: {
-      donationAmount: { type: "integer", minimum: 0 },
+      donationAmount: { type: "integer" },
     },
     required: ["donationAmount"],
     additionalProperties: false,
@@ -186,14 +186,14 @@ export const paymentPropertyEditsSchema: JSONSchema<S.PaymentPropertyEdits> = {
   }, {
     type: "object",
     properties: {
-      contributionAmount: { type: "integer", minimum: 0 },
+      contributionAmount: { type: "integer" },
     },
     required: ["contributionAmount"],
     additionalProperties: false,
   }, {
     type: "object",
     properties: {
-      matchFundingAmount: { type: ["integer", "null"], minimum: 0 }, // null means we have not calculated/allocated it yet
+      matchFundingAmount: { type: ["integer", "null"] }, // null means we have not calculated/allocated it yet
     },
     required: ["matchFundingAmount"],
     additionalProperties: false,
@@ -207,7 +207,7 @@ export const paymentPropertyEditsSchema: JSONSchema<S.PaymentPropertyEdits> = {
   }, {
     type: "object",
     properties: {
-      status: { enum: ["paid", "pending", "cancelled", "refunded"] },
+      status: { enum: ["paid", "pending", "scheduled", "cancelled"] },
     },
     required: ["status"],
     additionalProperties: false,
@@ -218,12 +218,12 @@ export const paymentCreationSchema: JSONSchema<S.PaymentCreation> = {
   type: "object",
   properties: {
     at: { type: "integer" },
-    donationAmount: { type: "integer", minimum: 0 },
-    contributionAmount: { type: "integer", minimum: 0 },
-    matchFundingAmount: { type: ["integer", "null"], minimum: 0 }, // null means we have not calculated/allocated it yet
+    donationAmount: { type: "integer" },
+    contributionAmount: { type: "integer" },
+    matchFundingAmount: { type: ["integer", "null"] }, // null means we have not calculated/allocated it yet
     method: { enum: ["cash", "direct_to_charity"] },
     reference: { type: ["string", "null"] },
-    status: { enum: ["paid", "pending", "cancelled", "refunded"] },
+    status: { enum: ["paid", "pending", "scheduled", "cancelled"] },
   },
   additionalProperties: false,
 }

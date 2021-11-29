@@ -9,7 +9,7 @@
     "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
     "id": "01FK1WKD45YAESYBYR4RHTXH4W",
     "donationAmount": 900,
-    "status": "pending"
+    "status": "scheduled"
   },
   {
     "reference": null,
@@ -21,7 +21,7 @@
     "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
     "id": "01FK1WKD454H7MWVFDDNN3NK75",
     "donationAmount": 900,
-    "status": "pending"
+    "status": "scheduled"
   },
   {
     "reference": null,
@@ -33,7 +33,7 @@
     "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
     "id": "01FK1WKD4520JDWPHYS4DW24DY",
     "donationAmount": 900,
-    "status": "pending"
+    "status": "scheduled"
   },
   {
     "reference": null,
@@ -45,7 +45,7 @@
     "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
     "id": "01FK1WKD445WFHHFF0FRF3DPWQ",
     "donationAmount": 900,
-    "status": "pending"
+    "status": "scheduled"
   },
   {
     "reference": "pi_3JpKFkKzqibgSMB71dtqi8Jn",
