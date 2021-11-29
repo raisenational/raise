@@ -2,210 +2,292 @@ import { ulid } from "ulid"
 import {
   insert, scan, get, query, insertAudit, update, inTransaction, updateT, plusT, insertT, AuditDefinition,
 } from "./db"
-import { fundraiserTable, donationTable, auditLogTable } from "./tables"
 import {
-  makeFundraiser, makeDonation, unsupressConsole, setMockDate,
-} from "../../local/testHelpers"
+  fundraiserTable, donationTable, auditLogTable, tables,
+} from "./tables"
+import { makeFundraiser, makeDonation, setMockDate } from "../../local/testHelpers"
 import { auditContext } from "./auditContext"
-import { AuditLog } from "./schemaTypes"
+
+describe("scan", () => {
+  test.each(Object.entries(tables))("%s table is empty by default", async (name, table) => {
+    expect(await scan(table as any)).toHaveLength(0)
+  })
+
+  test("can retrieve several items", async () => {
+    const fundraisers = new Array(123).fill(0).map(() => makeFundraiser())
+    await Promise.all(fundraisers.map((f) => insert(fundraiserTable, f)))
+
+    expect(await scan(fundraiserTable)).toHaveLength(123)
+  })
+
+  // a test for pagination would be nice, but looks difficult to write efficiently
+  // maybe we could intercept the ScanCommand and add a low limit for this?
+})
 
 describe("insert", () => {
   test("can insert an item", async () => {
-    expect(await scan(fundraiserTable)).toHaveLength(0)
-
     const fundraiser = makeFundraiser()
 
     await insert(fundraiserTable, fundraiser)
 
-    expect(await scan(fundraiserTable)).toHaveLength(1)
+    expect(await scan(fundraiserTable)).toEqual([fundraiser])
   })
 
-  test("insert fails with invalid expression", async () => {
-    expect(await scan(fundraiserTable)).toHaveLength(0)
+  test("can insert two items", async () => {
+    const fundraisers = [makeFundraiser(), makeFundraiser()]
 
-    const fundraiser = makeFundraiser()
+    await insert(fundraiserTable, fundraisers[0])
+    await insert(fundraiserTable, fundraisers[1])
 
-    await expect(insert(fundraiserTable, fundraiser, "10 = 11")).rejects.toThrowError()
+    const scanResult = await scan(fundraiserTable)
+    expect(scanResult).toHaveLength(2)
+    expect(scanResult).toContainEqual(fundraisers[0])
+    expect(scanResult).toContainEqual(fundraisers[1])
+  })
+
+  test("fails with condition expression that evaluates to false", async () => {
+    await expect(insert(fundraiserTable, makeFundraiser(), "id = fundraiserName")).rejects.toThrowError("failed conditional expression")
 
     expect(await scan(fundraiserTable)).toHaveLength(0)
   })
-  test("fail to insert an item if it already exists", async () => {
+
+  test("fails with an invalid condition expression", async () => {
+    await expect(insert(fundraiserTable, makeFundraiser(), "?")).rejects.toThrowError("Invalid ConditionExpression")
+
     expect(await scan(fundraiserTable)).toHaveLength(0)
+  })
 
+  test("fails if an item with that id already exists", async () => {
     const fundraiser = makeFundraiser()
-
     await insert(fundraiserTable, fundraiser)
 
-    await expect(insert(fundraiserTable, fundraiser)).rejects.toThrowError()
+    await expect(insert(fundraiserTable, makeFundraiser({ id: fundraiser.id }))).rejects.toThrowError()
 
-    expect(await scan(fundraiserTable)).toHaveLength(1)
+    expect(await scan(fundraiserTable)).toEqual([fundraiser])
+  })
+
+  describe("composite key tables", () => {
+    test("can insert an item", async () => {
+      const donation = makeDonation()
+
+      await insert(donationTable, donation)
+
+      expect(await scan(donationTable)).toEqual([donation])
+    })
+
+    test("can insert multiple items", async () => {
+      const fundraisers = [makeFundraiser(), makeFundraiser()]
+      const donations = [
+        makeDonation({ fundraiserId: fundraisers[0].id }),
+        makeDonation({ fundraiserId: fundraisers[0].id }),
+        makeDonation({ fundraiserId: fundraisers[1].id }),
+      ]
+
+      await insert(donationTable, donations[0])
+      await insert(donationTable, donations[1])
+      await insert(donationTable, donations[2])
+
+      const scanResult = await scan(donationTable)
+      expect(scanResult).toHaveLength(3)
+      expect(scanResult).toContainEqual(donations[0])
+      expect(scanResult).toContainEqual(donations[1])
+      expect(scanResult).toContainEqual(donations[2])
+    })
+
+    // this is more a bug than a feature, but we'd like to know if this behaviour changes so here's a test for that
+    test("can insert multiple items with same sort key if they're in in different partitions", async () => {
+      const fundraisers = [makeFundraiser(), makeFundraiser()]
+      const donationId = ulid()
+      const donations = [
+        makeDonation({ fundraiserId: fundraisers[0].id, id: donationId }),
+        makeDonation({ fundraiserId: fundraisers[1].id, id: donationId }),
+      ]
+
+      await insert(donationTable, donations[0])
+      await insert(donationTable, donations[1])
+
+      const scanResult = await scan(donationTable)
+      expect(scanResult).toHaveLength(2)
+      expect(scanResult).toContainEqual(donations[0])
+      expect(scanResult).toContainEqual(donations[1])
+    })
+
+    test("fails if an item with that id already exists", async () => {
+      const fundraiser = makeFundraiser()
+      const donation = makeDonation({ fundraiserId: fundraiser.id })
+      await insert(donationTable, donation)
+
+      await expect(insert(donationTable, makeDonation({ fundraiserId: fundraiser.id, id: donation.id }))).rejects.toThrowError()
+
+      expect(await scan(donationTable)).toEqual([donation])
+    })
   })
 })
+
 describe("get", () => {
   test("can get an item", async () => {
-    const id = ulid()
-
-    const fundraiser = makeFundraiser({ id })
-
+    const fundraiser = makeFundraiser()
     await insert(fundraiserTable, fundraiser)
 
-    expect(await get(fundraiserTable, { id })).toEqual(fundraiser)
-  })
-  test("get fails if item doesn't exist", async () => {
-    const id = ulid()
+    const result = await get(fundraiserTable, { id: fundraiser.id })
 
-    await expect(() => get(fundraiserTable, { id })).rejects.toThrowError
+    expect(result).toEqual(fundraiser)
+  })
+
+  test("composite key tables: can get an item", async () => {
+    const donation = makeDonation()
+    await insert(donationTable, donation)
+
+    const result = await get(donationTable, { fundraiserId: donation.fundraiserId, id: donation.id })
+
+    expect(result).toEqual(donation)
+  })
+
+  test("get fails if item doesn't exist", async () => {
+    await expect(() => get(fundraiserTable, { id: ulid() })).rejects.toThrowError("not found")
+  })
+
+  test("get fails if item doesn't exist", async () => {
+    await expect(() => get(donationTable, { fundraiserId: ulid(), id: ulid() })).rejects.toThrowError("not found")
   })
 })
 
 describe("query", () => {
   test("can query an item", async () => {
-    const id = ulid()
-
-    const fundraiser = makeFundraiser({ id })
-
-    const donationId = ulid()
-    const donation = makeDonation({ id: donationId, fundraiserId: id })
-
+    const fundraiser = makeFundraiser()
+    const donation = makeDonation({ fundraiserId: fundraiser.id })
     await insert(fundraiserTable, fundraiser)
-
     await insert(donationTable, donation)
 
-    expect(await query(donationTable, { fundraiserId: id })).toEqual([donation])
+    const result = await query(donationTable, { fundraiserId: fundraiser.id })
+
+    expect(result).toEqual([donation])
   })
-  test("query returns empty array on empty table", async () => {
-    const id = ulid()
 
-    const fundraiser = makeFundraiser({ id })
-
+  test("can query multiple items", async () => {
+    const fundraiser = makeFundraiser()
+    const donations = [makeDonation({ fundraiserId: fundraiser.id }), makeDonation({ fundraiserId: fundraiser.id })]
     await insert(fundraiserTable, fundraiser)
+    await insert(donationTable, donations[0])
+    await insert(donationTable, donations[1])
 
-    expect(await query(donationTable, { fundraiserId: id })).toEqual([])
+    const result = await query(donationTable, { fundraiserId: fundraiser.id })
+
+    expect(result).toHaveLength(2)
+    expect(result).toContainEqual(donations[0])
+    expect(result).toContainEqual(donations[1])
   })
-  test("query throws error if table doesn't exist", async () => {
-    const id = ulid()
 
-    await expect(() => query(donationTable, { fundraiserId: id })).rejects.toThrowError
+  test("query returns empty array on empty table", async () => {
+    const result = await query(donationTable, { fundraiserId: ulid() })
+
+    expect(result).toEqual([])
+  })
+
+  test("query returns empty array on empty partition of non-empty table", async () => {
+    const fundraiser = makeFundraiser()
+    const donation = makeDonation({ fundraiserId: fundraiser.id })
+    await insert(fundraiserTable, fundraiser)
+    await insert(donationTable, donation)
+
+    const result = await query(donationTable, { fundraiserId: ulid() })
+
+    expect(result).toEqual([])
   })
 })
 
 describe("update", () => {
   test("can update an item", async () => {
-    const id = ulid()
-    const fundraiser = makeFundraiser({ id })
-
+    const fundraiser = makeFundraiser()
     await insert(fundraiserTable, fundraiser)
 
-    await update(fundraiserTable, { id }, { donationsCount: 3, matchFundingRate: 1_00 })
+    await update(fundraiserTable, { id: fundraiser.id }, { donationsCount: 3, matchFundingRate: 200 })
 
-    expect(await get(fundraiserTable, { id })).not.toEqual(fundraiser)
-
-    fundraiser.donationsCount = 3
-    fundraiser.matchFundingRate = 1_00
-
-    expect(await get(fundraiserTable, { id })).toEqual(fundraiser)
+    expect(await get(fundraiserTable, { id: fundraiser.id })).toEqual({ ...fundraiser, donationsCount: 3, matchFundingRate: 200 })
   })
 
-  test("fail to update an item if conditions not met", async () => {
-    const id = ulid()
-    const fundraiser = makeFundraiser({ id })
+  test("fails to update an item if conditions not met", async () => {
+    const fundraiser = makeFundraiser()
 
     await insert(fundraiserTable, fundraiser)
 
-    await expect(() => update(fundraiserTable, { id }, { donationsCount: 3, matchFundingRate: 1_00 }, "donationsCount = :currentDonationCount",
-      { ":currentDonationCount": 100 })).rejects.toThrowError()
+    await expect(() => update(
+      fundraiserTable, { id: fundraiser.id }, { donationsCount: 3, matchFundingRate: 200 }, "donationsCount = :currentDonationsCount", { ":currentDonationsCount": 100 },
+    )).rejects.toThrowError("failed conditional expression")
 
-    expect(await get(fundraiserTable, { id })).toEqual(fundraiser)
+    expect(await get(fundraiserTable, { id: fundraiser.id })).toEqual(fundraiser)
   })
 })
 
 describe("updateT", () => {
   test("can update an item using updateT and inTransaction", async () => {
-    const id = ulid()
-    const fundraiser = makeFundraiser({ id, donationsCount: 0, matchFundingRate: 1_00 })
-
+    const fundraiser = makeFundraiser({ donationsCount: 0, matchFundingRate: 200 })
     await insert(fundraiserTable, fundraiser)
 
-    await inTransaction([updateT(fundraiserTable, { id }, { donationsCount: 3, matchFundingRate: 1_00 })])
+    await inTransaction([updateT(fundraiserTable, { id: fundraiser.id }, { donationsCount: 3, matchFundingRate: 200 })])
 
-    expect(await get(fundraiserTable, { id })).not.toEqual(fundraiser)
-
-    fundraiser.donationsCount = 3
-    fundraiser.matchFundingRate = 1_00
-
-    expect(await get(fundraiserTable, { id })).toEqual(fundraiser)
+    expect(await get(fundraiserTable, { id: fundraiser.id })).toEqual({ ...fundraiser, donationsCount: 3, matchFundingRate: 200 })
   })
 
-  test("fail to updateT an item if conditions not met", async () => {
-    const id = ulid()
-    const fundraiser = makeFundraiser({ id })
-
+  test("fails to updateT an item if conditions not met", async () => {
+    const fundraiser = makeFundraiser()
     await insert(fundraiserTable, fundraiser)
 
-    await expect(() => inTransaction([updateT(fundraiserTable, { id }, { donationsCount: 3, matchFundingRate: 1_00 }, "donationsCount = :currentDonationCount",
-      { ":currentDonationCount": 100 })])).rejects.toThrowError()
+    await expect(() => inTransaction([
+      updateT(fundraiserTable, { id: fundraiser.id }, { donationsCount: 3, matchFundingRate: 200 }, "donationsCount = :currentDonationsCount", { ":currentDonationsCount": 100 }),
+    ])).rejects.toThrowError("failed conditional expression")
 
-    expect(await get(fundraiserTable, { id })).toEqual(fundraiser)
+    expect(await get(fundraiserTable, { id: fundraiser.id })).toEqual(fundraiser)
   })
 })
 
 describe("plusT", () => {
   test("can update an item using plusT and inTransaction", async () => {
-    const id = ulid()
-    const fundraiser = makeFundraiser({ id, donationsCount: 1 })
-
+    const fundraiser = makeFundraiser({ donationsCount: 1 })
     await insert(fundraiserTable, fundraiser)
 
-    await inTransaction([plusT(fundraiserTable, { id }, { donationsCount: 1 })])
+    await inTransaction([plusT(fundraiserTable, { id: fundraiser.id }, { donationsCount: 1 })])
 
-    expect(await get(fundraiserTable, { id })).not.toEqual(fundraiser)
-
-    fundraiser.donationsCount = 2
-
-    expect(await get(fundraiserTable, { id })).toEqual(fundraiser)
+    expect(await get(fundraiserTable, { id: fundraiser.id })).toEqual({ ...fundraiser, donationsCount: 2 })
   })
 
-  test("fail to plusT an item if conditions not met", async () => {
-    const id = ulid()
-    const fundraiser = makeFundraiser({ id, donationsCount: 1 })
-
+  test("fails to plusT an item if conditions not met", async () => {
+    const fundraiser = makeFundraiser({ donationsCount: 1 })
     await insert(fundraiserTable, fundraiser)
 
-    await expect(() => inTransaction([updateT(fundraiserTable, { id }, { donationsCount: 1 }, "donationsCount = :currentDonationCount",
-      { ":currentDonationCount": 100 })])).rejects.toThrowError
+    await expect(() => inTransaction([
+      updateT(fundraiserTable, { id: fundraiser.id }, { donationsCount: 1 }, "donationsCount = :currentDonationsCount", { ":currentDonationsCount": 100 }),
+    ])).rejects.toThrowError("failed conditional expression")
 
-    expect(await get(fundraiserTable, { id })).toEqual(fundraiser)
+    expect(await get(fundraiserTable, { id: fundraiser.id })).toEqual(fundraiser)
   })
 })
 
 describe("insertT", () => {
   test("can insert an item using insertT and inTransaction", async () => {
-    const id = ulid()
-    const fundraiser = makeFundraiser({ id })
+    const fundraiser = makeFundraiser()
 
     await inTransaction([insertT(fundraiserTable, fundraiser)])
 
     expect(await scan(fundraiserTable)).toHaveLength(1)
-    expect(await get(fundraiserTable, { id })).toEqual(fundraiser)
+    expect(await get(fundraiserTable, { id: fundraiser.id })).toEqual(fundraiser)
   })
 
-  test("fail to insertT an item if conditions not met", async () => {
-    const id = ulid()
-    const fundraiser = makeFundraiser({ id })
+  test("fails to insertT an item if conditions not met", async () => {
+    const fundraiser = makeFundraiser()
 
-    await expect(() => inTransaction([insertT(fundraiserTable, fundraiser, "10 = 11",
-      { ":currentDonationCount": 100 })])).rejects.toThrowError
+    await expect(() => inTransaction([
+      insertT(fundraiserTable, fundraiser, "donationsCount = :currentDonationsCount", { ":currentDonationsCount": 100 }),
+    ])).rejects.toThrowError("failed conditional expression")
 
     expect(await scan(fundraiserTable)).toHaveLength(0)
   })
 
-  test("fail to insertT an item if an item with its id already exists", async () => {
-    const id = ulid()
-    const fundraiser = makeFundraiser({ id, donationsCount: 0 })
-
+  test("fails to insertT an item if an item with its id already exists", async () => {
+    const fundraiser = makeFundraiser({ donationsCount: 0 })
     await insert(fundraiserTable, fundraiser)
 
-    await expect(() => inTransaction([insertT(fundraiserTable, fundraiser)])).rejects.toThrowError
+    await expect(() => inTransaction([insertT(fundraiserTable, makeFundraiser({ id: fundraiser.id }))])).rejects.toThrowError()
 
     expect(await scan(fundraiserTable)).toHaveLength(1)
   })
@@ -213,34 +295,30 @@ describe("insertT", () => {
 
 describe("inTransaction", () => {
   test("can do multiple things at once in transaction succesfully", async () => {
-    const id1 = ulid()
-    const fundraiser1 = makeFundraiser({ id: id1, donationsCount: 0 })
-    const id2 = ulid()
-    const fundraiser2 = makeFundraiser({ id: id2 })
-
+    const fundraiser1 = makeFundraiser({ donationsCount: 0 })
+    const fundraiser2 = makeFundraiser()
     await insert(fundraiserTable, fundraiser1)
 
-    await inTransaction([insertT(fundraiserTable, fundraiser2), updateT(fundraiserTable, { id: id1 }, { donationsCount: 3 })])
+    await inTransaction([insertT(fundraiserTable, fundraiser2), updateT(fundraiserTable, { id: fundraiser1.id }, { donationsCount: 3 })])
 
     expect(await scan(fundraiserTable)).toHaveLength(2)
     fundraiser1.donationsCount = 3
-    expect(await get(fundraiserTable, { id: id1 })).toEqual(fundraiser1)
-    expect(await get(fundraiserTable, { id: id2 })).toEqual(fundraiser2)
+    expect(await get(fundraiserTable, { id: fundraiser1.id })).toEqual(fundraiser1)
+    expect(await get(fundraiserTable, { id: fundraiser2.id })).toEqual(fundraiser2)
   })
 
   test("all edits fail if one edit fails in transaction", async () => {
-    const id1 = ulid()
-    const fundraiser1 = makeFundraiser({ id: id1, donationsCount: 0 })
-    const id2 = ulid()
-    const fundraiser2 = makeFundraiser({ id: id2 })
-
+    const fundraiser1 = makeFundraiser({ donationsCount: 0 })
+    const fundraiser2 = makeFundraiser()
     await insert(fundraiserTable, fundraiser1)
 
-    await expect(() => inTransaction([insertT(fundraiserTable, fundraiser2), updateT(fundraiserTable, { id: id1 }, { donationsCount: 3 }, "10 = 11")]))
-      .rejects.toThrowError
+    await expect(() => inTransaction([
+      insertT(fundraiserTable, fundraiser2),
+      updateT(fundraiserTable, { id: fundraiser1.id }, { donationsCount: 3 }, "donationsCount = :donationsCount"),
+    ])).rejects.toThrowError("failed conditional expression")
 
     expect(await scan(fundraiserTable)).toHaveLength(1)
-    expect(await get(fundraiserTable, { id: id1 })).toEqual(fundraiser1)
+    expect(await get(fundraiserTable, { id: fundraiser1.id })).toEqual(fundraiser1)
   })
 })
 
