@@ -1,10 +1,8 @@
 import createHttpError from "http-errors"
 import Stripe from "stripe"
 import { middyfy } from "../../../helpers/wrapper"
-import {
-  get, inTransaction, plusT, scan, update, updateT,
-} from "../../../helpers/db"
-import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/tables"
+import { get, scan, update } from "../../../helpers/db"
+import { donationTable, paymentTable } from "../../../helpers/tables"
 import env from "../../../env/env"
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
@@ -12,11 +10,11 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typ
 export const main = middyfy(null, null, true, async (event) => {
   if (event.auth.payload.subject !== "scheduler") throw new createHttpError.Forbidden("Only scheduler can call /scheduler endpoints")
 
-  // When this becomes slow, we probably want to add a secondary index to the payment table to get pending payments efficiently e.g.:
+  // When this becomes slow, we probably want to add a secondary index to the payment table to get scheduled payments efficiently e.g.:
   // GlobalSecondaryIndexes: [{
-  //   IndexName: "pending-payment",
+  //   IndexName: "scheduled-payment",
   //   KeySchema: [{
-  //     AttributeName: "isPending", // a boolean property (always true) only present on pending payments to minimize index size
+  //     AttributeName: "isScheduled", // a boolean property (always true) only present on scheduled payments to minimize index size
   //     KeyType: "HASH",
   //   }, {
   //     AttributeName: "at",
@@ -29,11 +27,11 @@ export const main = middyfy(null, null, true, async (event) => {
   const payments = await scan(paymentTable)
 
   const now = Math.floor(new Date().getTime() / 1000)
-  const pendingCardPaymentsDue = payments.filter((p) => p.status === "pending" && p.method === "card" && p.at <= now)
+  const scheduledCardPaymentsDue = payments.filter((p) => p.status === "scheduled" && p.method === "card" && p.at <= now)
 
-  console.log(`Found ${pendingCardPaymentsDue.length} pending card payments due`)
+  console.log(`Found ${scheduledCardPaymentsDue.length} scheduled card payments due`)
 
-  const results = (await Promise.allSettled(pendingCardPaymentsDue.map(async (payment, index) => {
+  const results = (await Promise.allSettled(scheduledCardPaymentsDue.map(async (payment, index) => {
     // To avoid hitting Stripe rate limits (25reqs/s in test mode, 100reqs/s in live mode)
     await wait(index * 50)
 
@@ -44,7 +42,7 @@ export const main = middyfy(null, null, true, async (event) => {
 
     // If there's nothing to capture, we're in a weird state and should report this to be handled manually
     if (payment.donationAmount === 0 && payment.contributionAmount === 0) {
-      throw new createHttpError.InternalServerError("Nothing to capture on pending card payment as donation amount and contribution amount are zero")
+      throw new createHttpError.InternalServerError("Nothing to capture on scheduled card payment as donation amount and contribution amount are zero")
     }
 
     const paymentIntent = await stripe.paymentIntents.create({
@@ -74,7 +72,7 @@ export const main = middyfy(null, null, true, async (event) => {
   const failures = results.filter((r) => r.status === "rejected")
 
   // Log how everything went
-  console.log(`Tried to collect ${pendingCardPaymentsDue.length} payments: ${successes.length} succeeded, ${failures.length} failed`)
+  console.log(`Tried to collect ${scheduledCardPaymentsDue.length} payments: ${successes.length} succeeded, ${failures.length} failed`)
   failures.forEach((failure) => {
     console.error(`Payment ${failure.paymentId} (donation ${failure.donationId}, fundraiser ${failure.fundraiserId}) failed:`)
     console.error((failure as PromiseRejectedResult).reason)

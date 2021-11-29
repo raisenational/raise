@@ -50,7 +50,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     throw new createHttpError.BadRequest("payment intent id does not match reference on payment")
   }
 
-  if (payment.status !== "pending" && payment.status !== "paid") {
+  if (payment.status !== "pending" && payment.status !== "scheduled" && payment.status !== "paid") {
     throw new createHttpError.BadRequest(`payment in invalid state '${payment.status}' to be confirmed`)
   }
 
@@ -62,8 +62,8 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
   })
 
-  // If the payment is not pending, we've already done this. We should only do this if the payment is still pending.
-  if (payment.status === "pending") {
+  // If the payment is paid, we've already done this. We should only do this if the payment is pending/scheduled.
+  if (payment.status !== "paid") {
     // If recurring, create a Stripe customer and attach this payment method to them
     if (event.body.data.object.setup_future_usage !== null && (donation.stripeCustomerId === null || donation.stripePaymentMethodId === null)) {
       const stripeCustomer = await stripe.customers.create({
@@ -90,10 +90,10 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
         paymentTable,
         { donationId, id: paymentId },
         { status: "paid", matchFundingAmount: matchFundingAdded },
-        // Validate the reference and amounts have not changed since we got the data and did our custom validation, and that the payment is pending
+        // Validate the reference, amounts and status have not changed since we got the data and did our custom validation
         "#reference = :cReference AND #donationAmount = :cDonationAmount AND #contributionAmount = :cContributionAmount AND #matchFundingAmount = :pMatchFundingAmount AND #status = :pStatus",
         {
-          ":cReference": payment.reference, ":cDonationAmount": payment.donationAmount, ":cContributionAmount": payment.contributionAmount, ":pMatchFundingAmount": payment.matchFundingAmount, ":pStatus": "pending",
+          ":cReference": payment.reference, ":cDonationAmount": payment.donationAmount, ":cContributionAmount": payment.contributionAmount, ":pMatchFundingAmount": payment.matchFundingAmount, ":pStatus": payment.status,
         },
         {
           "#reference": "reference", "#donationAmount": "donationAmount", "#contributionAmount": "contributionAmount", "#matchFundingAmount": "matchFundingAmount", "#status": "status",
@@ -121,11 +121,13 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     ])
   }
 
-  // For the first of a series of recurring donations, confirm future payments' matchFundingAmounts now
+  // For the first of a series of recurring donations, update future payments:
+  // - mark them as scheduled
+  // - allocate their matchFundingAmounts
   const payments = await query(paymentTable, { donationId })
   const donationMatchFundingAlready = payments.reduce((acc, p) => acc + (p.matchFundingAmount ?? 0), 0)
   let donationMatchFundingAdded = 0
-  const paymentTransactions = payments.filter((p) => p.status === "pending" && p.matchFundingAmount === null).sort((a, b) => a.at - b.at).map((p) => {
+  const paymentTransactions = payments.filter((p) => (p.status === "pending" || p.status === "scheduled") && p.matchFundingAmount === null).sort((a, b) => a.at - b.at).map((p) => {
     const matchFundingAmount = matchFunding({
       donationAmount: p.donationAmount,
       alreadyMatchFunded: donationMatchFundingAlready + donationMatchFundingAdded,
@@ -134,11 +136,11 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
       matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
     })
     donationMatchFundingAdded += matchFundingAmount
-    return updateT(paymentTable, { donationId, id: p.id }, { matchFundingAmount },
+    return updateT(paymentTable, { donationId, id: p.id }, { status: "scheduled", matchFundingAmount },
       // Validate the amounts and status have not changed since we got the data
       "#donationAmount = :pDonationAmount AND #matchFundingAmount = :pMatchFundingAmount AND #status = :pStatus",
       {
-        ":pDonationAmount": p.donationAmount, ":pMatchFundingAmount": p.matchFundingAmount, ":pStatus": "pending",
+        ":pDonationAmount": p.donationAmount, ":pMatchFundingAmount": p.matchFundingAmount, ":pStatus": p.status,
       },
       {
         "#donationAmount": "donationAmount", "#matchFundingAmount": "matchFundingAmount", "#status": "status",
