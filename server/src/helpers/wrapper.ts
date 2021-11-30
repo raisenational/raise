@@ -63,7 +63,7 @@ export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends bool
         secretOrPublicKey: env.JWT_PUBLIC_KEY,
       }))
       .before(({ event }: { event: APIGatewayEvent }) => {
-        if (requestSchema !== null && event.headers["content-type"] !== "application/json") {
+        if (requestSchema !== null && !/^application\/(.+\+)?json(;.*)?$/.test(event.headers["content-type"] ?? "")) {
           throw new createHttpError.UnsupportedMediaType()
         }
       })

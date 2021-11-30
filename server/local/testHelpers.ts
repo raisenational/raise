@@ -42,7 +42,7 @@ export const call = (handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyRes
       rawQueryString: "",
       headers: {
         authorization: options.auth === false ? undefined : `Bearer ${token}`,
-        "content-type": "application/json",
+        "content-type": "application/json; charset=utf-8",
         ...options.headers,
       } as APIGatewayProxyEventHeaders,
       requestContext: {
