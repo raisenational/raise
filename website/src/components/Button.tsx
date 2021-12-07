@@ -4,6 +4,7 @@ import Link from "./Link"
 
 interface Props {
   href?: string,
+  target?: React.HTMLAttributeAnchorTarget,
   onClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
   variant?: "red" | "outline" | "blue" | "gray",
   size?: "normal" | "small",
@@ -12,10 +13,11 @@ interface Props {
 }
 
 const Button: React.FC<Props> = ({
-  children, href, onClick, variant = "outline", size = "normal", className, disabled,
+  children, href, target, onClick, variant = "outline", size = "normal", className, disabled,
 }) => (
   <Link
     href={href}
+    target={target}
     onClick={onClick}
     className={classNames("Button", {
       "bg-raise-red border-raise-red hover:text-gray-200": variant === "red",

@@ -4,13 +4,14 @@ import classNames from "classnames"
 
 interface Props {
   href?: string,
+  target?: React.HTMLAttributeAnchorTarget,
   onClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
   className?: string,
   disabled?: boolean,
 }
 
 const Link: React.FC<Props> = ({
-  children, href, onClick, className, disabled,
+  children, href, target, onClick, className, disabled,
 }) => {
   if (disabled || (href === undefined && onClick === undefined)) {
     return (
@@ -36,7 +37,7 @@ const Link: React.FC<Props> = ({
   }
 
   return (
-    <a href={href} onClick={onClick} onKeyPress={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") onClick(e) } : undefined} tabIndex={0} className={classNames("cursor-pointer", className)}>
+    <a href={href} target={target} rel="noreferrer" onClick={onClick} onKeyPress={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") onClick(e) } : undefined} tabIndex={0} className={classNames("cursor-pointer", className)}>
       {children}
     </a>
   )
