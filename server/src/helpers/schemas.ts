@@ -221,7 +221,7 @@ export const paymentCreationSchema: JSONSchema<S.PaymentCreation> = {
     donationAmount: { type: "integer" },
     contributionAmount: { type: "integer" },
     matchFundingAmount: { type: ["integer", "null"] }, // null means we have not calculated/allocated it yet
-    method: { enum: ["cash", "direct_to_charity"] },
+    method: { enum: ["card", "cash", "direct_to_charity"] },
     reference: { type: ["string", "null"] },
     status: { enum: ["paid", "pending", "scheduled", "cancelled"] },
   },
@@ -235,7 +235,6 @@ export const paymentSchema: JSONSchema<S.Payment> = {
     id: ulidSchema,
     donationId: ulidSchema,
     fundraiserId: ulidSchema,
-    method: { enum: ["card", "cash", "direct_to_charity"] },
   },
   required: ["id", "donationId", "fundraiserId", "at", "donationAmount", "contributionAmount", "matchFundingAmount", "method", "reference", "status"],
   additionalProperties: false,

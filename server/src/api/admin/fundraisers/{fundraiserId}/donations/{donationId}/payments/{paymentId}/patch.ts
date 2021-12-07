@@ -46,7 +46,7 @@ export const main = middyfy(paymentPropertyEditsSchema, null, true, async (event
   }
 
   // Some notes on the logic here:
-  // match funding amounts are reflected in the remaining balance on the fundraiser iff status is pending or paid
+  // match funding amounts are reflected in the remaining balance on the fundraiser iff status is pending, scheduled or paid
   // donation and contribution amounts are reflected in the donation iff status is paid
   // donation and match funding amounts are reflected in the totalRaised on the fundraiser iff status is paid
   // we don't update the fundraiser donationsCount in this endpoint
@@ -99,6 +99,7 @@ async function updateMatchFundingAmount(
         { ":matchFundingAdded": matchFundingAdded }))
     }
   }
+
   await inTransaction(updates)
 }
 
@@ -108,28 +109,32 @@ async function updateStatus(
   donation: Donation,
   payment: Payment,
 ) {
-  // you can cancel pending or scheduled payments: set status to cancelled, reallocate match funding amount
-  const updates: { tDef: AWSTransactionDefinition, auditDef: AuditDefinition }[] = []
-  if (newStatus === "cancelled" && (payment.status === "pending" || payment.status === "scheduled") && payment.method === "card") {
-    updates.push(updateT(
-      paymentTable,
-      { id: payment.id, donationId: donation.id },
-      { status: newStatus },
-      "matchFundingAmount = :currentMatchFundingAmount AND #status = :currentStatus",
-      { ":currentStatus": payment.status, ":currentMatchFundingAmount": payment.matchFundingAmount },
-      { "#status": "status" },
-    ))
-    if (payment.matchFundingAmount !== null && fundraiser.matchFundingRemaining !== null) {
-      updates.push(plusT(
-        fundraiserTable,
-        { id: fundraiser.id },
-        { matchFundingRemaining: payment.matchFundingAmount },
-      ))
-    }
-    await inTransaction(updates)
-  } else {
-    throw new createHttpError.BadRequest("You can only change the status to cancelled (on pending or scheduled card payments)")
+  // you only can cancel pending or scheduled card payments
+  if ((newStatus !== "cancelled") || (payment.status !== "pending" && payment.status !== "scheduled")) {
+    throw new createHttpError.BadRequest(`Invalid state transition: ${payment.status} to ${newStatus} (you may only cancel pending or scheduled payments)`)
   }
+  if (payment.method !== "card") {
+    throw new createHttpError.BadRequest(`You can only cancel card payments, but you tried to cancel a ${payment.method} payment`)
+  }
+
+  // set status to cancelled, reallocate match funding amount
+  const updates: { tDef: AWSTransactionDefinition, auditDef: AuditDefinition }[] = []
+  updates.push(updateT(
+    paymentTable,
+    { id: payment.id, donationId: donation.id },
+    { status: newStatus },
+    "matchFundingAmount = :currentMatchFundingAmount AND #status = :currentStatus",
+    { ":currentStatus": payment.status, ":currentMatchFundingAmount": payment.matchFundingAmount },
+    { "#status": "status" },
+  ))
+  if (payment.matchFundingAmount !== null && fundraiser.matchFundingRemaining !== null) {
+    updates.push(plusT(
+      fundraiserTable,
+      { id: fundraiser.id },
+      { matchFundingRemaining: payment.matchFundingAmount },
+    ))
+  }
+  await inTransaction(updates)
 }
 
 // for non-card payments you can edit donation and contribution amounts: if status paid, reallocate all amounts
