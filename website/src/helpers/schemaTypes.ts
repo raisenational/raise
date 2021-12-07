@@ -241,9 +241,9 @@ export interface PaymentCreation {
   donationAmount?: number;
   contributionAmount?: number;
   matchFundingAmount?: number | null;
-  method?: "cash" | "direct_to_charity";
+  method?: "card" | "cash" | "direct_to_charity";
   reference?: string | null;
-  status?: "paid" | "pending" | "cancelled" | "refunded";
+  status?: "paid" | "pending" | "scheduled" | "cancelled";
 }
 
 export type PaymentPropertyEdits =
@@ -260,7 +260,7 @@ export type PaymentPropertyEdits =
     reference: string | null;
   }
   | {
-    status: "paid" | "pending" | "cancelled" | "refunded";
+    status: "paid" | "pending" | "scheduled" | "cancelled";
   };
 
 export interface Payment {
@@ -270,7 +270,7 @@ export interface Payment {
   matchFundingAmount: number | null;
   method: "card" | "cash" | "direct_to_charity";
   reference: string | null;
-  status: "paid" | "pending" | "cancelled" | "refunded";
+  status: "paid" | "pending" | "scheduled" | "cancelled";
   id: string;
   donationId: string;
   fundraiserId: string;
@@ -283,7 +283,7 @@ export type Payments = {
   matchFundingAmount: number | null;
   method: "card" | "cash" | "direct_to_charity";
   reference: string | null;
-  status: "paid" | "pending" | "cancelled" | "refunded";
+  status: "paid" | "pending" | "scheduled" | "cancelled";
   id: string;
   donationId: string;
   fundraiserId: string;

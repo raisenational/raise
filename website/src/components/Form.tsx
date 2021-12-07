@@ -255,7 +255,7 @@ export const Form = <T,>({
       <form onSubmit={handleSubmit(internalOnSubmit)}>
 
         {title !== undefined && <SectionTitle>{title}</SectionTitle>}
-        {warning !== undefined && <Alert>{warning}</Alert>}
+        {warning !== undefined && <Alert variant="warning" className="mb-4">{warning}</Alert>}
         {Object.entries(definition).map(([_k, _v], i, arr) => {
           const k = _k as keyof UnpackNestedValue<T> & Path<T>
           const v = _v as PropertyDefinition<UnpackNestedValue<T>[keyof UnpackNestedValue<T>]>
@@ -269,7 +269,7 @@ export const Form = <T,>({
               {v.warning && <Alert variant="warning" className="mb-4">{v.warning}</Alert>}
               <LabelledInput label={v.label ?? String(k)} id={String(k)} type={nInputType as any} options={(v as any).selectOptions} {...register(k)} />
               {showCurrent && <p>Current value: {v.formatter ? v.formatter(initialValues[k]) : (initialValues[k] ?? "—")}</p>}
-              <p>New value: {v.formatter ? v.formatter(newValues[k]) : (newValues[k] ?? "—")}</p>
+              <p>{showCurrent ? "New value" : "Value"}: {v.formatter ? v.formatter(newValues[k]) : (newValues[k] ?? "—")}</p>
             </div>
           )
         })}
