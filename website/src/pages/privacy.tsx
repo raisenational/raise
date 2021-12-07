@@ -19,6 +19,8 @@ const PrivacyPage = () => (
         { text: "Durham", href: "/durham/" },
         { text: "Glasgow", href: "/glasgow/" },
         { text: "Oxford", href: "/oxford/" },
+        { text: "Sheffield", href: "/sheffield/" },
+        { text: "Warwick", href: "/warwick/" },
       ]}
       right={[
       ]}
