@@ -12,6 +12,7 @@ export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (even
   const paymentId = ulid()
   const { fundraiserId, donationId } = event.pathParameters
   const donationAmount = event.body.donationAmount ?? 0
+  const contributionAmount = event.body.contributionAmount ?? 0
 
   const [fundraiser, donation] = await Promise.all([
     get(fundraiserTable, { id: fundraiserId }),
@@ -33,7 +34,7 @@ export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (even
       fundraiserId,
       at: event.body.at ?? Math.floor(new Date().getTime() / 1000),
       donationAmount,
-      contributionAmount: event.body.contributionAmount ?? 0,
+      contributionAmount,
       matchFundingAmount: matchFundingAdded,
       method: event.body.method ?? "cash",
       reference: event.body.reference ?? null,
@@ -47,8 +48,10 @@ export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (even
       { fundraiserId, id: donationId },
       { donationAmount, contributionAmount: event.body.contributionAmount ?? 0, matchFundingAmount: matchFundingAdded },
       // Validate the matchFundingAmount on this donation has not changed since we got the data so that we do not violate the matchFundingPerDonation limit
-      "matchFundingAmount = :currentMatchFundingAmount AND donationAmount >= :minusDonationAmount AND matchFundingAmount >= :minusMatchFundingAmount",
-      { ":currentMatchFundingAmount": donation.matchFundingAmount, ":minusDonationAmount": -donationAmount, ":minusMatchFundingAmount": -matchFundingAdded },
+      "matchFundingAmount = :currentMatchFundingAmount AND donationAmount >= :minusDonationAmount AND contributionAmount >= :minusContributionAmount AND matchFundingAmount >= :minusMatchFundingAmount",
+      {
+        ":currentMatchFundingAmount": donation.matchFundingAmount, ":minusDonationAmount": -donationAmount, ":minusContributionAmount": -contributionAmount, ":minusMatchFundingAmount": -matchFundingAdded,
+      },
     ),
     // we differentiate between matchFundingRemaining === null which is when there is infinite matchfunding
     // if there is infinite matchfunding we need to check that is still the case when we try to add the matchfundingamount
