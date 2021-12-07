@@ -18,7 +18,7 @@ export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (even
     get(donationTable, { fundraiserId, id: donationId }),
   ])
 
-  const matchFundingAdded = matchFunding({
+  const matchFundingAdded = event.body.matchFundingAmount ?? matchFunding({
     donationAmount,
     alreadyMatchFunded: donation.matchFundingAmount,
     matchFundingRate: fundraiser.matchFundingRate,
@@ -41,13 +41,14 @@ export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (even
     }),
     // we need to check the matchfundingamount on this donation has not increased since we got the data
     // so that we do not go over the limit on matchfunding per donation
+    // we also need to check that we're not making the donation go negative
     plusT(
       donationTable,
       { fundraiserId, id: donationId },
       { donationAmount, contributionAmount: event.body.contributionAmount ?? 0, matchFundingAmount: matchFundingAdded },
       // Validate the matchFundingAmount on this donation has not changed since we got the data so that we do not violate the matchFundingPerDonation limit
-      "matchFundingAmount = :currentMatchFundingAmount",
-      { ":currentMatchFundingAmount": donation.matchFundingAmount },
+      "matchFundingAmount = :currentMatchFundingAmount AND donationAmount >= :minusDonationAmount AND matchFundingAmount >= :minusMatchFundingAmount",
+      { ":currentMatchFundingAmount": donation.matchFundingAmount, ":minusDonationAmount": -donationAmount, ":minusMatchFundingAmount": -matchFundingAdded },
     ),
     // we differentiate between matchFundingRemaining === null which is when there is infinite matchfunding
     // if there is infinite matchfunding we need to check that is still the case when we try to add the matchfundingamount

@@ -15,8 +15,8 @@ export type AuditLogMetadata =
   | string
   | AuditLogMetadata[]
   | {
-      [k: string]: AuditLogMetadata;
-    };
+    [k: string]: AuditLogMetadata;
+  };
 
 export interface AuditLog {
   id: string;
@@ -241,27 +241,27 @@ export interface PaymentCreation {
   donationAmount?: number;
   contributionAmount?: number;
   matchFundingAmount?: number | null;
-  method?: "cash" | "direct_to_charity";
+  method?: "card" | "cash" | "direct_to_charity";
   reference?: string | null;
   status?: "paid" | "pending" | "scheduled" | "cancelled";
 }
 
 export type PaymentPropertyEdits =
   | {
-      donationAmount: number;
-    }
+    donationAmount: number;
+  }
   | {
-      contributionAmount: number;
-    }
+    contributionAmount: number;
+  }
   | {
-      matchFundingAmount: number | null;
-    }
+    matchFundingAmount: number | null;
+  }
   | {
-      reference: string | null;
-    }
+    reference: string | null;
+  }
   | {
-      status: "paid" | "pending" | "scheduled" | "cancelled";
-    };
+    status: "paid" | "pending" | "scheduled" | "cancelled";
+  };
 
 export interface Payment {
   at: number;
