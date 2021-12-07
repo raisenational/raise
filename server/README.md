@@ -15,9 +15,10 @@ Commands should be typed into your terminal, in the raise-server directory if no
 You only need to do this once.
 
 1. Install [Node](https://nodejs.org/) (choose the LTS version) and [VS Code](https://code.visualstudio.com/Download)
-2. Clone the repository ([more info](https://docs.gitlab.com/ee/gitlab-basics/start-using-git.html#clone-a-repository))
-3. Open the folder with VS Code
-4. Run the command `npm install` to install dependencies
+2. Install [Java](https://adoptium.net/) (choose the latest LTS version)
+3. Clone the repository ([more info](https://docs.gitlab.com/ee/gitlab-basics/start-using-git.html#clone-a-repository))
+4. Open the folder with VS Code
+5. Run the command `npm install` to install dependencies
 
 ### 🏃 Running the local server
 
