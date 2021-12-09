@@ -142,7 +142,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
         {page === 1 && <DonationFormDetails formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 2 && <DonationFormMessage formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} onPaymentSuccess={() => setPage(page + 1)} />}
-        {page === 4 && <DonationFormComplete watches={watches} />}
+        {page === 4 && <DonationFormComplete fundraiser={fundraiser} watches={watches} />}
       </div>
       <div className="float-right">
         {page !== 0 && page !== 4 && <Button variant="gray" onClick={() => setPage(page - 1)}>Back</Button>}
@@ -533,12 +533,39 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
     </>
   )
 }
-// TODO: do social sharing button
-const DonationFormComplete: React.FC<{ watches: DonationFormResponses }> = ({ watches }) => (
-  <>
-    <h3 className="text-2xl">Payment Succesful! </h3>
-    <div> Thank you for donating, we received your payment!</div>
-  </>
-)
+
+const DonationFormComplete: React.FC<{ watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({ watches, fundraiser }) => {
+  // TODO: calculate the number of people protected (need to know their donation amount (from payment response) and multiply by the £ to people scaling factor. NB: may need to handle usd in future too, so worth checking the currency)
+  const peopleProtected = 100
+
+  const fundraiserLink = window.location.host + window.location.pathname.replace(/\/$/, "")
+  const sharingText = `I just donated to Raise, protecting ${peopleProtected} people from malaria! Raise is a movement encouraging people to adopt a positive approach towards deliberate effective giving - you can #joinraise at ${fundraiserLink} or ask me about it.`
+  const shareData = { url: fundraiserLink, text: sharingText }
+
+  // TODO: add event link
+  // const eventLink = fundraiser.links.find((l) => l.key === "event")
+
+  return (
+    <>
+      <h3 className="text-2xl">We've got your donation!</h3>
+      <p>You've done a great thing today: your donation will protect {peopleProtected} people from malaria!</p>
+      {/* TODO: a visual? also maybe a visual should be earlier in the flow? */}
+
+      <h3 className="text-2xl mt-4">Multiply your impact</h3>
+      <p className="mb-2">Sharing your donation on social media can massively increase your impact.</p>
+      {window.navigator.canShare && window.navigator.canShare(shareData) ? <Button variant="blue" onClick={() => window.navigator.share(shareData)}>Share</Button> : (
+        <div>
+          <Button variant="blue" target="_blank" href={`https://www.facebook.com/dialog/send?app_id=329829260786620&link=${encodeURIComponent(fundraiserLink)}&redirect_uri=${encodeURIComponent(fundraiserLink)}`}>Messenger</Button>
+          <Button variant="blue" target="_blank" href={`https://api.whatsapp.com/send?text=${encodeURIComponent(sharingText)}`}>WhatsApp</Button>
+          <Button variant="blue" target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fundraiserLink)}`}>Facebook</Button>
+          <Button variant="blue" target="_blank" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(sharingText)}`}>Twitter</Button>
+          <Button variant="blue" target="_blank" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fundraiserLink)}`}>LinkedIn</Button>
+          <Button variant="blue" target="_blank" href={`mailto:?body=${encodeURIComponent(sharingText)}&subject=${encodeURIComponent("Donating money to Raise")}`}>Email</Button>
+          <p className="mt-2">Sharing in other places is great too! Just direct them to <span className="select-all">{fundraiserLink}</span></p>
+        </div>
+      )}
+    </>
+  )
+}
 
 export default IntroFundraiser
