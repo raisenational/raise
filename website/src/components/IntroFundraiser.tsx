@@ -31,6 +31,7 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
   const [fundraiser, refetchFundraiser] = useAxios<PublicFundraiser>(`/public/fundraisers/${fundraiserId}`)
 
   const [modalOpen, setModalOpen] = React.useState(false)
+  const [cardsOpen, setCardsOpen] = React.useState(false)
 
   const ref = React.useRef<HTMLDivElement>(null)
   const [hasAnimated, setHasAnimated] = React.useState(false)
@@ -74,10 +75,20 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
 
       <div className="grid gap-4 md:grid-cols-3 md:gap-8 text-left mt-16">
         {/* Show the first six donations */}
-        {/* TODO: add a 'show all donations' button that toggles displaying all the donations */}
-        {fundraiser.data ? fundraiser.data?.donations.slice(0, 6).map((d) => <DonationCard key={d.createdAt} className="bg-raise-red" {...d} />)
-          : [12, 10, 14].map((d) => <DonationCard loading createdAt="1 hour ago" className="bg-raise-red" donorName={"a".repeat(d)} matchFundingAmount={1234} comment={"a".repeat(d * 2)} />)}
+        {/* eslint-disable-next-line no-nested-ternary */
+          fundraiser.data ? (cardsOpen ? fundraiser.data.donations : fundraiser.data.donations.slice(0, 6)).map((d) => <DonationCard key={d.createdAt} className="bg-raise-red" {...d} />)
+            : [12, 10, 14].map((d) => <DonationCard loading createdAt="1 hour ago" className="bg-raise-red" donorName={"a".repeat(d)} matchFundingAmount={1234} comment={"a".repeat(d * 2)} />)
+        }
       </div>
+      {(fundraiser.data?.donations.length ?? 0) > 6
+        && (
+          <Button
+            className="mt-8"
+            onClick={() => setCardsOpen(!cardsOpen)}
+          >
+            {cardsOpen ? "Show less" : "Show all"}
+          </Button>
+        )}
     </div>
   )
 }
