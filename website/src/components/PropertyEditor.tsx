@@ -1,5 +1,6 @@
 import * as React from "react"
 import { ResponseValues } from "axios-hooks"
+import { UnpackNestedValue } from "react-hook-form"
 
 import Alert from "./Alert"
 import Table from "./Table"
@@ -20,7 +21,7 @@ interface Props<I> {
   definition: Partial<{ [K in keyof I]: PropertyDefinition<I, I[K]> }> & { [s: `_${string}`]: PropertyDefinition<I, unknown> },
   item?: I | ResponseValues<I, unknown>,
   onClick?: (key: keyof I, event: React.MouseEvent) => void,
-  onSave?: (data: Partial<I>) => void | Promise<void>,
+  onSave?: (data: UnpackNestedValue<Partial<I>>) => void | Promise<void>,
 }
 
 // I (the item type) should not have a loading prop, but there doesn't seem like a nice TS way to do this
