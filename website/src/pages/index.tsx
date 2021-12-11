@@ -25,6 +25,7 @@ const IndexPage = () => (
           { text: "Oxford", href: "/oxford/" },
           { text: "Sheffield", href: "/sheffield/" },
           { text: "Warwick", href: "/warwick/" },
+          { text: "Imperial", href: "/imperial/" },
         ]}
         right={[
         ]}
