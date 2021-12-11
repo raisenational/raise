@@ -118,7 +118,7 @@ export const makeDonation = (override: Partial<Donation> = {}): Donation => ({
   overallPublic: false,
   namePublic: false,
   donationAmountPublic: false,
-  donationCounted: true,
+  donationCounted: false,
   ...override,
 })
 

@@ -5,8 +5,12 @@ import { main } from "./get"
 
 test("does not return private donations", async () => {
   const fundraiser = makeFundraiser()
-  const privateDonation = makeDonation({ fundraiserId: fundraiser.id, overallPublic: false, comment: "Never seen" })
-  const publicDonation = makeDonation({ fundraiserId: fundraiser.id, overallPublic: true, comment: "A comment!" })
+  const privateDonation = makeDonation({
+    fundraiserId: fundraiser.id, overallPublic: false, comment: "Never seen", donationCounted: true,
+  })
+  const publicDonation = makeDonation({
+    fundraiserId: fundraiser.id, overallPublic: true, comment: "A comment!", donationCounted: true,
+  })
 
   await insert(fundraiserTable, fundraiser)
   await insert(donationTable, privateDonation)
@@ -45,6 +49,7 @@ test.each([
     recurrenceFrequency: recurring ? "WEEKLY" : null,
     recurringAmount: recurring ? 50_00 : null,
     giftAid,
+    donationCounted: true,
   })
 
   await insert(fundraiserTable, fundraiser)

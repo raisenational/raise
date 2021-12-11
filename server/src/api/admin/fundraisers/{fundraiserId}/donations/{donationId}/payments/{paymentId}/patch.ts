@@ -53,7 +53,7 @@ export const main = middyfy(paymentPropertyEditsSchema, null, true, async (event
 })
 
 // Allocate new matchfunding (if available) and update matchfunding amount on donation
-// on all payments we can edit the matchfunding: if status paid or pending, reallocate match funding amount
+// We can edit match funding on all payments: if status is pending, scheduled or paid, reallocate match funding amount
 async function updateMatchFundingAmount(
   newMatchFundingAmount: number | null,
   fundraiser: Fundraiser,
@@ -70,7 +70,7 @@ async function updateMatchFundingAmount(
     { "#status": "status" },
   ))
 
-  if (payment.status === "paid" || payment.status === "pending") {
+  if (payment.status === "paid" || payment.status === "pending" || payment.status === "scheduled") {
     const matchFundingAdded: number = (newMatchFundingAmount ?? 0) - (payment.matchFundingAmount ?? 0)
     if (payment.status === "paid") {
       updates.push(plusT(
