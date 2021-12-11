@@ -1,12 +1,14 @@
 import { ulid } from "ulid"
 import {
-  insert, scan, get, query, insertAudit, update, inTransaction, updateT, plusT, insertT, AuditDefinition,
+  insert, scan, get, query, insertAudit, update, inTransaction, updateT, plusT, insertT, AuditDefinition, assertMatchesSchema, assertHasGroup, assertHasGroupForProperties, checkPrevious,
 } from "./db"
 import {
   fundraiserTable, donationTable, auditLogTable, tables,
 } from "./tables"
 import { makeFundraiser, makeDonation, setMockDate } from "../../local/testHelpers"
 import { auditContext } from "./auditContext"
+import { JSONSchema } from "./schemas"
+import { NATIONAL } from "./groups"
 
 describe("scan", () => {
   test.each(Object.entries(tables))("%s table is empty by default", async (name, table) => {
@@ -294,7 +296,7 @@ describe("insertT", () => {
 })
 
 describe("inTransaction", () => {
-  test("can do multiple things at once in transaction succesfully", async () => {
+  test("can do multiple things at once in a transaction succesfully", async () => {
     const fundraiser1 = makeFundraiser({ donationsCount: 0 })
     const fundraiser2 = makeFundraiser()
     await insert(fundraiserTable, fundraiser1)
@@ -302,12 +304,11 @@ describe("inTransaction", () => {
     await inTransaction([insertT(fundraiserTable, fundraiser2), updateT(fundraiserTable, { id: fundraiser1.id }, { donationsCount: 3 })])
 
     expect(await scan(fundraiserTable)).toHaveLength(2)
-    fundraiser1.donationsCount = 3
-    expect(await get(fundraiserTable, { id: fundraiser1.id })).toEqual(fundraiser1)
+    expect(await get(fundraiserTable, { id: fundraiser1.id })).toEqual({ ...fundraiser1, donationsCount: 3 })
     expect(await get(fundraiserTable, { id: fundraiser2.id })).toEqual(fundraiser2)
   })
 
-  test("all edits fail if one edit fails in transaction", async () => {
+  test("all edits fail if one edit fails in a transaction", async () => {
     const fundraiser1 = makeFundraiser({ donationsCount: 0 })
     const fundraiser2 = makeFundraiser()
     await insert(fundraiserTable, fundraiser1)
@@ -319,6 +320,18 @@ describe("inTransaction", () => {
 
     expect(await scan(fundraiserTable)).toHaveLength(1)
     expect(await get(fundraiserTable, { id: fundraiser1.id })).toEqual(fundraiser1)
+  })
+
+  test("all edits fail if editing the same item twice in a transaction", async () => {
+    const fundraiser = makeFundraiser({ donationsCount: 0 })
+    await insert(fundraiserTable, fundraiser)
+
+    await expect(() => inTransaction([
+      updateT(fundraiserTable, { id: fundraiser.id }, { donationsCount: 1 }),
+      updateT(fundraiserTable, { id: fundraiser.id }, { donationsCount: 2 }),
+    ])).rejects.toThrowError("cannot include multiple operations on one item")
+
+    expect(await get(fundraiserTable, { id: fundraiser.id })).toEqual(fundraiser)
   })
 })
 
@@ -358,5 +371,116 @@ describe("insertAudit", () => {
       metadata: { tableName: "persons", data: person },
       ttl: null,
     }])
+  })
+})
+
+describe("assertMatchesSchema", () => {
+  const messageSchema: JSONSchema<{ message: string }> = {
+    type: "object",
+    properties: {
+      message: { type: "string" },
+    },
+    required: ["message"],
+    additionalProperties: false,
+  }
+
+  test("does not throw for object matching schema", () => {
+    assertMatchesSchema(messageSchema, { message: "hello" })
+  })
+
+  test("does not throw for object matching schema ($ref)", () => {
+    assertMatchesSchema({ $ref: "#/definitions/exists", definitions: { exists: messageSchema } }, { message: "hello" })
+  })
+
+  test("throws for object with additional property", () => {
+    expect(() => assertMatchesSchema(messageSchema, { message: "hello", extra: "not allowed" }))
+      .toThrowError("failed validation")
+  })
+
+  test("throws for object with missing property", () => {
+    expect(() => assertMatchesSchema(messageSchema, {}))
+      .toThrowError("failed validation")
+  })
+
+  test("throws for object with wrong type", () => {
+    expect(() => assertMatchesSchema(messageSchema, "a string"))
+      .toThrowError("failed validation")
+  })
+
+  test("throws for object with wrong nested type", () => {
+    expect(() => assertMatchesSchema(messageSchema, { message: 1 }))
+      .toThrowError("failed validation")
+  })
+
+  test("throws for invalid schema syntax", () => {
+    expect(() => assertMatchesSchema({ not: "a schema" } as any, { message: "hello" }))
+      .toThrowError("schema is invalid")
+  })
+
+  test("throws for invalid schema semantics", () => {
+    expect(() => assertMatchesSchema({ $ref: "#/definitions/doesNotExist", definitions: { exists: messageSchema } }, { message: "hello" }))
+      .toThrowError("can't resolve reference #/definitions/doesNotExist")
+  })
+})
+
+describe.each([
+  ["not", [NATIONAL]],
+  ["not", [NATIONAL, "Test"]],
+  ["", []],
+  ["", ["NotTest"]],
+])("assertHasGroup", (notThrow, eventGroups) => {
+  test.each([
+    ["group name", NATIONAL],
+    ["group array with one entry", [NATIONAL]],
+    ["group array with multiple entries", [NATIONAL, "Test"]],
+    ["groupsWithAccess object with one entry", { groupsWithAccess: [NATIONAL] }],
+    ["groupsWithAccess object with multiple entry", { groupsWithAccess: [NATIONAL, "Test"] }],
+  ])(`does ${notThrow} throw for event and %s`, (_description, checkGroups) => {
+    const e = expect(() => assertHasGroup({ auth: { payload: { groups: eventGroups } } }, checkGroups))
+    if (!notThrow) e.toThrow()
+    else e.not.toThrow()
+  })
+})
+
+describe.each([
+  ["not", [NATIONAL], "a", ["a"]],
+  ["not", [NATIONAL, "Test"], "a", ["a"]],
+  ["not", [NATIONAL], "a", ["a", "b"]],
+  ["not", [NATIONAL, "Test"], "a", ["a", "b"]],
+  ["", [], "a", ["a"]],
+  ["", ["NotTest"], "a", ["a"]],
+  ["", [], "a", ["a", "b"]],
+  ["", ["NotTest"], "a", ["a", "b"]],
+  ["not", [NATIONAL], "a", ["b"]],
+  ["not", [NATIONAL, "Test"], "a", ["b"]],
+  ["not", [], "a", ["b"]],
+  ["not", ["NotTest"], "a", ["b"]],
+])("assertHasGroupForProperties: does %s throw with groups %s, editing property %s and checking properties %s", (notThrow, eventGroups, eventProperty, propertiesToCheck) => {
+  test.each([
+    ["by group name", NATIONAL],
+    ["by group array with one entry", [NATIONAL]],
+    ["by group array with multiple entries", [NATIONAL, "Test"]],
+    ["by groupsWithAccess object with one entry", { groupsWithAccess: [NATIONAL] }],
+    ["by groupsWithAccess object with multiple entry", { groupsWithAccess: [NATIONAL, "Test"] }],
+  ])("%s", (_description, checkGroups) => {
+    const e = expect(() => assertHasGroupForProperties({ auth: { payload: { groups: eventGroups } }, body: { [eventProperty]: null } }, checkGroups, propertiesToCheck))
+    if (!notThrow) e.toThrow()
+    else e.not.toThrow()
+  })
+})
+
+describe("checkPrevious", () => {
+  test("allows edits where previous is a match", async () => {
+    // given a fundraiser in the db
+    const fundraiser = await insert(fundraiserTable, makeFundraiser())
+
+    await update(fundraiserTable, { id: fundraiser.id }, ...checkPrevious({ donationsCount: 1, previous: { donationsCount: fundraiser.donationsCount } }))
+  })
+
+  test("prevents edits where previous is not a match", async () => {
+    // given a fundraiser in the db
+    const fundraiser = await insert(fundraiserTable, makeFundraiser())
+
+    await expect(() => update(fundraiserTable, { id: fundraiser.id }, ...checkPrevious({ donationsCount: 1, previous: { donationsCount: fundraiser.donationsCount - 1 } }))).rejects.toThrowError("failed conditional expression")
   })
 })

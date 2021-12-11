@@ -82,22 +82,28 @@ export const assertMatchesSchema = <T>(schema: JSONSchema<T>, data: unknown): vo
   throw error
 }
 
-export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } }, groupDefinition: string | string[] | { groupsWithAccess: string[] }): void => {
-  // eslint-disable-next-line no-nested-ternary
-  const groupsWithAccess = typeof groupDefinition === "string" ? [groupDefinition]
-    : (Array.isArray(groupDefinition) ? groupDefinition
-      : groupDefinition.groupsWithAccess)
+const normalizeGroups = (groupDefinition: string | string[] | { groupsWithAccess: string[] }): string[] => {
+  if (typeof groupDefinition === "string") return [groupDefinition]
+  if (Array.isArray(groupDefinition)) return groupDefinition
+  return groupDefinition.groupsWithAccess
+}
 
-  if (!event.auth.payload.groups.some((g) => groupsWithAccess.includes(g))) {
-    throw new createHttpError.Forbidden(`This endpoint requires you to be in one of the groups [${groupsWithAccess.join(", ")}] but you are in [${event.auth.payload.groups.join(", ")}]`)
+const overlap = (a: string[], b: string[]): boolean => a.some((v) => b.includes(v))
+
+export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } }, groupDefinition: string | string[] | { groupsWithAccess: string[] }): void => {
+  const groups = normalizeGroups(groupDefinition)
+  if (!overlap(event.auth.payload.groups, groups)) {
+    throw new createHttpError.Forbidden(`This action requires you to be in one of the groups [${groups.join(", ")}], but you are in [${event.auth.payload.groups.join(", ")}]`)
   }
 }
 
-export const assertHasGroupForProperties = <B>(event: { auth: { payload: { groups: string[] } }, body: B }, group: string, properties: (keyof B)[]): void => {
-  if (event.auth.payload.groups.includes(group)) return
-  properties.forEach((p) => {
-    if (p in event.body) throw new createHttpError.Forbidden(`Only the ${group} team can edit ${p}, but you are only in ${event.auth.payload.groups}`)
-  })
+export const assertHasGroupForProperties = <B>(event: { auth: { payload: { groups: string[] } }, body: B }, groupDefinition: string | string[] | { groupsWithAccess: string[] }, properties: (keyof B)[]): void => {
+  const groups = normalizeGroups(groupDefinition)
+  if (!overlap(event.auth.payload.groups, groups)) {
+    properties.forEach((p) => {
+      if (p in event.body) throw new createHttpError.Forbidden(`To edit ${p} you need to be in one of the groups [${groups.join(", ")}], but you are in ${event.auth.payload.groups}`)
+    })
+  }
 }
 
 export const checkPrevious = <I extends { [key: string]: NativeAttributeValue }>(item: I): [Partial<I>, string, { [key: string]: NativeAttributeValue }, { [key: string]: NativeAttributeValue }] => {
@@ -435,11 +441,11 @@ export const update = async <
     }),
     ReturnValues: "ALL_NEW",
   })).catch(handleDbError(table))
-  assertMatchesSchema<S>(table.schema, result.Attributes)
   await insertAudit({
     action: "edit",
     object: key[table.primaryKey],
     metadata: { tableName: table.entityName, data: edits as AuditLog["metadata"] },
   })
+  assertMatchesSchema<S>(table.schema, result.Attributes)
   return result.Attributes as S
 }
