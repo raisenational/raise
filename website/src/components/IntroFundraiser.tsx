@@ -551,7 +551,7 @@ const DonationFormComplete: React.FC<{ watches: DonationFormResponses, fundraise
 
   const fundraiserLink = window.location.host + window.location.pathname.replace(/\/$/, "")
   const sharingText = `I just donated to Raise, protecting ${peopleProtected} people from malaria! Raise is a movement encouraging people to adopt a positive approach towards deliberate effective giving - you can #joinraise at ${fundraiserLink} or ask me about it.`
-  const shareData = { url: fundraiserLink, text: sharingText }
+  const shareData = { text: sharingText }
 
   // TODO: add event link
   // const eventLink = fundraiser.links.find((l) => l.key === "event")
