@@ -1,7 +1,7 @@
 import { ulid } from "ulid"
 import { middyfy } from "../../../../../../../helpers/wrapper"
 import {
-  assertHasGroup, get, inTransaction, insertT, plusT,
+  assertHasGroup, get, inTransaction, insertT, plusT, updateT,
 } from "../../../../../../../helpers/db"
 import { paymentCreationSchema, ulidSchema } from "../../../../../../../helpers/schemas"
 import { fundraiserTable, donationTable, paymentTable } from "../../../../../../../helpers/tables"
@@ -60,6 +60,16 @@ export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (even
       ? plusT(fundraiserTable, { id: event.pathParameters.fundraiserId }, { totalRaised: donationAmount + matchFundingAdded }, "matchFundingRemaining = :null", { ":null": null })
       : plusT(fundraiserTable, { id: event.pathParameters.fundraiserId }, { totalRaised: donationAmount + matchFundingAdded, matchFundingRemaining: -matchFundingAdded }, "matchFundingRemaining >= :matchFundingAdded", { ":matchFundingAdded": matchFundingAdded }),
   ])
+
+  // If the donation and contribution amounts are now zero, and the donation was counted make it uncounted.
+  // This is outside the other transaction, so could fail separately. Risk here is that this fails and a user expects the whole payment creation to fail, and sets up a duplicate payment.
+  // NB: A donation could in theory still have some match funding after this, but that is unlikely - and at that point it's still not really a donation if it's just match funding nothing.
+  if (donation.donationAmount + donation.contributionAmount + donationAmount + contributionAmount === 0 && donation.donationCounted) {
+    await inTransaction([
+      updateT(donationTable, { fundraiserId, id: donationId }, { donationCounted: false }, "donationAmount = :zero AND contributionAmount = :zero AND donationCounted = :true", { ":zero": 0, ":true": true }),
+      plusT(fundraiserTable, { id: fundraiserId }, { donationsCount: -1 }),
+    ])
+  }
 
   return paymentId
 })
