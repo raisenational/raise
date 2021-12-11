@@ -25,7 +25,7 @@ test("retrives one fundraiser", async () => {
   // when we call the endpoint
   const response = await call(main)(null)
 
-  // we get back an empty array
+  // we get back the fundraiser
   expect(response).toEqual([fundraiser])
 })
 
