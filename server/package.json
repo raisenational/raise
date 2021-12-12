@@ -72,6 +72,9 @@
     "setupFilesAfterEnv": [
       "./local/test-setup-each.ts"
     ],
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
     "clearMocks": true,
     "restoreMocks": true
   }
