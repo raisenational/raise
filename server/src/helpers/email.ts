@@ -1,7 +1,6 @@
-import { SESv2Client, SendEmailCommand, SendEmailCommandInput } from "@aws-sdk/client-sesv2"
+import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2"
 import { NodeHttpHandler } from "@aws-sdk/node-http-handler"
 import env from "../env/env"
-import type { Donation, Payment } from "./schemaTypes"
 
 const raiseEmailaddress = "raisenational@gmail.com"
 
@@ -21,23 +20,15 @@ const sesClient = env.STAGE === "local"
     requestHandler,
   })
 
-export const sendEmail = async (params: SendEmailCommandInput): Promise<void> => {
-  const command = new SendEmailCommand(params)
-  const data = await sesClient.send(command)
-}
-
-export const confirmationEmail = (donation: Donation, payment: Payment): SendEmailCommandInput => {
-  const emailText = `Dear ${donation.donorName},\n\nWe've receieved your payment.\n\nThanks,\nThe Raise Team`
-  const params: SendEmailCommandInput = {
+export const sendEmail = async (subject: string, html: string, to: string): Promise<void> => {
+  await sesClient.send(new SendEmailCommand({
     Content: {
       // charset on these is 7-bit ASCII by default - can be changed on each of html, text and subject using the Charset property
       Simple: {
         Body: {
-          // Html: {
-          //   Data: "",
-          // },
-          Text: {
-            Data: emailText,
+          Html: {
+            Charset: "UTF-8",
+            Data: html,
           },
         },
         Subject: {
@@ -46,9 +37,8 @@ export const confirmationEmail = (donation: Donation, payment: Payment): SendEma
       },
     },
     Destination: {
-      ToAddresses: [donation.donorEmail],
+      ToAddresses: [to],
     },
     FromEmailAddress: raiseEmailaddress,
-  }
-  return params
+  }))
 }
