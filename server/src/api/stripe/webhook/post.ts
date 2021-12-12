@@ -9,6 +9,8 @@ import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/t
 import env from "../../../env/env"
 import { auditContext } from "../../../helpers/auditContext"
 import matchFunding from "../../../helpers/matchFunding"
+import { sendEmail } from "../../../helpers/email"
+import confirmation from "../../../helpers/email/confirmation"
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
 
@@ -124,10 +126,10 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
   // For the first of a series of recurring donations, update future payments:
   // - mark them as scheduled
   // - allocate their matchFundingAmounts
-  const payments = await query(paymentTable, { donationId })
+  const payments = await (await query(paymentTable, { donationId })).sort((a, b) => a.at - b.at)
   const donationMatchFundingAlready = payments.reduce((acc, p) => acc + (p.matchFundingAmount ?? 0), 0)
   let donationMatchFundingAdded = 0
-  const paymentTransactions = payments.filter((p) => (p.status === "pending" || p.status === "scheduled") && p.matchFundingAmount === null).sort((a, b) => a.at - b.at).map((p) => {
+  const paymentTransactions = payments.filter((p) => (p.status === "pending" || p.status === "scheduled") && p.matchFundingAmount === null).map((p) => {
     const matchFundingAmount = matchFunding({
       donationAmount: p.donationAmount,
       alreadyMatchFunded: donationMatchFundingAlready + donationMatchFundingAdded,
@@ -160,4 +162,11 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
   }
 
   // TODO: send a confirmation email if they've consented to receiving informational emails
+  // TODO: should we just always send this? We don't actually need consent for a transactional email.
+  if (donation.emailConsentInformational && payments[0].id === paymentId) {
+    // TODO: remove allowlist (only here while testing)
+    if (donation.donorEmail === "domdomegg@gmail.com" || donation.donorEmail.endsWith("@simulator.amazonses.com")) {
+      await sendEmail("We've receieved your donation", confirmation(donation, payments), donation.donorEmail)
+    }
+  }
 })
