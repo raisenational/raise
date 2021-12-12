@@ -23,7 +23,6 @@ const sesClient = env.STAGE === "local"
 export const sendEmail = async (subject: string, html: string, to: string): Promise<void> => {
   await sesClient.send(new SendEmailCommand({
     Content: {
-      // charset on these is 7-bit ASCII by default - can be changed on each of html, text and subject using the Charset property
       Simple: {
         Body: {
           Html: {
