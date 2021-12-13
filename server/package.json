@@ -9,8 +9,8 @@
     "deploy:dev": "cp src/env/dev.ts src/env/env.ts && serverless deploy --verbose",
     "teardown:dev": "serverless remove --verbose",
     "build": "npm run type-check && serverless package",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "TZ=utc jest",
+    "test:watch": "TZ=utc jest --watch",
     "type-check": "tsc",
     "lint": "eslint 'src/**/*.ts' 'serverless.ts'",
     "schemas": "node local/schemasToTS.mjs"
@@ -73,7 +73,9 @@
       "./local/test-setup-each.ts"
     ],
     "collectCoverageFrom": [
-      "src/**/*.ts"
+      "src/**/*.ts",
+      "!src/env/*.ts",
+      "src/env/env.ts"
     ],
     "clearMocks": true,
     "restoreMocks": true

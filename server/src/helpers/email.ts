@@ -31,7 +31,7 @@ export const sendEmail = async (subject: string, html: string, to: string): Prom
           },
         },
         Subject: {
-          Data: "Thank you for donating!",
+          Data: subject,
         },
       },
     },
