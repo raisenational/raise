@@ -15,10 +15,11 @@ interface Props<I> {
   primaryKey?: keyof I,
   onClick?: (item: I, event: React.MouseEvent) => void,
   emptyMessage?: string,
+  itemRenderer?: (item: I, index: number) => JSX.Element,
 }
 
 const Table = <I,>({
-  definition, items, primaryKey, onClick, emptyMessage = "There are no entries",
+  definition, items, primaryKey, onClick, emptyMessage = "There are no entries", itemRenderer,
 }: Props<I>) => {
   // Normalized properties
   const nItems = ((items === undefined || Array.isArray(items)) ? items : items.data) ?? []
@@ -41,13 +42,13 @@ const Table = <I,>({
           </tr>
         </thead>
         <tbody>
-          {nItems.map((item, rowIndex) => (
+          {nItems.map(itemRenderer || ((item, rowIndex) => (
             <tr key={nPrimaryKey ? String(item[nPrimaryKey]) : rowIndex} className={classNames("hover:bg-black hover:bg-opacity-20", { "cursor-pointer": onClick !== undefined })} onClick={onClick === undefined ? undefined : (e) => onClick(item, e)}>
               {Object.entries(definition).map(([k, v], cellIndex, arr) => (
                 <td key={k} className={classNames("p-2", { "pl-4": cellIndex === 0, "pr-4": cellIndex === arr.length - 1 }, v.className)}>{v.formatter ? v.formatter(item[k as keyof I]) : (item[k as keyof I] ?? "—")}</td>
               ))}
             </tr>
-          ))}
+          )))}
         </tbody>
       </table>
       {nItems.length === 0 && <p className="px-4 pt-2 pb-1 text-center">{emptyMessage}</p>}
