@@ -1,6 +1,7 @@
 import * as React from "react"
 import { ResponseValues } from "axios-hooks"
 import { UnpackNestedValue } from "react-hook-form"
+import classNames from "classnames"
 
 import Alert from "./Alert"
 import Table from "./Table"
@@ -38,6 +39,15 @@ const PropertyEditor = <I,>({
   // Normalized properties
   const nItem = ((item !== undefined && "loading" in item) ? item.data : item) as I
 
+  const tableDefinition = {
+    label: { label: "Property" },
+    value: { label: "Value" },
+  }
+  const tableOnClick = (i: { property: keyof I }, event: React.MouseEvent) => {
+    if (onClick) onClick(i.property, event)
+    setEditingProperty(i.property)
+  }
+
   return (
     <>
       <Modal open={editingProperty !== undefined} onClose={() => { setEditingProperty(undefined) }}>
@@ -59,26 +69,19 @@ const PropertyEditor = <I,>({
         )}
       </Modal>
       <Table
-        definition={{
-          label: { label: "Property" },
-          value: { label: "Value" },
-        }}
-        // TODO: disable cursor-pointer for non-editable properties
+        definition={tableDefinition}
         items={Object.entries(definition).map(([k, v]) => ({
           property: k as keyof I,
           label: v.label ?? k,
           value: v.formatter ? v.formatter(nItem[k as keyof I]) : (nItem[k as keyof I] ?? "—"),
         }))}
-        onClick={(i, event) => {
-          if (onClick) onClick(i.property, event)
-
-          if (definition[i.property]?.inputType === undefined) {
-            alert("This property is not editable")
-            return
-          }
-
-          setEditingProperty(i.property)
-        }}
+        itemRenderer={(i) => (
+          <tr key={String(i.property)} className={classNames("hover:bg-black hover:bg-opacity-20", { "cursor-pointer": definition[i.property]?.inputType !== undefined })} onClick={definition[i.property]?.inputType === undefined ? undefined : (e) => tableOnClick(i, e)}>
+            {Object.entries(tableDefinition).map(([k, v], cellIndex, arr) => (
+              <td key={k} className={classNames("p-2", { "pl-4": cellIndex === 0, "pr-4": cellIndex === arr.length - 1 })}>{(i[k as keyof typeof tableDefinition] ?? "—")}</td>
+            ))}
+          </tr>
+        )}
         primaryKey="property"
       />
     </>
