@@ -66,13 +66,12 @@ const defaultConfig: AxiosRequestConfig = {
 }
 
 const logoutOnTokenExpiry = (err: any) => {
-  // TODO: show a notification explaining the access token has expired
-  // (or maybe just handle this in the alert displayed about the error, prompting the user to relogin?)
-
   if (err && err.isAxiosError) {
     const axiosError = err as AxiosError
     if (axiosError.response?.status === 401 && typeof axiosError.response?.data?.message === "string" && axiosError.response.data.message.startsWith("Token expired")) {
       setAuthState()
+      // eslint-disable-next-line no-alert
+      setTimeout(() => alert("You have been logged out as the server indicated your access token has expired."), 100)
     }
   }
   return Promise.reject(err)
