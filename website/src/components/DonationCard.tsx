@@ -16,7 +16,6 @@ type Props = {
   loading?: boolean,
 }
 
-// TODO: refactor to make the logic clearer
 const DonationCard: React.FC<Props> = ({
   donorName,
   createdAt,
@@ -28,14 +27,23 @@ const DonationCard: React.FC<Props> = ({
   recurrenceFrequency,
   className,
   loading,
-}) => (
-  <div className={classNames("p-4 rounded flex flex-col shadow-raise", className)}>
-    <p className="fade-in"><span className={classNames({ skeleton: loading })}>{donorName || "Someone"} donated{donationAmount !== undefined && ` ${amountDropPenceIfZeroFormatter(donationAmount)}`}</span></p>
-    {(recurringAmount !== undefined && recurringAmount !== null && recurrenceFrequency !== undefined && recurrenceFrequency !== null) && <p className={classNames("fade-in", { skeleton: loading, "text-base opacity-80": !loading })}>giving {amountDropPenceIfZeroFormatter(recurringAmount)} {recurrenceFrequency.toLowerCase()}</p>}
-    {(giftAid || (matchFundingAmount !== undefined && matchFundingAmount > 0)) && <p className="text-base fade-in"><span className={classNames({ skeleton: loading, "opacity-80": !loading })}> ({(matchFundingAmount !== undefined && matchFundingAmount > 0) && `+${amountDropPenceIfZeroFormatter(matchFundingAmount)} matched`}{giftAid && (matchFundingAmount !== undefined && matchFundingAmount > 0) && ", "}{giftAid && donationAmount !== undefined && `+${amountDropPenceIfZeroFormatter(donationAmount * 0.25)} gift-aided`})</span></p>}
-    {comment && <p className="text-base mt-2 break-words fade-in"><span className={classNames({ skeleton: loading })}>{comment}</span></p>}
-    <p className="text-base mt-auto pt-2 text-right fade-in"><span className={classNames({ skeleton: loading, "opacity-80": !loading })}>{typeof createdAt === "string" ? createdAt : <TimeAgo date={createdAt * 1000} />}</span></p>
-  </div>
-)
+}) => {
+  const title = `${donorName || "Someone"} donated${donationAmount !== undefined ? ` ${amountDropPenceIfZeroFormatter(donationAmount)}` : ""}`
+  const isRecurring = recurringAmount !== undefined && recurringAmount !== null && recurrenceFrequency !== undefined && recurrenceFrequency !== null
+  const recurringText = isRecurring ? `giving ${amountDropPenceIfZeroFormatter(recurringAmount)} ${recurrenceFrequency.toLowerCase()}` : undefined
+  const matchFundingText = (matchFundingAmount !== undefined && matchFundingAmount > 0) ? `+${amountDropPenceIfZeroFormatter(matchFundingAmount)} matched` : undefined
+  const giftAidText = (giftAid && donationAmount !== undefined) ? `+${amountDropPenceIfZeroFormatter(donationAmount * 0.25)} gift-aided` : undefined
+  const extraAmountText = (matchFundingText || giftAidText) ? `(${[matchFundingText, giftAidText].filter((x) => x).join(", ")})` : undefined
+
+  return (
+    <div className={classNames("p-4 rounded flex flex-col shadow-raise", className)}>
+      <p className="fade-in"><span className={classNames({ skeleton: loading })}>{title}</span></p>
+      {recurringText && <p className={classNames("fade-in", { skeleton: loading, "text-base opacity-80": !loading })}>{recurringText}</p>}
+      {extraAmountText && <p className="text-base fade-in"><span className={classNames({ skeleton: loading, "opacity-80": !loading })}>{extraAmountText}</span></p>}
+      {comment && <p className="text-base mt-2 break-words fade-in"><span className={classNames({ skeleton: loading })}>{comment}</span></p>}
+      <p className="text-base mt-auto pt-2 text-right fade-in"><span className={classNames({ skeleton: loading, "opacity-80": !loading })}>{typeof createdAt === "string" ? createdAt : <TimeAgo date={createdAt * 1000} />}</span></p>
+    </div>
+  )
+}
 
 export default DonationCard
