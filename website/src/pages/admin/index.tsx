@@ -30,7 +30,6 @@ const IndexLayout = () => {
   const [auth, setAuth] = useAuthState()
   const [logoutWarning, setLogoutWarning] = React.useState<string | undefined>()
   // This logs out the user when their access token expires
-  // TODO: for security, if the user is inactive for some time (e.g. doesn't click for 10 minutes) we should log them out too
   React.useEffect(() => {
     if (typeof auth?.expiresAt !== "number") return undefined
 
