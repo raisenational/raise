@@ -11,6 +11,7 @@ import Button from "../../components/Button"
 import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
 import { amountFormatter, booleanFormatter, timestampFormatter } from "../../helpers/format"
+import DonationCard from "../../components/DonationCard"
 
 const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string }> = ({ fundraiserId, donationId }) => {
   const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
@@ -130,7 +131,32 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
         onClick={(payment) => navigate(`/admin/${fundraiserId}/${donationId}/${payment.id}`)}
       />
 
-      {/* TODO: maybe helpful to have a preview of how the user's donation will display on the site? */}
+      <SectionTitle className="mt-12">Public preview</SectionTitle>
+      {donation.loading && (
+        <DonationCard
+          loading
+          createdAt="1 hour ago"
+          className="bg-raise-red"
+          donorName={"a".repeat(12)}
+          matchFundingAmount={1234}
+          comment={"a".repeat(24)}
+        />
+      )}
+      {donation.data?.overallPublic === false && <p>Donation is not publicly viewable</p>}
+      {donation.data?.overallPublic && (
+        <DonationCard
+          createdAt={donation.data.createdAt}
+          className="bg-raise-red"
+          donorName={donation.data.namePublic ? donation.data.donorName : undefined}
+          donationAmount={donation.data.donationAmountPublic ? donation.data.donationAmount : undefined}
+          recurringAmount={donation.data.donationAmountPublic ? donation.data.recurringAmount : undefined}
+          matchFundingAmount={donation.data.donationAmountPublic ? donation.data.matchFundingAmount : undefined}
+          recurrenceFrequency={donation.data.donationAmountPublic ? donation.data.recurrenceFrequency : undefined}
+          giftAid={donation.data.donationAmountPublic ? donation.data.giftAid : undefined}
+          comment={donation.data.comment}
+        />
+      )}
+
     </Section>
   )
 }
