@@ -63,13 +63,13 @@ const IndexPage = () => (
         <Panel
           image={moneyBox}
           title="Donate"
-          text="We invite students to make a personally significant donation to charity. We recommend a donation of £75 to the Against Malaria Foundation, but welcome any amount that is significant to you."
+          text="We invite students to make a personally significant donation to charity. We recommend a donation of £100 to the Against Malaria Foundation, but welcome any amount that is significant to you."
           className="bg-raise-purple"
         />
         <Panel
           image={doubled}
           title="Doubled"
-          text="Thanks to our matched funding, 200% of the money you donate goes directly to AMF. That means that your £75, when doubled, can help protect over 170 people from malaria!"
+          text="Thanks to our matched funding, 200% of the money you donate goes directly to AMF. That means that your £100, when doubled, can help protect over 230 people from malaria!"
           className="bg-raise-red"
         />
         <Panel
@@ -95,17 +95,17 @@ const IndexPage = () => (
           <p><b>Sponsorship:</b> The support of our generous partners is invaluable for helping us to put on our summer celebration at the end of each year. If you know anyone who may be interested in supporting Raise and allowing us to grow even more, please do <a href="./#contact">get in touch</a>.</p>
         </FAQ>
 
-        <FAQ title="£75 is a lot of money - what if I can't donate that?">
-          <p>We recognise that £75 is a large amount of money for many students, and whilst we have thought carefully about recommending this amount (see next question), it is important to us that any student feels able to join us in celebrating through giving.</p>
-          <p>As such, whilst we recommend £75, you are welcome to join Raise by making a donation of a size which is significant to you and allows you to put charity at the heart of your end-of-year celebrations. It is central to our philosophy (see <a href="./#our-philosophy">here</a> for more) that students actively engage with their decision to celebrate through giving, but we recognise that the donation that enables this will not be the same for everyone.</p>
-          <p>In addition, you have the option of donating in weekly installments, as some have found this more manageable. A weekly donation of £5 from the donations launch up until our summer celebration adds up to about £75, which will still be doubled through our matched funding.</p>
+        <FAQ title="£100 is a lot of money - what if I can't donate that?">
+          <p>We recognise that £100 is a large amount of money for many students, and whilst we have thought carefully about recommending this amount (see next question), it is important to us that any student feels able to join us in celebrating through giving.</p>
+          <p>As such, whilst we recommend £100, you are welcome to join Raise by making a donation of a size which is significant to you and allows you to put charity at the heart of your end-of-year celebrations. It is central to our philosophy (see <a href="./#our-philosophy">here</a> for more) that students actively engage with their decision to celebrate through giving, but we recognise that the donation that enables this will not be the same for everyone.</p>
+          <p>In addition, you have the option of donating in weekly installments, as some have found this more manageable. A weekly donation of £5 from the donations launch up until our summer celebration adds up to about £100, which will still be doubled through our matched funding.</p>
           <p>Note: We have ensured that our donations page allows you to hide your name and/or donation amount, should you choose.</p>
         </FAQ>
 
-        <FAQ title="Why do you recommend £75?">
-          <p>We recognise that £75 is a large amount of money, and substantially more than most students would routinely donate to charity (indeed, that is part of the point!). There are a couple of key reasons we recommend this figure:</p>
-          <p><b>Encouraging considered giving:</b> Raise is all about changing the way students think about charity, and we can only achieve this if students engage consciously with the act of donating. By inviting students to give an amount that’s personally significant to them, we hope that all donors will stop and think meaningfully about their decision to donate, and will in turn take this positive, deliberate approach towards giving forward into their future lives. This is why we recommend £75, or a donation of any size significant to the donor.</p>
-          <p><b>Impact:</b> Crucially, the recommended amount, coupled with matched funding, allows us to have an exceptionally large impact for a student charity initiative; your £75 donation, when doubled, can help protect over 170 people from malaria.</p>
+        <FAQ title="Why do you recommend £100?">
+          <p>We recognise that £100 is a large amount of money, and substantially more than most students would routinely donate to charity (indeed, that is part of the point!). There are a couple of key reasons we recommend this figure:</p>
+          <p><b>Encouraging considered giving:</b> Raise is all about changing the way students think about charity, and we can only achieve this if students engage consciously with the act of donating. By inviting students to give an amount that’s personally significant to them, we hope that all donors will stop and think meaningfully about their decision to donate, and will in turn take this positive, deliberate approach towards giving forward into their future lives. This is why we recommend £100, or a donation of any size significant to the donor.</p>
+          <p><b>Impact:</b> Crucially, the recommended amount, coupled with matched funding, allows us to have an exceptionally large impact for a student charity initiative; your £100 donation, when doubled, can help protect over 230 people from malaria.</p>
         </FAQ>
 
         <FAQ title="Can I donate to a different charity?">
@@ -116,7 +116,7 @@ const IndexPage = () => (
         <FAQ title="Why do you recommend donating to AMF?">
           <p>At Raise, we think very carefully about which charity to recommend. When students are making such significant donations, we want to make sure the money is doing as much good as it possibly can. To make our decision, we have taken the advice of independent charity evaluators <a href="https://www.givewell.org/charities/top-charities">GiveWell</a> and <a href="https://www.givingwhatwecan.org">Giving What We Can</a>, which both rank AMF as one of the most effective charities in the world.</p>
           <p>Tragically, malaria causes 400,000 preventable deaths every year, disproportionately affecting young children and pregnant women, and has a knock-on effect on the local economy. AMF works with local partners to provide life-saving bed-nets which protect people as they sleep. To find out more about their work, see <a href="https://www.againstmalaria.com/">here</a>.</p>
-          <p>Because AMF's intervention is so effective at preventing malaria, each donation can have a huge impact. For example, a donation of £75, doubled through matched funding, can help protect 170 people. In fact, the money we raised nationally in 2020 was enough to protect over 120,000 people!</p>
+          <p>Because AMF's intervention is so effective at preventing malaria, each donation can have a huge impact. For example, a donation of £100, doubled through matched funding, can help protect 230 people. In fact, the money we raised nationally in 2020 was enough to protect over 120,000 people!</p>
         </FAQ>
 
         <FAQ title="What makes Raise different to a charity ball?">
