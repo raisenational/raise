@@ -11,8 +11,7 @@ exports[`renders with a custom class name 1`] = `
       <span
         class=""
       >
-        Someone
-         donated
+        Someone donated
       </span>
     </p>
     <p
@@ -44,8 +43,7 @@ exports[`renders with a date 1`] = `
       <span
         class=""
       >
-        Someone
-         donated
+        Someone donated
       </span>
     </p>
     <p
@@ -77,8 +75,7 @@ exports[`renders with a date string 1`] = `
       <span
         class=""
       >
-        Someone
-         donated
+        Someone donated
       </span>
     </p>
     <p
@@ -105,18 +102,13 @@ exports[`renders with a loading state 1`] = `
       <span
         class=""
       >
-        Namey McNameface
-         donated
-         £45
+        Namey McNameface donated £45
       </span>
     </p>
     <p
       class="fade-in text-base opacity-80"
     >
-      giving 
-      £15
-       
-      weekly
+      giving £15 weekly
     </p>
     <p
       class="text-base fade-in"
@@ -124,11 +116,7 @@ exports[`renders with a loading state 1`] = `
       <span
         class="opacity-80"
       >
-         (
-        +£45 matched
-        , 
-        +£11.25 gift-aided
-        )
+        (+£45 matched, +£11.25 gift-aided)
       </span>
     </p>
     <p
@@ -160,8 +148,7 @@ exports[`renders with a name and date 1`] = `
       <span
         class=""
       >
-        Namey McNameface
-         donated
+        Namey McNameface donated
       </span>
     </p>
     <p
@@ -193,8 +180,7 @@ exports[`renders with a name and date 2`] = `
       <span
         class=""
       >
-        Namey McNameface
-         donated
+        Namey McNameface donated
       </span>
     </p>
     <p
@@ -226,18 +212,13 @@ exports[`renders with a recurring amount and a date 1`] = `
       <span
         class=""
       >
-        Someone
-         donated
-         £45
+        Someone donated £45
       </span>
     </p>
     <p
       class="fade-in text-base opacity-80"
     >
-      giving 
-      £15
-       
-      weekly
+      giving £15 weekly
     </p>
     <p
       class="text-base fade-in"
@@ -245,11 +226,7 @@ exports[`renders with a recurring amount and a date 1`] = `
       <span
         class="opacity-80"
       >
-         (
-        +£45 matched
-        , 
-        +£11.25 gift-aided
-        )
+        (+£45 matched, +£11.25 gift-aided)
       </span>
     </p>
     <p
@@ -281,9 +258,7 @@ exports[`renders with amounts (match funding and gift-aid) and a date 1`] = `
       <span
         class=""
       >
-        Someone
-         donated
-         £12.34
+        Someone donated £12.34
       </span>
     </p>
     <p
@@ -292,11 +267,7 @@ exports[`renders with amounts (match funding and gift-aid) and a date 1`] = `
       <span
         class="opacity-80"
       >
-         (
-        +£12.34 matched
-        , 
-        +£3.08 gift-aided
-        )
+        (+£12.34 matched, +£3.08 gift-aided)
       </span>
     </p>
     <p
@@ -328,9 +299,7 @@ exports[`renders with amounts (match funding and no gift-aid) and a date 1`] = `
       <span
         class=""
       >
-        Someone
-         donated
-         £12.34
+        Someone donated £12.34
       </span>
     </p>
     <p
@@ -339,9 +308,7 @@ exports[`renders with amounts (match funding and no gift-aid) and a date 1`] = `
       <span
         class="opacity-80"
       >
-         (
-        +£12.34 matched
-        )
+        (+£12.34 matched)
       </span>
     </p>
     <p
@@ -373,9 +340,7 @@ exports[`renders with amounts (no match funding and gift-aid) and a date 1`] = `
       <span
         class=""
       >
-        Someone
-         donated
-         £12.34
+        Someone donated £12.34
       </span>
     </p>
     <p
@@ -384,9 +349,7 @@ exports[`renders with amounts (no match funding and gift-aid) and a date 1`] = `
       <span
         class="opacity-80"
       >
-         (
-        +£3.08 gift-aided
-        )
+        (+£3.08 gift-aided)
       </span>
     </p>
     <p
@@ -418,9 +381,7 @@ exports[`renders with amounts (no match funding and no gift-aid) and a date 1`] 
       <span
         class=""
       >
-        Someone
-         donated
-         £12.34
+        Someone donated £12.34
       </span>
     </p>
     <p
@@ -452,9 +413,7 @@ exports[`renders with amounts (whole numbers) and a date 1`] = `
       <span
         class=""
       >
-        Someone
-         donated
-         £200
+        Someone donated £200
       </span>
     </p>
     <p
@@ -463,11 +422,7 @@ exports[`renders with amounts (whole numbers) and a date 1`] = `
       <span
         class="opacity-80"
       >
-         (
-        +£200 matched
-        , 
-        +£50 gift-aided
-        )
+        (+£200 matched, +£50 gift-aided)
       </span>
     </p>
     <p
