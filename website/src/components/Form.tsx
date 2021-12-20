@@ -11,7 +11,7 @@ import Alert from "./Alert"
 import Button from "./Button"
 import { SectionTitle } from "./Section"
 
-// TODO: fix the typing in this file
+// TODO: Replace this mess (the whole file) with more maintainable and type-safe code
 
 export type InputType<V> = "hidden" | (
   | V extends string ?
@@ -33,13 +33,13 @@ export type InputType<V> = "hidden" | (
 
 const ifNaN = <T,>(n: number, otherwise: T): number | T => (Number.isNaN(n) ? otherwise : n)
 
-export const toInput = <T,>(raw: T, inputType: InputType<T>): string | boolean => {
+export const toInput = <T,>(raw: T, inputType: InputType<T>): string | string[] | boolean => {
   if (raw !== undefined && inputType === "hidden") return JSON.stringify(raw)
   if (raw === undefined || raw === null) return ""
   if (inputType === "amount") return (raw as unknown as number / 100).toFixed(2)
   if (inputType === "date" || inputType === "datetime-local") return new Date((raw as unknown as number * 1000) - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 19)
   if (inputType === "checkbox") return raw as unknown as boolean
-  if (inputType === "multiselect") return (raw as unknown as string[]).join(",") as unknown as boolean
+  if (inputType === "multiselect") return raw as unknown as string[]
   return String(raw)
 }
 
@@ -51,7 +51,7 @@ export const fromInput = <T,>(raw: string | boolean, inputType: InputType<T>, se
   if (inputType === "date" || inputType === "datetime-local") return ifNaN((new Date(raw).getTime()) / 1000, null) as unknown as T
   if (inputType === "amount") return ifNaN(Math.round(parseFloat(raw) * 100), null) as unknown as T
   if (inputType === "select" && selectOptions) return (selectOptions.includes(raw) ? raw : null) as unknown as T // NB: selectOptions !== undefined if typeof raw === "select"
-  if (inputType === "multiselect" && selectOptions) return (raw.split(",").filter((v) => selectOptions.includes(v))) as unknown as T // NB: selectOptions !== undefined if typeof raw === "multiselect"
+  if (inputType === "multiselect" && selectOptions) return raw as unknown as T // NB: selectOptions !== undefined if typeof raw === "multiselect"
 
   return raw as unknown as T
 }
@@ -71,7 +71,7 @@ const mapToInput = <T,>(item: UnpackNestedValue<T>, definition: FormProps<T>["de
 const mapFromInput = <T,>(item: UnpackNestedValue<T>, definition: FormProps<T>["definition"]): UnpackNestedValue<T> => objMap(item, (k, v) => fromInput(v, definition[k].inputType, definition[k].selectOptions))
 
 export type LabelledInputProps = React.InputHTMLAttributes<HTMLInputElement> & { id: string, label: string, error?: string } & ({
-  type: "select" | "multiselect", // | "radio",
+  type: "select" | "multiselect",
   options: string[] | Record<string, string | null>,
   prefix?: never,
   suffix?: never,
@@ -87,22 +87,21 @@ export type LabelledInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   suffix?: string,
 })
 
-// TODO: properly support multiselect inputs. Maybe https://github.com/tailwindlabs/headlessui/pull/648?
-// TODO: support radio inputs
 export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputProps>(({
   id, label, error, className, type, options, prefix, suffix, ...rest
 }, ref) => {
   if (type === "hidden") return <input id={id} ref={ref} type={type} className={className} {...rest} />
 
-  if (type === "select") {
+  if (type === "select" || type === "multiselect") {
     const formContext = useFormContext()
 
     if (!formContext) {
-      const [value, setValue] = React.useState<string | undefined>(rest.value as string | undefined)
+      const [value, setValue] = React.useState<string | string[] | undefined>(rest.value as string | string[] | undefined)
       return (
         <div className={className}>
           <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1")}>{label}</label>
-          <Select value={value} onChange={(v) => { setValue(v); if (rest.onChange) rest.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>) }} error={error} options={options!} />
+          {/* @ts-ignore */}
+          <Select type={type} value={value} onChange={(v) => { setValue(v); if (rest.onChange) rest.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>) }} error={error} options={options!} />
           {error && <span className="text-raise-red">{error}</span>}
         </div>
       )
@@ -115,7 +114,8 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
         render={({ field }) => (
           <div className={className}>
             <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1")}>{label}</label>
-            <Select value={field.value} onChange={(v) => field.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>)} error={error} options={options!} />
+            {/* @ts-ignore */}
+            <Select type={type} value={field.value} onChange={(v) => field.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>)} error={error} options={options!} />
             {error && <span className="text-raise-red">{error}</span>}
           </div>
         )}
@@ -165,47 +165,73 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
   )
 })
 
-const Select: React.FC<{ value?: string, onChange: (s: string) => void, options: string[] | Record<string, string | null>, error?: string }> = ({
-  value, onChange, options, error,
-}) => (
-  <Listbox value={value} onChange={onChange}>
-    <div className="relative">
-      <Listbox.Button className={classNames("relative text-left w-full py-2 px-3 mb-1 appearance-none block rounded border cursor-text transition-all text-gray-700 outline-none", {
-        "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
-        "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": error,
-      })}
-      >
-        <span className={classNames("block truncate", { "text-gray-400": !value })}>{(value && (Array.isArray(options) ? value : options[value])) ?? "(unspecified)"}</span>
-        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-          <ChevronDownIcon
-            className="w-5 h-5 text-gray-400"
-            aria-hidden="true"
-          />
-        </span>
-      </Listbox.Button>
-      <Listbox.Options className="absolute z-10 w-full py-1 overflow-auto text-base bg-white rounded shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-        {(Array.isArray(options) ? options.map((o) => [o, o]) : Object.entries(options)).map(([k, v]) => (
-          <Listbox.Option
-            key={k}
-            className={({ selected, active }) => classNames("select-none relative py-2 pl-10 pr-4", { "bg-gray-200": active, "font-black": selected })}
-            value={k}
-          >
-            {({ selected }) => (
-              <>
-                <span className="block truncate">{v}</span>
-                {selected && (
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-3">
-                    <CheckIcon className="w-5 h-5" aria-hidden="true" />
-                  </span>
-                )}
-              </>
-            )}
-          </Listbox.Option>
-        ))}
-      </Listbox.Options>
-    </div>
-  </Listbox>
-)
+const normalizeArray = <T,>(value: T | T[] | undefined) => {
+  if (Array.isArray(value)) return value
+  if (value !== undefined) return [value]
+  return []
+}
+
+const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) => void } | { type: "multiselect", value?: string[], onChange: (s: string[]) => void }) & { options: string[] | Record<string, string | null>, error?: string }> = ({
+  type, value, onChange, options, error,
+}) => {
+  const [selected, setSelected] = React.useState<string[]>(normalizeArray(value))
+
+  return (
+    <Listbox
+      value={value}
+      onChange={(k: string) => {
+        if (type === "select") {
+          setSelected([k])
+          onChange(k as any)
+          return
+        }
+
+        const newSelected: string[] = selected.includes(k)
+          ? selected.filter((s) => s !== k)
+          : [...selected, k]
+
+        setSelected(newSelected)
+        onChange(newSelected as any)
+      }}
+    >
+      <div className="relative">
+        <Listbox.Button className={classNames("relative text-left w-full py-2 px-3 mb-1 appearance-none block rounded border cursor-text transition-all text-gray-700 outline-none", {
+          "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
+          "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": error,
+        })}
+        >
+          <span className={classNames("block truncate", { "text-gray-400": selected.length === 0 })}>{(selected.length > 0 && (Array.isArray(options) ? selected.join(", ") : selected.map((v) => options[v]).join(", "))) || "(none selected)"}</span>
+          <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+            <ChevronDownIcon
+              className="w-5 h-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </span>
+        </Listbox.Button>
+        <Listbox.Options className="absolute z-10 w-full py-1 overflow-auto text-base bg-white rounded shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          {(Array.isArray(options) ? options.map((o) => [o, o]) : Object.entries(options)).map(([k, v]) => (
+            <Listbox.Option
+              key={k}
+              className={({ active }) => classNames("select-none relative py-2 pl-10 pr-4", { "bg-gray-200": active, "font-black": selected.includes(k) })}
+              value={k}
+            >
+              {() => (
+                <>
+                  <span className="block truncate">{v}</span>
+                  {selected.includes(k) && (
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                      <CheckIcon className="w-5 h-5" aria-hidden="true" />
+                    </span>
+                  )}
+                </>
+              )}
+            </Listbox.Option>
+          ))}
+        </Listbox.Options>
+      </div>
+    </Listbox>
+  )
+}
 
 type PropertyDefinition<V> = {
   label?: string,
