@@ -161,11 +161,9 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     ])
   }
 
-  // TODO: send a confirmation email if they've consented to receiving informational emails
-  // TODO: should we just always send this? We don't actually need consent for a transactional email.
   if (donation.emailConsentInformational && payments[0].id === paymentId) {
     // TODO: remove allowlist (only here while testing)
-    if (donation.donorEmail === "domdomegg@gmail.com" || donation.donorEmail.endsWith("@simulator.amazonses.com")) {
+    if (donation.donorEmail.endsWith("@simulator.amazonses.com")) {
       await sendEmail("We've receieved your donation", confirmation(donation, payments), donation.donorEmail)
     }
   }
