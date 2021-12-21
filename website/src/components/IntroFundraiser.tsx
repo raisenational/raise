@@ -20,6 +20,7 @@ import Alert from "./Alert"
 import { parseMoney } from "../helpers/parse"
 import env from "../env/env"
 import matchFunding from "../helpers/matchFunding"
+import { gbpToPeopleProtected } from "../helpers/conversion"
 
 interface Props {
   title: string,
@@ -144,6 +145,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
   const watches = useWatch({ control: formMethods.control }) as DonationFormResponses
   const [page, setPage] = React.useState(0)
   const [payButton, setPayButton] = React.useState(<Button variant="blue" className="mt-4" disabled>Pay now</Button>)
+  const [piResponse, setPiResponse] = React.useState<PublicPaymentIntentResponse>()
 
   return (
     <FormProvider {...formMethods}>
@@ -152,8 +154,8 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
         {page === 0 && <DonationFormAmounts formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 1 && <DonationFormDetails formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 2 && <DonationFormMessage formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-        {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} onPaymentSuccess={() => setPage(page + 1)} />}
-        {page === 4 && <DonationFormComplete fundraiser={fundraiser} watches={watches} />}
+        {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} setPiResponse={setPiResponse} onPaymentSuccess={() => setPage(page + 1)} />}
+        {page === 4 && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse!} />}
       </div>
       <div className="float-right">
         {page !== 0 && page !== 4 && <Button variant="gray" onClick={() => setPage(page - 1)}>Back</Button>}
@@ -252,12 +254,11 @@ const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormRes
   </>
 )
 
-// TODO: it'd be good to better explain why we need these details if the user hasn't entered them
 const DonationFormDetails: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({ formMethods: { register, formState: { errors } }, watches }) => (
   <><h3 className="text-2xl">Your Details</h3>
     <p>Let's get to know you a bit better!{watches.giftAid && " (We need your address for Gift Aid)"}</p>
     <div className="grid md:grid-cols-1 md:gap-2 mt-4">
-      <LabelledInput id="donorName" label="Name" type="text" autoComplete="name" error={errors.donorName?.message} {...register("donorName", { validate: (s) => (s ? true : "Please enter your name") })} />
+      <LabelledInput id="donorName" label="Name" type="text" autoComplete="name" error={errors.donorName?.message} {...register("donorName", { validate: (s) => (s ? true : "We need your name to identify your donation if you contact us") })} />
       <div>
         <LabelledInput
           id="donorEmail"
@@ -267,7 +268,7 @@ const DonationFormDetails: React.FC<{ formMethods: UseFormReturn<DonationFormRes
           error={errors.donorEmail?.message}
           {...register("donorEmail", {
             validate: (s) => {
-              if (!s) return "Please enter your email"
+              if (!s) return "We need your email to contact you in there are any problems with your donation"
               // Regex from https://html.spec.whatwg.org/multipage/forms.html#e-mail-state-(type=email)
               if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(s)) return "Please enter a valid email"
               return true
@@ -277,11 +278,11 @@ const DonationFormDetails: React.FC<{ formMethods: UseFormReturn<DonationFormRes
         <LabelledInput id="emailConsentInformational" label="Tell me exactly where my donation goes (recommended)" type="checkbox" {...register("emailConsentInformational")} />
         <LabelledInput id="emailConsentMarketing" label="Send me updates about Raise (recommended)" className="-mt-2" type="checkbox" {...register("emailConsentMarketing")} />
       </div>
-      <LabelledInput id="addressLine1" label={`Address line 1 (${watches.giftAid ? "for gift-aid" : "optional"})`} type="text" autoComplete="address-line1" error={errors.addressLine1?.message} {...register("addressLine1", { validate: (s) => (!watches.giftAid || s ? true : "Please enter the first line of your address") })} />
+      <LabelledInput id="addressLine1" label={`Address line 1 (${watches.giftAid ? "for gift-aid" : "optional"})`} type="text" autoComplete="address-line1" error={errors.addressLine1?.message} {...register("addressLine1", { validate: (s) => (!watches.giftAid || s ? true : "We need your address for gift-aid") })} />
       <LabelledInput id="addressLine2" label="Address line 2 (optional)" type="text" autoComplete="address-line2" {...register("addressLine2")} />
       <div className="grid md:grid-cols-2 md:gap-2">
         <LabelledInput id="addressLine3" label="Address line 3 (optional)" type="text" autoComplete="address-line3" {...register("addressLine3")} />
-        <LabelledInput id="addressPostcode" label={`Address postcode (${watches.giftAid ? "for gift-aid" : "optional"})`} type="text" autoComplete="postal-code" error={errors.addressPostcode?.message} {...register("addressPostcode", { validate: (s) => (!watches.giftAid || s ? true : "Please enter your postcode") })} />
+        <LabelledInput id="addressPostcode" label={`Address postcode (${watches.giftAid ? "for gift-aid" : "optional"})`} type="text" autoComplete="postal-code" error={errors.addressPostcode?.message} {...register("addressPostcode", { validate: (s) => (!watches.giftAid || s ? true : "We need your address for gift-aid") })} />
       </div>
     </div>
   </>
@@ -327,8 +328,8 @@ const DonationFormMessage: React.FC<{ formMethods: UseFormReturn<DonationFormRes
   </>
 )
 
-const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, setPayButton: (e: JSX.Element) => void, onPaymentSuccess: () => void }> = ({
-  formMethods, watches, fundraiser, setPayButton, onPaymentSuccess,
+const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, setPayButton: (e: JSX.Element) => void, setPiResponse: (piResponse: PublicPaymentIntentResponse) => void, onPaymentSuccess: () => void }> = ({
+  formMethods, watches, fundraiser, setPayButton, setPiResponse, onPaymentSuccess,
 }) => {
   const [piResponse, fetchPiResponse] = useAxios<PublicPaymentIntentResponse>({
     url: `/public/fundraisers/${fundraiser.id}/donation`,
@@ -355,7 +356,7 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
       donationAmountPublic: watches.donationAmountPublic,
       comment: watches.comment,
     }
-    fetchPiResponse({ data })
+    fetchPiResponse({ data }).then((r) => setPiResponse(r.data))
   }, [watches.donationAmount, watches.recurrenceFrequency, watches.contributionAmount, watches.giftAid, watches.donorEmail, watches.emailConsentInformational, watches.emailConsentMarketing, watches.addressLine1, watches.addressLine2, watches.addressLine3, watches.addressPostcode, watches.overallPublic, watches.namePublic, watches.donationAmountPublic, watches.comment])
 
   if (piResponse.error) {
@@ -545,9 +546,10 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
   )
 }
 
-const DonationFormComplete: React.FC<{ watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({ watches, fundraiser }) => {
-  // TODO: calculate the number of people protected (need to know their donation amount (from payment response) and multiply by the £ to people scaling factor. NB: may need to handle usd in future too, so worth checking the currency)
-  const peopleProtected = 100
+const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, piResponse: PublicPaymentIntentResponse }> = ({
+  formMethods, watches, fundraiser, piResponse,
+}) => {
+  const peopleProtected = gbpToPeopleProtected(piResponse.totalDonationAmount)
 
   const fundraiserLink = window.location.host + window.location.pathname.replace(/\/$/, "")
   const sharingText = `I just donated to Raise, protecting ${peopleProtected} people from malaria! Raise is a movement encouraging people to adopt a positive approach towards deliberate effective giving - you can #joinraise at ${fundraiserLink} or ask me about it.`
