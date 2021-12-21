@@ -343,6 +343,7 @@ export const publicPaymentIntentResponse: JSONSchema<S.PublicPaymentIntentRespon
   properties: {
     stripeClientSecret: { type: "string" },
     amount: { type: "integer", exclusiveMinimum: 0 },
+    totalDonationAmount: { type: "integer", minimum: 0 },
     futurePayments: {
       type: "array",
       items: {
@@ -356,7 +357,7 @@ export const publicPaymentIntentResponse: JSONSchema<S.PublicPaymentIntentRespon
       },
     },
   },
-  required: ["stripeClientSecret", "amount", "futurePayments"],
+  required: ["stripeClientSecret", "amount", "totalDonationAmount", "futurePayments"],
   additionalProperties: false,
 }
 
