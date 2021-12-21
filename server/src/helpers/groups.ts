@@ -10,6 +10,7 @@ export const CAMBRIDGE = "Cambridge"
 const USER_MAP: Record<string, string[]> = {
   "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [NATIONAL], // Adam
   "7b023b5154a262453b5c3f1157a866a8f3be6f63": [DEMO], // Malena
+  "48a578c28e6c22a3075773c60a601c8971551518": [NATIONAL] // Valentin
 }
 
 export const getGroups = (email: string): string[] | undefined => USER_MAP[createHash("sha1").update(email).digest("hex")]
