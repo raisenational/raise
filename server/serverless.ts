@@ -11,9 +11,9 @@ import { Table, tables } from "./src/helpers/tables"
 
 const allowedMethods = ["get", "post", "patch", "put", "delete"]
 
-const envCase = (s: string): string => s.replace(/[/_\- ]+/g, () => "_").toUpperCase()
-const camelCase = (s: string): string => s.replace(/[/_\- ]+([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
-const pascalCase = (s: string): string => s.replace(/(^|[/_\- ]+)([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
+const envCase = (s: string): string => s.replace(/[/_\-\\ ]+/g, () => "_").toUpperCase()
+const camelCase = (s: string): string => s.replace(/[/_\-\\ ]+([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
+const pascalCase = (s: string): string => s.replace(/(^|[/_\-\\ ]+)([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 
 const createResources = (definitions: Record<string, Table<any, any, any>>): NonNullable<NonNullable<AWS["resources"]>["Resources"]> => Object.values(definitions).reduce<NonNullable<NonNullable<AWS["resources"]>["Resources"]>>((acc, table) => {
   const resourceKey = `${pascalCase(table.entityName)}Table`
@@ -76,7 +76,7 @@ const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): 
           {
             httpApi: {
               method,
-              path: path.slice(basePath.length),
+              path: path.slice(basePath.length).replace(/\\+/g, "/"),
             },
           },
         ],
