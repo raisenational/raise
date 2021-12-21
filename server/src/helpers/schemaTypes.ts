@@ -347,6 +347,7 @@ export interface PublicFundraiser {
 export interface PublicPaymentIntentResponse {
   stripeClientSecret: string;
   amount: number;
+  totalDonationAmount: number;
   futurePayments: {
     amount: number;
     at: number;

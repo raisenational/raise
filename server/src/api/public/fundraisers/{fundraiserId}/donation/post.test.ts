@@ -27,6 +27,7 @@ test("can create a one-off donation", async () => {
     amount: donationRequest.donationAmount + donationRequest.contributionAmount,
     futurePayments: [],
     stripeClientSecret: "pi_123456_secret_abcdef",
+    totalDonationAmount: donationRequest.donationAmount,
   })
 
   const donations = await scan(donationTable)
@@ -74,6 +75,7 @@ test("can create a weekly donation", async () => {
       at: nextNextWeek,
     }],
     stripeClientSecret: "pi_123456_secret_abcdef",
+    totalDonationAmount: donationRequest.donationAmount * 3,
   })
 
   const donations = await scan(donationTable)

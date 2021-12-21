@@ -43,11 +43,9 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
   }
 
   // Validate donationAmount is greater than minimum, accounting for recurring donations
-  if (fundraiser.minimumDonationAmount !== null) {
-    const totalDonationAmount = paymentSchedule.now.donationAmount + paymentSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
-    if (totalDonationAmount < fundraiser.minimumDonationAmount) {
-      throw new createHttpError.BadRequest(`Donation amount must be greater than £${(fundraiser.minimumDonationAmount / 100).toFixed(2)}`)
-    }
+  const totalDonationAmount = paymentSchedule.now.donationAmount + paymentSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
+  if (fundraiser.minimumDonationAmount !== null && totalDonationAmount < fundraiser.minimumDonationAmount) {
+    throw new createHttpError.BadRequest(`Donation amount must be greater than £${(fundraiser.minimumDonationAmount / 100).toFixed(2)}`)
   }
 
   const donationId = ulid()
@@ -136,6 +134,7 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     stripeClientSecret,
     amount: paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount,
     futurePayments: paymentSchedule.future.map((p) => ({ at: p.at, amount: p.donationAmount + p.contributionAmount })),
+    totalDonationAmount,
   }
 })
 
