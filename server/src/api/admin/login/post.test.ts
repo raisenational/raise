@@ -3,6 +3,7 @@ import env from "../../../env/env"
 import { main } from "./post"
 import { main as getFundraisers } from "../fundraisers/get"
 import * as db from "../../../helpers/db"
+import { getGroups } from "../../../helpers/groups"
 
 const googleTokenPayload = {
   iss: "accounts.google.com", // verified by the real library
@@ -23,12 +24,16 @@ jest.mock("google-auth-library", () => ({
   })),
 }))
 
+jest.mock("../../../helpers/groups", () => ({
+  getGroups: jest.fn().mockImplementation((email) => (email === "test@joinraise.org" ? [] : undefined)),
+}))
+
 test("get working access token for valid Google token", async () => {
   jest.spyOn(db, "insertAudit")
 
   getPayload.mockReturnValue(googleTokenPayload)
 
-  const response = await call(main)({
+  const response = await call(main, { auth: false })({
     idToken: "idTokenValue",
     accessToken: "accessTokenValue",
   })
@@ -47,13 +52,14 @@ test("get working access token for valid Google token", async () => {
 })
 
 test.each([
-  ["missing payload", undefined, "idToken: missing payload"],
-  ["missing email", { ...googleTokenPayload, email: undefined }, "idToken: missing email"],
-  ["with unverified email", { ...googleTokenPayload, email_verified: false }, "idToken: email not verified"],
-])("rejects Google token %s", async (description, token, errMessage) => {
+  ["missing payload", undefined, "idToken: missing payload", 401],
+  ["missing email", { ...googleTokenPayload, email: undefined }, "idToken: missing email", 401],
+  ["with unverified email", { ...googleTokenPayload, email_verified: false }, "idToken: email not verified", 401],
+  ["with non-allowlisted email", { ...googleTokenPayload, email: "bad@joinraise.org" }, "not allowlisted", 403],
+])("rejects Google token %s", async (description, token, errMessage, status) => {
   getPayload.mockReturnValue(token)
 
-  const response = await call(main, { rawResponse: true })({
+  const response = await call(main, { rawResponse: true, auth: false })({
     idToken: "idTokenValue",
     accessToken: "accessTokenValue",
   })
@@ -64,14 +70,14 @@ test.each([
     audience: env.GOOGLE_CLIENT_ID,
   })
 
-  expect(response.statusCode).toBe(401)
+  expect(response.statusCode).toBe(status)
   expect(response.body).toContain(errMessage)
 })
 
 test("rejects invalid Google token", async () => {
   verifyIdToken.mockRejectedValueOnce("Invalid token for some reason!")
 
-  const response = await call(main, { rawResponse: true })({
+  const response = await call(main, { rawResponse: true, auth: false })({
     idToken: "idTokenValue",
     accessToken: "accessTokenValue",
   })

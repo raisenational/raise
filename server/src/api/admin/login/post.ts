@@ -6,7 +6,7 @@ import { accessTokenSchema, idAndAccessTokenSchema } from "../../../helpers/sche
 import { insertAudit } from "../../../helpers/db"
 import { AuthTokenPayload } from "../../../helpers/types"
 import env from "../../../env/env"
-import { NATIONAL } from "../../../helpers/groups"
+import { getGroups } from "../../../helpers/groups"
 
 // Exchanges a Google id and access token for a Raise access token
 export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, async (event) => {
@@ -20,7 +20,6 @@ export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, as
   if (!tokenPayload.email) throw new createHttpError.Unauthorized("idToken: missing email")
   if (!tokenPayload.email_verified) throw new createHttpError.Unauthorized("idToken: email not verified")
 
-  // TODO: allowlist of users / restrict to G Suite domain with hd
   await insertAudit({
     object: tokenPayload.email,
     action: "login",
@@ -28,9 +27,14 @@ export const main = middyfy(idAndAccessTokenSchema, accessTokenSchema, false, as
   const now = Math.floor(new Date().getTime() / 1000)
   const expiresAt = now + 3600 // 1 hour
 
+  const groups = getGroups(tokenPayload.email)
+  if (groups === undefined) {
+    throw new createHttpError.Forbidden(`Your account, ${tokenPayload.email}, is not allowlisted to use the platform`)
+  }
+
   const authTokenPayload: AuthTokenPayload = {
     subject: tokenPayload.email,
-    groups: [NATIONAL],
+    groups,
     iat: now,
     exp: expiresAt,
   }
