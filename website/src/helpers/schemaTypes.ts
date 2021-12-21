@@ -243,7 +243,6 @@ export interface PaymentCreation {
   matchFundingAmount?: number | null;
   method?: "card" | "cash" | "direct_to_charity";
   reference?: string | null;
-  status?: "paid" | "pending" | "scheduled" | "cancelled";
 }
 
 export type PaymentPropertyEdits =
@@ -348,6 +347,7 @@ export interface PublicFundraiser {
 export interface PublicPaymentIntentResponse {
   stripeClientSecret: string;
   amount: number;
+  totalDonationAmount: number;
   futurePayments: {
     amount: number;
     at: number;
