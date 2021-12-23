@@ -16,28 +16,12 @@ import Button from "../../components/Button"
 import {
   amountFormatter, booleanFormatter, matchFundingRateFormatter, timestampFormatter,
 } from "../../helpers/format"
+import { RequireGroup } from "../../helpers/security"
 
 const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> = ({ fundraiserId }) => {
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
-  const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
-  const axios = useRawAxios()
-
-  const [newDonationModalOpen, setNewDonationModalOpen] = React.useState(false)
-  const [showUncounted, setShowUncounted] = React.useState(false)
-
   const fundraiser = asResponseValues(fundraisers.data?.find((f) => f.id === fundraiserId), fundraisers)
-
-  const downloadDonationsCSV = async () => {
-    const csv = donations.data && await jsonexport(donations.data)
-    if (csv) {
-      const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csv}`)
-      const link = document.createElement("a")
-      link.setAttribute("href", encodedUri)
-      link.setAttribute("download", `${fundraiserId}-donations.csv`)
-      document.body.appendChild(link)
-      link.click()
-    }
-  }
+  const axios = useRawAxios()
 
   return (
     <Section>
@@ -82,6 +66,33 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
         }}
       />
 
+      <RequireGroup group={fundraiser.data?.groupsWithAccess}>
+        <DonationsSummaryView fundraiserId={fundraiserId} />
+      </RequireGroup>
+    </Section>
+  )
+}
+
+const DonationsSummaryView: React.FC<{ fundraiserId?: string }> = ({ fundraiserId }) => {
+  const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
+  const [newDonationModalOpen, setNewDonationModalOpen] = React.useState(false)
+  const [showUncounted, setShowUncounted] = React.useState(false)
+  const axios = useRawAxios()
+
+  const downloadDonationsCSV = async () => {
+    const csv = donations.data && await jsonexport(donations.data)
+    if (csv) {
+      const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csv}`)
+      const link = document.createElement("a")
+      link.setAttribute("href", encodedUri)
+      link.setAttribute("download", `${fundraiserId}-donations.csv`)
+      document.body.appendChild(link)
+      link.click()
+    }
+  }
+
+  return (
+    <>
       <div className="flex mt-12">
         <SectionTitle className="flex-1">Donations</SectionTitle>
         {!showUncounted && <Button onClick={() => setShowUncounted(true)}><EyeIcon className="h-6 mb-1" /> Show uncounted</Button>}
@@ -147,7 +158,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
         items={showUncounted ? donations : asResponseValues(donations.data?.filter((d) => d.donationCounted), donations)}
         onClick={(donation) => navigate(`/admin/${fundraiserId}/${donation.id}/`)}
       />
-    </Section>
+    </>
   )
 }
 

@@ -8,6 +8,7 @@ import logo from "../../images/logo.png"
 import { useAuthState, useRawAxios } from "../../helpers/networking"
 import env from "../../env/env"
 import Button from "../../components/Button"
+import { LoginResponse } from "../../helpers/schemaTypes"
 
 const requiredScopes = [
   "email",
@@ -55,8 +56,8 @@ const GoogleLoginForm = ({ setError }: { setError: (err: React.ReactNode | Error
         setError(`Missing scopes: ${JSON.stringify(missingScopes)}`)
       } else {
         try {
-          const loginResponse = await axios.post<{ accessToken: string, expiresAt: number }>("/admin/login/google", { idToken: res.tokenId, accessToken: res.accessToken })
-          setAuth({ token: loginResponse.data.accessToken, expiresAt: loginResponse.data.expiresAt })
+          const loginResponse = await axios.post<LoginResponse>("/admin/login/google", { idToken: res.tokenId, accessToken: res.accessToken })
+          setAuth({ token: loginResponse.data.accessToken, expiresAt: loginResponse.data.expiresAt, groups: loginResponse.data.groups })
         } catch (err) {
           // eslint-disable-next-line no-console
           console.error(err)
@@ -96,8 +97,8 @@ const ImpersonationLoginForm = ({ setError }: { setError: (err: React.ReactNode 
             setError("No email address provided")
             return
           }
-          const loginResponse = await axios.post<{ accessToken: string, expiresAt: number }>("/admin/login/impersonation", { email })
-          setAuth({ token: loginResponse.data.accessToken, expiresAt: loginResponse.data.expiresAt })
+          const loginResponse = await axios.post<LoginResponse>("/admin/login/impersonation", { email })
+          setAuth({ token: loginResponse.data.accessToken, expiresAt: loginResponse.data.expiresAt, groups: loginResponse.data.groups })
         } catch (err) {
           // eslint-disable-next-line no-console
           console.error(err)
