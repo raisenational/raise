@@ -9,6 +9,7 @@ import env from "../env/env"
 export interface AuthState {
   token: string,
   expiresAt: number,
+  groups: string[],
 }
 
 const LS_AUTH_KEY = "raise_auth"
@@ -19,10 +20,13 @@ const getAuthFromLocalStorage = (): AuthState | undefined => {
       const parsed = JSON.parse(value)
       if (typeof parsed.token !== "string") return undefined
       if (typeof parsed.expiresAt !== "number") return undefined
+      if (!Array.isArray(parsed.groups)) return undefined
+      if (!parsed.groups.every((g: unknown) => typeof g === "string")) return undefined
       if (parsed.expiresAt < (new Date().getTime() / 1000)) return undefined
       return {
         token: parsed.token,
         expiresAt: parsed.expiresAt,
+        groups: parsed.groups,
       }
     } catch {
       // invalid JSON
