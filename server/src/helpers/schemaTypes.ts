@@ -236,6 +236,10 @@ export interface IdAndAccessToken {
   accessToken: string;
 }
 
+export interface ImpersonationLoginRequest {
+  email: string;
+}
+
 export interface PaymentCreation {
   at?: number;
   donationAmount?: number;

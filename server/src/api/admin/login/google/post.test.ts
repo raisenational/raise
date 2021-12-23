@@ -1,9 +1,8 @@
-import { call } from "../../../../local/testHelpers"
-import env from "../../../env/env"
+import { call } from "../../../../../local/testHelpers"
+import env from "../../../../env/env"
 import { main } from "./post"
-import { main as getFundraisers } from "../fundraisers/get"
-import * as db from "../../../helpers/db"
-import { getGroups } from "../../../helpers/groups"
+import { main as getFundraisers } from "../../fundraisers/get"
+import * as db from "../../../../helpers/db"
 
 const googleTokenPayload = {
   iss: "accounts.google.com", // verified by the real library
@@ -24,7 +23,7 @@ jest.mock("google-auth-library", () => ({
   })),
 }))
 
-jest.mock("../../../helpers/groups", () => ({
+jest.mock("../../../../helpers/groups", () => ({
   getGroups: jest.fn().mockImplementation((email) => (email === "test@joinraise.org" ? [] : undefined)),
 }))
 
