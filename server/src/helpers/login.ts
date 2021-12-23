@@ -3,10 +3,10 @@ import jwt from "jsonwebtoken"
 import env from "../env/env"
 import { insertAudit } from "./db"
 import { getGroups } from "./groups"
-import { AccessToken } from "./schemaTypes"
+import { LoginResponse } from "./schemaTypes"
 import { AuthTokenPayload } from "./types"
 
-export const login = async (email: string): Promise<AccessToken> => {
+export const login = async (email: string): Promise<LoginResponse> => {
   const now = Math.floor(new Date().getTime() / 1000)
   const expiresAt = now + 3600 // 1 hour
 
@@ -34,5 +34,6 @@ export const login = async (email: string): Promise<AccessToken> => {
       { algorithm: "ES256" },
     ),
     expiresAt,
+    groups,
   }
 }

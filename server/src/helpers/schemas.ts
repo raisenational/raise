@@ -24,17 +24,18 @@ export const statusSchema: JSONSchema<S.Status> = {
   additionalProperties: false,
 }
 
-export const accessTokenSchema: JSONSchema<S.AccessToken> = {
+export const loginResponseSchema: JSONSchema<S.LoginResponse> = {
   type: "object",
   properties: {
     accessToken: { type: "string" },
     expiresAt: { type: "integer" },
+    groups: { type: "array", items: { type: "string" } },
   },
-  required: ["accessToken", "expiresAt"],
+  required: ["accessToken", "expiresAt", "groups"],
   additionalProperties: false,
 }
 
-export const idAndAccessTokenSchema: JSONSchema<S.IdAndAccessToken> = {
+export const googleLoginRequestSchema: JSONSchema<S.GoogleLoginRequest> = {
   type: "object",
   properties: {
     idToken: { type: "string" },
