@@ -12,6 +12,7 @@ const USER_MAP: Record<string, string[]> = {
   "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [NATIONAL], // Adam
   "7b023b5154a262453b5c3f1157a866a8f3be6f63": [NATIONAL], // Malena
   "48a578c28e6c22a3075773c60a601c8971551518": [NATIONAL], // Valentin
+  "9c42b2f09ca8ade4772ffede4c988b3a6fb12b29": [NATIONAL], // Veer
   "ea72b00f4d71e8c8bca6089a741b848fc793d2c0": [NATIONAL], // raisenational@gmail.com
 }
 
