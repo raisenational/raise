@@ -1,6 +1,8 @@
-# Raise website
+# 🌐 Raise Website
 
-This repository contains the resources for the Raise website. It is built with [Gatsby](https://www.gatsbyjs.com/), hosted using [GitLab Pages](https://docs.gitlab.com/ee/user/project/pages/introduction.html), and is visibile at [joinraise.org](https://joinraise.org).
+Front-end code and resources for the Raise platform.
+
+It is built with [Gatsby](https://www.gatsbyjs.com/), hosted in a [S3 bucket with CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/amazon-s3-amazon-cloudfront-a-match-made-in-the-cloud/), and is available at [joinraise.org](https://joinraise.org).
 
 ## Making changes
 
@@ -9,12 +11,12 @@ Most basic changes should be possible to do yourself, even if you have no idea h
 Only make changes to files within your own chapter's folder. If you need something changed outside this folder please ask the Raise National team.
 
 The general pattern for edits is:
-1. Open this repository and click the ['Web IDE'](https://gitlab.com/-/ide/project/joebenton/raise-website/edit/master/-/) button.
-2. Find the file(s) you want to edit. This will probably be your homepage, in `src` > `pages` > your chapter > `index.tsx`. You should be able to find the relevant text (tip: use `Ctrl + F` to open a find menu) you want to change. Make edits to the file.
-3. Click the blue 'Commit...' button, creating a new branch and merge request. Then give a title and short description of your changes, then click the blue 'Create merge request' button.
-4. Wait for the results of the merge request pipeline (this should only take about a minute).
-    - If it has failed, click the pipeline for details which will explain any errors. To go back to editing, click 'Open in Web IDE', make changes and commit. Go back to the same merge request once you're done.
-    - If your it has passed, congratulations! This doesn't guarantee your changes are definitely safe but is a good sign. You can now click the 'Merge' button and your changes will be on the live site within minutes.
+1. Find the file you want to edit. This will probably be your homepage, in `src` > `pages` > your chapter > `index.tsx`. You should be able to find the relevant text (tip: use `Ctrl + F` to open a find menu) you want to change.
+2. Click the 'Edit this file' button (the pencil icon) and make your changes in the text editor.
+3. Click the green 'Propose changes' button, creating a new branch and merge request. Give a title and short description of your changes, then click the green 'Create pull request' button.
+4. Wait for the results of the automated checks (this should take about a minute).
+    - If they have failed, click to view the details of any errors. To go back to editing, click the 'Files changed' tab, then the three dots on the file you want to edit then 'Edit file'.
+    - If they have passed, congratulations! This doesn't guarantee your changes are definitely safe but is a good sign. You can now click the green 'Squash and merge' button and your changes will be on the live site within minutes.
 
 ### Common changes
 
@@ -36,7 +38,7 @@ Once that's set up, when you want to make edits:
 - Run `npm start` in the terminal
 - Open the address displayed in the terminal in a browser
 
-Alternatively, you should be able to just open this repository [with Gitpod](https://gitpod.io/#https://gitlab.com/joebenton/raise-website) by logging in with GitLab and this will do the steps above for you.
+Alternatively, you should be able to just open this repository [with Gitpod](https://gitpod.io/#https://github.com/raisenational/raise) by logging in with GitHub and this will do the steps above for you.
 
 If you'd like more guidance or training on how everything works, get in touch with the National team - we'd love to enable people to make their own edits to all parts of the code as long as there are the appropriate measures to keep everything working as it should :)
 
@@ -44,7 +46,7 @@ If you'd like more guidance or training on how everything works, get in touch wi
 
 The site is built in the TypeScript language with the React framework. We use Gatsby to bundle this into a static site that loads quickly and supports a wide range of browsers.
 
-For the donations platform, the site communicates with [the server](https://gitlab.com/raisenational/server) using Axios.
+For the donations platform, the site communicates with [the server](../server) using Axios.
 
 Generally we put the clever bits in the `components` and `helpers` folder. These are reused across the site, with the most obvious example of this being the templatised chapter homepages.
 

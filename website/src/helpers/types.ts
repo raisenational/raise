@@ -1,4 +1,6 @@
 export interface Env {
+  STAGE: string,
+
   API_BASE_URL: string,
 
   GOOGLE_CLIENT_ID: string,

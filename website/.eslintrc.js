@@ -1,4 +1,4 @@
-{
+module.exports = {
   "parser": "@typescript-eslint/parser",
   "extends": [
     "eslint-config-blvd/react"
@@ -6,6 +6,8 @@
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": __dirname,
     "ecmaFeatures": {
       "jsx": true
     }

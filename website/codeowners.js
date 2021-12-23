@@ -6,9 +6,9 @@ const userAccess = {
   "Adam Jones": [""],
   "Malena Schmidt": [""],
   "Joe Benton": [""],
-  "Susanne Karbe": [""],
-  "Andrew Launer": ["src/pages/glasgow/"],
-  "Neha Banerjee": ["src/pages/oxford"],
+  "Susanne Karbe": ["website"],
+  "Andrew Launer": ["website/src/pages/glasgow/"],
+  "Neha Banerjee": ["website/src/pages/oxford"],
 }
 
 /* eslint-disable no-restricted-syntax */

@@ -114,6 +114,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Serverless (and plugins) directories
+.serverless
+
 # Custom environment
 src/env/env.ts
 src/env/local.ts
