@@ -9,6 +9,10 @@ const env: Env = {
   // Stripe publishable key
   // The secret key should NEVER be exposed to the front-end
   STRIPE_PUBLISHABLE_KEY: "pk_test_51JoQv0KzqibgSMB7aaaSq8ZJUsTwC4Hd1rfRwehKncms8iaHsKl941RvdBWNNVGQDcdRZmRaDaMknmBTilFqOhYU00EyfZikdJ",
+
+  // Whether to enable login methods
+  GOOGLE_LOGIN_ENABLED: true,
+  IMPERSONATION_LOGIN_ENABLED: true,
 }
 
 export default env
