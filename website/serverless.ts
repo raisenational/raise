@@ -41,7 +41,6 @@ const serverlessConfiguration: AWS = {
             ErrorDocument: "404.html",
           },
         },
-        // DeletionPolicy: "Retain",
       },
       WebsiteBucketPolicy: {
         Type: "AWS::S3::BucketPolicy",
