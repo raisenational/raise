@@ -1,0 +1,51 @@
+# IMPORTANT: Consult the national team before editing this file. This file catches errors, but can't check itself.
+
+name: server
+
+on:
+  push:
+    paths:
+      - ".github/workflows/server.yaml"
+      - "server/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        node-version: [14]
+
+    steps:
+      - name: Checkout ${{ github.sha }}
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: "server: Install dependencies"
+        working-directory: server
+        run: npm ci
+      - name: "server: Lint"
+        working-directory: server
+        run: npm run lint
+      - name: "server: Build"
+        working-directory: server
+        run: npm run build
+      - name: "server: Test"
+        working-directory: server
+        run: npm run test -- --verbose
+
+      - name: "server: Retrieve env for dev environment"
+        if: github.ref == 'refs/heads/master'
+        run: echo "$DEV_ENV" > server/src/env/dev.ts
+        env:
+          DEV_ENV: ${{ secrets.DEV_ENV }}
+      - name: "server: Deploy to dev environment"
+        if: github.ref == 'refs/heads/master'
+        working-directory: server
+        run: npm run deploy:dev
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

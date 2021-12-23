@@ -7,7 +7,7 @@
     "start": "npm run start:local",
     "start:local": "cp src/env/local.ts src/env/env.ts && serverless offline start",
     "deploy:dev": "cp src/env/dev.ts src/env/env.ts && serverless deploy --verbose",
-    "teardown:dev": "serverless remove --verbose",
+    "deploy:prod": "cp src/env/prod.ts src/env/env.ts && serverless deploy --verbose",
     "build": "npm run type-check && serverless package",
     "test": "TZ=utc jest",
     "test:watch": "TZ=utc jest --watch",

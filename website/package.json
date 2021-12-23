@@ -10,6 +10,9 @@
     "build": "npm run build:local",
     "build:local": "cp src/env/local.ts src/env/env.ts && npm run type-check && gatsby build",
     "build:dev": "cp src/env/dev.ts src/env/env.ts && npm run type-check && gatsby build",
+    "build:prod": "cp src/env/prod.ts src/env/env.ts && npm run type-check && gatsby build",
+    "deploy:dev": "npm run build:dev && serverless deploy --verbose",
+    "deploy:prod": "npm run build:prod && serverless deploy --verbose",
     "clean": "rimraf public",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "test": "TZ=utc jest",
@@ -58,6 +61,7 @@
     "typescript": "^4.5.3"
   },
   "devDependencies": {
+    "@serverless/typescript": "^2.69.1",
     "@testing-library/react": "^12.1.2",
     "@types/classnames": "^2.2.8",
     "@types/jest": "^27.0.2",
@@ -75,6 +79,8 @@
     "jest": "^27.3.1",
     "postcss": "^8.3.6",
     "rimraf": "^2.6.3",
+    "serverless": "^2.69.1",
+    "serverless-s3-sync": "^1.17.3",
     "tailwindcss": "^2.2.15",
     "ts-jest": "^27.0.7"
   },

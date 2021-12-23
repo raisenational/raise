@@ -2,10 +2,19 @@ tasks:
   - init: |
       echo -e '#!/usr/bin/env bash\ngit push --force -u origin HEAD' > .git/hooks/post-commit
       chmod +x .git/hooks/post-commit
+      cd website
+      npm install
+      cd ../server
       npm install
     command: |
       [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]] && git checkout -b "$GITPOD_WORKSPACE_ID/$(date +%s)"
-      gp open src/pages/index.tsx
+      gp open website/src/pages/index.tsx
+      cd website
+      npm start
+  - command: |
+      [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]] && git checkout -b "$GITPOD_WORKSPACE_ID/$(date +%s)"
+      gp open server/src/api/admin/fundraisers/get.ts
+      cd server
       npm start
 
 ports:

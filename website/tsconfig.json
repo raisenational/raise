@@ -15,6 +15,7 @@
     "skipLibCheck": true,
   },
   "include": [
-    "./src/**/*"
+    "src/**/*",
+    "serverless.ts"
   ]
 }

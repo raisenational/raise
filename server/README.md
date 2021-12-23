@@ -1,8 +1,6 @@
-# 🔃 raise-server
+# 🔃 Raise Server
 
-Back-end code for the Raise donations platform
-
-Think any of this documentation is out of date, incomplete, misleading or otherwise could be improved? Open a merge request or get in touch with the national team's tech person.
+Back-end code and resources for the Raise platform.
 
 ## ⏱ Quick Start
 
@@ -16,7 +14,7 @@ You only need to do this once.
 
 1. Install [Node](https://nodejs.org/) (choose the LTS version) and [VS Code](https://code.visualstudio.com/Download)
 2. Install [Java](https://adoptium.net/) (choose the latest LTS version)
-3. Clone the repository ([more info](https://docs.gitlab.com/ee/gitlab-basics/start-using-git.html#clone-a-repository))
+3. Clone the repository ([more info](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
 4. Open the folder with VS Code
 5. Run the command `npm install` to install dependencies
 
@@ -71,7 +69,7 @@ Tips:
 - `package.json`: Defines depenedencies to use, and npm commands ([more info](https://docs.npmjs.com/cli/v7/configuring-npm/package-json))
 - `package-lock.json`: Edited automatically by NPM, specifies exact versions of dependencies based on `package.json` ([more info](https://docs.npmjs.com/cli/v7/configuring-npm/package-lock-json))
 - `.eslintrc`: Configuration for [ESLint](https://eslint.org/), the linter that prevents some bad coding practices and enforces consistent code formatting
-- `.gitlab-ci.yml`: Defines CI pipelines ([more info](https://docs.gitlab.com/ee/ci/yaml/))
+- `.github`: Defines GitHub configuration, most importantly CI and CD pipelines ([more info](https://docs.github.com/en/actions/automating-builds-and-tests/about-continuous-integration))
 - `.gitignore`: Defines what files git should ignore ([more info](https://git-scm.com/docs/gitignore))
 - `.gitpod.yml`: Defines Gitpod configuration ([more info](https://www.gitpod.io/docs/references/gitpod-yml))#
 - `webpack.config.js`: Defines [webpack](https://webpack.js.org/) settings (related to [serverless-webpack](https://github.com/serverless-heaven/serverless-webpack)) for bundling up our code before running or deploying it
@@ -179,6 +177,6 @@ Serverless also comes with plugins that help us:
 
 ## 👷 CI
 
-We have CI pipelines that run in GitLab CI. These check that our TypeScript compiles correctly, our code abides by lint rules and our tests pass. These checks are important, and we should only merge in branches when the pipeline succeeds. If the master branch has a failing pipeline, this should be investigated and fixed with high priority.
+We have CI pipelines that run in GitHub Actions. These check that our TypeScript compiles correctly, our code abides by lint rules and our tests pass. These checks are important, and we should only merge in branches when the pipeline succeeds. If the master branch has a failing pipeline, this should be investigated and fixed with high priority.
 
-<!-- TODO: On the master branch, our CI pipeline deploys our changes to the dev environment in AWS. -->
+On the master branch, our CI pipeline deploys our changes to the dev environment in AWS.

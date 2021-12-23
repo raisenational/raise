@@ -1,0 +1,57 @@
+# IMPORTANT: Consult the national team before editing this file. This file catches errors, but can't check itself.
+
+name: website
+
+on:
+  push:
+    paths:
+      - ".github/workflows/website.yaml"
+      - "website/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        node-version: [14]
+
+    steps:
+      - name: Checkout ${{ github.sha }}
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: "website: Install dependencies"
+        working-directory: website
+        run: npm ci
+      - name: "website: Lint"
+        working-directory: website
+        run: npm run lint
+      - name: "website: Build"
+        working-directory: website
+        run: npm run build
+      - name: "website: Test"
+        working-directory: website
+        run: npm run test -- --verbose
+      - name: "website: Codeowners"
+        working-directory: website
+        run: npm run codeowners
+
+      - name: "website: Deploy to dev environment"
+        if: github.ref == 'refs/heads/master'
+        working-directory: website
+        run: npm run deploy:dev
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: "website: Deploy to prod environment"
+        if: github.ref == 'refs/heads/master'
+        working-directory: website
+        run: npm run deploy:prod
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
