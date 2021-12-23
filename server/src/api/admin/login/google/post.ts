@@ -7,6 +7,8 @@ import { login } from "../../../../helpers/login"
 
 // Exchanges a Google id and access token for a Raise access token
 export const main = middyfy(googleLoginRequestSchema, loginResponseSchema, false, async (event) => {
+  if (!env.GOOGLE_LOGIN_ENABLED) throw new createHttpError.Unauthorized("Google login is not enabled")
+
   const client = new OAuth2Client()
   const tokenPayload = (await client.verifyIdToken({
     idToken: event.body.idToken,

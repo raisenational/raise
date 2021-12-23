@@ -91,3 +91,19 @@ test("rejects invalid Google token", async () => {
   expect(response.body).toContain("idToken: not valid")
   expect(response.body).not.toContain("Invalid token for some reason!")
 })
+
+test("rejects when Google login disabled", async () => {
+  const envBefore = { ...env }
+  env.GOOGLE_LOGIN_ENABLED = false
+
+  const response = await call(main, { rawResponse: true, auth: false })({
+    idToken: "idTokenValue",
+    accessToken: "accessTokenValue",
+  })
+
+  expect(verifyIdToken).not.toHaveBeenCalled()
+  expect(response.statusCode).toBe(401)
+  expect(response.body).toContain("not enabled")
+
+  env.GOOGLE_LOGIN_ENABLED = envBefore.GOOGLE_LOGIN_ENABLED
+})
