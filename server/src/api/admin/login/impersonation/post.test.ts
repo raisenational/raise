@@ -33,8 +33,8 @@ test.each([
 })
 
 test.each([
-  ["with non-enabled env", { STAGE: "dev", IMPERSONATION_LOGIN_ENABLED: false } as const, "not enabled", 403],
-  ["in the prod stage", { STAGE: "prod", IMPERSONATION_LOGIN_ENABLED: true } as const, "not be enabled in prod", 403],
+  ["with non-enabled env", { STAGE: "dev", IMPERSONATION_LOGIN_ENABLED: false } as const, "not enabled", 401],
+  ["in the prod stage", { STAGE: "prod", IMPERSONATION_LOGIN_ENABLED: true } as const, "not be enabled in prod", 401],
 ])("rejects %s", async (description, envOverrides, errMessage, status) => {
   const envBefore = { ...env }
   env.STAGE = envOverrides.STAGE
