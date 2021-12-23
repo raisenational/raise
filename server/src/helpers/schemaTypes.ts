@@ -3,11 +3,6 @@
 * This file was automatically generated. DO NOT MODIFY IT BY HAND.
 * Instead, modify schemas.ts, and run "npm run schemas".
 */
-export interface AccessToken {
-  accessToken: string;
-  expiresAt: number;
-}
-
 export type AuditLogMetadata =
   | null
   | boolean
@@ -231,13 +226,19 @@ export type Fundraisers = {
   groupsWithAccess: string[];
 }[];
 
-export interface IdAndAccessToken {
+export interface GoogleLoginRequest {
   idToken: string;
   accessToken: string;
 }
 
 export interface ImpersonationLoginRequest {
   email: string;
+}
+
+export interface LoginResponse {
+  accessToken: string;
+  expiresAt: number;
+  groups: string[];
 }
 
 export interface PaymentCreation {
