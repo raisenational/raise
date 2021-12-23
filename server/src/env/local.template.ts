@@ -25,6 +25,10 @@ const env: Env = {
   // For emergency use in case we want to quickly make all tokens invalid but don't have access to a computer with openssl installed to regenerate keys
   // NB: changing this is pointless if the JWT private key has been exposed
   JWT_REQUIRE_ISSUED_AT_AFTER: undefined,
+
+  // Whether to enable login methods
+  GOOGLE_LOGIN_ENABLED: true,
+  IMPERSONATION_LOGIN_ENABLED: true,
 }
 
 export default env

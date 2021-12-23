@@ -44,6 +44,15 @@ export const idAndAccessTokenSchema: JSONSchema<S.IdAndAccessToken> = {
   additionalProperties: false,
 }
 
+export const impersonationLoginRequestSchema: JSONSchema<S.ImpersonationLoginRequest> = {
+  type: "object",
+  properties: {
+    email: emailSchema,
+  },
+  required: ["email"],
+  additionalProperties: false,
+}
+
 export const profileSchema: JSONSchema<S.Profile> = {
   type: "object",
   properties: {

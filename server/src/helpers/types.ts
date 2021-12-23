@@ -38,4 +38,7 @@ export interface Env {
   STRIPE_WEBHOOK_SECRET: string,
 
   JWT_REQUIRE_ISSUED_AT_AFTER: number | undefined,
+
+  GOOGLE_LOGIN_ENABLED: boolean,
+  IMPERSONATION_LOGIN_ENABLED: boolean,
 }
