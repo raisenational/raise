@@ -1,0 +1,17 @@
+tasks:
+  - init: |
+      echo -e '#!/usr/bin/env bash\ngit push --force -u origin HEAD' > .git/hooks/post-commit
+      chmod +x .git/hooks/post-commit
+      npm install
+    command: |
+      [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]] && git checkout -b "$GITPOD_WORKSPACE_ID/$(date +%s)"
+      gp open src/api/admin/fundraisers/get.ts
+      npm run dev
+
+ports:
+  - port: 8001
+    onOpen: open-preview
+
+vscode:
+  extensions:
+    - dbaeumer.vscode-eslint

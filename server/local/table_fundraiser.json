@@ -1,0 +1,23 @@
+[
+  {
+    "id": "01FGNSHH6X6X878ZNBZKY44JQA",
+    "fundraiserName": "Raise Demo",
+    "activeFrom": 1632780000,
+    "activeTo": 1642118400,
+    "recurringDonationsTo": 1643673600,
+    "paused": false,
+    "goal": 100000,
+    "totalRaised": 49800,
+    "donationsCount": 3,
+    "matchFundingRate": 100,
+    "matchFundingPerDonationLimit": 15000,
+    "matchFundingRemaining": null,
+    "minimumDonationAmount": null,
+    "suggestedDonationAmountOneOff": 10000,
+    "suggestedDonationAmountWeekly": 900,
+    "suggestedContributionAmount": 1000,
+    "groupsWithAccess": [
+      "National"
+    ]
+  }
+]

@@ -1,0 +1,83 @@
+{
+  "name": "raise-server",
+  "version": "1.0.0",
+  "main": "serverless.ts",
+  "scripts": {
+    "postinstall": "cp -n src/env/local.template.ts src/env/local.ts && cp -n src/env/local.ts src/env/env.ts && serverless dynamodb install",
+    "start": "npm run start:local",
+    "start:local": "cp src/env/local.ts src/env/env.ts && serverless offline start",
+    "deploy:dev": "cp src/env/dev.ts src/env/env.ts && serverless deploy --verbose",
+    "teardown:dev": "serverless remove --verbose",
+    "build": "npm run type-check && serverless package",
+    "test": "TZ=utc jest",
+    "test:watch": "TZ=utc jest --watch",
+    "type-check": "tsc",
+    "lint": "eslint 'src/**/*.ts' 'serverless.ts'",
+    "schemas": "node local/schemasToTS.mjs"
+  },
+  "engines": {
+    "node": ">=14.15.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.34.0",
+    "@aws-sdk/client-sesv2": "^3.39.0",
+    "@aws-sdk/lib-dynamodb": "^3.34.0",
+    "@aws-sdk/node-http-handler": "^3.38.0",
+    "@middy/core": "^2.5.3",
+    "@middy/http-json-body-parser": "^2.5.3",
+    "@middy/validator": "^2.5.3",
+    "ajv": "^8.6.3",
+    "axios": "^0.24.0",
+    "google-auth-library": "^7.10.0",
+    "http-errors": "^1.8.0",
+    "jsonwebtoken": "^8.5.1",
+    "middy-middleware-jwt-auth": "^5.0.0",
+    "serverless-dynamodb-local": "^0.2.40",
+    "stripe": "^8.184.0",
+    "ulid": "^2.3.0"
+  },
+  "devDependencies": {
+    "@serverless/typescript": "^2.61.0",
+    "@types/aws-lambda": "^8.10.71",
+    "@types/http-errors": "^1.8.1",
+    "@types/jest": "^27.0.2",
+    "@types/json-schema": "^7.0.9",
+    "@types/jsonwebtoken": "^8.5.5",
+    "@types/node": "^14.14.25",
+    "@typescript-eslint/eslint-plugin": "^4.32.0",
+    "@typescript-eslint/parser": "^4.32.0",
+    "aws-lambda": "^1.0.6",
+    "dynamodb-localhost": "^0.0.9",
+    "eslint": "^7.32.0",
+    "eslint-config-blvd": "^1.2.1",
+    "jest": "^27.3.1",
+    "json-schema-to-typescript": "^10.1.5",
+    "mockdate": "^3.0.5",
+    "serverless": "^2.64.1",
+    "serverless-offline": "^8.2.0",
+    "serverless-offline-ses-v2": "^1.0.0",
+    "serverless-webpack": "^5.5.4",
+    "ts-jest": "^27.0.7",
+    "ts-loader": "^9.2.6",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3",
+    "webpack": "^5.57.1",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "globalSetup": "./local/test-setup.js",
+    "globalTeardown": "./local/test-teardown.js",
+    "setupFilesAfterEnv": [
+      "./local/test-setup-each.ts"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.ts",
+      "!src/env/*.ts",
+      "src/env/env.ts"
+    ],
+    "clearMocks": true,
+    "restoreMocks": true
+  }
+}

@@ -1,0 +1,29 @@
+# timbru31/java-node:11-jdk-14
+image: timbru31/java-node@sha256:93dfe1f11c0531ce62ae112db66fd966da94e4f6665ffba1150ec242989a711a
+
+stages:
+  - test
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+    - .serverless/
+    - .webpack/
+
+test:
+  stage: test
+  script:
+    - npm ci --unsafe-perm
+    - npm run build
+    - npm run lint
+    - npm test -- --verbose
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Do this manually for now"
+    # TODO: set up this pipeline properly
+    # - "npm run deploy:dev"
+  only:
+    - master
