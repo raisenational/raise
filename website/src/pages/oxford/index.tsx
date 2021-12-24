@@ -2,7 +2,7 @@ import * as React from "react"
 import Helmet from "react-helmet"
 
 import Page from "../../components/Page"
-import Section, { SectionNoPadding, SectionTitle } from "../../components/Section"
+import Section, { SectionTitle } from "../../components/Section"
 import Navigation from "../../components/Navigation"
 import Cover, { CTADown } from "../../components/Cover"
 import IntroStats from "../../components/IntroStats"
