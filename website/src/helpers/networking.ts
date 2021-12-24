@@ -1,5 +1,4 @@
 /* eslint-disable no-restricted-imports */
-import axios from "axios"
 import _axios, { AxiosError, AxiosRequestConfig } from "axios"
 import {
   makeUseAxios, Options, ResponseValues, UseAxios, UseAxiosResult,
@@ -93,7 +92,7 @@ export const useAxios = (<TResponse = unknown, TBody = unknown, TError = unknown
     return [{
       loading: true,
       error: null,
-    }, () => { }, () => { }] as UseAxiosResult<TResponse, TBody, TError>;
+    }, () => { /* noop */ }, () => { /* noop */ }] as UseAxiosResult<TResponse, TBody, TError>
   }
 
   if (typeof config === "string") {

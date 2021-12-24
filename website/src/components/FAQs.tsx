@@ -8,7 +8,7 @@ interface FaqProps {
   className?: string,
 }
 
-const FAQs: React.FC<{}> = ({ children }) => (
+const FAQs: React.FC = ({ children }) => (
   <div className="bg-white rounded text-left text-gray-500">
     {children}
   </div>

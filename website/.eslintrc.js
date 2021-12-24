@@ -61,8 +61,9 @@ module.exports = {
     "comma-spacing": "off",
     "@typescript-eslint/comma-spacing": "error",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/ban-ts-ignore": "off",
-    "@typescript-eslint/no-use-before-define": "warn",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/member-delimiter-style": [
       "warn",
       {

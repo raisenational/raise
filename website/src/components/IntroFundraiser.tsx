@@ -436,10 +436,8 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
     const response = await stripe.confirmCardPayment(
       stripeClientSecret,
       {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         payment_method: {
           card: cardNumberElement,
-          // eslint-disable-next-line @typescript-eslint/camelcase
           billing_details: {
             name: watches.donorName,
             email: watches.donorEmail,
