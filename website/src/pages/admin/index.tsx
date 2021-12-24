@@ -50,6 +50,11 @@ const IndexLayout = () => {
     }
   }, [auth?.expiresAt])
 
+  // This ensures server-side rendering + hydration does not cause weirdness on these authenticated pages
+  const [hasMounted, setHasMounted] = React.useState(false)
+  React.useEffect(() => setHasMounted(true), [])
+  if (!hasMounted) return null
+
   return (
     <>
       {auth && (

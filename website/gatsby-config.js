@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
     title: "Raise",
-    description: "A starter kit for TypeScript-based Gatsby projects with sensible defaults.",
+    description: "A charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.",
     keywords: "raise, charity, join raise, amf, against malaria foundation",
     siteUrl: "https://joinraise.org/",
     author: {
