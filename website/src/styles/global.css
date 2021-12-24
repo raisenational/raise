@@ -65,7 +65,7 @@
   }
 
   .Button {
-    @apply py-1 px-3 border-2 rounded text-white inline-block h-full transform -skew-x-15 transition-all duration-200 shadow hover:shadow-lg scale-100 hover:scale-105
+    @apply py-1 px-3 border-2 rounded text-white inline-block h-full -skew-x-15 transition-all duration-200 shadow hover:shadow-lg scale-100 hover:scale-105
   }
 
   .Button + .Button {

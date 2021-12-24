@@ -1,8 +1,7 @@
 const defaultTheme = require("tailwindcss/defaultTheme")
 
 module.exports = {
-  purge: ["./src/**/*.{js,jsx,ts,tsx}"],
-  darkMode: false,
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -23,11 +22,6 @@ module.exports = {
       boxShadow: {
         raise: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
       },
-    },
-  },
-  variants: {
-    extend: {
-      translate: ["group-hover"],
     },
   },
   plugins: [],

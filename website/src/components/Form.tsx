@@ -66,7 +66,7 @@ const objMap = <T extends { [K in keyof T]: V }, U, V>(obj: T, mapper: (k: keyof
 }
 
 // @ts-ignore
-const mapToInput = <T,>(item: UnpackNestedValue<T>, definition: FormProps<T>["definition"]): UnpackNestedValue<T> => objMap(item, (k, v) => toInput(v, definition[k].inputType))
+const mapToInput = <T,>(item: UnpackNestedValue<T>, definition: FormProps<T>["definition"]): UnpackNestedValue<T> & UnpackNestedValue<DeepPartial<T>> => objMap(item, (k, v) => toInput(v, definition[k].inputType))
 // @ts-ignore
 const mapFromInput = <T,>(item: UnpackNestedValue<T>, definition: FormProps<T>["definition"]): UnpackNestedValue<T> => objMap(item, (k, v) => fromInput(v, definition[k].inputType, definition[k].selectOptions))
 

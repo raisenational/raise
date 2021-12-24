@@ -4,7 +4,7 @@ import {
 } from "@heroicons/react/outline"
 import classNames from "classnames"
 
-const Philosophy: React.FC<{}> = () => (
+const Philosophy: React.FC = () => (
   <div className="max-w-2xl mx-auto text-left">
     <Point className="bg-raise-purple" icon={StarIcon}>
       At Raise, we believe in the power of giving positively and deliberately, rather than engaging with charity passively or out of obligation. In our view, giving in this way is more meaningful, more sustainable, and ultimately more impactful.

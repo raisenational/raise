@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-imports */
 import _axios, { AxiosError, AxiosRequestConfig } from "axios"
 import {
-  makeUseAxios, Options, ResponseValues, UseAxios,
+  makeUseAxios, Options, ResponseValues, UseAxios, UseAxiosResult,
 } from "axios-hooks"
 import { useEffect, useState } from "react"
 import env from "../env/env"
@@ -86,7 +86,15 @@ axiosWithDefaults.interceptors.response.use(undefined, logoutOnTokenExpiry)
 
 const realUseAxios = makeUseAxios({ axios: axiosWithDefaults })
 
-export const useAxios = (<TResponse = unknown, TError = unknown>(config: AxiosRequestConfig | string, options?: Options) => {
+export const useAxios = (<TResponse = unknown, TBody = unknown, TError = unknown>(config: AxiosRequestConfig | string, options?: Options) => {
+  // Hack for Gatsby SSR so that dynamic components appear to be loading
+  if (typeof window === "undefined") {
+    return [{
+      loading: true,
+      error: null,
+    }, () => { /* noop */ }, () => { /* noop */ }] as UseAxiosResult<TResponse, TBody, TError>
+  }
+
   if (typeof config === "string") {
     // eslint-disable-next-line no-param-reassign
     config = { url: config }
@@ -100,7 +108,7 @@ export const useAxios = (<TResponse = unknown, TError = unknown>(config: AxiosRe
     config.headers.Authorization = `Bearer ${auth.token}`
   }
 
-  return realUseAxios<TResponse, TError>(config, options)
+  return realUseAxios<TResponse, TBody, TError>(config, options)
 }) as UseAxios
 // @ts-ignore
 // eslint-disable-next-line no-restricted-syntax,guard-for-in
@@ -124,7 +132,7 @@ export const useRawAxios = () => {
   return axiosWithDefaults
 }
 
-export const asResponseValues = <TResponse, TError>(item: TResponse | undefined, inheritFrom: ResponseValues<unknown, TError>): ResponseValues<TResponse, TError> => ({
+export const asResponseValues = <TResponse, TBody, TError>(item: TResponse | undefined, inheritFrom: ResponseValues<unknown, TBody, TError>): ResponseValues<TResponse, TBody, TError> => ({
   data: item ?? undefined,
   loading: inheritFrom.loading,
   error: inheritFrom.error,

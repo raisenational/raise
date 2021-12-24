@@ -61,7 +61,7 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
           <p className="text-2xl"><span className="text-5xl md:text-7xl stat-animate">{amountDropPenceIfZeroFormatter(fundraiser.data?.totalRaised)}</span><br /> raised by {fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? "" : "s"}{fundraiser.data ? ` of a ${amountDropPenceIfZeroFormatter(fundraiser.data?.goal)} goal` : ""}</p>
 
           <div className="mx-2 -mt-4 mb-8">
-            <div className="flex transform -skew-x-15 shadow-raise mt-8 rounded overflow-hidden">
+            <div className="flex -skew-x-15 shadow-raise mt-8 rounded overflow-hidden">
               <div className="py-3 bg-raise-red transition-all ease-in-out duration-1000" style={{ width: `${fundraiser.data ? Math.min(Math.round((fundraiser.data.totalRaised / fundraiser.data.goal) * 100), 100) : 0}%` }} />
               <div className="flex-auto py-2 md:py-3 bg-raise-purple" />
             </div>
@@ -176,10 +176,10 @@ const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormRes
     <h3 className="text-2xl">Your Donation</h3>
     {/* TODO: formatting */}
     <div className="mt-2 grid gap-2 md:grid-cols-3 md:gap-4">
-      <button type="button" onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} className="rounded border border-gray-700 p-4 cursor-pointer transform transition-all hover:bg-gray-100 hover:scale-105">
+      <button type="button" onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} className="rounded border border-gray-700 p-4 cursor-pointer transition-all hover:bg-gray-100 hover:scale-105">
         {amountDropPenceIfZeroFormatter(fundraiser.suggestedDonationAmountOneOff)} one-off
       </button>
-      <button type="button" onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} className="rounded border border-gray-700 p-4 cursor-pointer transform transition-all hover:bg-gray-100 hover:scale-105">
+      <button type="button" onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} className="rounded border border-gray-700 p-4 cursor-pointer transition-all hover:bg-gray-100 hover:scale-105">
         {amountDropPenceIfZeroFormatter(fundraiser.suggestedDonationAmountWeekly)} weekly
       </button>
     </div>
@@ -436,10 +436,8 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
     const response = await stripe.confirmCardPayment(
       stripeClientSecret,
       {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         payment_method: {
           card: cardNumberElement,
-          // eslint-disable-next-line @typescript-eslint/camelcase
           billing_details: {
             name: watches.donorName,
             email: watches.donorEmail,

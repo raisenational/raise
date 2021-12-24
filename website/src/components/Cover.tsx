@@ -11,7 +11,7 @@ const Cover: React.FC<{ className?: string }> = ({ className, children }) => (
 export const CTADown: React.FC<{ text: string, href: string }> = ({ text, href }) => (
   <a href={href} className="text-center mb-6 mt-8 group">
     <p>{text}</p>
-    <ChevronDownIcon className="h-6 w-6 transition-transform transform -translate-y-1 group-hover:translate-y-0" />
+    <ChevronDownIcon className="h-6 w-6 transition-transform -translate-y-1 group-hover:translate-y-0" />
   </a>
 )
 
