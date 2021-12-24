@@ -3,6 +3,8 @@ import type { Env } from "../helpers/types"
 const env: Env = {
   STAGE: "local",
 
+  CUSTOM_DOMAIN: "not used",
+
   API_BASE_URL: "http://localhost:8001",
 
   // OAuth 2 client id for Google sign-in

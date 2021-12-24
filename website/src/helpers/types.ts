@@ -1,6 +1,8 @@
 export interface Env {
   STAGE: string,
 
+  CUSTOM_DOMAIN: string,
+
   API_BASE_URL: string,
 
   GOOGLE_CLIENT_ID: string,

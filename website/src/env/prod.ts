@@ -3,6 +3,8 @@ import type { Env } from "../helpers/types"
 const env: Env = {
   STAGE: "prod",
 
+  CUSTOM_DOMAIN: "www.joinraise.org",
+
   API_BASE_URL: "https://5kh7xzkn5m.execute-api.eu-west-1.amazonaws.com",
 
   // OAuth 2 client id for Google sign-in
