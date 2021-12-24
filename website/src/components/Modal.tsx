@@ -1,37 +1,24 @@
 import * as React from "react"
-import { Dialog } from "@headlessui/react"
+import { DialogOverlay, DialogContent } from "@reach/dialog"
 import classNames from "classnames"
-
 import { XIcon } from "@heroicons/react/outline"
-import Section from "./Section"
 
 interface Props {
   open: boolean,
   onClose: () => void,
 }
 
-const Modal: React.FC<Props> = ({ open, onClose, children }) => {
-  const ref = React.createRef<HTMLElement>()
-
-  // Hack so that HMR works properly
-  if (typeof window !== "undefined" && "reactHotLoaderGlobal" in window && !open) return null
-
-  return (
-    <Dialog
-      as="div"
-      className={classNames("fixed inset-0 overflow-y-auto px-4", { "pr-8": typeof window !== "undefined" && document.getElementsByTagName("html")[0].scrollHeight > document.getElementsByTagName("html")[0].clientHeight })}
-      open={open}
-      onClose={onClose}
-      initialFocus={ref}
-    >
-      <Dialog.Overlay className="fixed inset-0 bg-black bg-opacity-80 z-0" />
-
-      <Section ref={ref} className="p-8 my-16 bg-white rounded shadow relative z-10 overflow-auto relative">
-        <XIcon onClick={onClose} className="w-8 h-8 sm:w-12 sm:h-12 absolute right-8 cursor-pointer" />
-        {children}
-      </Section>
-    </Dialog>
-  )
-}
+const Modal: React.FC<Props> = ({ open, onClose, children }) => (
+  <DialogOverlay
+    className="fixed inset-0 bg-black bg-opacity-80 z-0"
+    isOpen={open}
+    onDismiss={onClose}
+  >
+    <DialogContent className={classNames("SectionNoPadding Section p-8 my-16 bg-white rounded shadow relative overflow-auto", { "pr-8": typeof window !== "undefined" && document.getElementsByTagName("html")[0].scrollHeight > document.getElementsByTagName("html")[0].clientHeight })}>
+      <XIcon onClick={onClose} className="w-8 h-8 sm:w-12 sm:h-12 absolute right-8 cursor-pointer" />
+      {children}
+    </DialogContent>
+  </DialogOverlay>
+)
 
 export default Modal

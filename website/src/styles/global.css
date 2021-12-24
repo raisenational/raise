@@ -97,4 +97,8 @@
   @keyframes fade-in {
     from { opacity: 0; }
   }
+
+  [data-reach-listbox-option][data-current-nav] {
+    @apply bg-gray-200;
+  }
 }
