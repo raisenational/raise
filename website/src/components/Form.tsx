@@ -1,4 +1,6 @@
-import { Listbox } from "@headlessui/react"
+import {
+  Listbox, ListboxInput, ListboxButton, ListboxPopover, ListboxList, ListboxOption,
+} from "@reach/listbox"
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/outline"
 import classNames from "classnames"
 import * as React from "react"
@@ -177,8 +179,8 @@ const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) 
   const [selected, setSelected] = React.useState<string[]>(normalizeArray(value))
 
   return (
-    <Listbox
-      value={value}
+    <ListboxInput
+      value="null" // hack so we can manage the value
       onChange={(k: string) => {
         if (type === "select") {
           setSelected([k])
@@ -195,7 +197,7 @@ const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) 
       }}
     >
       <div className="relative">
-        <Listbox.Button className={classNames("relative text-left w-full py-2 px-3 mb-1 appearance-none block rounded border cursor-text transition-all text-gray-700 outline-none", {
+        <ListboxButton className={classNames("relative text-left w-full py-2 px-3 mb-1 appearance-none block rounded border cursor-text transition-all text-gray-700 outline-none", {
           "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
           "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": error,
         })}
@@ -207,15 +209,15 @@ const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) 
               aria-hidden="true"
             />
           </span>
-        </Listbox.Button>
-        <Listbox.Options className="absolute z-10 w-full py-1 overflow-auto text-base bg-white rounded shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-          {(Array.isArray(options) ? options.map((o) => [o, o]) : Object.entries(options)).map(([k, v]) => (
-            <Listbox.Option
-              key={k}
-              className={({ active }) => classNames("select-none relative py-2 pl-10 pr-4", { "bg-gray-200": active, "font-black": selected.includes(k) })}
-              value={k}
-            >
-              {() => (
+        </ListboxButton>
+        <ListboxPopover portal={false} className="absolute z-10 w-full mt-1 py-1 overflow-auto text-base bg-white rounded shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          <ListboxList className="outline-none">
+            {(Array.isArray(options) ? options.map((o) => [o, o]) : Object.entries(options)).map(([k, v]) => (
+              <ListboxOption
+                key={k}
+                className={classNames("relative py-2 pl-10 pr-4", { "font-black": selected.includes(k) })}
+                value={k}
+              >
                 <>
                   <span className="block truncate">{v}</span>
                   {selected.includes(k) && (
@@ -224,12 +226,12 @@ const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) 
                     </span>
                   )}
                 </>
-              )}
-            </Listbox.Option>
-          ))}
-        </Listbox.Options>
+              </ListboxOption>
+            ))}
+          </ListboxList>
+        </ListboxPopover>
       </div>
-    </Listbox>
+    </ListboxInput>
   )
 }
 
