@@ -20,7 +20,7 @@ type PropertyDefinition<I, V> = {
 
 interface Props<I> {
   definition: Partial<{ [K in keyof I]: PropertyDefinition<I, I[K]> }> & { [s: `_${string}`]: PropertyDefinition<I, unknown> },
-  item?: I | ResponseValues<I, unknown>,
+  item?: I | ResponseValues<I, unknown, unknown>,
   onClick?: (key: keyof I, event: React.MouseEvent) => void,
   onSave?: (data: UnpackNestedValue<Partial<I>>) => void | Promise<void>,
 }

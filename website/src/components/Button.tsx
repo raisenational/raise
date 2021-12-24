@@ -29,7 +29,7 @@ const Button: React.FC<Props> = ({
     }, className)}
     disabled={disabled}
   >
-    <span className="inline-block transform skew-x-15">{children}</span>
+    <span className="inline-block skew-x-15">{children}</span>
   </Link>
 )
 

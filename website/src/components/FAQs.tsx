@@ -19,7 +19,7 @@ export const FAQ: React.FC<FaqProps> = ({ className, title, children }) => (
     {({ open }) => (
       <div className={classNames(className, "FAQ hover:text-black", { "text-black": open })}>
         <Disclosure.Button className="p-4 text-left">
-          <ChevronRightIcon className={classNames("transition-transform w-7 h-7 align-text-top", { "transform rotate-90": open })} />
+          <ChevronRightIcon className={classNames("transition-transform w-7 h-7 align-text-top", { "rotate-90": open })} />
           <span className="text-2xl ml-2 align-text-top">{title}</span>
         </Disclosure.Button>
         <Disclosure.Panel
