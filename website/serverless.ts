@@ -109,11 +109,12 @@ const serverlessConfiguration: AWS = {
                 OriginProtocolPolicy: "http-only",
               },
             }],
-            // Admin pages are not server-side rendered, so we should redirect to an app page (but not return a 404)
-            // Hopefully for genuine 404s, search engnines should be smart enough to figure out it's not a real page
             CustomErrorResponses: [{
               ErrorCode: 404,
-              ResponseCode: 200,
+              // This prevents the SEO hit from serving a 404 page to Search Engines with a 200 response code
+              // Admin pages (except the main admin index) are not server-side rendered, so we will get the occasional 404
+              // Most browsers seem okay with this, and Gatsby routing magic means the correct page will be displayed
+              ResponseCode: 404,
               ResponsePagePath: "/404.html",
             }],
             PriceClass: "PriceClass_100",
