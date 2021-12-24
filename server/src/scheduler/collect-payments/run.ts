@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken"
 import env from "../../env/env"
 import type { AuthTokenPayload } from "../../helpers/types"
 
-export const main: ScheduledHandler<unknown> = async (event) => {
+export const main: ScheduledHandler<unknown> = async () => {
   const now = Math.floor(new Date().getTime() / 1000)
   const authTokenPayload: AuthTokenPayload = {
     subject: "scheduler",

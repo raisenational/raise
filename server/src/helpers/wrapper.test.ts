@@ -75,7 +75,7 @@ describe.each([
   })
 
   test("rejects an auth token with an invalid payload", async () => {
-    const response = await call(handler, { auth: { groups: [1] } as any, rawResponse: true })({ greetee: "world" })
+    const response = await call(handler, { auth: { groups: [1] } as never, rawResponse: true })({ greetee: "world" })
 
     expect(response.statusCode).toBe(400)
     expect(response.body).toContain("Token payload malformed")
@@ -390,7 +390,7 @@ describe("response body validation", () => {
     ["number", { type: "number" }, 123],
     ["integer", { type: "integer" }, 123],
   ])("can return a %s", async (_description, schema, body) => {
-    const handler = middyfy(null, schema, false, async () => body as any)
+    const handler = middyfy(null, schema, false, async () => body as never)
 
     const actualResponse = await call(handler)(null)
 
@@ -455,7 +455,7 @@ describe("response body validation", () => {
       required: ["person"],
     }, { person: { firstName: "" } }],
   ])("returns 500 if return %s", async (_description, schema, body) => {
-    const handler = middyfy(null, schema, false, async () => body as any)
+    const handler = middyfy(null, schema, false, async () => body as never)
 
     const response = await call(handler, { rawResponse: true })(null)
 
@@ -503,7 +503,10 @@ describe("attaches audit context", () => {
       routeRaw: { type: "string" },
     },
   }
-  const handler = middyfy(null, auditContextSchema, false, async () => auditContext.value!)
+  const handler = middyfy(null, auditContextSchema, false, async () => {
+    if (!auditContext.value) throw new createHttpError.InternalServerError("Not in an auditContext")
+    return auditContext.value
+  })
 
   test("when authed", async () => {
     const response = await call(handler)(null)

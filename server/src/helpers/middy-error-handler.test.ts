@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import middy from "@middy/core"
 import createHttpError from "http-errors"
 import middyErrorHandler from "./middy-error-handler"

@@ -71,7 +71,7 @@ export const call = (handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyRes
   return JSON.parse(response.body)
 }
 
-export const makeFundraiser = (override: Partial<Fundraiser> = {}): Fundraiser => ({
+export const makeFundraiser = <Override extends Partial<Fundraiser>>(override?: Override): Fundraiser & Override => ({
   id: ulid(),
   fundraiserName: "Test Fundraiser",
   activeFrom: Math.floor(new Date().getTime() / 1000),
@@ -90,9 +90,9 @@ export const makeFundraiser = (override: Partial<Fundraiser> = {}): Fundraiser =
   suggestedDonationAmountWeekly: Math.ceil(Math.random() * 4) * 5_00,
   suggestedContributionAmount: 10_00,
   ...override,
-})
+} as Fundraiser & Override)
 
-export const makeDonation = (override: Partial<Donation> = {}): Donation => ({
+export const makeDonation = <Override extends Partial<Donation>>(override?: Override): Donation & Override => ({
   id: ulid(),
   fundraiserId: ulid(),
   donorName: "Person McPersonface",
@@ -120,9 +120,9 @@ export const makeDonation = (override: Partial<Donation> = {}): Donation => ({
   donationAmountPublic: false,
   donationCounted: false,
   ...override,
-})
+} as Donation & Override)
 
-export const makePayment = (override: Partial<Payment> = {}): Payment => ({
+export const makePayment = <Override extends Partial<Payment>>(override?: Override): Payment & Override => ({
   id: ulid(),
   donationId: ulid(),
   fundraiserId: ulid(),
@@ -134,7 +134,7 @@ export const makePayment = (override: Partial<Payment> = {}): Payment => ({
   reference: "Paid to treasurer at SP",
   status: "paid",
   ...override,
-})
+} as Payment & Override)
 
 export const unsupressConsole = (): void => {
   (console.error as jest.MockedFunction<typeof console.error>).mockRestore();

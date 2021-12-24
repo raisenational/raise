@@ -1,6 +1,4 @@
-import {
-  makeFundraiser, makeDonation, call, makePayment,
-} from "../../../../../../../../local/testHelpers"
+import { makeFundraiser, makeDonation, call } from "../../../../../../../../local/testHelpers"
 import { get, insert, query } from "../../../../../../../helpers/db"
 import { PaymentCreation } from "../../../../../../../helpers/schemaTypes"
 import { fundraiserTable, donationTable, paymentTable } from "../../../../../../../helpers/tables"
