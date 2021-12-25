@@ -95,7 +95,7 @@ export const makeFundraiser = <Override extends Partial<Fundraiser>>(override?: 
 export const makeDonation = <Override extends Partial<Donation>>(override?: Override): Donation & Override => ({
   id: ulid(),
   fundraiserId: ulid(),
-  "donorName": "Person McPersonface",
+  donorName: "Person McPersonface",
   donorEmail: "person@example.com",
   emailConsentInformational: false,
   emailConsentMarketing: false,
