@@ -73,6 +73,7 @@ const serverlessConfiguration: AWS = {
         Type: "AWS::CloudFront::Distribution",
         Properties: {
           DistributionConfig: {
+            Aliases: [env.CUSTOM_DOMAIN],
             Comment: S3_BUCKET_NAME,
             DefaultCacheBehavior: {
               AllowedMethods: ["GET", "HEAD"],
@@ -119,7 +120,9 @@ const serverlessConfiguration: AWS = {
             }],
             PriceClass: "PriceClass_100",
             ViewerCertificate: {
-              CloudFrontDefaultCertificate: true,
+              AcmCertificateArn: "arn:aws:acm:us-east-1:338337944728:certificate/1da4e440-ec4c-4d8f-8ec6-b1b85969d360",
+              MinimumProtocolVersion: "TLSv1.2_2021",
+              SslSupportMethod: "sni-only",
             },
           },
         },
