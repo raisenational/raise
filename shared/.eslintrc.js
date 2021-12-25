@@ -8,7 +8,6 @@ module.exports = {
     "project": "./tsconfig.json",
     "tsconfigRootDir": __dirname,
   },
-  "ignorePatterns": "local/**",
   "rules": {
     "max-len": "off",
     "indent": "off",
@@ -30,31 +29,6 @@ module.exports = {
     "comma-dangle": [
       "warn",
       "always-multiline"
-    ],
-    "no-restricted-imports": [
-      "error",
-      {
-        "paths": [
-          {
-            "name": "@aws-sdk/client-dynamodb",
-            "message": "Use @aws-sdk/lib-dynamodb instead"
-          },
-          {
-            "name": "@aws-sdk/lib-dynamodb",
-            "importNames": [
-              "DynamoDBDocumentClient"
-            ],
-            "message": "Use src/helpers/documentClient.ts instead"
-          },
-          {
-            "name": "process",
-            "importNames": [
-              "env"
-            ],
-            "message": "Use src/env/env.ts instead"
-          }
-        ]
-      }
     ],
     "import/prefer-default-export": "off",
     "comma-spacing": "off",
