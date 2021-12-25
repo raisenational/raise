@@ -3,7 +3,7 @@ import {
   insert, scan, get, query, insertAudit, update, inTransaction, updateT, plusT, insertT, AuditDefinition, assertMatchesSchema, assertHasGroup, assertHasGroupForProperties, checkPrevious,
 } from "./db"
 import {
-  fundraiserTable, donationTable, auditLogTable, tables,
+  fundraiserTable, donationTable, auditLogTable, tables, Table,
 } from "./tables"
 import { makeFundraiser, makeDonation, setMockDate } from "../../local/testHelpers"
 import { auditContext } from "./auditContext"
@@ -12,7 +12,8 @@ import { NATIONAL } from "./groups"
 
 describe("scan", () => {
   test.each(Object.entries(tables))("%s table is empty by default", async (name, table) => {
-    expect(await scan(table as any)).toHaveLength(0)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    expect(await scan(table as Table<any, any, any>)).toHaveLength(0)
   })
 
   test("can retrieve several items", async () => {
@@ -413,7 +414,7 @@ describe("assertMatchesSchema", () => {
   })
 
   test("throws for invalid schema syntax", () => {
-    expect(() => assertMatchesSchema({ not: "a schema" } as any, { message: "hello" }))
+    expect(() => assertMatchesSchema({ not: "a schema" } as never, { message: "hello" }))
       .toThrowError("schema is invalid")
   })
 

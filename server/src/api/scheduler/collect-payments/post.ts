@@ -29,6 +29,7 @@ export const main = middyfy(null, null, true, async (event) => {
   const now = Math.floor(new Date().getTime() / 1000)
   const scheduledCardPaymentsDue = payments.filter((p) => p.status === "scheduled" && p.method === "card" && p.at <= now)
 
+  // eslint-disable-next-line no-console
   console.log(`Found ${scheduledCardPaymentsDue.length} scheduled card payments due`)
 
   const results = (await Promise.allSettled(scheduledCardPaymentsDue.map(async (payment, index) => {
@@ -72,9 +73,12 @@ export const main = middyfy(null, null, true, async (event) => {
   const failures = results.filter((r) => r.status === "rejected")
 
   // Log how everything went
+  // eslint-disable-next-line no-console
   console.log(`Tried to collect ${scheduledCardPaymentsDue.length} payments: ${successes.length} succeeded, ${failures.length} failed`)
   failures.forEach((failure) => {
+    // eslint-disable-next-line no-console
     console.error(`Payment ${failure.paymentId} (donation ${failure.donationId}, fundraiser ${failure.fundraiserId}) failed:`)
+    // eslint-disable-next-line no-console
     console.error((failure as PromiseRejectedResult).reason)
   })
 })

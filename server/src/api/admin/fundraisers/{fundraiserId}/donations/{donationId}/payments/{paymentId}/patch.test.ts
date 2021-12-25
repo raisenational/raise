@@ -1,6 +1,4 @@
-import {
-  call, makeDonation, makeFundraiser, unsupressConsole,
-} from "../../../../../../../../../local/testHelpers"
+import { call, makeDonation, makeFundraiser } from "../../../../../../../../../local/testHelpers"
 import { get, insert, update } from "../../../../../../../../helpers/db"
 import { PaymentCreation } from "../../../../../../../../helpers/schemaTypes"
 import { donationTable, fundraiserTable, paymentTable } from "../../../../../../../../helpers/tables"

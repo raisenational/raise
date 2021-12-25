@@ -61,7 +61,7 @@ describe("one-off donation", () => {
       matchFundingAmount: null,
     })
     const req = makeStripeWebhookRequest(undefined, {
-      id: payment.reference!,
+      id: payment.reference,
       amount: payment.donationAmount + payment.contributionAmount,
       amount_received: payment.donationAmount + payment.contributionAmount,
       metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payment.id },
@@ -129,7 +129,7 @@ test("can make first recurring donation without matchFundingPerDonationLimit", a
     matchFundingAmount: null,
   })]
   const req = makeStripeWebhookRequest(undefined, {
-    id: payments[0].reference!,
+    id: payments[0].reference,
     amount: payments[0].donationAmount + payments[0].contributionAmount,
     amount_received: payments[0].donationAmount + payments[0].contributionAmount,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payments[0].id },
@@ -223,7 +223,7 @@ test("can make first recurring donation with matchFundingPerDonationLimit", asyn
     matchFundingAmount: null,
   })]
   const req = makeStripeWebhookRequest(undefined, {
-    id: payments[0].reference!,
+    id: payments[0].reference,
     amount: payments[0].donationAmount + payments[0].contributionAmount,
     amount_received: payments[0].donationAmount + payments[0].contributionAmount,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payments[0].id },
@@ -329,7 +329,7 @@ test("can make later recurring donation with match funding committed previously"
     matchFundingAmount: 0,
   })]
   const req = makeStripeWebhookRequest(undefined, {
-    id: payments[1].reference!,
+    id: payments[1].reference,
     amount: payments[1].donationAmount + payments[1].contributionAmount,
     amount_received: payments[1].donationAmount + payments[1].contributionAmount,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payments[1].id },
@@ -437,7 +437,7 @@ test("can make later recurring donation with match funding committed previously 
     matchFundingAmount: 0,
   })]
   const req = makeStripeWebhookRequest(undefined, {
-    id: payments[1].reference!,
+    id: payments[1].reference,
     amount: payments[1].donationAmount + payments[1].contributionAmount,
     amount_received: payments[1].donationAmount + payments[1].contributionAmount,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payments[1].id },
@@ -534,7 +534,7 @@ test("can make later recurring donation without match funding committed previous
     matchFundingAmount: null,
   })]
   const req = makeStripeWebhookRequest(undefined, {
-    id: payments[1].reference!,
+    id: payments[1].reference,
     amount: payments[1].donationAmount + payments[1].contributionAmount,
     amount_received: payments[1].donationAmount + payments[1].contributionAmount,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payments[1].id },
@@ -605,7 +605,7 @@ test("rejects partially captured payment intent", async () => {
     reference: `pi_${ulid()}`,
   })
   const req = makeStripeWebhookRequest(undefined, {
-    id: payment.reference!,
+    id: payment.reference,
     amount: payment.donationAmount + payment.contributionAmount,
     amount_received: Math.floor((payment.donationAmount + payment.contributionAmount) / 2),
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payment.id },
@@ -629,7 +629,7 @@ test.each([["cash"], ["direct_to_charity"]] as const)("rejects %s payment", asyn
     reference: `pi_${ulid()}`,
   })
   const req = makeStripeWebhookRequest(undefined, {
-    id: payment.reference!,
+    id: payment.reference,
     amount: payment.donationAmount + payment.contributionAmount,
     amount_received: payment.donationAmount + payment.contributionAmount,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payment.id },
@@ -653,7 +653,7 @@ test("rejects payment for mismatched amount", async () => {
     reference: `pi_${ulid()}`,
   })
   const req = makeStripeWebhookRequest(undefined, {
-    id: payment.reference!,
+    id: payment.reference,
     amount: payment.donationAmount + payment.contributionAmount + 10_00,
     amount_received: payment.donationAmount + payment.contributionAmount + 10_00,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payment.id },
@@ -701,7 +701,7 @@ test("rejects payment in invalid state", async () => {
     reference: `pi_${ulid()}`,
   })
   const req = makeStripeWebhookRequest(undefined, {
-    id: payment.reference!,
+    id: payment.reference,
     amount: payment.donationAmount + payment.contributionAmount,
     amount_received: payment.donationAmount + payment.contributionAmount,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payment.id },
@@ -728,7 +728,7 @@ test("handles payments idempotently", async () => {
     contributionAmount: 10_00,
   })
   const req = makeStripeWebhookRequest(undefined, {
-    id: payment.reference!,
+    id: payment.reference,
     amount: payment.donationAmount + payment.contributionAmount,
     amount_received: payment.donationAmount + payment.contributionAmount,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payment.id },
@@ -816,7 +816,7 @@ test("handles parallel webhook calls for same one-off payment", async () => {
     contributionAmount: 10_00,
   })
   const req = makeStripeWebhookRequest(undefined, {
-    id: payment.reference!,
+    id: payment.reference,
     amount: payment.donationAmount + payment.contributionAmount,
     amount_received: payment.donationAmount + payment.contributionAmount,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payment.id },
@@ -881,7 +881,7 @@ test("handles parallel webhook calls for same first recurring payment", async ()
     matchFundingAmount: null,
   })]
   const req = makeStripeWebhookRequest(undefined, {
-    id: payments[0].reference!,
+    id: payments[0].reference,
     amount: payments[0].donationAmount + payments[0].contributionAmount,
     amount_received: payments[0].donationAmount + payments[0].contributionAmount,
     metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payments[0].id },
@@ -971,7 +971,7 @@ describe("handles database conflicts", () => {
       ...(obj === "payment" ? { [property]: before } : {}),
     })
     const req = makeStripeWebhookRequest(undefined, {
-      id: payment.reference!,
+      id: payment.reference,
       amount: payment.donationAmount + payment.contributionAmount,
       amount_received: payment.donationAmount + payment.contributionAmount,
       metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payment.id },

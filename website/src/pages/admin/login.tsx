@@ -46,7 +46,7 @@ const GoogleLoginForm = ({ setError }: { setError: (err: React.ReactNode | Error
       setError(undefined)
     },
     onSuccess: async (_res) => {
-      // FIXME: bad typescript definitions
+      // We can remove this override once the TypeScript definitions are improved:
       // https://github.com/anthonyjgrove/react-google-login/pull/482
       const res = _res as GoogleLoginResponse
 

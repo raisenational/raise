@@ -3,18 +3,16 @@ import type { AWS } from "@serverless/typescript"
 import { readdirSync } from "fs"
 import { resolve } from "path"
 import env from "./src/env/env"
+import { Table, tables } from "./src/helpers/tables"
 
 const SERVICE_NAME = "raise-server"
 
-// eslint-disable-next-line import/first
-import { Table, tables } from "./src/helpers/tables"
-
 const allowedMethods = ["get", "post", "patch", "put", "delete"]
 
-const envCase = (s: string): string => s.replace(/[/_\-\\ ]+/g, () => "_").toUpperCase()
 const camelCase = (s: string): string => s.replace(/[/_\-\\ ]+([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 const pascalCase = (s: string): string => s.replace(/(^|[/_\-\\ ]+)([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createResources = (definitions: Record<string, Table<any, any, any>>): NonNullable<NonNullable<AWS["resources"]>["Resources"]> => Object.values(definitions).reduce<NonNullable<NonNullable<AWS["resources"]>["Resources"]>>((acc, table) => {
   const resourceKey = `${pascalCase(table.entityName)}Table`
   if (acc[resourceKey] !== undefined) throw new Error(`Duplciate table resource key ${resourceKey}`)
@@ -41,7 +39,7 @@ const createResources = (definitions: Record<string, Table<any, any, any>>): Non
         PointInTimeRecoveryEnabled: env.STAGE === "prod",
       },
       TableName: table.name,
-      ...((table.schema as any).properties!.ttl ? {
+      ...((table.schema as { properties?: { ttl?: unknown } }).properties?.ttl ? {
         TimeToLiveSpecification: {
           AttributeName: "ttl",
           Enabled: true,

@@ -57,19 +57,25 @@ const handleDbError = <
   >(table?: Table<Pa, Pr, S, K, E>) => async (err: unknown) => {
     if (err instanceof Error) {
       if (err.name === "ConditionalCheckFailedException") {
+        // eslint-disable-next-line no-console
         console.warn(`ConditionalCheckFailedException returned from DynamoDB${table ? ` for table ${table.entityName}` : ""}:`)
+        // eslint-disable-next-line no-console
         console.warn(err)
         throw new createHttpError.Conflict(`Failed to make edits due to failed conditional expression${table ? ` on ${table.entityName}` : ""}. This is likely the result of an editing conflict. Usually, trying again or refreshing the page and trying again should work.`)
       }
 
       if (err.name === "TransactionCanceledException" && (err as unknown as TransactionCanceledException).CancellationReasons?.filter((r) => r.Code !== "None").every((r) => r.Code === "ConditionalCheckFailed")) {
+        // eslint-disable-next-line no-console
         console.warn(`TransactionCanceledException returned from DynamoDB${table ? ` for table ${table.entityName}` : ""}:`)
+        // eslint-disable-next-line no-console
         console.warn(err)
         throw new createHttpError.Conflict(`Failed to make edits due to failed conditional expression${table ? ` on ${table.entityName}` : ""}. This is likely the result of an editing conflict. Usually, trying again or refreshing the page and trying again should work.`)
       }
     }
 
+    // eslint-disable-next-line no-console
     console.error(`Database error${table ? ` for table ${table.entityName}` : ""}:`)
+    // eslint-disable-next-line no-console
     console.error(err)
     throw err
   }
@@ -220,8 +226,7 @@ export const insertAudit = async (auditDefinition: AuditDefinition): Promise<voi
     })).catch(handleDbError(auditLogTable))
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.error("Failed to store audit log:")
-    console.error("Data to log: ", auditDefinition)
+    console.error("Failed to store audit log:", auditDefinition)
     // eslint-disable-next-line no-console
     console.error(err)
   }

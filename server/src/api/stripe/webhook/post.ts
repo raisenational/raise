@@ -26,7 +26,8 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
   } catch (err) {
     throw new createHttpError.Unauthorized("Failed to validate webhook signature")
   }
-  auditContext.value!.subject = "stripe"
+  if (!auditContext.value) throw new createHttpError.InternalServerError("Not in an audit context")
+  auditContext.value.subject = "stripe"
 
   if (event.body.data.object.amount !== event.body.data.object.amount_received) {
     throw new createHttpError.BadRequest("amount does not match amount_received")
