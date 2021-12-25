@@ -1,5 +1,5 @@
+import { paymentsSchema } from "@raise/shared"
 import { middyfy } from "../../../../../../../helpers/wrapper"
-import { paymentsSchema } from "../../../../../../../helpers/schemas"
 import { fundraiserTable, paymentTable } from "../../../../../../../helpers/tables"
 import { assertHasGroup, query, get } from "../../../../../../../helpers/db"
 

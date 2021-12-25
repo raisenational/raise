@@ -1,7 +1,6 @@
 {
-  "name": "raise-website",
+  "name": "@raise/website",
   "private": true,
-  "author": "Adam Jones <domdomegg+git@gmail.com>",
   "main": "n/a",
   "scripts": {
     "postinstall": "cp -n src/env/local.template.ts src/env/local.ts && cp -n src/env/local.ts src/env/env.ts",
@@ -25,6 +24,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.4",
+    "@raise/shared": "file:../shared",
     "@reach/dialog": "^0.16.2",
     "@reach/disclosure": "^0.16.2",
     "@reach/listbox": "^0.16.2",

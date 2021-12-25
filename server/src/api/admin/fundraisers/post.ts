@@ -1,7 +1,7 @@
 import { ulid } from "ulid"
+import { fundraiserCreationSchema, ulidSchema } from "@raise/shared"
 import { middyfy } from "../../../helpers/wrapper"
 import { assertHasGroup, insert } from "../../../helpers/db"
-import { fundraiserCreationSchema, ulidSchema } from "../../../helpers/schemas"
 import { fundraiserTable } from "../../../helpers/tables"
 import { NATIONAL } from "../../../helpers/groups"
 

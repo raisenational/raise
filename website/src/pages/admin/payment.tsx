@@ -1,10 +1,11 @@
 import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 import { ExternalLinkIcon, ReceiptRefundIcon } from "@heroicons/react/outline"
+import {
+  format, Donation, Payment, PaymentCreation,
+} from "@raise/shared"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
-import { Donation, Payment, PaymentCreation } from "../../helpers/schemaTypes"
-import { amountFormatter, timestampFormatter } from "../../helpers/format"
 import PropertyEditor from "../../components/PropertyEditor"
 import Button from "../../components/Button"
 import Modal from "../../components/Modal"
@@ -33,9 +34,9 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donat
           warning={`This marks the payment as refunded in the Raise platform, but does not actually refund it.${payment.data?.method === "card" ? " You probably want to also refund it in the Stripe dashboard." : ""}`}
           definition={{
             at: { inputType: "hidden" },
-            donationAmount: { label: "Refunded donation amount", formatter: amountFormatter, inputType: "amount" },
-            contributionAmount: { label: "Refunded contribution amount", formatter: amountFormatter, inputType: "amount" },
-            matchFundingAmount: { label: "Refunded match funding amount", formatter: amountFormatter, inputType: "amount" },
+            donationAmount: { label: "Refunded donation amount", formatter: format.amount, inputType: "amount" },
+            contributionAmount: { label: "Refunded contribution amount", formatter: format.amount, inputType: "amount" },
+            matchFundingAmount: { label: "Refunded match funding amount", formatter: format.amount, inputType: "amount" },
             method: { inputType: "hidden" },
             reference: { inputType: "hidden" },
           }}
@@ -62,10 +63,10 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donat
       </Modal>
       <PropertyEditor
         definition={{
-          at: { label: "At", formatter: timestampFormatter },
-          donationAmount: { label: "Donation", formatter: amountFormatter, inputType: "amount" },
-          contributionAmount: { label: "Contribution", formatter: amountFormatter, inputType: "amount" },
-          matchFundingAmount: { label: "Match funding", formatter: amountFormatter, inputType: "amount" },
+          at: { label: "At", formatter: format.timestamp },
+          donationAmount: { label: "Donation", formatter: format.amount, inputType: "amount" },
+          contributionAmount: { label: "Contribution", formatter: format.amount, inputType: "amount" },
+          matchFundingAmount: { label: "Match funding", formatter: format.amount, inputType: "amount" },
           method: { label: "Method" },
           reference: { label: "Ref", inputType: payment.data?.method === "card" ? undefined : "text" },
           status: { label: "Status", selectOptions: ["cancelled"], inputType: "select" },

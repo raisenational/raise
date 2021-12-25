@@ -1,9 +1,10 @@
 import {
-  JSONSchema, donationSchema, fundraiserSchema, paymentSchema, auditLogSchema,
-} from "./schemas"
-import type {
-  Donation, Fundraiser, Payment, AuditLog,
-} from "./schemaTypes"
+  JSONSchema,
+  donationSchema, Donation,
+  fundraiserSchema, Fundraiser,
+  paymentSchema, Payment,
+  auditLogSchema, AuditLog,
+} from "@raise/shared"
 import env from "../env/env"
 
 export type DBAttributeValue = null | boolean | number | string | DBAttributeValue[] | { [key: string]: DBAttributeValue }

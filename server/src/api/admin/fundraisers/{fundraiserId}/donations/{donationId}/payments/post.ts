@@ -1,11 +1,10 @@
 import { ulid } from "ulid"
+import { paymentCreationSchema, ulidSchema, calcMatchFunding } from "@raise/shared"
 import { middyfy } from "../../../../../../../helpers/wrapper"
 import {
   assertHasGroup, get, inTransaction, insertT, plusT, updateT,
 } from "../../../../../../../helpers/db"
-import { paymentCreationSchema, ulidSchema } from "../../../../../../../helpers/schemas"
 import { fundraiserTable, donationTable, paymentTable } from "../../../../../../../helpers/tables"
-import matchFunding from "../../../../../../../helpers/matchFunding"
 
 export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
@@ -19,7 +18,7 @@ export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (even
     get(donationTable, { fundraiserId, id: donationId }),
   ])
 
-  const matchFundingAdded = event.body.matchFundingAmount ?? matchFunding({
+  const matchFundingAdded = event.body.matchFundingAmount ?? calcMatchFunding({
     donationAmount,
     alreadyMatchFunded: donation.matchFundingAmount,
     matchFundingRate: fundraiser.matchFundingRate,

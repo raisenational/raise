@@ -1,7 +1,7 @@
 import * as React from "react"
 import TimeAgo from "react-timeago"
 import classNames from "classnames"
-import { amountDropPenceIfZeroFormatter } from "../helpers/format"
+import { format } from "@raise/shared"
 
 type Props = {
   donorName?: string,
@@ -28,11 +28,11 @@ const DonationCard: React.FC<Props> = ({
   className,
   loading,
 }) => {
-  const title = `${donorName || "Someone"} donated${donationAmount !== undefined ? ` ${amountDropPenceIfZeroFormatter(donationAmount)}` : ""}`
+  const title = `${donorName || "Someone"} donated${donationAmount !== undefined ? ` ${format.amountDropPenceIfZero(donationAmount)}` : ""}`
   const isRecurring = recurringAmount !== undefined && recurringAmount !== null && recurrenceFrequency !== undefined && recurrenceFrequency !== null
-  const recurringText = isRecurring ? `giving ${amountDropPenceIfZeroFormatter(recurringAmount)} ${recurrenceFrequency.toLowerCase()}` : undefined
-  const matchFundingText = (matchFundingAmount !== undefined && matchFundingAmount > 0) ? `+${amountDropPenceIfZeroFormatter(matchFundingAmount)} matched` : undefined
-  const giftAidText = (giftAid && donationAmount !== undefined) ? `+${amountDropPenceIfZeroFormatter(donationAmount * 0.25)} gift-aided` : undefined
+  const recurringText = isRecurring ? `giving ${format.amountDropPenceIfZero(recurringAmount)} ${recurrenceFrequency.toLowerCase()}` : undefined
+  const matchFundingText = (matchFundingAmount !== undefined && matchFundingAmount > 0) ? `+${format.amountDropPenceIfZero(matchFundingAmount)} matched` : undefined
+  const giftAidText = (giftAid && donationAmount !== undefined) ? `+${format.amountDropPenceIfZero(donationAmount * 0.25)} gift-aided` : undefined
   const extraAmountText = (matchFundingText || giftAidText) ? `(${[matchFundingText, giftAidText].filter((x) => x).join(", ")})` : undefined
 
   return (

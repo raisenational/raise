@@ -1,4 +1,4 @@
-import { statusSchema } from "../../../helpers/schemas"
+import { statusSchema } from "@raise/shared"
 import { middyfy } from "../../../helpers/wrapper"
 
 export const main = middyfy(null, statusSchema, false, async () => ({

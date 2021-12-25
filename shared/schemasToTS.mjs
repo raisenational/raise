@@ -3,7 +3,7 @@ import { compile } from "json-schema-to-typescript"
 import { readFileSync, writeFileSync, unlinkSync } from "fs"
 
 // Hack to import schemas defined in ts into js
-const schemasSource = readFileSync(new URL("../src/helpers/schemas.ts", import.meta.url), { encoding: "utf-8" })
+const schemasSource = readFileSync(new URL("./src/schemas.ts", import.meta.url), { encoding: "utf-8" })
   .replace(/import (type )?(\{[^}]*\}|\* as) .*/gm, "")
   .replace(/export type .*/g, "")
   .replace(/: JSONSchema<[^>]*>/g, "")
@@ -25,4 +25,4 @@ const deepClone = (item) => {
 }
 
 const schemaTypesSource = (await Promise.all(Object.entries(schemas).map(([k, v]) => compile(deepClone(v), k.replace(/Schema$/, ""), { bannerComment: "" })))).join("\n")
-writeFileSync(new URL("../src/helpers/schemaTypes.ts", import.meta.url), `/* eslint-disable */\n/**\n* This file was automatically generated. DO NOT MODIFY IT BY HAND.\n* Instead, modify schemas.ts, and run "npm run schemas".\n*/\n${schemaTypesSource}`)
+writeFileSync(new URL("./src/schemaTypes.ts", import.meta.url), `/* eslint-disable */\n/**\n* This file was automatically generated. DO NOT MODIFY IT BY HAND.\n* Instead, modify schemas.ts, and run "npm run build".\n*/\n${schemaTypesSource}`)

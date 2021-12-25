@@ -1,8 +1,8 @@
 import createHttpError from "http-errors"
 import { ulid } from "ulid"
+import { JSONSchema, ulidSchema } from "@raise/shared"
 import { call } from "../../local/testHelpers"
 import { middyfy } from "./wrapper"
-import { JSONSchema, ulidSchema } from "./schemas"
 import { AuditContext, auditContext } from "./auditContext"
 
 const greetRequestSchema: JSONSchema<{ greetingWord?: string, greetee: string }> = {

@@ -1,6 +1,6 @@
 import createHttpError from "http-errors"
+import { impersonationLoginRequestSchema, loginResponseSchema } from "@raise/shared"
 import { middyfy } from "../../../../helpers/wrapper"
-import { impersonationLoginRequestSchema, loginResponseSchema } from "../../../../helpers/schemas"
 import env from "../../../../env/env"
 import { login } from "../../../../helpers/login"
 

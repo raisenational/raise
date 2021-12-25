@@ -1,7 +1,7 @@
 import { ulid } from "ulid"
+import { PublicDonationRequest } from "@raise/shared"
 import { call, makeFundraiser, setMockDate } from "../../../../../../local/testHelpers"
 import { insert, scan } from "../../../../../helpers/db"
-import { PublicDonationRequest } from "../../../../../helpers/schemaTypes"
 import { donationTable, fundraiserTable, paymentTable } from "../../../../../helpers/tables"
 import { main } from "./post"
 

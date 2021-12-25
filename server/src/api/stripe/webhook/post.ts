@@ -1,14 +1,13 @@
 import createHttpError from "http-errors"
 import Stripe from "stripe"
+import { stripeWebhookRequest, calcMatchFunding } from "@raise/shared"
 import { middyfy } from "../../../helpers/wrapper"
 import {
   get, inTransaction, plusT, query, update, updateT,
 } from "../../../helpers/db"
-import { stripeWebhookRequest } from "../../../helpers/schemas"
 import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/tables"
 import env from "../../../env/env"
 import { auditContext } from "../../../helpers/auditContext"
-import matchFunding from "../../../helpers/matchFunding"
 import { sendEmail } from "../../../helpers/email"
 import confirmation from "../../../helpers/email/confirmation"
 
@@ -57,7 +56,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     throw new createHttpError.BadRequest(`payment in invalid state '${payment.status}' to be confirmed`)
   }
 
-  const matchFundingAdded = payment.matchFundingAmount !== null ? payment.matchFundingAmount : matchFunding({
+  const matchFundingAdded = payment.matchFundingAmount !== null ? payment.matchFundingAmount : calcMatchFunding({
     donationAmount: payment.donationAmount,
     alreadyMatchFunded: donation.matchFundingAmount,
     matchFundingRate: fundraiser.matchFundingRate,
@@ -131,7 +130,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
   const donationMatchFundingAlready = payments.reduce((acc, p) => acc + (p.matchFundingAmount ?? 0), 0)
   let donationMatchFundingAdded = 0
   const paymentTransactions = payments.filter((p) => (p.status === "pending" || p.status === "scheduled") && p.matchFundingAmount === null).map((p) => {
-    const matchFundingAmount = matchFunding({
+    const matchFundingAmount = calcMatchFunding({
       donationAmount: p.donationAmount,
       alreadyMatchFunded: donationMatchFundingAlready + donationMatchFundingAdded,
       matchFundingRate: fundraiser.matchFundingRate,

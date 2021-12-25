@@ -9,10 +9,9 @@ import createHttpError from "http-errors"
 import type { NativeAttributeValue } from "@aws-sdk/util-dynamodb"
 import type { JSONSchema7 } from "json-schema"
 import { ulid } from "ulid"
+import { JSONSchema, AuditLog } from "@raise/shared"
 import { auditLogTable, DBAttributeValue, Table } from "./tables"
-import type { JSONSchema } from "./schemas"
 import { auditContext } from "./auditContext"
-import { AuditLog } from "./schemaTypes"
 import env from "../env/env"
 
 const requestHandler = new NodeHttpHandler({

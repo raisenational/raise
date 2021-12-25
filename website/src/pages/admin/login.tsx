@@ -1,14 +1,13 @@
 import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 import { useGoogleLogin, GoogleLoginResponse } from "react-google-login"
-
+import { LoginResponse } from "@raise/shared"
 import Section, { SectionTitle } from "../../components/Section"
 import Alert from "../../components/Alert"
 import logo from "../../images/logo.png"
 import { useAuthState, useRawAxios } from "../../helpers/networking"
 import env from "../../env/env"
 import Button from "../../components/Button"
-import { LoginResponse } from "../../helpers/schemaTypes"
 
 const requiredScopes = [
   "email",

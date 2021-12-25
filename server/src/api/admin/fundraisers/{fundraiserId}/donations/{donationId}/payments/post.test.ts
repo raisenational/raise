@@ -1,6 +1,6 @@
+import { PaymentCreation } from "@raise/shared"
 import { makeFundraiser, makeDonation, call } from "../../../../../../../../local/testHelpers"
 import { get, insert, query } from "../../../../../../../helpers/db"
-import { PaymentCreation } from "../../../../../../../helpers/schemaTypes"
 import { fundraiserTable, donationTable, paymentTable } from "../../../../../../../helpers/tables"
 import { main } from "./post"
 

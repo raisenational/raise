@@ -1,16 +1,16 @@
 import * as React from "react"
 import { navigate, RouteComponentProps } from "@reach/router"
-
 import { PlusSmIcon } from "@heroicons/react/outline"
+import {
+  format, Donation, Payment, PaymentCreation,
+} from "@raise/shared"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
-import { Donation, Payment, PaymentCreation } from "../../helpers/schemaTypes"
 import Table from "../../components/Table"
 import PropertyEditor from "../../components/PropertyEditor"
 import Button from "../../components/Button"
 import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
-import { amountFormatter, booleanFormatter, timestampFormatter } from "../../helpers/format"
 import DonationCard from "../../components/DonationCard"
 
 const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string }> = ({ fundraiserId, donationId }) => {
@@ -34,28 +34,28 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
         definition={{
           donorName: { label: "Donor name", inputType: "text", warning: giftAidEditWarning },
           donorEmail: { label: "Donor email", inputType: "email" },
-          emailConsentInformational: { label: "Email consent: informational", formatter: booleanFormatter, inputType: "checkbox" },
-          emailConsentMarketing: { label: "Email consent: marketing", formatter: booleanFormatter, inputType: "checkbox" },
-          createdAt: { label: "At", formatter: timestampFormatter, inputType: "datetime-local" },
+          emailConsentInformational: { label: "Email consent: informational", formatter: format.boolean, inputType: "checkbox" },
+          emailConsentMarketing: { label: "Email consent: marketing", formatter: format.boolean, inputType: "checkbox" },
+          createdAt: { label: "At", formatter: format.timestamp, inputType: "datetime-local" },
           addressLine1: { label: "Address line 1", inputType: "text", warning: giftAidEditWarning },
           addressLine2: { label: "Address line 2", inputType: "text", warning: giftAidEditWarning },
           addressLine3: { label: "Address line 3", inputType: "text", warning: giftAidEditWarning },
           addressPostcode: { label: "Address postcode", inputType: "text", warning: giftAidEditWarning },
           addressCountry: { label: "Address country", inputType: "text", warning: giftAidEditWarning },
           donationAmount: {
-            label: "Donation amount", formatter: amountFormatter, inputType: "amount", warning: amountEditWarning,
+            label: "Donation amount", formatter: format.amount, inputType: "amount", warning: amountEditWarning,
           },
           recurringAmount: {
-            label: "Recurring payment amount", formatter: amountFormatter, inputType: "amount", warning: amountEditWarning,
+            label: "Recurring payment amount", formatter: format.amount, inputType: "amount", warning: amountEditWarning,
           },
           recurrenceFrequency: {
             label: "Frequency of recurrence", inputType: "text", warning: frequencyEditWarning,
           },
           matchFundingAmount: {
-            label: "Match funding amount", formatter: amountFormatter, inputType: "amount", warning: amountEditWarning,
+            label: "Match funding amount", formatter: format.amount, inputType: "amount", warning: amountEditWarning,
           },
           contributionAmount: {
-            label: "Raise contribution amount", formatter: amountFormatter, inputType: "amount", warning: amountEditWarning,
+            label: "Raise contribution amount", formatter: format.amount, inputType: "amount", warning: amountEditWarning,
           },
           stripeCustomerId: {
             label: "Stripe customer ID", inputType: "text", warning: stripeCustomerIdWarning,
@@ -64,14 +64,14 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
             label: "Stripe payment method", inputType: "text", warning: stripePaymentMethodIdWarning,
           },
           giftAid: {
-            label: "Gift-aided", formatter: booleanFormatter, inputType: "checkbox", warning: giftAidEditWarning,
+            label: "Gift-aided", formatter: format.boolean, inputType: "checkbox", warning: giftAidEditWarning,
           },
           charity: { label: "Designated charity", inputType: "text" },
           comment: { label: "Donor comment", inputType: "text" },
-          overallPublic: { label: "Donation is public", formatter: booleanFormatter, inputType: "checkbox" },
-          namePublic: { label: "Donor name is public", formatter: booleanFormatter, inputType: "checkbox" },
-          donationAmountPublic: { label: "Donation amount is public", formatter: booleanFormatter, inputType: "checkbox" },
-          donationCounted: { label: "Donation counted", formatter: booleanFormatter, inputType: "checkbox" },
+          overallPublic: { label: "Donation is public", formatter: format.boolean, inputType: "checkbox" },
+          namePublic: { label: "Donor name is public", formatter: format.boolean, inputType: "checkbox" },
+          donationAmountPublic: { label: "Donation amount is public", formatter: format.boolean, inputType: "checkbox" },
+          donationCounted: { label: "Donation counted", formatter: format.boolean, inputType: "checkbox" },
         }}
         item={donation}
         onSave={async (data) => {
@@ -96,8 +96,8 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           title="New payment"
           definition={{
             at: { inputType: "hidden" },
-            donationAmount: { label: "Donation amount", formatter: amountFormatter, inputType: "amount" },
-            contributionAmount: { label: "Contribution amount", formatter: amountFormatter, inputType: "amount" },
+            donationAmount: { label: "Donation amount", formatter: format.amount, inputType: "amount" },
+            contributionAmount: { label: "Contribution amount", formatter: format.amount, inputType: "amount" },
             method: {
               label: "Method", inputType: "select", selectOptions: ["cash", "direct_to_charity"],
             },
@@ -120,10 +120,10 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
       </Modal>
       <Table
         definition={{
-          at: { label: "At", formatter: timestampFormatter },
-          donationAmount: { label: "Donation", formatter: amountFormatter },
-          contributionAmount: { label: "Contribution", formatter: amountFormatter },
-          matchFundingAmount: { label: "Match funding", formatter: amountFormatter },
+          at: { label: "At", formatter: format.timestamp },
+          donationAmount: { label: "Donation", formatter: format.amount },
+          contributionAmount: { label: "Contribution", formatter: format.amount },
+          matchFundingAmount: { label: "Match funding", formatter: format.amount },
           method: { label: "Method" },
           status: { label: "Status" },
         }}

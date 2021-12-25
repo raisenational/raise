@@ -16,7 +16,8 @@ You only need to do this once.
 2. Install [Java](https://adoptium.net/) (choose the latest LTS version)
 3. Clone the repository ([more info](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
 4. Open the folder with VS Code
-5. Run the command `npm install` to install dependencies
+5. Run `npm install` and `npm run build` in the shared folder
+6. Run `npm install` in the server folder
 
 ### 🏃 Running the local server
 
@@ -46,6 +47,7 @@ The free [Git book](https://git-scm.com/book/en/v2) is a great resource to learn
     - Adding or removing entire endpoints or functions
     - Changing the database seed data
     - Resetting the database
+    - Making changes in the shared folder (see the instructions there)
 See the other sections in this README for more details on where you might want to make changes.
 4. Check your changes work as expected, and ideally write some unit tests for them. Use the command `npm test` to run the tests.
 5. Commit your changes, and push the branch. Raise a merge request and get someone to review it. If you've paired on a piece of work, you should still review the changes you've made but it's fine to merge if you are both happy. Iterate until you and your reviewer are comfortable and understand all your changes.
