@@ -6,21 +6,20 @@ import { loadStripe } from "@stripe/stripe-js"
 import {
   Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements,
 } from "@stripe/react-stripe-js"
+import {
+  format, convert, calcMatchFunding, PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse,
+} from "@raise/shared"
 import logo from "../images/logo.png"
 import Button from "./Button"
 import DonationCard from "./DonationCard"
 import { animateStatsIn } from "./IntroStats"
 import { useAxios } from "../helpers/networking"
-import { PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse } from "../helpers/schemaTypes"
-import { amountDropPenceIfZeroFormatter, dateFormatter } from "../helpers/format"
 import Modal from "./Modal"
 import { SectionTitle } from "./Section"
 import { LabelledInput } from "./Form"
 import Alert from "./Alert"
 import { parseMoney } from "../helpers/parse"
 import env from "../env/env"
-import matchFunding from "../helpers/matchFunding"
-import { gbpToPeopleProtected } from "../helpers/conversion"
 
 interface Props {
   title: string,
@@ -58,7 +57,7 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
           <p className="text-2xl md:text-3xl">{tagline}</p>
         </div>
         <div className="self-center">
-          <p className="text-2xl"><span className="text-5xl md:text-7xl stat-animate">{amountDropPenceIfZeroFormatter(fundraiser.data?.totalRaised)}</span><br /> raised by {fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? "" : "s"}{fundraiser.data ? ` of a ${amountDropPenceIfZeroFormatter(fundraiser.data?.goal)} goal` : ""}</p>
+          <p className="text-2xl"><span className="text-5xl md:text-7xl stat-animate">{format.amountDropPenceIfZero(fundraiser.data?.totalRaised)}</span><br /> raised by {fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? "" : "s"}{fundraiser.data ? ` of a ${format.amountDropPenceIfZero(fundraiser.data?.goal)} goal` : ""}</p>
 
           <div className="mx-2 -mt-4 mb-8">
             <div className="flex -skew-x-15 shadow-raise mt-8 rounded overflow-hidden">
@@ -177,10 +176,10 @@ const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormRes
     {/* TODO: formatting */}
     <div className="mt-2 grid gap-2 md:grid-cols-3 md:gap-4">
       <button type="button" onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} className="rounded border border-gray-700 p-4 cursor-pointer transition-all hover:bg-gray-100 hover:scale-105">
-        {amountDropPenceIfZeroFormatter(fundraiser.suggestedDonationAmountOneOff)} one-off
+        {format.amountDropPenceIfZero(fundraiser.suggestedDonationAmountOneOff)} one-off
       </button>
       <button type="button" onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} className="rounded border border-gray-700 p-4 cursor-pointer transition-all hover:bg-gray-100 hover:scale-105">
-        {amountDropPenceIfZeroFormatter(fundraiser.suggestedDonationAmountWeekly)} weekly
+        {format.amountDropPenceIfZero(fundraiser.suggestedDonationAmountWeekly)} weekly
       </button>
     </div>
 
@@ -202,7 +201,7 @@ const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormRes
               const recurrenceFrequency = getValues("recurrenceFrequency")
               if (recurrenceFrequency === "ONE_OFF") {
                 if (fundraiser.minimumDonationAmount && donationAmount < fundraiser.minimumDonationAmount) {
-                  return `The donation amount must be greater than ${amountDropPenceIfZeroFormatter(fundraiser.minimumDonationAmount)}`
+                  return `The donation amount must be greater than ${format.amountDropPenceIfZero(fundraiser.minimumDonationAmount)}`
                 }
               }
             } catch {
@@ -225,7 +224,7 @@ const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormRes
     </div>
 
     <div className="mt-4">
-      <p>At the end of the academic year, we come together as a community for a Summer Party to celebrate our collective impact. Given that 100% of your donation above will go directly to charity, we suggest an optional, separate contribution of {amountDropPenceIfZeroFormatter(fundraiser.suggestedContributionAmount)} to cover the costs of the event (which are generously subsidised by our sponsors). Importantly, everyone will be very welcome to join, whether or not they feel able to make this contribution.</p>
+      <p>At the end of the academic year, we come together as a community for a Summer Party to celebrate our collective impact. Given that 100% of your donation above will go directly to charity, we suggest an optional, separate contribution of {format.amountDropPenceIfZero(fundraiser.suggestedContributionAmount)} to cover the costs of the event (which are generously subsidised by our sponsors). Importantly, everyone will be very welcome to join, whether or not they feel able to make this contribution.</p>
       <LabelledInput
         id="contributionAmount"
         label={`Contribution amount${watches.recurrenceFrequency !== "ONE_OFF" ? " (one-off)" : ""}`}
@@ -313,7 +312,7 @@ const DonationFormMessage: React.FC<{ formMethods: UseFormReturn<DonationFormRes
           giftAid={watches.donationAmountPublic ? watches.giftAid : undefined}
           comment={watches.comment || null}
           donationAmount={watches.donationAmountPublic ? parseMoney(watches.donationAmount) : undefined}
-          matchFundingAmount={watches.donationAmountPublic ? matchFunding({
+          matchFundingAmount={watches.donationAmountPublic ? calcMatchFunding({
             donationAmount: parseMoney(watches.donationAmount),
             matchFundingRate: fundraiser.matchFundingRate,
             matchFundingRemaining: fundraiser.matchFundingRemaining,
@@ -399,14 +398,14 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
 
 const DonationFormPaymentAmount: React.FC<{ piResponse: PublicPaymentIntentResponse }> = ({ piResponse }) => {
   if (piResponse.futurePayments.length === 0) {
-    return <p>Amount due: {amountDropPenceIfZeroFormatter(piResponse.amount)}</p>
+    return <p>Amount due: {format.amountDropPenceIfZero(piResponse.amount)}</p>
   }
 
   return (
     <>
-      <p>Amount due: {amountDropPenceIfZeroFormatter(piResponse.amount)} now, then:</p>
+      <p>Amount due: {format.amountDropPenceIfZero(piResponse.amount)} now, then:</p>
       <ul className="list-disc pl-8 mb-1">
-        {piResponse.futurePayments.map((p) => <li>{amountDropPenceIfZeroFormatter(p.amount)} on {dateFormatter(p.at)}</li>)}
+        {piResponse.futurePayments.map((p) => <li>{format.amountDropPenceIfZero(p.amount)} on {format.date(p.at)}</li>)}
       </ul>
       <p>(you can cancel your future payments at any time by contacting us)</p>
     </>
@@ -549,7 +548,7 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
 const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, piResponse?: PublicPaymentIntentResponse }> = ({
   piResponse,
 }) => {
-  const peopleProtected = gbpToPeopleProtected(piResponse?.totalDonationAmount ?? 0)
+  const peopleProtected = convert.gbpToPeopleProtected(piResponse?.totalDonationAmount ?? 0)
 
   const fundraiserLink = window.location.host + window.location.pathname.replace(/\/$/, "")
   const sharingText = `I just donated to Raise, protecting ${peopleProtected} people from malaria! Raise is a movement encouraging people to adopt a positive approach towards deliberate effective giving - you can #joinraise at ${fundraiserLink} or ask me about it.`

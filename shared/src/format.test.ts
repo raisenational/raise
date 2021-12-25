@@ -1,6 +1,6 @@
 import * as format from "./format"
 
-describe("amountFormatter", () => {
+describe("amount", () => {
   test.each([
     [0, "£0.00"],
     [1, "£0.01"],
@@ -13,11 +13,11 @@ describe("amountFormatter", () => {
     [undefined, "—"],
     [null, "—"],
   ])("%s → %s", (value, expected) => {
-    expect(format.amountFormatter(value)).toEqual(expected)
+    expect(format.amount(value)).toEqual(expected)
   })
 })
 
-describe("amountDropPenceIfZeroFormatter", () => {
+describe("amountDropPenceIfZero", () => {
   test.each([
     [0, "£0"],
     [1, "£0.01"],
@@ -30,22 +30,22 @@ describe("amountDropPenceIfZeroFormatter", () => {
     [undefined, "—"],
     [null, "—"],
   ])("%s → %s", (value, expected) => {
-    expect(format.amountDropPenceIfZeroFormatter(value)).toEqual(expected)
+    expect(format.amountDropPenceIfZero(value)).toEqual(expected)
   })
 })
 
-describe("booleanFormatter", () => {
+describe("boolean", () => {
   test.each([
     [true, "Yes"],
     [false, "No"],
     [undefined, "—"],
     [null, "—"],
   ])("%s → %s", (value, expected) => {
-    expect(format.booleanFormatter(value)).toEqual(expected)
+    expect(format.boolean(value)).toEqual(expected)
   })
 })
 
-describe("dateFormatter", () => {
+describe("date", () => {
   test.each([
     [0, "01/01/1970"],
     [1632959999, "29/09/2021"],
@@ -54,11 +54,11 @@ describe("dateFormatter", () => {
     [undefined, "—"],
     [null, "—"],
   ])("%s → %s", (value, expected) => {
-    expect(format.dateFormatter(value)).toEqual(expected)
+    expect(format.date(value)).toEqual(expected)
   })
 })
 
-describe("matchFundingRateFormatter", () => {
+describe("matchFundingRate", () => {
   test.each([
     [0, "0% (i.e. £1 donated, £0 matched, £1 total)"],
     [50, "50% (i.e. £1 donated, £0.50 matched, £1.50 total)"],
@@ -68,11 +68,11 @@ describe("matchFundingRateFormatter", () => {
     [undefined, "—"],
     [null, "—"],
   ])("%s → %s", (value, expected) => {
-    expect(format.matchFundingRateFormatter(value)).toEqual(expected)
+    expect(format.matchFundingRate(value)).toEqual(expected)
   })
 })
 
-describe("percentFormatter", () => {
+describe("percent", () => {
   test.each([
     [0, "0%"],
     [50, "50%"],
@@ -82,11 +82,11 @@ describe("percentFormatter", () => {
     [undefined, "—"],
     [null, "—"],
   ])("%s → %s", (value, expected) => {
-    expect(format.percentFormatter(value)).toEqual(expected)
+    expect(format.percent(value)).toEqual(expected)
   })
 })
 
-describe("timestampFormatter", () => {
+describe("timestamp", () => {
   test.each([
     [0, "01/01/1970, 00:00:00"],
     [123456, "02/01/1970, 10:17:36"],
@@ -96,11 +96,11 @@ describe("timestampFormatter", () => {
     [undefined, "—"],
     [null, "—"],
   ])("%s → %s", (value, expected) => {
-    expect(format.timestampFormatter(value)).toEqual(expected)
+    expect(format.timestamp(value)).toEqual(expected)
   })
 })
 
-describe("jsonFormatter", () => {
+describe("json", () => {
   test.each([
     [0, "0"],
     ["hello", "\"hello\""],
@@ -109,6 +109,6 @@ describe("jsonFormatter", () => {
     [undefined, "undefined"],
     [null, "null"],
   ])("%s → %s", (value, expected) => {
-    expect(format.jsonFormatter(value)).toEqual(expected)
+    expect(format.json(value)).toEqual(expected)
   })
 })

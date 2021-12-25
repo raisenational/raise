@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
+import { profileSchema } from "@raise/shared"
 import { middyfy } from "../../../helpers/wrapper"
-import { profileSchema } from "../../../helpers/schemas"
 import { AuthTokenPayload } from "../../../helpers/types"
 
 export const main = middyfy(null, profileSchema, true, async (event) => {

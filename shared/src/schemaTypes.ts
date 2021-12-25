@@ -1,7 +1,7 @@
 /* eslint-disable */
 /**
 * This file was automatically generated. DO NOT MODIFY IT BY HAND.
-* Instead, modify schemas.ts, and run "npm run schemas".
+* Instead, modify schemas.ts, and run "npm run build".
 */
 export type AuditLogMetadata =
   | null

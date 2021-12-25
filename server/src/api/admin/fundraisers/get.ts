@@ -1,5 +1,5 @@
+import { fundraisersSchema } from "@raise/shared"
 import { scan } from "../../../helpers/db"
-import { fundraisersSchema } from "../../../helpers/schemas"
 import { fundraiserTable } from "../../../helpers/tables"
 import { middyfy } from "../../../helpers/wrapper"
 

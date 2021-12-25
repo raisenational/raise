@@ -1,0 +1,8 @@
+# package directories
+node_modules
+
+# jest output
+coverage
+
+# build directory
+dist/

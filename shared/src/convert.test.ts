@@ -1,4 +1,4 @@
-import { gbpToPeopleProtected } from "./conversion"
+import { gbpToPeopleProtected } from "./convert"
 
 describe("gbpToPeopleProtected", () => {
   test.each([

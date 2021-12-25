@@ -3,9 +3,9 @@ import type {
 } from "aws-lambda"
 import jwt from "jsonwebtoken"
 import { ulid } from "ulid"
+import { Donation, Fundraiser, Payment } from "@raise/shared"
 import { AuthTokenPayload } from "../src/helpers/types"
 import env from "../src/env/env"
-import { Donation, Fundraiser, Payment } from "../src/helpers/schemaTypes"
 import { NATIONAL } from "../src/helpers/groups"
 import MockDate from 'mockdate';
 import * as db from "../src/helpers/db"

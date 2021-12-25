@@ -1,5 +1,5 @@
+import { publicFundraiserSchema } from "@raise/shared"
 import { middyfy } from "../../../../helpers/wrapper"
-import { publicFundraiserSchema } from "../../../../helpers/schemas"
 import { donationTable, fundraiserTable } from "../../../../helpers/tables"
 import { query, get } from "../../../../helpers/db"
 

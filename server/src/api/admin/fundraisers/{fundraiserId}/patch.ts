@@ -1,5 +1,5 @@
+import { fundraiserEditsSchema } from "@raise/shared"
 import { middyfy } from "../../../../helpers/wrapper"
-import { fundraiserEditsSchema } from "../../../../helpers/schemas"
 import {
   assertHasGroup, assertHasGroupForProperties, checkPrevious, get, update,
 } from "../../../../helpers/db"

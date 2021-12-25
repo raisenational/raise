@@ -1,6 +1,6 @@
-import { gbpToPeopleProtected } from "../conversion"
-import { amountDropPenceIfZeroFormatter, dateFormatter } from "../format"
-import { Donation, Payment } from "../schemaTypes"
+import {
+  convert, format, Donation, Payment,
+} from "@raise/shared"
 
 export default (donation: Donation, payments: Payment[]): string => `<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
@@ -168,7 +168,7 @@ export default (donation: Donation, payments: Payment[]): string => `<!doctype h
                               <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
                                 <div
                                   style="font-family:'Helvetica', 'Arial', sans-serif;font-size:20px;line-height:1.5;text-align:left;color:#ffffff;">
-                                  ${donation.donorName.split(" ")[0]}, you've done a great thing today.<br /><br />Your donation will protect ${gbpToPeopleProtected(payments[0].donationAmount + (payments[0].matchFundingAmount ?? 0))}
+                                  ${donation.donorName.split(" ")[0]}, you've done a great thing today.<br /><br />Your donation will protect ${convert.gbpToPeopleProtected(payments[0].donationAmount + (payments[0].matchFundingAmount ?? 0))}
                                   people from malaria. You've also taken an important step on your journey to positive,
                                   deliberate, effective giving.</div>
                               </td>
@@ -216,11 +216,11 @@ export default (donation: Donation, payments: Payment[]): string => `<!doctype h
                                   style="color:#000000;font-family:'Helvetica', 'Arial', sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
                                   ${payments[0].donationAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
                                     <td style="padding: 2px 0;">Your donation to AMF</td>
-                                    <td style="padding: 2px 0;text-align:right;white-space:pre;">${amountDropPenceIfZeroFormatter(payments[0].donationAmount)}</td>
+                                    <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountDropPenceIfZero(payments[0].donationAmount)}</td>
                                   </tr>` : ""}
                                   ${payments[0].contributionAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
                                       <td style="padding: 2px 0;">Your contribution to Raise</td>
-                                      <td style="padding: 2px 0;text-align:right;white-space:pre;">${amountDropPenceIfZeroFormatter(payments[0].contributionAmount)}</td>
+                                      <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountDropPenceIfZero(payments[0].contributionAmount)}</td>
                                   </tr>` : ""}
                                   <tr style="height:6px">
                                     <td></td>
@@ -229,7 +229,7 @@ export default (donation: Donation, payments: Payment[]): string => `<!doctype h
                                   <tr
                                     style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;border-top:1px solid #bbb;font-weight:bold">
                                     <td style="padding: 8px 0 2px 0;">Total paid</td>
-                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;">${amountDropPenceIfZeroFormatter(payments[0].donationAmount + payments[0].contributionAmount)}</td>
+                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;">${format.amountDropPenceIfZero(payments[0].donationAmount + payments[0].contributionAmount)}</td>
                                   </tr>
                                 </table>
                               </td>
@@ -246,8 +246,8 @@ export default (donation: Donation, payments: Payment[]): string => `<!doctype h
                                 <table cellpadding="0" cellspacing="0" width="100%" border="0"
                                   style="color:#000000;font-family:'Helvetica', 'Arial', sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
                                   ${payments.slice(1).map((p) => `<tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
-                                      <td style="padding: 2px 0;">${dateFormatter(p.at)}</td>
-                                      <td style="padding: 2px 0;text-align:right;white-space:pre;">${amountDropPenceIfZeroFormatter(p.donationAmount + p.contributionAmount)}</td>
+                                      <td style="padding: 2px 0;">${format.date(p.at)}</td>
+                                      <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountDropPenceIfZero(p.donationAmount + p.contributionAmount)}</td>
                                   </tr>`).join("")}
                                   <tr style="height:6px">
                                     <td></td>
@@ -256,7 +256,7 @@ export default (donation: Donation, payments: Payment[]): string => `<!doctype h
                                   <tr
                                     style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;border-top:1px solid #bbb;font-weight:bold">
                                     <td style="padding: 8px 0 2px 0;">Total future donations</td>
-                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;">${amountDropPenceIfZeroFormatter(payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0))}</td>
+                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;">${format.amountDropPenceIfZero(payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0))}</td>
                                   </tr>
                                 </table>
                               </td>

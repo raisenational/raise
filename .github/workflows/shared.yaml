@@ -1,0 +1,40 @@
+# IMPORTANT: Consult the national team before editing this file. This file catches errors, but can't check itself.
+
+name: shared
+
+on:
+  push:
+    paths:
+      - ".github/workflows/shared.yaml"
+      - "shared/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        node-version: [14]
+
+    steps:
+      - name: Checkout ${{ github.sha }}
+        uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Use NPM 8
+        run: npm i -g npm@8
+
+      - name: "shared: Install dependencies"
+        working-directory: shared
+        run: npm ci
+      - name: "shared: Lint"
+        working-directory: shared
+        run: npm run lint
+      - name: "shared: Build"
+        working-directory: shared
+        run: npm run build
+      - name: "shared: Test"
+        working-directory: shared
+        run: npm run test -- --verbose

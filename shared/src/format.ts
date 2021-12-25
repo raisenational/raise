@@ -1,0 +1,8 @@
+export const amount = (amountInPence?: number | null): string => (amountInPence === undefined || amountInPence === null ? "—" : `£${(amountInPence / 100).toFixed(2)}`)
+export const amountDropPenceIfZero = (amountInPence?: number | null): string => (amountInPence === undefined || amountInPence === null ? "—" : `£${(amountInPence / 100).toFixed(amountInPence % 100 === 0 ? 0 : 2)}`)
+export const boolean = (b?: boolean | null): string => (b === undefined || b === null ? "—" : (b && "Yes") || "No")
+export const date = (unixTimestamp?: number | null): string => (unixTimestamp === undefined || unixTimestamp === null ? "—" : new Date(unixTimestamp * 1000).toLocaleDateString("en-GB"))
+export const matchFundingRate = (percentageInPoints?: number | null): string => (percentageInPoints === undefined || percentageInPoints === null ? "—" : `${percentageInPoints}% (i.e. £1 donated, £${percentageInPoints % 100 === 0 ? (percentageInPoints / 100) : (percentageInPoints / 100).toFixed(2)} matched, £${percentageInPoints % 100 === 0 ? (1 + percentageInPoints / 100) : (1 + percentageInPoints / 100).toFixed(2)} total)`)
+export const percent = (percentageInPoints?: number | null): string => (percentageInPoints === undefined || percentageInPoints === null ? "—" : `${percentageInPoints}%`)
+export const timestamp = (unixTimestamp?: number | null): string => (unixTimestamp === undefined || unixTimestamp === null ? "—" : new Date(unixTimestamp * 1000).toLocaleString("en-GB"))
+export const json = (any: unknown): string => String(JSON.stringify(any))

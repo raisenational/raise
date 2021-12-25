@@ -6,3 +6,4 @@ Think any documentation is out of date, incomplete, misleading or otherwise coul
 
 - [🌐 Website](./website)
 - [🔃 Server](./server)
+- [📦 Shared](./shared)

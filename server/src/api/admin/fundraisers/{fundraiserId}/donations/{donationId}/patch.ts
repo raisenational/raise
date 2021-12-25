@@ -1,6 +1,6 @@
 import createHttpError from "http-errors"
+import { donationEditsSchema } from "@raise/shared"
 import { middyfy } from "../../../../../../helpers/wrapper"
-import { donationEditsSchema } from "../../../../../../helpers/schemas"
 import {
   assertHasGroup, assertHasGroupForProperties, checkPrevious, get, inTransaction, plusT, update, updateT,
 } from "../../../../../../helpers/db"

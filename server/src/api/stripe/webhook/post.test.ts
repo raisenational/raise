@@ -1,11 +1,11 @@
 import { ulid } from "ulid"
+import { StripeWebhookRequest } from "@raise/shared"
 import {
   call, makeFundraiser, makeDonation, makePayment, delayDb,
 } from "../../../../local/testHelpers"
 import env from "../../../env/env"
 import * as db from "../../../helpers/db"
 import { get, insert, update } from "../../../helpers/db"
-import { StripeWebhookRequest } from "../../../helpers/schemaTypes"
 import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/tables"
 import { main } from "./post"
 

@@ -1,13 +1,13 @@
 import createHttpError from "http-errors"
-import { middyfy } from "../../../../../../../../helpers/wrapper"
 import {
   Fundraiser, Donation, Payment,
-} from "../../../../../../../../helpers/schemaTypes"
+  paymentPropertyEditsSchema,
+} from "@raise/shared"
+import { middyfy } from "../../../../../../../../helpers/wrapper"
 import {
   assertHasGroup, get, inTransaction, plusT, update, updateT,
 } from "../../../../../../../../helpers/db"
 import { donationTable, fundraiserTable, paymentTable } from "../../../../../../../../helpers/tables"
-import { paymentPropertyEditsSchema } from "../../../../../../../../helpers/schemas"
 import type { AWSTransactionDefinition, AuditDefinition } from "../../../../../../../../helpers/db"
 
 export const main = middyfy(paymentPropertyEditsSchema, null, true, async (event) => {

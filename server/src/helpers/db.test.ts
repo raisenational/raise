@@ -1,4 +1,5 @@
 import { ulid } from "ulid"
+import { JSONSchema } from "@raise/shared"
 import {
   insert, scan, get, query, insertAudit, update, inTransaction, updateT, plusT, insertT, AuditDefinition, assertMatchesSchema, assertHasGroup, assertHasGroupForProperties, checkPrevious,
 } from "./db"
@@ -7,7 +8,6 @@ import {
 } from "./tables"
 import { makeFundraiser, makeDonation, setMockDate } from "../../local/testHelpers"
 import { auditContext } from "./auditContext"
-import { JSONSchema } from "./schemas"
 import { NATIONAL } from "./groups"
 
 describe("scan", () => {

@@ -1,12 +1,13 @@
 import createHttpError from "http-errors"
 import { ulid } from "ulid"
 import Stripe from "stripe"
+import {
+  publicDonationRequest, publicPaymentIntentResponse, Fundraiser, PublicDonationRequest,
+} from "@raise/shared"
 import { middyfy } from "../../../../../helpers/wrapper"
 import { get, insert } from "../../../../../helpers/db"
-import { publicDonationRequest, publicPaymentIntentResponse } from "../../../../../helpers/schemas"
 import { donationTable, fundraiserTable, paymentTable } from "../../../../../helpers/tables"
 import env from "../../../../../env/env"
-import { Fundraiser, PublicDonationRequest } from "../../../../../helpers/schemaTypes"
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
 

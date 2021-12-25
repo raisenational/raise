@@ -1,0 +1,35 @@
+{
+  "name": "@raise/shared",
+  "private": true,
+  "main": "./dist/index",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "node schemasToTS.mjs && tsc -p tsconfig.build.json",
+    "test": "TZ=utc jest",
+    "test:watch": "TZ=utc jest --watch",
+    "lint": "eslint 'src/**/*.ts'"
+  },
+  "engines": {
+    "node": ">=14.15.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.0.3",
+    "@types/json-schema": "^7.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
+    "eslint": "^7.32.0",
+    "eslint-config-blvd": "^1.2.1",
+    "jest": "^27.4.5",
+    "json-schema-to-typescript": "^10.1.5",
+    "ts-jest": "^27.1.2",
+    "ts-node": "^9.1.0",
+    "typescript": "^4.5.4"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ]
+  }
+}

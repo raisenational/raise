@@ -1,7 +1,7 @@
 import { OAuth2Client } from "google-auth-library"
 import createHttpError from "http-errors"
+import { googleLoginRequestSchema, loginResponseSchema } from "@raise/shared"
 import { middyfy } from "../../../../helpers/wrapper"
-import { googleLoginRequestSchema, loginResponseSchema } from "../../../../helpers/schemas"
 import env from "../../../../env/env"
 import { login } from "../../../../helpers/login"
 

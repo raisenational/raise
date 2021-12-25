@@ -1,21 +1,19 @@
 import * as React from "react"
 import { navigate, RouteComponentProps } from "@reach/router"
-
 import {
   DownloadIcon, EyeIcon, EyeOffIcon, PlusSmIcon,
 } from "@heroicons/react/outline"
 import jsonexport from "jsonexport/dist"
+import {
+  format, Fundraiser, Donation, DonationEdits,
+} from "@raise/shared"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
-import { Fundraiser, Donation, DonationEdits } from "../../helpers/schemaTypes"
 import Table from "../../components/Table"
 import PropertyEditor from "../../components/PropertyEditor"
 import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
 import Button from "../../components/Button"
-import {
-  amountFormatter, booleanFormatter, matchFundingRateFormatter, timestampFormatter,
-} from "../../helpers/format"
 import { RequireGroup } from "../../helpers/security"
 
 const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> = ({ fundraiserId }) => {
@@ -29,26 +27,26 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
       <PropertyEditor
         definition={{
           fundraiserName: { label: "Name", inputType: "text" },
-          activeFrom: { label: "From", formatter: timestampFormatter, inputType: "datetime-local" },
-          activeTo: { label: "To", formatter: timestampFormatter, inputType: "datetime-local" },
-          recurringDonationsTo: { label: "Recurring donations to", formatter: timestampFormatter, inputType: "datetime-local" },
-          paused: { label: "Paused", formatter: booleanFormatter, inputType: "checkbox" },
-          goal: { label: "Goal", formatter: amountFormatter, inputType: "amount" },
+          activeFrom: { label: "From", formatter: format.timestamp, inputType: "datetime-local" },
+          activeTo: { label: "To", formatter: format.timestamp, inputType: "datetime-local" },
+          recurringDonationsTo: { label: "Recurring donations to", formatter: format.timestamp, inputType: "datetime-local" },
+          paused: { label: "Paused", formatter: format.boolean, inputType: "checkbox" },
+          goal: { label: "Goal", formatter: format.amount, inputType: "amount" },
           totalRaised: {
-            label: "Total", formatter: amountFormatter, inputType: "amount", warning: "Do not edit the total unless you know what you are doing. You probably want to add a manual donation instead.",
+            label: "Total", formatter: format.amount, inputType: "amount", warning: "Do not edit the total unless you know what you are doing. You probably want to add a manual donation instead.",
           },
           donationsCount: {
             label: "Donation count", inputType: "number", warning: "Do not edit the donation count unless you know what you are doing. You probably want to add a manual donation instead.",
           },
-          matchFundingRate: { label: "Match funding rate", formatter: matchFundingRateFormatter, inputType: "number" },
-          matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: amountFormatter, inputType: "amount" },
+          matchFundingRate: { label: "Match funding rate", formatter: format.matchFundingRate, inputType: "number" },
+          matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: format.amount, inputType: "amount" },
           matchFundingRemaining: {
-            label: "Match funding remaining", formatter: amountFormatter, inputType: "amount", warning: "Do not edit the match funding remaining unless you know what you are doing.",
+            label: "Match funding remaining", formatter: format.amount, inputType: "amount", warning: "Do not edit the match funding remaining unless you know what you are doing.",
           },
-          minimumDonationAmount: { label: "Minimum donation amount", formatter: amountFormatter, inputType: "amount" },
-          suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: amountFormatter, inputType: "amount" },
-          suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: amountFormatter, inputType: "amount" },
-          suggestedContributionAmount: { label: "Suggested contribution amount", formatter: amountFormatter, inputType: "amount" },
+          minimumDonationAmount: { label: "Minimum donation amount", formatter: format.amount, inputType: "amount" },
+          suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: format.amount, inputType: "amount" },
+          suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: format.amount, inputType: "amount" },
+          suggestedContributionAmount: { label: "Suggested contribution amount", formatter: format.amount, inputType: "amount" },
           groupsWithAccess: {
             label: "Groups with access", formatter: (groups: string[]) => groups.join(", ") || "(none selected)", inputType: "multiselect", selectOptions: ["National", "Demo"],
           },
@@ -106,21 +104,21 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string }> = ({ fundraiserI
           definition={{
             donorName: { label: "Donor name", inputType: "text" },
             donorEmail: { label: "Donor email", inputType: "email" },
-            emailConsentInformational: { label: "Email consent: informational", formatter: booleanFormatter, inputType: "checkbox" },
-            emailConsentMarketing: { label: "Email consent: marketing", formatter: booleanFormatter, inputType: "checkbox" },
+            emailConsentInformational: { label: "Email consent: informational", formatter: format.boolean, inputType: "checkbox" },
+            emailConsentMarketing: { label: "Email consent: marketing", formatter: format.boolean, inputType: "checkbox" },
             addressLine1: { label: "Address line 1", inputType: "text" },
             addressLine2: { label: "Address line 2", inputType: "text" },
             addressLine3: { label: "Address line 3", inputType: "text" },
             addressPostcode: { label: "Address postcode", inputType: "text" },
             addressCountry: { label: "Address country", inputType: "text" },
             giftAid: {
-              label: "Gift-aided", formatter: booleanFormatter, inputType: "checkbox", warning: "We must hold accurate names and addresses for gift-aided donations as per the Income Tax Act 2007",
+              label: "Gift-aided", formatter: format.boolean, inputType: "checkbox", warning: "We must hold accurate names and addresses for gift-aided donations as per the Income Tax Act 2007",
             },
             charity: { label: "Designated charity", inputType: "text" },
             comment: { label: "Donor comment", inputType: "text" },
-            overallPublic: { label: "Donation is public", formatter: booleanFormatter, inputType: "checkbox" },
-            namePublic: { label: "Donor name is public", formatter: booleanFormatter, inputType: "checkbox" },
-            donationAmountPublic: { label: "Donation amount is public", formatter: booleanFormatter, inputType: "checkbox" },
+            overallPublic: { label: "Donation is public", formatter: format.boolean, inputType: "checkbox" },
+            namePublic: { label: "Donor name is public", formatter: format.boolean, inputType: "checkbox" },
+            donationAmountPublic: { label: "Donation amount is public", formatter: format.boolean, inputType: "checkbox" },
           }}
           initialValues={{
             donorName: "",
@@ -151,9 +149,9 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string }> = ({ fundraiserI
         definition={{
           donorName: { label: "Name" },
           donorEmail: { label: "Email" },
-          createdAt: { label: "At", formatter: timestampFormatter },
-          donationAmount: { label: "Donated", formatter: amountFormatter },
-          matchFundingAmount: { label: "Matched", formatter: amountFormatter },
+          createdAt: { label: "At", formatter: format.timestamp },
+          donationAmount: { label: "Donated", formatter: format.amount },
+          matchFundingAmount: { label: "Matched", formatter: format.amount },
         }}
         items={showUncounted ? donations : asResponseValues(donations.data?.filter((d) => d.donationCounted), donations)}
         onClick={(donation) => navigate(`/admin/${fundraiserId}/${donation.id}/`)}

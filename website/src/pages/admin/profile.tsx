@@ -1,11 +1,10 @@
 import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 
+import { format, Profile } from "@raise/shared"
 import Section, { SectionTitle } from "../../components/Section"
-import { timestampFormatter } from "../../helpers/format"
 import PropertyEditor from "../../components/PropertyEditor"
 import { useAxios } from "../../helpers/networking"
-import { Profile } from "../../helpers/schemaTypes"
 
 const ProfilePage: React.FC<RouteComponentProps> = () => {
   const [profile] = useAxios<Profile>("/admin/login")
@@ -17,8 +16,8 @@ const ProfilePage: React.FC<RouteComponentProps> = () => {
         definition={{
           email: { label: "Email" },
           groups: { label: "Groups with access", formatter: (groups: string[]) => groups.join(", ") },
-          issuedAt: { label: "Logged in at", formatter: timestampFormatter },
-          expiresAt: { label: "Login expires at", formatter: timestampFormatter },
+          issuedAt: { label: "Logged in at", formatter: format.timestamp },
+          expiresAt: { label: "Login expires at", formatter: format.timestamp },
           sourceIp: { label: "IP address" },
         }}
         item={profile}
