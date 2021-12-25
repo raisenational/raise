@@ -69,8 +69,8 @@ const defaultConfig: AxiosRequestConfig = {
   timeout: 60000,
 }
 
-const logoutOnTokenExpiry = (err: any) => {
-  if (err && err.isAxiosError) {
+const logoutOnTokenExpiry = (err: unknown) => {
+  if (typeof err === "object" && err !== null && "isAxiosError" in err) {
     const axiosError = err as AxiosError
     if (axiosError.response?.status === 401 && typeof axiosError.response?.data?.message === "string" && axiosError.response.data.message.startsWith("Token expired")) {
       setAuthState()

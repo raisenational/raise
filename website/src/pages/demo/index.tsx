@@ -10,11 +10,9 @@ import ContactForm from "../../components/ContactForm"
 import Panel from "../../components/Panel"
 import Footer from "../../components/Footer"
 
-import logo from "../../images/logo.png"
 import moneyBox from "../../images/moneyBox.svg"
 import doubled from "../../images/doubled.png"
 import party from "../../images/party.svg"
-import Button from "../../components/Button"
 import IntroFundraiser from "../../components/IntroFundraiser"
 
 const IndexPage = () => (

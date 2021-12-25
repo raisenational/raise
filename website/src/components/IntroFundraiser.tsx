@@ -155,7 +155,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
         {page === 1 && <DonationFormDetails formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 2 && <DonationFormMessage formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} setPiResponse={setPiResponse} onPaymentSuccess={() => setPage(page + 1)} />}
-        {page === 4 && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse!} />}
+        {page === 4 && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse} />}
       </div>
       <div className="float-right">
         {page !== 0 && page !== 4 && <Button variant="gray" onClick={() => setPage(page - 1)}>Back</Button>}
@@ -288,7 +288,7 @@ const DonationFormDetails: React.FC<{ formMethods: UseFormReturn<DonationFormRes
   </>
 )
 
-const DonationFormMessage: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({ formMethods: { setValue, register }, watches, fundraiser }) => (
+const DonationFormMessage: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({ formMethods: { register }, watches, fundraiser }) => (
   <>
     <h3 className="text-2xl">Your Message</h3>
     <p>Add a message to your donation to be displayed on the website</p>
@@ -391,7 +391,7 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
         options={{ clientSecret: piResponse.data.stripeClientSecret }}
         stripe={stripePromise}
       >
-        <DonationFormPaymentInner formMethods={formMethods} fundraiser={fundraiser} watches={watches} stripeClientSecret={piResponse.data.stripeClientSecret} setPayButton={setPayButton} onPaymentSuccess={onPaymentSuccess} />
+        <DonationFormPaymentInner formMethods={formMethods} watches={watches} stripeClientSecret={piResponse.data.stripeClientSecret} setPayButton={setPayButton} onPaymentSuccess={onPaymentSuccess} />
       </Elements>
     </>
   )
@@ -413,17 +413,17 @@ const DonationFormPaymentAmount: React.FC<{ piResponse: PublicPaymentIntentRespo
   )
 }
 
-const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, stripeClientSecret: string, setPayButton: (e: JSX.Element) => void, onPaymentSuccess: () => void }> = ({
+const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, stripeClientSecret: string, setPayButton: (e: JSX.Element) => void, onPaymentSuccess: () => void }> = ({
   formMethods: {
     handleSubmit, formState: { isSubmitting },
-  }, watches, fundraiser, stripeClientSecret, setPayButton, onPaymentSuccess,
+  }, watches, stripeClientSecret, setPayButton, onPaymentSuccess,
 }) => {
   const stripe = useStripe()
   const elements = useElements()
   const [error, setError] = React.useState<Error | string | undefined>()
 
   // Confirm the payment with Stripe
-  const onSubmit: SubmitHandler<DonationFormResponses> = async (data) => {
+  const onSubmit: SubmitHandler<DonationFormResponses> = async () => {
     if (!stripe || !elements) {
       throw new Error("The payment system is still loading, please try again in a minute.")
     }
@@ -450,15 +450,15 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
       if (response.error.type === "card_error" || response.error.type === "validation_error" || response.error.code === "payment_intent_authentication_failure") {
         setError(response.error.message)
       } else {
+        // eslint-disable-next-line no-console
         console.error(response.error)
         setError("An unexpected error occured with your payment")
         if (response.error.code === "resource_missing") {
+          // eslint-disable-next-line no-console
           console.error("This error might occur because your Stripe credientials on the frontend do not match the ones on the backend. Check out the env.ts file to fix this.")
         }
       }
     } else if (response.paymentIntent.status === "succeeded") {
-      // alert("Success!")
-      console.log(response.paymentIntent)
       onPaymentSuccess()
     } else {
       setError("An unexpected error occured with your payment")
@@ -544,10 +544,12 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
   )
 }
 
-const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, piResponse: PublicPaymentIntentResponse }> = ({
-  formMethods, watches, fundraiser, piResponse,
+// (for consistency of form page props)
+// eslint-disable-next-line react/no-unused-prop-types
+const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, piResponse?: PublicPaymentIntentResponse }> = ({
+  piResponse,
 }) => {
-  const peopleProtected = gbpToPeopleProtected(piResponse.totalDonationAmount)
+  const peopleProtected = gbpToPeopleProtected(piResponse?.totalDonationAmount ?? 0)
 
   const fundraiserLink = window.location.host + window.location.pathname.replace(/\/$/, "")
   const sharingText = `I just donated to Raise, protecting ${peopleProtected} people from malaria! Raise is a movement encouraging people to adopt a positive approach towards deliberate effective giving - you can #joinraise at ${fundraiserLink} or ask me about it.`

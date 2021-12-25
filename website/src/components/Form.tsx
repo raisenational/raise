@@ -1,5 +1,6 @@
+/* eslint-disable react/destructuring-assignment */
 import {
-  Listbox, ListboxInput, ListboxButton, ListboxPopover, ListboxList, ListboxOption,
+  ListboxInput, ListboxButton, ListboxPopover, ListboxList, ListboxOption,
 } from "@reach/listbox"
 import { CheckIcon, ChevronDownIcon } from "@heroicons/react/outline"
 import classNames from "classnames"
@@ -103,7 +104,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
         <div className={className}>
           <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1")}>{label}</label>
           {/* @ts-ignore */}
-          <Select type={type} value={value} onChange={(v) => { setValue(v); if (rest.onChange) rest.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>) }} error={error} options={options!} />
+          <Select type={type} value={value} onChange={(v) => { setValue(v); if (rest.onChange) rest.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>) }} error={error} options={options} />
           {error && <span className="text-raise-red">{error}</span>}
         </div>
       )
@@ -117,7 +118,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
           <div className={className}>
             <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1")}>{label}</label>
             {/* @ts-ignore */}
-            <Select type={type} value={field.value} onChange={(v) => field.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>)} error={error} options={options!} />
+            <Select type={type} value={field.value} onChange={(v) => field.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>)} error={error} options={options} />
             {error && <span className="text-raise-red">{error}</span>}
           </div>
         )}
@@ -173,18 +174,17 @@ const normalizeArray = <T,>(value: T | T[] | undefined) => {
   return []
 }
 
-const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) => void } | { type: "multiselect", value?: string[], onChange: (s: string[]) => void }) & { options: string[] | Record<string, string | null>, error?: string }> = ({
-  type, value, onChange, options, error,
-}) => {
-  const [selected, setSelected] = React.useState<string[]>(normalizeArray(value))
+const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) => void } | { type: "multiselect", value?: string[], onChange: (s: string[]) => void }) & { options: string[] | Record<string, string | null>, error?: string }> = (props) => {
+  const [selected, setSelected] = React.useState<string[]>(normalizeArray(props.value))
+  const options: Record<string, string | null> = Array.isArray(props.options) ? props.options.reduce((acc, cur) => { acc[cur] = cur; return acc }, {} as Record<string, string>) : (props.options)
 
   return (
     <ListboxInput
       value="null" // hack so we can manage the value
       onChange={(k: string) => {
-        if (type === "select") {
+        if (props.type === "select") {
           setSelected([k])
-          onChange(k as any)
+          props.onChange(k)
           return
         }
 
@@ -193,16 +193,16 @@ const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) 
           : [...selected, k]
 
         setSelected(newSelected)
-        onChange(newSelected as any)
+        props.onChange(newSelected)
       }}
     >
       <div className="relative">
         <ListboxButton className={classNames("relative text-left w-full py-2 px-3 mb-1 appearance-none block rounded border cursor-text transition-all text-gray-700 outline-none", {
-          "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
-          "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": error,
+          "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !props.error,
+          "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": props.error,
         })}
         >
-          <span className={classNames("block truncate", { "text-gray-400": selected.length === 0 })}>{(selected.length > 0 && (Array.isArray(options) ? selected.join(", ") : selected.map((v) => options[v]).join(", "))) || "(none selected)"}</span>
+          <span className={classNames("block truncate", { "text-gray-400": selected.length === 0 })}>{(selected.length > 0 && (selected.map((v) => options[v]).join(", "))) || "(none selected)"}</span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
             <ChevronDownIcon
               className="w-5 h-5 text-gray-400"
@@ -212,7 +212,7 @@ const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) 
         </ListboxButton>
         <ListboxPopover portal={false} className="absolute z-10 w-full mt-1 py-1 overflow-auto text-base bg-white rounded shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
           <ListboxList className="outline-none">
-            {(Array.isArray(options) ? options.map((o) => [o, o]) : Object.entries(options)).map(([k, v]) => (
+            {Object.entries(options).map(([k, v]) => (
               <ListboxOption
                 key={k}
                 className={classNames("relative py-2 pl-10 pr-4", { "font-black": selected.includes(k) })}
@@ -295,6 +295,7 @@ export const Form = <T,>({
           return (
             <div key={k} className={i === arr.length - 1 ? "mb-2" : "mb-8"}>
               {v.warning && <Alert variant="warning" className="mb-4">{v.warning}</Alert>}
+              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <LabelledInput label={v.label ?? String(k)} id={String(k)} type={nInputType as any} options={(v as any).selectOptions} {...register(k)} />
               {showCurrent && <p>Current value: {v.formatter ? v.formatter(initialValues[k]) : (initialValues[k] ?? "—")}</p>}
               <p>{showCurrent ? "New value" : "Value"}: {v.formatter ? v.formatter(newValues[k]) : (newValues[k] ?? "—")}</p>

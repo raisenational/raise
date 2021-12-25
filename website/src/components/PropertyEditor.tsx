@@ -10,7 +10,7 @@ import { Form, FormProps, InputType } from "./Form"
 
 type PropertyDefinition<I, V> = {
   label?: string,
-  formatter?: (v: V) => string,
+  formatter?: (v: V, i: I) => string,
   className?: string,
   warning?: string,
 } & (
@@ -73,11 +73,11 @@ const PropertyEditor = <I,>({
         items={Object.entries(definition).map(([k, v]) => ({
           property: k as keyof I,
           label: v.label ?? k,
-          value: v.formatter ? v.formatter(nItem[k as keyof I]) : (nItem[k as keyof I] ?? "—"),
+          value: v.formatter ? v.formatter(nItem[k as keyof I], nItem) : (nItem[k as keyof I] ?? "—"),
         }))}
         itemRenderer={(i) => (
           <tr key={String(i.property)} className={classNames("hover:bg-black hover:bg-opacity-20", { "cursor-pointer": definition[i.property]?.inputType !== undefined })} onClick={definition[i.property]?.inputType === undefined ? undefined : (e) => tableOnClick(i, e)}>
-            {Object.entries(tableDefinition).map(([k, v], cellIndex, arr) => (
+            {Object.keys(tableDefinition).map((k, cellIndex, arr) => (
               <td key={k} className={classNames("p-2", { "pl-4": cellIndex === 0, "pr-4": cellIndex === arr.length - 1 })}>{(i[k as keyof typeof tableDefinition] ?? "—")}</td>
             ))}
           </tr>
