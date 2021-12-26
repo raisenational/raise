@@ -11,6 +11,7 @@ import {
 } from "@raise/shared"
 import Helmet from "react-helmet"
 import { ResponseValues } from "axios-hooks"
+import confetti from "canvas-confetti"
 import logo from "../images/logo.png"
 import Button from "./Button"
 import DonationCard from "./DonationCard"
@@ -189,6 +190,51 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
   const [payButton, setPayButton] = React.useState(<Button variant="blue" className="mt-4" disabled>Pay now</Button>)
   const [piResponse, setPiResponse] = React.useState<PublicPaymentIntentResponse>()
 
+  const onPaymentSuccess = () => {
+    setPage(4)
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (prefersReducedMotion) return
+
+    // Use simpler confetti for mobile to reduce lag
+    const isMobile = /android|webos|iphone|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())
+    if (isMobile) {
+      confetti({
+        particleCount: 100,
+        angle: 90,
+        spread: 40,
+        origin: { x: 0.5, y: 1.2 },
+        startVelocity: 0.087 * window.innerHeight,
+        gravity: 1,
+        ticks: 300,
+      })
+      return
+    }
+
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => {
+        confetti({
+          particleCount: 40,
+          angle: 50,
+          spread: 70,
+          origin: { x: -0.1, y: 1 },
+          startVelocity: 0.087 * window.innerHeight,
+          gravity: 1.5,
+          ticks: 250,
+        })
+        confetti({
+          particleCount: 40,
+          angle: 130,
+          spread: 70,
+          origin: { x: 1.1, y: 1 },
+          startVelocity: 0.087 * window.innerHeight,
+          gravity: 1.5,
+          ticks: 250,
+        })
+      }, i * 50)
+    }
+  }
+
   return (
     <FormProvider {...formMethods}>
       <SectionTitle>Donate</SectionTitle>
@@ -196,7 +242,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
         {page === 0 && <DonationFormAmounts formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 1 && <DonationFormDetails formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 2 && <DonationFormMessage formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-        {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} setPiResponse={setPiResponse} onPaymentSuccess={() => setPage(page + 1)} />}
+        {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} setPiResponse={setPiResponse} onPaymentSuccess={onPaymentSuccess} />}
         {page === 4 && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse} />}
       </div>
       <div className="float-right">

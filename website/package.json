@@ -34,6 +34,7 @@
     "axios": "^0.24.0",
     "axios-hooks": "^3.0.0",
     "babel-plugin-styled-components": "^2.0.2",
+    "canvas-confetti": "^1.4.0",
     "classnames": "^2.3.1",
     "eslint-config-blvd": "^1.2.1",
     "gatsby": "^4.4.0",
@@ -66,6 +67,7 @@
   "devDependencies": {
     "@serverless/typescript": "^2.69.1",
     "@testing-library/react": "^12.1.2",
+    "@types/canvas-confetti": "^1.4.2",
     "@types/jest": "^27.0.2",
     "@types/jsonexport": "^3.0.2",
     "@types/node": "^14.18.2",
