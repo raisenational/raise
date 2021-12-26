@@ -15,7 +15,6 @@ import doubled from "../../images/doubled.png"
 import party from "../../images/party.svg"
 import IntroStats from "../../components/IntroStats"
 import Cover, { CTADown } from "../../components/Cover"
-import Button from "../../components/Button"
 
 const IndexPage = () => (
   <Page>

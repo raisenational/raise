@@ -85,7 +85,7 @@ const DonationPage: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
   )
 }
 
-const IntroFundraiser: React.FC<{ title: string, tagline: string, fundraiser: ResponseValues<PublicFundraiser, any, any>, openModal: () => void }> = ({
+const IntroFundraiser: React.FC<{ title: string, tagline: string, fundraiser: ResponseValues<PublicFundraiser, unknown, unknown>, openModal: () => void }> = ({
   title, tagline, fundraiser, openModal,
 }) => {
   const [cardsOpen, setCardsOpen] = React.useState(false)
