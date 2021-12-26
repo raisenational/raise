@@ -9,17 +9,23 @@ import {
 import {
   format, convert, calcMatchFunding, PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse,
 } from "@raise/shared"
+import Helmet from "react-helmet"
+import { ResponseValues } from "axios-hooks"
 import logo from "../images/logo.png"
 import Button from "./Button"
 import DonationCard from "./DonationCard"
 import { animateStatsIn } from "./IntroStats"
 import { useAxios } from "../helpers/networking"
 import Modal from "./Modal"
-import { SectionTitle } from "./Section"
+import Section, { SectionTitle } from "./Section"
 import { LabelledInput } from "./Form"
 import Alert from "./Alert"
 import { parseMoney } from "../helpers/parse"
 import env from "../env/env"
+import Page from "./Page"
+import Navigation from "./Navigation"
+import FAQs, { FAQ } from "./FAQs"
+import Footer from "./Footer"
 
 interface Props {
   title: string,
@@ -27,10 +33,61 @@ interface Props {
   fundraiserId: string,
 }
 
-const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
+const DonationPage: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
   const [fundraiser, refetchFundraiser] = useAxios<PublicFundraiser>(`/public/fundraisers/${fundraiserId}`)
-
   const [modalOpen, setModalOpen] = React.useState(false)
+
+  return (
+    <Page>
+      <Helmet>
+        <title>{title}: Donate</title>
+        <meta property="og:title" content={`${title}: Donate`} />
+      </Helmet>
+
+      <Navigation
+        left={[
+          { text: "< back to main site", href: "../" },
+        ]}
+        right={[]}
+      />
+
+      <Section>
+        {fundraiser.error && !fundraiser.loading ? <Alert>{fundraiser.error}</Alert> : (
+          <>
+            <IntroFundraiser
+              title={title}
+              tagline={tagline}
+              fundraiser={fundraiser}
+              openModal={() => setModalOpen(true)}
+            />
+            <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+              {fundraiser.data && <DonationForm fundraiser={fundraiser.data} setModalOpen={setModalOpen} refetchFundraiser={refetchFundraiser} />}
+            </Modal>
+          </>
+        )}
+      </Section>
+
+      <Section id="faq">
+        <SectionTitle>FAQs</SectionTitle>
+        <FAQs>
+          <FAQ title="Are my details secure?">
+            <p>Yes</p>
+          </FAQ>
+
+          <FAQ title="Is donating the same as buying a ticket?">
+            <p>No</p>
+          </FAQ>
+        </FAQs>
+      </Section>
+
+      <Footer />
+    </Page>
+  )
+}
+
+const IntroFundraiser: React.FC<{ title: string, tagline: string, fundraiser: ResponseValues<PublicFundraiser, any, any>, openModal: () => void }> = ({
+  title, tagline, fundraiser, openModal,
+}) => {
   const [cardsOpen, setCardsOpen] = React.useState(false)
 
   const ref = React.useRef<HTMLDivElement>(null)
@@ -41,12 +98,6 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
       setHasAnimated(true)
     }
   })
-
-  if (fundraiser.error && !fundraiser.loading) {
-    return (
-      <Alert>{fundraiser.error}</Alert>
-    )
-  }
 
   return (
     <div ref={ref}>
@@ -66,10 +117,7 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
             </div>
           </div>
 
-          <Button variant="outline" className="block mx-2 md:inline-block md:mx-0" disabled={!fundraiser.data} onClick={() => setModalOpen(true)}>Donate</Button>
-          <Modal open={modalOpen} onClose={() => { setModalOpen(false); refetchFundraiser() }}>
-            {fundraiser.data && <DonationForm fundraiser={fundraiser.data} setModalOpen={setModalOpen} refetchFundraiser={refetchFundraiser} />}
-          </Modal>
+          <Button variant="outline" className="block mx-2 md:inline-block md:mx-0" disabled={!fundraiser.data} onClick={openModal}>Donate</Button>
         </div>
       </div>
 
@@ -91,11 +139,6 @@ const IntroFundraiser: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
         )}
     </div>
   )
-}
-
-const closeModal = (setModalOpen: (x: boolean) => void, refetchFundraiser: () => void) => {
-  setModalOpen(false)
-  refetchFundraiser()
 }
 
 const stripePromise = loadStripe(env.STRIPE_PUBLISHABLE_KEY)
@@ -160,7 +203,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
         {page !== 0 && page !== 4 && <Button variant="gray" onClick={() => setPage(page - 1)}>Back</Button>}
         {page !== 3 && page !== 4 && <Button variant="blue" onClick={async () => await formMethods.trigger() && setPage(page + 1)}>Next</Button>}
         {page === 3 && payButton}
-        {page === 4 && <Button variant="gray" onClick={() => closeModal(setModalOpen, refetchFundraiser)}>Close</Button>}
+        {page === 4 && <Button variant="gray" onClick={() => { setModalOpen(false); refetchFundraiser() }}>Close</Button>}
       </div>
     </FormProvider>
   )
@@ -550,7 +593,7 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
 }) => {
   const peopleProtected = convert.gbpToPeopleProtected(piResponse?.totalDonationAmount ?? 0)
 
-  const fundraiserLink = window.location.host + window.location.pathname.replace(/\/$/, "")
+  const fundraiserLink = window.location.host.replace(/^www./, "") + window.location.pathname.replace(/(\/donate)?\/?$/, "")
   const sharingText = `I just donated to Raise, protecting ${peopleProtected} people from malaria! Raise is a movement encouraging people to adopt a positive approach towards deliberate effective giving - you can #joinraise at ${fundraiserLink} or ask me about it.`
   const shareData = { text: sharingText }
 
@@ -580,4 +623,4 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
   )
 }
 
-export default IntroFundraiser
+export default DonationPage

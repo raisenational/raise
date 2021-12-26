@@ -13,7 +13,9 @@ import Footer from "../../components/Footer"
 import moneyBox from "../../images/moneyBox.svg"
 import doubled from "../../images/doubled.png"
 import party from "../../images/party.svg"
-import IntroFundraiser from "../../components/IntroFundraiser"
+import IntroStats from "../../components/IntroStats"
+import Cover, { CTADown } from "../../components/Cover"
+import Button from "../../components/Button"
 
 const IndexPage = () => (
   <Page>
@@ -22,26 +24,36 @@ const IndexPage = () => (
       <meta property="og:title" content="Raise Demo" />
     </Helmet>
 
-    <Navigation
-      left={[
-        { text: "Home", href: "/demo/" },
-        { text: "How It Works", href: "/demo/#how-it-works" },
-        { text: "FAQs", href: "/demo/#faq" },
-        { text: "Our Philosophy", href: "/demo/#our-philosophy" },
-        { text: "Contact", href: "/demo/#contact" },
-      ]}
-      right={[
-        // { text: "Get Involved!", href: "https://example.com" },
-      ]}
-    />
-
-    <Section>
-      <IntroFundraiser
-        title="Raise Demo"
-        tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
-        fundraiserId="01FGNSHH6X6X878ZNBZKY44JQA"
+    <Cover>
+      <Navigation
+        left={[
+          { text: "Home", href: "/demo/" },
+          { text: "How It Works", href: "/demo/#how-it-works" },
+          { text: "FAQs", href: "/demo/#faq" },
+          { text: "Our Philosophy", href: "/demo/#our-philosophy" },
+          { text: "Contact", href: "/demo/#contact" },
+        ]}
+        right={[
+          { text: "Donate", href: "/demo/donate" },
+        ]}
       />
-    </Section>
+      <Section className="px-8">
+        <IntroStats
+          title="Raise Demo"
+          tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our national impact below."
+          statistics={{
+            years: 4,
+            students: 1366,
+            raised: 284581,
+            protected: 340013,
+          }}
+        />
+      </Section>
+      <CTADown
+        text="How it works"
+        href="#how-it-works"
+      />
+    </Cover>
 
     <Section id="how-it-works">
       <SectionTitle>How it Works</SectionTitle>
