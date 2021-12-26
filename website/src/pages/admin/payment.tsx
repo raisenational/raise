@@ -13,7 +13,7 @@ import { Form } from "../../components/Form"
 
 const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string, paymentId?: string }> = ({ fundraiserId, donationId, paymentId }) => {
   const [payments, refetchPayments] = useAxios<Payment[]>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`)
-  const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
+  const [donations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
   const axios = useRawAxios()
 
   const [refundModalOpen, setRefundModalOpen] = React.useState(false)
@@ -75,7 +75,6 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donat
         onSave={async (data) => {
           await axios.patch(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments/${paymentId}`, data)
           refetchPayments()
-          refetchDonations()
         }}
       />
     </Section>

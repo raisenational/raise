@@ -81,7 +81,15 @@ const logoutOnTokenExpiry = (err: unknown) => {
   return Promise.reject(err)
 }
 
+const clearCacheOnNonGet = (config: AxiosRequestConfig) => {
+  if (config.method !== "get" && config.method !== "GET") {
+    realUseAxios.clearCache()
+  }
+  return config
+}
+
 const axiosWithDefaults = _axios.create(defaultConfig)
+axiosWithDefaults.interceptors.request.use(clearCacheOnNonGet, undefined)
 axiosWithDefaults.interceptors.response.use(undefined, logoutOnTokenExpiry)
 
 const realUseAxios = makeUseAxios({ axios: axiosWithDefaults })
@@ -124,6 +132,7 @@ export const useRawAxios = () => {
         Authorization: `Bearer ${auth.token}`,
       },
     })
+    axios.interceptors.request.use(clearCacheOnNonGet, undefined)
     axios.interceptors.response.use(undefined, logoutOnTokenExpiry)
 
     return axios
