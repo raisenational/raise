@@ -75,7 +75,6 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donat
         onSave={async (data) => {
           await axios.patch(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments/${paymentId}`, data)
           refetchPayments()
-          refetchDonations()
         }}
       />
     </Section>
