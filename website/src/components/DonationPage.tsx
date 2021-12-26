@@ -126,7 +126,7 @@ const IntroFundraiser: React.FC<{ title: string, tagline: string, fundraiser: Re
         {/* Show the first six donations */}
         {/* eslint-disable-next-line no-nested-ternary */
           fundraiser.data ? (cardsOpen ? fundraiser.data.donations : fundraiser.data.donations.slice(0, 6)).map((d) => <DonationCard key={d.createdAt} className="bg-raise-red" {...d} />)
-            : [12, 10, 14].map((d) => <DonationCard loading createdAt="1 hour ago" className="bg-raise-red" donorName={"a".repeat(d)} matchFundingAmount={1234} comment={"a".repeat(d * 2)} />)
+            : [12, 10, 14].map((d) => <DonationCard key={d} loading createdAt="1 hour ago" className="bg-raise-red" donorName={"a".repeat(d)} matchFundingAmount={1234} comment={"a".repeat(d * 2)} />)
         }
       </div>
       {(fundraiser.data?.donations.length ?? 0) > 6
@@ -251,6 +251,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
         {page === 3 && payButton}
         {page === 4 && <Button variant="gray" onClick={() => { setModalOpen(false); refetchFundraiser() }}>Close</Button>}
       </div>
+      <div className="clear-both" />
     </FormProvider>
   )
 }
@@ -354,6 +355,7 @@ const DonationFormDetails: React.FC<{ formMethods: UseFormReturn<DonationFormRes
           type="email"
           autoComplete="email"
           error={errors.donorEmail?.message}
+          className={errors.donorEmail?.message ? "mb-4" : undefined}
           {...register("donorEmail", {
             validate: (s) => {
               if (!s) return "We need your email to contact you in there are any problems with your donation"
@@ -409,7 +411,7 @@ const DonationFormMessage: React.FC<{ formMethods: UseFormReturn<DonationFormRes
           }) : undefined}
           recurringAmount={watches.donationAmountPublic && watches.recurrenceFrequency !== "ONE_OFF" ? parseMoney(watches.donationAmount) : null}
           recurrenceFrequency={watches.recurrenceFrequency !== "ONE_OFF" ? watches.recurrenceFrequency : null}
-          className="bg-raise-red text-2xl text-white font-raise-content max-w-md mt-2"
+          className="bg-raise-red text-2xl text-white font-raise-content md:max-w-md mt-2"
         />
       </>
     )}
@@ -494,7 +496,7 @@ const DonationFormPaymentAmount: React.FC<{ piResponse: PublicPaymentIntentRespo
     <>
       <p>Amount due: {format.amountDropPenceIfZero(piResponse.amount)} now, then:</p>
       <ul className="list-disc pl-8 mb-1">
-        {piResponse.futurePayments.map((p) => <li>{format.amountDropPenceIfZero(p.amount)} on {format.date(p.at)}</li>)}
+        {piResponse.futurePayments.map((p) => <li key={p.at}>{format.amountDropPenceIfZero(p.amount)} on {format.date(p.at)}</li>)}
       </ul>
       <p>(you can cancel your future payments at any time by contacting us)</p>
     </>
@@ -655,13 +657,13 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
       <h3 className="text-2xl mt-4">Multiply your impact</h3>
       <p className="mb-2">Sharing your donation on social media can massively increase your impact.</p>
       {window.navigator.canShare && window.navigator.canShare(shareData) ? <Button variant="blue" onClick={() => window.navigator.share(shareData)}>Share</Button> : (
-        <div>
+        <div className="flex flex-wrap gap-y-2">
           <Button variant="blue" target="_blank" href={`https://www.facebook.com/dialog/send?app_id=329829260786620&link=${encodeURIComponent(fundraiserLink)}&redirect_uri=${encodeURIComponent(fundraiserLink)}`}>Messenger</Button>
           <Button variant="blue" target="_blank" href={`https://api.whatsapp.com/send?text=${encodeURIComponent(sharingText)}`}>WhatsApp</Button>
           <Button variant="blue" target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fundraiserLink)}`}>Facebook</Button>
-          <Button variant="blue" target="_blank" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(sharingText)}`}>Twitter</Button>
-          <Button variant="blue" target="_blank" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fundraiserLink)}`}>LinkedIn</Button>
-          <Button variant="blue" target="_blank" href={`mailto:?body=${encodeURIComponent(sharingText)}&subject=${encodeURIComponent("Donating money to Raise")}`}>Email</Button>
+          <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(sharingText)}`}>Twitter</Button>
+          <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fundraiserLink)}`}>LinkedIn</Button>
+          <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`mailto:?body=${encodeURIComponent(sharingText)}&subject=${encodeURIComponent("Donating money to Raise")}`}>Email</Button>
           <p className="mt-2">Sharing in other places is great too! Just direct them to <span className="select-all">{fundraiserLink}</span></p>
         </div>
       )}
