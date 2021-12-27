@@ -76,8 +76,8 @@ export const main = middyfy(null, null, true, async (event) => {
   const failures = results.filter((r) => r.status === "rejected")
 
   // Log how everything went
-  // eslint-disable-next-line no-console
   const message = `Tried to collect ${scheduledCardPaymentsDue.length} payments: ${successes.length} succeeded, ${failures.length} failed`
+  // eslint-disable-next-line no-console
   console.log(message)
   failures.forEach((failure) => {
     // eslint-disable-next-line no-console
