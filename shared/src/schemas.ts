@@ -258,7 +258,7 @@ export const auditLogSchema: JSONSchema<S.AuditLog> = {
     id: ulidSchema,
     object: { type: "string" }, // a thing that can be created/edited e.g. a donation. If non-existent (e.g. for logins), same as id.
     subject: { type: "string" }, // e.g. a admin user email, "public" | "stripe" | "scheduler"
-    action: { enum: ["create", "edit", "login", "plus", "security"] },
+    action: { enum: ["create", "edit", "login", "plus", "security", "run"] },
     at: { type: "integer" },
     sourceIp: { type: "string" },
     userAgent: { type: "string" },
@@ -423,3 +423,15 @@ export const stripeWebhookRequest: JSONSchema<S.StripeWebhookRequest> = {
   required: ["id", "api_version", "data", "type", "object", "created"],
   additionalProperties: true,
 }
+
+export const taskSchema: JSONSchema<S.Task> = {
+  type: "object",
+  properties: {
+    id: ulidSchema,
+    name: { type: "string" },
+  },
+  required: ["id", "name"],
+  additionalProperties: false,
+}
+
+export const tasksSchema: JSONSchema<S.Task[]> = { type: "array", items: taskSchema }

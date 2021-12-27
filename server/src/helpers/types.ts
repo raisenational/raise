@@ -8,6 +8,12 @@ export interface AuthTokenPayload {
   exp: number,
 }
 
+export interface TaskDefinition {
+  id: string,
+  name: string,
+  run: () => unknown | Promise<unknown>,
+}
+
 // The API event we have to handle after our middlewares have run
 export type APIGatewayEvent<Body = unknown, Auth = { payload: AuthTokenPayload, token: string } | undefined> = Omit<APIGatewayProxyEventV2, "body" | "pathParameters"> & {
   body: Body,

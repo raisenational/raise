@@ -5,6 +5,7 @@ import { Router } from "@reach/router"
 import Page from "../../components/Page"
 import FundraisersPage from "./fundraisers"
 import ProfilePage from "./profile"
+import TasksPage from "./tasks"
 import Login from "./login"
 import NotFoundPage from "../404"
 import Navigation from "../../components/Navigation"
@@ -61,6 +62,7 @@ const IndexLayout = () => {
         <Navigation
           left={[
             { text: "Fundraisers", href: "/admin/" },
+            { text: "Tasks", href: "/admin/tasks" },
             { text: "Profile", href: "/admin/profile" },
           ]}
           right={[
@@ -81,6 +83,7 @@ const IndexLayout = () => {
             <DonationPage path="/:fundraiserId/:donationId" />
             <PaymentPage path="/:fundraiserId/:donationId/:paymentId" />
             <ProfilePage path="/profile" />
+            <TasksPage path="/tasks" />
             <NotFoundPage default />
           </>
         )}

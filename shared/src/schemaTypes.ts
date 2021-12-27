@@ -17,7 +17,7 @@ export interface AuditLog {
   id: string;
   object: string;
   subject: string;
-  action: "create" | "edit" | "login" | "plus" | "security";
+  action: "create" | "edit" | "login" | "plus" | "security" | "run";
   at: number;
   sourceIp: string;
   userAgent: string;
@@ -391,5 +391,15 @@ export interface StripeWebhookRequest {
   created: number;
   [k: string]: unknown;
 }
+
+export interface Task {
+  id: string;
+  name: string;
+}
+
+export type Tasks = {
+  id: string;
+  name: string;
+}[];
 
 export type Ulid = string;
