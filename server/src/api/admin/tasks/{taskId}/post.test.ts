@@ -12,7 +12,7 @@ jest.mock("../../../../tasks", () => [
   {
     id: "01FQWYD5FGVS4F9Q9JZ5Y3D0PD",
     name: "With return value",
-    run: jest.fn(),
+    run: jest.fn().mockImplementation(() => 1),
   },
   {
     id: "01FQWY1BPYFF3KS7BY8B4NJJSC",
@@ -64,7 +64,7 @@ test("can run a task that errors with a non-HTTP error", async () => {
   expect(tasks[2].run).toHaveBeenCalledTimes(1)
 })
 
-test("can run a task that errors with a non-HTTP error", async () => {
+test("can run a task that errors with a HTTP error", async () => {
   // when we call the endpoint
   const response = await call(main, { rawResponse: true, pathParameters: { taskId: tasks[3].id } })(null)
 
