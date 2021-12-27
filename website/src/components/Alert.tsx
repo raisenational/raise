@@ -1,9 +1,9 @@
 import * as React from "react"
-import { ExclamationCircleIcon, ExclamationIcon } from "@heroicons/react/outline"
+import { CheckCircleIcon, ExclamationCircleIcon, ExclamationIcon } from "@heroicons/react/outline"
 import classNames from "classnames"
 
 interface Props {
-  variant?: "error" | "warning",
+  variant?: "error" | "warning" | "success",
   className?: string,
   children: React.ReactNode | Error,
 }
@@ -13,14 +13,17 @@ const Alert: React.FC<Props> = ({ children, variant = "error", className }) => (
     {
       "bg-raise-red text-white": variant === "error",
       "bg-raise-yellow text-black": variant === "warning",
+      "bg-green-600 text-white": variant === "success",
     },
     className)}
   >
     {variant === "error" && <ExclamationCircleIcon className="w-6 h-6 min-w-min mr-2 mt-1" />}
     {variant === "warning" && <ExclamationIcon className="w-6 h-6 min-w-min mr-2 mt-1" />}
+    {variant === "success" && <CheckCircleIcon className="w-6 h-6 min-w-min mr-2 mt-1" />}
     <span className="flex-1">
       {variant === "error" && "Error"}
       {variant === "warning" && "Warning"}
+      {variant === "success" && "Success"}
       : {children instanceof Error ? (
         <>
           {children.message}
