@@ -1,7 +1,8 @@
 import { sendEmail } from "./email"
 
-const send = jest.fn()
+jest.unmock("./email")
 
+const send = jest.fn()
 jest.mock("@aws-sdk/client-sesv2", () => ({
   SESv2Client: jest.fn().mockImplementation(() => ({ get send() { return send } })),
   SendEmailCommand: jest.fn().mockImplementation((input) => ({ _input: input })),

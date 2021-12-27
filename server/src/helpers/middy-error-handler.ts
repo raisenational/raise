@@ -1,5 +1,7 @@
 import middy from "@middy/core"
+import { auditContext } from "./auditContext"
 import { insertAudit } from "./db"
+import { sendMessage } from "./slack"
 
 const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) => {
   const err = (request.error instanceof Error ? request.error : {}) as { statusCode?: number, details?: unknown } & Error
@@ -13,6 +15,7 @@ const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) 
       action: "security",
       metadata: { statusCode: err.statusCode, message: err.message },
     })
+    await sendMessage(`🔒 Security (${err.statusCode}${auditContext.value ? ` on ${auditContext.value.route} by ${auditContext.value.subject}` : ""}): ${err.message}`)
   }
 
   // Log and hide details of unexpected errors
@@ -22,6 +25,7 @@ const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) 
     // eslint-disable-next-line no-console
     console.error(request.error)
     err.statusCode = typeof err.statusCode === "number" && err.statusCode > 500 ? err.statusCode : 500
+    await sendMessage(`💥 Internal error (${err.statusCode}${auditContext.value ? ` on ${auditContext.value.route} by ${auditContext.value.subject}` : ""}): ${err.message ?? "See logs for more details"}`)
     err.message = "An internal error occured"
     err.details = undefined
   }

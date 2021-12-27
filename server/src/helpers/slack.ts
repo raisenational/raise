@@ -1,27 +1,22 @@
 import axios from "axios"
+import env from "../env/env"
 
-export const main = async () => {
-  try {
-    const text = "Hello World ! "
+export const sendMessage = async (text: string): Promise<void> => {
+  const response = await axios({
+    method: "post",
+    baseURL: "https://slack.com/api/",
+    url: "chat.postMessage",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${env.SLACK_BOT_TOKEN}`,
+    },
+    data: {
+      channel: env.SLACK_CHANNEL_ID,
+      text,
+    },
+  })
 
-    const response = await axios({
-      method: "post",
-      baseURL: "https://slack.com/api/",
-      url: "chat.postMessage",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer xoxb-825862040501-2829297236371-ThN78vWqKY46NDUEtlbiLpGX",
-      },
-      data: {
-        channel: "CQ9RC2HB7",
-        text,
-      },
-    })
-    console.log(response)
-    if (!response.data.ok) {
-      throw new Error(response.data.error)
-    }
-  } catch (e) {
-    console.error(`There was an error ${e}`)
+  if (!response.data.ok) {
+    throw new Error(`Error from Slack API: ${response.data.error}`)
   }
 }

@@ -4,6 +4,7 @@ import { middyfy } from "../../../helpers/wrapper"
 import { get, scan, update } from "../../../helpers/db"
 import { donationTable, paymentTable } from "../../../helpers/tables"
 import env from "../../../env/env"
+import { sendMessage } from "../../../helpers/slack"
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
 
@@ -46,6 +47,8 @@ export const main = middyfy(null, null, true, async (event) => {
       throw new createHttpError.InternalServerError("Nothing to capture on scheduled card payment as donation amount and contribution amount are zero")
     }
 
+    // TODO: get existing payment intent if there is a reference on the payment
+
     const paymentIntent = await stripe.paymentIntents.create({
       amount: payment.donationAmount + payment.contributionAmount,
       currency: "gbp",
@@ -74,13 +77,17 @@ export const main = middyfy(null, null, true, async (event) => {
 
   // Log how everything went
   // eslint-disable-next-line no-console
-  console.log(`Tried to collect ${scheduledCardPaymentsDue.length} payments: ${successes.length} succeeded, ${failures.length} failed`)
+  const message = `Tried to collect ${scheduledCardPaymentsDue.length} payments: ${successes.length} succeeded, ${failures.length} failed`
+  console.log(message)
   failures.forEach((failure) => {
     // eslint-disable-next-line no-console
     console.error(`Payment ${failure.paymentId} (donation ${failure.donationId}, fundraiser ${failure.fundraiserId}) failed:`)
     // eslint-disable-next-line no-console
     console.error((failure as PromiseRejectedResult).reason)
   })
+  if (failures.length) {
+    await sendMessage(`💸 Scheduled payments: ${message}`)
+  }
 })
 
 const wait = async (timeInMilliseconds: number) => new Promise((resolve) => setTimeout(resolve, timeInMilliseconds))

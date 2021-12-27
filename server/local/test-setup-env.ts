@@ -6,6 +6,14 @@ import { dbClient } from "../src/helpers/db"
 // Retrieve the table CloudFormation resources from the __DYNAMODB_TABLES environment variable
 const DYNAMODB_TABLES = JSON.parse(process.env.__DYNAMODB_TABLES!)
 
+// Mock out email and Slack by default so our tests don't send out messages
+jest.mock("../src/helpers/slack", () => ({
+  sendMessage: jest.fn().mockResolvedValue(undefined)
+}))
+jest.mock("../src/helpers/email", () => ({
+  sendEmail: jest.fn().mockResolvedValue(undefined)
+}))
+
 beforeEach(async () => {
   // Mock audit context (you can override this by setting auditContext.value)
   auditContext.value = {
