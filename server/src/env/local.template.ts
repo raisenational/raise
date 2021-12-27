@@ -21,6 +21,11 @@ const env: Env = {
   STRIPE_SECRET_KEY: "sk_test_51JoQv0KzqibgSMB7Oe3m4t2wcaTp3nMhg0xol8MPHLCBICO96ETErfvwB724kCFoD5MKA9OfzHYL6EdQaaYGh7Az00DdEdhY2z",
   STRIPE_WEBHOOK_SECRET: "whsec_3V5u8MmBEOcDjGdoAPIyWqJonW422WmL",
 
+  // Slack configuration
+  // The bot should have the chat:write scope and be able to access the channel
+  SLACK_BOT_TOKEN: "xoxb-825862040501-2829297236371-ThN78vWqKY46NDUEtlbiLpGX",
+  SLACK_CHANNEL_ID: "CQ9RC2HB7",
+
   // Timestamp which JWTs must be issued after. Either an integer (unix timestamp in seconds) or undefined (undefined means this check is disabled)
   // For emergency use in case we want to quickly make all tokens invalid but don't have access to a computer with openssl installed to regenerate keys
   // NB: changing this is pointless if the JWT private key has been exposed
