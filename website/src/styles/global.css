@@ -28,6 +28,12 @@
     font-display:auto;font-style:normal;font-weight:400;
   }
 
+  /* Suppress reach UI warnings about not including their CSS: https://reach.tech/styling#skip-including-styles */
+  :root {
+    --reach-dialog: 1;
+    --reach-listbox: 1;
+  }
+
   html {
     scroll-behavior: smooth;
   }
