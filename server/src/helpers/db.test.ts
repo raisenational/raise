@@ -346,6 +346,9 @@ describe("insertAudit", () => {
       sourceIp: "123.123.123.123",
       subject: "public",
       userAgent: "some browser",
+      logGroupName: "aws/lambda/raise-server-stage-myFunc",
+      logStreamName: "2022/01/01/[$LATEST]123456789",
+      awsRegion: "eu-test-1",
     }
     const person = {
       id: ulid(),

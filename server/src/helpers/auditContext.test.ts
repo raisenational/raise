@@ -1,9 +1,12 @@
+import middy from "@middy/core"
 import {
   auditContext,
   middyAuditContextManagerAfter,
   middyAuditContextManagerBefore,
 } from "./auditContext"
-import type { APIGatewayEvent } from "./types"
+
+beforeAll(() => { process.env.AWS_REGION = "eu-test-1" })
+afterAll(() => { process.env.AWS_REGION = undefined })
 
 test("before sets up the auditContext with an unauthed-event", () => {
   // Given we're not in an auditContext
@@ -22,8 +25,12 @@ test("before sets up the auditContext with an unauthed-event", () => {
         },
         routeKey: "POST /a/path/with/{param}",
       },
-    } as APIGatewayEvent,
-  })
+    },
+    context: {
+      logGroupName: "aws/lambda/raise-server-stage-myFunc",
+      logStreamName: "2022/01/01/[$LATEST]123456789",
+    },
+  } as middy.Request)
 
   // Then the audit context is set up as expected
   expect(auditContext.value).toEqual({
@@ -32,6 +39,9 @@ test("before sets up the auditContext with an unauthed-event", () => {
     sourceIp: "123.123.123.123",
     subject: "public",
     userAgent: "some browser",
+    logGroupName: "aws/lambda/raise-server-stage-myFunc",
+    logStreamName: "2022/01/01/[$LATEST]123456789",
+    awsRegion: "eu-test-1",
   })
 })
 
@@ -61,8 +71,12 @@ test("before sets up the auditContext with an authed-event", () => {
         },
         token: "ey1.2.3",
       },
-    } as APIGatewayEvent,
-  })
+    },
+    context: {
+      logGroupName: "aws/lambda/raise-server-stage-myFunc",
+      logStreamName: "2022/01/01/[$LATEST]123456789",
+    },
+  } as middy.Request)
 
   // Then the audit context is set up as expected
   expect(auditContext.value).toEqual({
@@ -71,6 +85,9 @@ test("before sets up the auditContext with an authed-event", () => {
     sourceIp: "123.123.123.123",
     subject: "ajones@joinraise.org",
     userAgent: "some browser",
+    logGroupName: "aws/lambda/raise-server-stage-myFunc",
+    logStreamName: "2022/01/01/[$LATEST]123456789",
+    awsRegion: "eu-test-1",
   })
 })
 
@@ -82,6 +99,9 @@ test("after clears the auditContext", () => {
     sourceIp: "123.123.123.123",
     subject: "public",
     userAgent: "some browser",
+    logGroupName: "aws/lambda/raise-server-stage-myFunc",
+    logStreamName: "2022/01/01/[$LATEST]123456789",
+    awsRegion: "eu-test-1",
   }
 
   // When we run the after hook

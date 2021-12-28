@@ -35,6 +35,7 @@ export const call = (handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyRes
     { algorithm: "ES256" },
   )
 
+  process.env.AWS_REGION = 'eu-test-1';
   const response = await handler(
     {
       routeKey: options.routeKey ?? `UNKNOWN ${options.path ?? "/unknown"}`,
@@ -60,9 +61,12 @@ export const call = (handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyRes
     } as APIGatewayProxyEventV2,
     {
       awsRequestId: "request-123456789",
+      logGroupName: "aws/lambda/raise-server-stage-myFunc",
+      logStreamName: "2022/01/01/[$LATEST]123456789",
     } as Context,
     () => { throw new Error("expected to return promise, not invoke callback") },
   )
+  process.env.AWS_REGION = undefined;
   if (!response) throw new Error("No response returned")
 
   if (options.rawResponse) return response
