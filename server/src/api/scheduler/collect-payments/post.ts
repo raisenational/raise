@@ -4,7 +4,7 @@ import { middyfy } from "../../../helpers/wrapper"
 import { get, scan, update } from "../../../helpers/db"
 import { donationTable, paymentTable } from "../../../helpers/tables"
 import env from "../../../env/env"
-import { sendMessage } from "../../../helpers/slack"
+import { sendMessageWithLogsLink } from "../../../helpers/slack"
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
 
@@ -86,7 +86,7 @@ export const main = middyfy(null, null, true, async (event) => {
     console.error((failure as PromiseRejectedResult).reason)
   })
   if (failures.length) {
-    await sendMessage(`💸 Scheduled payments: ${message}`)
+    await sendMessageWithLogsLink(`💸 Scheduled payments: ${message}.`)
   }
 })
 

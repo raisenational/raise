@@ -8,10 +8,11 @@ const DYNAMODB_TABLES = JSON.parse(process.env.__DYNAMODB_TABLES!)
 
 // Mock out email and Slack by default so our tests don't send out messages
 jest.mock("../src/helpers/slack", () => ({
-  sendMessage: jest.fn().mockResolvedValue(undefined)
+  sendMessage: jest.fn().mockResolvedValue(undefined),
+  sendMessageWithLogsLink: jest.fn().mockResolvedValue(undefined),
 }))
 jest.mock("../src/helpers/email", () => ({
-  sendEmail: jest.fn().mockResolvedValue(undefined)
+  sendEmail: jest.fn().mockResolvedValue(undefined),
 }))
 
 beforeEach(async () => {
@@ -22,6 +23,9 @@ beforeEach(async () => {
     userAgent: "test",
     route: "unknown",
     routeRaw: "unknown",
+    logGroupName: "aws/lambda/raise-server-stage-myFunc",
+    logStreamName: "2022/01/01/[$LATEST]123456789",
+    awsRegion: "eu-test-1",
   }
 
   // Suppress logging (you can override this with unsupressConsole from test helpers)

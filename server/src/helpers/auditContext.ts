@@ -1,3 +1,4 @@
+import type middy from "@middy/core"
 import type { APIGatewayProxyEventV2 } from "aws-lambda"
 import type { APIGatewayEvent } from "./types"
 
@@ -8,6 +9,9 @@ export type AuditContext = {
     userAgent: string,
     route: string,
     routeRaw: string,
+    logGroupName: string,
+    logStreamName: string,
+    awsRegion: string,
   },
 }
 
@@ -21,13 +25,16 @@ const extractSubject = (event: APIGatewayEvent | APIGatewayProxyEventV2): string
   return "public" // NB: covers both /public requests and unauthenticated (and therefore could be the public) requests to the /admin endpoints e.g. for login
 }
 
-export const middyAuditContextManagerBefore = ({ event }: { event: APIGatewayEvent }): void => {
+export const middyAuditContextManagerBefore = ({ event, context }: middy.Request<APIGatewayEvent>): void => {
   auditContext.value = {
     subject: extractSubject(event),
     sourceIp: event.requestContext.http.sourceIp,
     userAgent: event.requestContext.http.userAgent,
     route: event.requestContext.routeKey,
     routeRaw: `${event.requestContext.http.method} ${event.requestContext.http.path}`,
+    logGroupName: context.logGroupName,
+    logStreamName: context.logStreamName,
+    awsRegion: process.env.AWS_REGION ?? "unknown",
   }
 }
 
