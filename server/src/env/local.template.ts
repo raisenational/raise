@@ -17,8 +17,8 @@ const env: Env = {
   // Stripe keys and secrets
   // https://dashboard.stripe.com/test/apikeys
   // https://dashboard.stripe.com/webhooks (locally: stripe listen --forward-to localhost:8001/stripe/webhook)
-  STRIPE_PUBLISHABLE_KEY: "pk_test_51JoQv0KzqibgSMB7aaaSq8ZJUsTwC4Hd1rfRwehKncms8iaHsKl941RvdBWNNVGQDcdRZmRaDaMknmBTilFqOhYU00EyfZikdJ",
-  STRIPE_SECRET_KEY: "sk_test_51JoQv0KzqibgSMB7Oe3m4t2wcaTp3nMhg0xol8MPHLCBICO96ETErfvwB724kCFoD5MKA9OfzHYL6EdQaaYGh7Az00DdEdhY2z",
+  STRIPE_PUBLISHABLE_KEY: "pk_test_51KCByfI5VgKIYyWlqwp6p3qRFscr4s7bAaIC7EjZAunHLJEQoclC4it33M4Iv0U5jCVlDMQ0g8nMcJngVnIwjIOJ00vfxDTCMw",
+  STRIPE_SECRET_KEY: "sk_test_51KCByfI5VgKIYyWliV6VxJ7qFw9xJm1K7eeB9HeGiQvAtvuRbKOPp9f1hQ4MDyKviZp4vQhIRVby5LbDmrjpdZnC00OUE1muam",
   STRIPE_WEBHOOK_SECRET: "whsec_3V5u8MmBEOcDjGdoAPIyWqJonW422WmL",
 
   // Slack configuration
