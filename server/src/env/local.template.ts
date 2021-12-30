@@ -19,7 +19,7 @@ const env: Env = {
   // https://dashboard.stripe.com/webhooks (locally: stripe listen --forward-to localhost:8001/stripe/webhook)
   STRIPE_PUBLISHABLE_KEY: "pk_test_51KCByfI5VgKIYyWlqwp6p3qRFscr4s7bAaIC7EjZAunHLJEQoclC4it33M4Iv0U5jCVlDMQ0g8nMcJngVnIwjIOJ00vfxDTCMw",
   STRIPE_SECRET_KEY: "sk_test_51KCByfI5VgKIYyWliV6VxJ7qFw9xJm1K7eeB9HeGiQvAtvuRbKOPp9f1hQ4MDyKviZp4vQhIRVby5LbDmrjpdZnC00OUE1muam",
-  STRIPE_WEBHOOK_SECRET: "whsec_3V5u8MmBEOcDjGdoAPIyWqJonW422WmL",
+  STRIPE_WEBHOOK_SECRET: "whsec_O8eBLpkh8HoNl5h2xfUbK4z2wa3111SA",
 
   // Slack configuration
   // The bot should have the chat:write scope and be able to access the channel
