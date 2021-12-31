@@ -71,7 +71,7 @@ test.each([
 
 test("can create a weekly donation", async () => {
   setMockDate(1638028787)
-  const fundraiser = makeFundraiser({ recurringDonationsTo: Math.floor(new Date().getTime() / 1000) + 1512000 /* 2.5 weeks */, currency: "gbp" })
+  const fundraiser = makeFundraiser({ recurringDonationsTo: Math.floor(new Date().getTime() / 1000) + 1512000 /* 2.5 weeks */ })
   await insert(fundraiserTable, fundraiser)
   const donationRequest = makeDonationRequest({ recurrenceFrequency: "WEEKLY" })
 
@@ -80,7 +80,7 @@ test("can create a weekly donation", async () => {
   const nextWeek = Math.floor(new Date(2021, 11 /* December */, 4, 0, 0, 0).getTime() / 1000)
   const nextNextWeek = Math.floor(new Date(2021, 11 /* December */, 11, 0, 0, 0).getTime() / 1000)
   expect(response).toEqual({
-    currency: "gbp",
+    currency: fundraiser.currency,
     amount: donationRequest.donationAmount + donationRequest.contributionAmount,
     futurePayments: [{
       amount: donationRequest.donationAmount,
