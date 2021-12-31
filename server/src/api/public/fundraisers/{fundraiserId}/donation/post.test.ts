@@ -16,20 +16,22 @@ jest.mock("stripe", () => jest.fn().mockImplementation(() => ({
   },
 })))
 
-test("can create a one-off donation", async () => {
-  const fundraiser = makeFundraiser()
+test.each([
+  ["gbp"], ["usd"],
+] as const)("can create a one-off %s donation", async (currency) => {
+  const fundraiser = makeFundraiser({ currency })
   await insert(fundraiserTable, fundraiser)
   const donationRequest = makeDonationRequest({ recurrenceFrequency: null })
 
   const response = await call(main, { pathParameters: { fundraiserId: fundraiser.id } })(donationRequest)
 
   expect(response).toEqual({
+    currency,
     amount: donationRequest.donationAmount + donationRequest.contributionAmount,
     futurePayments: [],
     stripeClientSecret: "pi_123456_secret_abcdef",
     totalDonationAmount: donationRequest.donationAmount,
   })
-
   const donations = await scan(donationTable)
   const payments = await scan(paymentTable)
   expect(donations).toMatchObject([{
@@ -53,6 +55,18 @@ test("can create a one-off donation", async () => {
     donationId: donations[0].id,
     fundraiserId: fundraiser.id,
   }])
+  expect(paymentIntentCreate).toHaveBeenCalledTimes(1)
+  expect(paymentIntentCreate).toHaveBeenCalledWith({
+    amount: donationRequest.donationAmount + donationRequest.contributionAmount,
+    currency: fundraiser.currency,
+    payment_method_types: ["card"],
+    metadata: {
+      fundraiserId: fundraiser.id,
+      donationId: donations[0].id,
+      paymentId: payments[0].id,
+    },
+    setup_future_usage: undefined,
+  })
 })
 
 test("can create a weekly donation", async () => {
@@ -66,6 +80,7 @@ test("can create a weekly donation", async () => {
   const nextWeek = Math.floor(new Date(2021, 11 /* December */, 4, 0, 0, 0).getTime() / 1000)
   const nextNextWeek = Math.floor(new Date(2021, 11 /* December */, 11, 0, 0, 0).getTime() / 1000)
   expect(response).toEqual({
+    currency: fundraiser.currency,
     amount: donationRequest.donationAmount + donationRequest.contributionAmount,
     futurePayments: [{
       amount: donationRequest.donationAmount,
@@ -162,51 +177,59 @@ test("rejects donation to non-existent fundraiser", async () => {
   await expectNoDonationInserted()
 })
 
-test("rejects donation when payment amount is too small", async () => {
-  const fundraiser = makeFundraiser()
+test.each([
+  ["gbp"], ["usd"],
+] as const)("rejects donation when %s payment amount is too small", async (currency) => {
+  const fundraiser = makeFundraiser({ currency })
   await insert(fundraiserTable, fundraiser)
   const donationRequest = makeDonationRequest({ donationAmount: 0_49, contributionAmount: 0_49 })
 
   const response = await call(main, { rawResponse: true, pathParameters: { fundraiserId: fundraiser.id } })(donationRequest)
 
   expect(response.statusCode).toEqual(400)
-  expect(response.body).toContain("Payment amount must be greater than £1")
+  expect(response.body).toContain(`Payment amount must be greater than ${currency === "gbp" ? "£" : "$"}1`)
   await expectNoDonationInserted()
 })
 
-test("rejects donation when payment recurring amount is too small", async () => {
-  const fundraiser = makeFundraiser()
+test.each([
+  ["gbp"], ["usd"],
+] as const)("rejects donation when %s payment recurring amount is too small", async (currency) => {
+  const fundraiser = makeFundraiser({ currency })
   await insert(fundraiserTable, fundraiser)
   const donationRequest = makeDonationRequest({ donationAmount: 0_99, contributionAmount: 1_00, recurrenceFrequency: "WEEKLY" })
 
   const response = await call(main, { rawResponse: true, pathParameters: { fundraiserId: fundraiser.id } })(donationRequest)
 
   expect(response.statusCode).toEqual(400)
-  expect(response.body).toContain("Future payments must be greater than £1")
+  expect(response.body).toContain(`Future payments must be greater than ${currency === "gbp" ? "£" : "$"}1`)
   await expectNoDonationInserted()
 })
 
-test("rejects donation when donation amount is too small for fundraiser", async () => {
-  const fundraiser = makeFundraiser({ minimumDonationAmount: 10_00 })
+test.each([
+  ["gbp"], ["usd"],
+] as const)("rejects donation when %s donation amount is too small for fundraiser", async (currency) => {
+  const fundraiser = makeFundraiser({ currency, minimumDonationAmount: 10_00 })
   await insert(fundraiserTable, fundraiser)
   const donationRequest = makeDonationRequest({ donationAmount: 9_99 })
 
   const response = await call(main, { rawResponse: true, pathParameters: { fundraiserId: fundraiser.id } })(donationRequest)
 
   expect(response.statusCode).toEqual(400)
-  expect(response.body).toContain("Donation amount must be greater than £10")
+  expect(response.body).toContain(`Donation amount must be greater than ${currency === "gbp" ? "£" : "$"}10`)
   await expectNoDonationInserted()
 })
 
-test("rejects donation when recurring donation amount is too small for fundraiser", async () => {
-  const fundraiser = makeFundraiser({ minimumDonationAmount: 10_00, recurringDonationsTo: Math.floor(new Date().getTime() / 1000) + 1512000 /* 2.5 weeks */ })
+test.each([
+  ["gbp"], ["usd"],
+] as const)("rejects donation when recurring donation amount is too small for fundraiser", async (currency) => {
+  const fundraiser = makeFundraiser({ currency, minimumDonationAmount: 10_00, recurringDonationsTo: Math.floor(new Date().getTime() / 1000) + 1512000 /* 2.5 weeks */ })
   await insert(fundraiserTable, fundraiser)
   const donationRequest = makeDonationRequest({ donationAmount: 3_33, recurrenceFrequency: "WEEKLY" })
 
   const response = await call(main, { rawResponse: true, pathParameters: { fundraiserId: fundraiser.id } })(donationRequest)
 
   expect(response.statusCode).toEqual(400)
-  expect(response.body).toContain("Donation amount must be greater than £10")
+  expect(response.body).toContain(`Donation amount must be greater than ${currency === "gbp" ? "£" : "$"}10`)
   await expectNoDonationInserted()
 })
 

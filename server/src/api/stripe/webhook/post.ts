@@ -164,7 +164,7 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
   if (donation.emailConsentInformational && payments[0].id === paymentId) {
     // TODO: remove allowlist (only here while testing)
     if (donation.donorEmail.endsWith("@simulator.amazonses.com")) {
-      await sendEmail("We've receieved your donation", confirmation(donation, payments), donation.donorEmail)
+      await sendEmail("We've receieved your donation", confirmation(fundraiser, donation, payments), donation.donorEmail)
     }
   }
 })

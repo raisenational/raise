@@ -247,6 +247,52 @@ exports[`renders with a recurring amount and a date 1`] = `
 </div>
 `;
 
+exports[`renders with a usd donation 1`] = `
+<div>
+  <div
+    class="p-4 rounded flex flex-col shadow-raise bg-raise-red"
+  >
+    <p
+      class="fade-in"
+    >
+      <span
+        class=""
+      >
+        Namey McNameface donated $45
+      </span>
+    </p>
+    <p
+      class="fade-in text-base opacity-80"
+    >
+      giving $15 weekly
+    </p>
+    <p
+      class="text-base fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        (+$45 matched)
+      </span>
+    </p>
+    <p
+      class="text-base mt-auto pt-2 text-right fade-in"
+    >
+      <span
+        class="opacity-80"
+      >
+        <time
+          datetime="2021-10-31T12:34:56.000Z"
+          title="2021-10-31 12:34"
+        >
+          4 hours ago
+        </time>
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
 exports[`renders with amounts (match funding and gift-aid) and a date 1`] = `
 <div>
   <div

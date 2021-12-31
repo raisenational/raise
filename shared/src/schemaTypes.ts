@@ -150,6 +150,7 @@ export interface FundraiserCreation {
   activeTo?: number;
   recurringDonationsTo?: number;
   paused?: boolean;
+  currency?: "gbp" | "usd";
   goal?: number;
   totalRaised?: number;
   donationsCount?: number;
@@ -169,6 +170,7 @@ export interface FundraiserEdits {
   activeTo?: number;
   recurringDonationsTo?: number;
   paused?: boolean;
+  currency?: "gbp" | "usd";
   goal?: number;
   totalRaised?: number;
   donationsCount?: number;
@@ -193,6 +195,7 @@ export interface Fundraiser {
   activeTo: number;
   recurringDonationsTo: number;
   paused: boolean;
+  currency: "gbp" | "usd";
   goal: number;
   totalRaised: number;
   donationsCount: number;
@@ -213,6 +216,7 @@ export type Fundraisers = {
   activeTo: number;
   recurringDonationsTo: number;
   paused: boolean;
+  currency: "gbp" | "usd";
   goal: number;
   totalRaised: number;
   donationsCount: number;
@@ -327,6 +331,7 @@ export interface PublicFundraiser {
   activeTo: number;
   recurringDonationsTo: number;
   paused: boolean;
+  currency: "gbp" | "usd";
   goal: number;
   totalRaised: number;
   donationsCount: number;
@@ -351,6 +356,7 @@ export interface PublicFundraiser {
 
 export interface PublicPaymentIntentResponse {
   stripeClientSecret: string;
+  currency: "gbp" | "usd";
   amount: number;
   totalDonationAmount: number;
   futurePayments: {

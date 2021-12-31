@@ -75,6 +75,7 @@ export const fundraiserCreationSchema: JSONSchema<S.FundraiserCreation> = {
     activeTo: { type: "integer" },
     recurringDonationsTo: { type: "integer" },
     paused: { type: "boolean" },
+    currency: { enum: ["gbp", "usd"] },
     goal: { type: "integer", exclusiveMinimum: 0 },
     totalRaised: { type: "integer", minimum: 0 },
     donationsCount: { type: "integer", minimum: 0 },
@@ -113,7 +114,7 @@ export const fundraiserSchema: JSONSchema<S.Fundraiser> = {
     id: ulidSchema,
     ...fundraiserCreationSchema.properties,
   },
-  required: ["id", "fundraiserName", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "groupsWithAccess"],
+  required: ["id", "fundraiserName", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "groupsWithAccess"],
   additionalProperties: false,
 }
 
@@ -290,6 +291,7 @@ export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
     activeTo: { type: "integer" },
     recurringDonationsTo: { type: "integer" },
     paused: { type: "boolean" },
+    currency: { enum: ["gbp", "usd"] },
     goal: { type: "integer", exclusiveMinimum: 0 },
     totalRaised: { type: "integer", minimum: 0 },
     donationsCount: { type: "integer", minimum: 0 },
@@ -319,7 +321,7 @@ export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
       },
     },
   },
-  required: ["id", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "donations"],
+  required: ["id", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "donations"],
   additionalProperties: false,
 }
 
@@ -352,6 +354,7 @@ export const publicPaymentIntentResponse: JSONSchema<S.PublicPaymentIntentRespon
   type: "object",
   properties: {
     stripeClientSecret: { type: "string" },
+    currency: { enum: ["gbp", "usd"] },
     amount: { type: "integer", exclusiveMinimum: 0 },
     totalDonationAmount: { type: "integer", minimum: 0 },
     futurePayments: {
@@ -367,7 +370,7 @@ export const publicPaymentIntentResponse: JSONSchema<S.PublicPaymentIntentRespon
       },
     },
   },
-  required: ["stripeClientSecret", "amount", "totalDonationAmount", "futurePayments"],
+  required: ["stripeClientSecret", "currency", "amount", "totalDonationAmount", "futurePayments"],
   additionalProperties: false,
 }
 

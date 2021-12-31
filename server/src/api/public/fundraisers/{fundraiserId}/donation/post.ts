@@ -2,7 +2,7 @@ import createHttpError from "http-errors"
 import { ulid } from "ulid"
 import Stripe from "stripe"
 import {
-  publicDonationRequest, publicPaymentIntentResponse, Fundraiser, PublicDonationRequest,
+  publicDonationRequest, publicPaymentIntentResponse, Fundraiser, PublicDonationRequest, format,
 } from "@raise/shared"
 import { middyfy } from "../../../../../helpers/wrapper"
 import { get, insert } from "../../../../../helpers/db"
@@ -37,16 +37,16 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
 
   // Validate payment amounts are greater than a global minimum (https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts)
   if (paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount < 1_00) {
-    throw new createHttpError.BadRequest("Payment amount must be greater than £1 to avoid excessive card transaction fees")
+    throw new createHttpError.BadRequest(`Payment amount must be greater than ${format.amountShort(fundraiser.currency, 1_00)} to avoid excessive card transaction fees`)
   }
   if (paymentSchedule.future.some((p) => p.donationAmount + p.contributionAmount < 1_00)) {
-    throw new createHttpError.BadRequest("Future payments must be greater than £1 to avoid excessive card transaction fees")
+    throw new createHttpError.BadRequest(`Future payments must be greater than ${format.amountShort(fundraiser.currency, 1_00)} to avoid excessive card transaction fees`)
   }
 
   // Validate donationAmount is greater than minimum, accounting for recurring donations
   const totalDonationAmount = paymentSchedule.now.donationAmount + paymentSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
   if (fundraiser.minimumDonationAmount !== null && totalDonationAmount < fundraiser.minimumDonationAmount) {
-    throw new createHttpError.BadRequest(`Donation amount must be greater than £${(fundraiser.minimumDonationAmount / 100).toFixed(2)}`)
+    throw new createHttpError.BadRequest(`Donation amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}`)
   }
 
   const donationId = ulid()
@@ -55,7 +55,7 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
   // Get stripe payment intent (attach metadata for fundraiserId, donationId, paymentId and contribution/donation amount)
   const paymentIntent = await stripe.paymentIntents.create({
     amount: paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount,
-    currency: "gbp",
+    currency: fundraiser.currency,
     payment_method_types: ["card"],
     metadata: {
       fundraiserId: event.pathParameters.fundraiserId,
@@ -133,6 +133,7 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
 
   return {
     stripeClientSecret,
+    currency: fundraiser.currency,
     amount: paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount,
     futurePayments: paymentSchedule.future.map((p) => ({ at: p.at, amount: p.donationAmount + p.contributionAmount })),
     totalDonationAmount,

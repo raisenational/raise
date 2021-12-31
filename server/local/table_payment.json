@@ -1,51 +1,51 @@
 [
   {
-    "reference": null,
+    "reference": "pymt_12345",
     "at": 1637791547,
     "contributionAmount": 0,
-    "matchFundingAmount": null,
+    "matchFundingAmount": 900,
     "method": "card",
     "donationId": "01FK1WKC0Q8BHBPJ1TH5PT7MGG",
     "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
     "id": "01FK1WKD45YAESYBYR4RHTXH4W",
     "donationAmount": 900,
-    "status": "scheduled"
+    "status": "paid"
   },
   {
-    "reference": null,
+    "reference": "pymt_12345",
     "at": 1636581947,
     "contributionAmount": 0,
-    "matchFundingAmount": null,
+    "matchFundingAmount": 900,
     "method": "card",
     "donationId": "01FK1WKC0Q8BHBPJ1TH5PT7MGG",
     "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
     "id": "01FK1WKD454H7MWVFDDNN3NK75",
     "donationAmount": 900,
-    "status": "scheduled"
+    "status": "paid"
   },
   {
-    "reference": null,
+    "reference": "pymt_12345",
     "at": 1637186747,
     "contributionAmount": 0,
-    "matchFundingAmount": null,
+    "matchFundingAmount": 900,
     "method": "card",
     "donationId": "01FK1WKC0Q8BHBPJ1TH5PT7MGG",
     "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
     "id": "01FK1WKD4520JDWPHYS4DW24DY",
     "donationAmount": 900,
-    "status": "scheduled"
+    "status": "paid"
   },
   {
-    "reference": null,
+    "reference": "pymt_12345",
     "at": 1635977147,
     "contributionAmount": 0,
-    "matchFundingAmount": null,
+    "matchFundingAmount": 900,
     "method": "card",
     "donationId": "01FK1WKC0Q8BHBPJ1TH5PT7MGG",
     "fundraiserId": "01FGNSHH6X6X878ZNBZKY44JQA",
     "id": "01FK1WKD445WFHHFF0FRF3DPWQ",
     "donationAmount": 900,
-    "status": "scheduled"
+    "status": "paid"
   },
   {
     "reference": "pi_3JpKFkKzqibgSMB71dtqi8Jn",

@@ -8,6 +8,7 @@ type Props = {
   createdAt: number | string,
   giftAid?: boolean,
   comment?: string | null,
+  currency?: "gbp" | "usd",
   donationAmount?: number,
   matchFundingAmount?: number,
   recurringAmount?: number | null,
@@ -21,6 +22,7 @@ const DonationCard: React.FC<Props> = ({
   createdAt,
   giftAid,
   comment,
+  currency,
   donationAmount,
   matchFundingAmount,
   recurringAmount,
@@ -28,11 +30,11 @@ const DonationCard: React.FC<Props> = ({
   className,
   loading,
 }) => {
-  const title = `${donorName || "Someone"} donated${donationAmount !== undefined ? ` ${format.amountDropPenceIfZero(donationAmount)}` : ""}`
+  const title = `${donorName || "Someone"} donated${donationAmount !== undefined ? ` ${format.amountShort(currency, donationAmount)}` : ""}`
   const isRecurring = recurringAmount !== undefined && recurringAmount !== null && recurrenceFrequency !== undefined && recurrenceFrequency !== null
-  const recurringText = isRecurring ? `giving ${format.amountDropPenceIfZero(recurringAmount)} ${recurrenceFrequency.toLowerCase()}` : undefined
-  const matchFundingText = (matchFundingAmount !== undefined && matchFundingAmount > 0) ? `+${format.amountDropPenceIfZero(matchFundingAmount)} matched` : undefined
-  const giftAidText = (giftAid && donationAmount !== undefined) ? `+${format.amountDropPenceIfZero(donationAmount * 0.25)} gift-aided` : undefined
+  const recurringText = isRecurring ? `giving ${format.amountShort(currency, recurringAmount)} ${recurrenceFrequency.toLowerCase()}` : undefined
+  const matchFundingText = (matchFundingAmount !== undefined && matchFundingAmount > 0) ? `+${format.amountShort(currency, matchFundingAmount)} matched` : undefined
+  const giftAidText = (giftAid && donationAmount !== undefined) ? `+${format.amountShort(currency, donationAmount * 0.25)} gift-aided` : undefined
   const extraAmountText = (matchFundingText || giftAidText) ? `(${[matchFundingText, giftAidText].filter((x) => x).join(", ")})` : undefined
 
   return (

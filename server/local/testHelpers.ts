@@ -82,6 +82,7 @@ export const makeFundraiser = <Override extends Partial<Fundraiser>>(override?: 
   activeTo: Math.floor(new Date().getTime() / 1000) + 604800, // 1 week
   recurringDonationsTo: Math.floor(new Date().getTime() / 1000) + 2419200, // 4 weeks
   paused: false,
+  currency: Math.random() < 0.5 ? "gbp" : "usd",
   goal: Math.ceil(Math.random() * 4) * 500_00,
   totalRaised: 0,
   donationsCount: 0,

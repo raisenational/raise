@@ -2,7 +2,7 @@ import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 import { ExternalLinkIcon, ReceiptRefundIcon } from "@heroicons/react/outline"
 import {
-  format, Donation, Payment, PaymentCreation,
+  format, Fundraiser, Donation, Payment, PaymentCreation,
 } from "@raise/shared"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
@@ -12,14 +12,16 @@ import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
 
 const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string, paymentId?: string }> = ({ fundraiserId, donationId, paymentId }) => {
-  const [payments, refetchPayments] = useAxios<Payment[]>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`)
+  const [fundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
   const [donations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
+  const [payments, refetchPayments] = useAxios<Payment[]>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`)
   const axios = useRawAxios()
 
   const [refundModalOpen, setRefundModalOpen] = React.useState(false)
 
-  const payment = asResponseValues(payments.data?.find((d) => d.fundraiserId === fundraiserId && d.donationId === donationId && d.id === paymentId), payments)
+  const fundraiser = asResponseValues(fundraisers.data?.find((f) => f.id === fundraiserId), fundraisers)
   const donation = asResponseValues(donations.data?.find((d) => d.fundraiserId === fundraiserId && d.id === donationId), donations)
+  const payment = asResponseValues(payments.data?.find((p) => p.fundraiserId === fundraiserId && p.donationId === donationId && p.id === paymentId), payments)
 
   return (
     <Section>
@@ -34,9 +36,9 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donat
           warning={`This marks the payment as refunded in the Raise platform, but does not actually refund it.${payment.data?.method === "card" ? " You probably want to also refund it in the Stripe dashboard." : ""}`}
           definition={{
             at: { inputType: "hidden" },
-            donationAmount: { label: "Refunded donation amount", formatter: format.amount, inputType: "amount" },
-            contributionAmount: { label: "Refunded contribution amount", formatter: format.amount, inputType: "amount" },
-            matchFundingAmount: { label: "Refunded match funding amount", formatter: format.amount, inputType: "amount" },
+            donationAmount: { label: "Refunded donation amount", formatter: (v?: number) => format.amount(fundraiser.data?.currency, v), inputType: "amount" },
+            contributionAmount: { label: "Refunded contribution amount", formatter: (v?: number) => format.amount(fundraiser.data?.currency, v), inputType: "amount" },
+            matchFundingAmount: { label: "Refunded match funding amount", formatter: (v?: number | null) => format.amount(fundraiser.data?.currency, v), inputType: "amount" },
             method: { inputType: "hidden" },
             reference: { inputType: "hidden" },
           }}
@@ -64,9 +66,9 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donat
       <PropertyEditor
         definition={{
           at: { label: "At", formatter: format.timestamp },
-          donationAmount: { label: "Donation", formatter: format.amount, inputType: "amount" },
-          contributionAmount: { label: "Contribution", formatter: format.amount, inputType: "amount" },
-          matchFundingAmount: { label: "Match funding", formatter: format.amount, inputType: "amount" },
+          donationAmount: { label: "Donation", formatter: (v: number) => format.amount(fundraiser.data?.currency, v), inputType: "amount" },
+          contributionAmount: { label: "Contribution", formatter: (v: number) => format.amount(fundraiser.data?.currency, v), inputType: "amount" },
+          matchFundingAmount: { label: "Match funding", formatter: (v: number | null) => format.amount(fundraiser.data?.currency, v), inputType: "amount" },
           method: { label: "Method" },
           reference: { label: "Ref", inputType: payment.data?.method === "card" ? undefined : "text" },
           status: { label: "Status", selectOptions: ["cancelled"], inputType: "select" },
