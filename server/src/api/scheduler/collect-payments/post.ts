@@ -2,7 +2,7 @@ import createHttpError from "http-errors"
 import Stripe from "stripe"
 import { middyfy } from "../../../helpers/wrapper"
 import { get, scan, update } from "../../../helpers/db"
-import { donationTable, paymentTable } from "../../../helpers/tables"
+import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/tables"
 import env from "../../../env/env"
 import { sendMessageWithLogsLink } from "../../../helpers/slack"
 
@@ -37,7 +37,10 @@ export const main = middyfy(null, null, true, async (event) => {
     // To avoid hitting Stripe rate limits (25reqs/s in test mode, 100reqs/s in live mode)
     await wait(index * 50)
 
-    const donation = await get(donationTable, { id: payment.donationId, fundraiserId: payment.fundraiserId })
+    const [fundraiser, donation] = await Promise.all([
+      get(fundraiserTable, { id: payment.fundraiserId }),
+      get(donationTable, { id: payment.donationId, fundraiserId: payment.fundraiserId }),
+    ])
 
     // Without these stripe ids we cannot make this payment - this payment is probably a one-off payment they haven't completed yet
     if (!donation.stripeCustomerId || !donation.stripePaymentMethodId) return
@@ -51,7 +54,7 @@ export const main = middyfy(null, null, true, async (event) => {
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: payment.donationAmount + payment.contributionAmount,
-      currency: "gbp",
+      currency: fundraiser.currency,
       payment_method_types: ["card"],
       metadata: {
         fundraiserId: payment.fundraiserId,
