@@ -6,6 +6,7 @@
     "activeTo": 1642118400,
     "recurringDonationsTo": 1643673600,
     "paused": false,
+    "currency": "gbp",
     "goal": 100000,
     "totalRaised": 49800,
     "donationsCount": 3,

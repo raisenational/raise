@@ -2,7 +2,7 @@ import * as React from "react"
 import { navigate, RouteComponentProps } from "@reach/router"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import {
-  format, Donation, Payment, PaymentCreation,
+  format, Donation, Payment, PaymentCreation, Fundraiser,
 } from "@raise/shared"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
@@ -14,12 +14,14 @@ import { Form } from "../../components/Form"
 import DonationCard from "../../components/DonationCard"
 
 const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string }> = ({ fundraiserId, donationId }) => {
+  const [fundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
   const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
   const [payments, refetchPayments] = useAxios<Payment[]>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`)
   const axios = useRawAxios()
 
   const [newPaymentModalOpen, setNewPaymentModalOpen] = React.useState(false)
 
+  const fundraiser = asResponseValues(fundraisers.data?.find((f) => f.id === fundraiserId), fundraisers)
   const donation = asResponseValues(donations.data?.find((d) => d.fundraiserId === fundraiserId && d.id === donationId), donations)
   const giftAidEditWarning = "We must hold accurate names and addresses for gift-aided donations as per the Income Tax Act 2007"
   const amountEditWarning = "Do not edit amounts unless you know what you are doing. This will not update the fundraiser totals."
@@ -43,19 +45,19 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           addressPostcode: { label: "Address postcode", inputType: "text", warning: giftAidEditWarning },
           addressCountry: { label: "Address country", inputType: "text", warning: giftAidEditWarning },
           donationAmount: {
-            label: "Donation amount", formatter: format.amount, inputType: "amount", warning: amountEditWarning,
+            label: "Donation amount", formatter: (v: number) => format.amount(fundraiser.data?.currency, v), inputType: "amount", warning: amountEditWarning,
           },
           recurringAmount: {
-            label: "Recurring payment amount", formatter: format.amount, inputType: "amount", warning: amountEditWarning,
+            label: "Recurring payment amount", formatter: (v: number | null) => format.amount(fundraiser.data?.currency, v), inputType: "amount", warning: amountEditWarning,
           },
           recurrenceFrequency: {
             label: "Frequency of recurrence", inputType: "text", warning: frequencyEditWarning,
           },
           matchFundingAmount: {
-            label: "Match funding amount", formatter: format.amount, inputType: "amount", warning: amountEditWarning,
+            label: "Match funding amount", formatter: (v: number) => format.amount(fundraiser.data?.currency, v), inputType: "amount", warning: amountEditWarning,
           },
           contributionAmount: {
-            label: "Raise contribution amount", formatter: format.amount, inputType: "amount", warning: amountEditWarning,
+            label: "Raise contribution amount", formatter: (v: number) => format.amount(fundraiser.data?.currency, v), inputType: "amount", warning: amountEditWarning,
           },
           stripeCustomerId: {
             label: "Stripe customer ID", inputType: "text", warning: stripeCustomerIdWarning,
@@ -96,8 +98,8 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           title="New payment"
           definition={{
             at: { inputType: "hidden" },
-            donationAmount: { label: "Donation amount", formatter: format.amount, inputType: "amount" },
-            contributionAmount: { label: "Contribution amount", formatter: format.amount, inputType: "amount" },
+            donationAmount: { label: "Donation amount", formatter: (v?: number) => format.amount(fundraiser.data?.currency, v), inputType: "amount" },
+            contributionAmount: { label: "Contribution amount", formatter: (v?: number) => format.amount(fundraiser.data?.currency, v), inputType: "amount" },
             method: {
               label: "Method", inputType: "select", selectOptions: ["cash", "direct_to_charity"],
             },
@@ -121,9 +123,9 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
       <Table
         definition={{
           at: { label: "At", formatter: format.timestamp },
-          donationAmount: { label: "Donation", formatter: format.amount },
-          contributionAmount: { label: "Contribution", formatter: format.amount },
-          matchFundingAmount: { label: "Match funding", formatter: format.amount },
+          donationAmount: { label: "Donation", formatter: (v: number) => format.amount(fundraiser.data?.currency, v) },
+          contributionAmount: { label: "Contribution", formatter: (v: number) => format.amount(fundraiser.data?.currency, v) },
+          matchFundingAmount: { label: "Match funding", formatter: (v: number | null) => format.amount(fundraiser.data?.currency, v) },
           method: { label: "Method" },
           status: { label: "Status" },
         }}
@@ -148,6 +150,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           createdAt={donation.data.createdAt}
           className="bg-raise-red"
           donorName={donation.data.namePublic ? donation.data.donorName : undefined}
+          currency={donation.data.donationAmountPublic ? fundraiser.data?.currency : undefined}
           donationAmount={donation.data.donationAmountPublic ? donation.data.donationAmount : undefined}
           recurringAmount={donation.data.donationAmountPublic ? donation.data.recurringAmount : undefined}
           matchFundingAmount={donation.data.donationAmountPublic ? donation.data.matchFundingAmount : undefined}

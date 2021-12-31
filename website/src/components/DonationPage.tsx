@@ -109,7 +109,7 @@ const IntroFundraiser: React.FC<{ title: string, tagline: string, fundraiser: Re
           <p className="text-2xl md:text-3xl">{tagline}</p>
         </div>
         <div className="self-center">
-          <p className="text-2xl"><span className="text-5xl md:text-7xl stat-animate">{format.amountDropPenceIfZero(fundraiser.data?.totalRaised)}</span><br /> raised by {fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? "" : "s"}{fundraiser.data ? ` of a ${format.amountDropPenceIfZero(fundraiser.data?.goal)} goal` : ""}</p>
+          <p className="text-2xl"><span className="text-5xl md:text-7xl stat-animate">{format.amountShort(fundraiser.data?.currency, fundraiser.data?.totalRaised)}</span><br /> raised by {fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? "" : "s"}{fundraiser.data ? ` of a ${format.amountShort(fundraiser.data?.currency, fundraiser.data?.goal)} goal` : ""}</p>
 
           <div className="mx-2 -mt-4 mb-8">
             <div className="flex -skew-x-15 shadow-raise mt-8 rounded overflow-hidden">
@@ -125,7 +125,7 @@ const IntroFundraiser: React.FC<{ title: string, tagline: string, fundraiser: Re
       <div className="grid gap-4 md:grid-cols-3 md:gap-8 text-left mt-16">
         {/* Show the first six donations */}
         {/* eslint-disable-next-line no-nested-ternary */
-          fundraiser.data ? (cardsOpen ? fundraiser.data.donations : fundraiser.data.donations.slice(0, 6)).map((d) => <DonationCard key={d.createdAt} className="bg-raise-red" {...d} />)
+          fundraiser.data ? (cardsOpen ? fundraiser.data.donations : fundraiser.data.donations.slice(0, 6)).map((d) => <DonationCard key={d.createdAt} className="bg-raise-red" currency={fundraiser.data?.currency} {...d} />)
             : [12, 10, 14].map((d) => <DonationCard key={d} loading createdAt="1 hour ago" className="bg-raise-red" donorName={"a".repeat(d)} matchFundingAmount={1234} comment={"a".repeat(d * 2)} />)
         }
       </div>
@@ -266,10 +266,10 @@ const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormRes
     {/* TODO: formatting */}
     <div className="mt-2 grid gap-2 md:grid-cols-3 md:gap-4">
       <button type="button" onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} className="rounded border border-gray-700 p-4 cursor-pointer transition-all hover:bg-gray-100 hover:scale-105">
-        {format.amountDropPenceIfZero(fundraiser.suggestedDonationAmountOneOff)} one-off
+        {format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountOneOff)} one-off
       </button>
       <button type="button" onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} className="rounded border border-gray-700 p-4 cursor-pointer transition-all hover:bg-gray-100 hover:scale-105">
-        {format.amountDropPenceIfZero(fundraiser.suggestedDonationAmountWeekly)} weekly
+        {format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountWeekly)} weekly
       </button>
     </div>
 
@@ -278,20 +278,20 @@ const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormRes
         id="donationAmount"
         label="Donation amount"
         type="number"
-        prefix="£"
+        prefix={fundraiser.currency === "gbp" ? "£" : "$"}
         error={errors.donationAmount?.message}
         {...register("donationAmount", {
           validate: (s) => {
             try {
               const donationAmount = parseMoney(s)
               if (donationAmount < 1_00) {
-                return "The donation amount must be greater than £1 to avoid excessive card transaction fees"
+                return `The donation amount must be greater than ${format.amountShort(fundraiser.currency, 100)} to avoid excessive card transaction fees`
               }
 
               const recurrenceFrequency = getValues("recurrenceFrequency")
               if (recurrenceFrequency === "ONE_OFF") {
                 if (fundraiser.minimumDonationAmount && donationAmount < fundraiser.minimumDonationAmount) {
-                  return `The donation amount must be greater than ${format.amountDropPenceIfZero(fundraiser.minimumDonationAmount)}`
+                  return `The donation amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}`
                 }
               }
             } catch {
@@ -314,12 +314,12 @@ const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormRes
     </div>
 
     <div className="mt-4">
-      <p>At the end of the academic year, we come together as a community for a Summer Party to celebrate our collective impact. Given that 100% of your donation above will go directly to charity, we suggest an optional, separate contribution of {format.amountDropPenceIfZero(fundraiser.suggestedContributionAmount)} to cover the costs of the event (which are generously subsidised by our sponsors). Importantly, everyone will be very welcome to join, whether or not they feel able to make this contribution.</p>
+      <p>At the end of the academic year, we come together as a community for a Summer Party to celebrate our collective impact. Given that 100% of your donation above will go directly to charity, we suggest an optional, separate contribution of {format.amountShort(fundraiser.currency, fundraiser.suggestedContributionAmount)} to cover the costs of the event (which are generously subsidised by our sponsors). Importantly, everyone will be very welcome to join, whether or not they feel able to make this contribution.</p>
       <LabelledInput
         id="contributionAmount"
         label={`Contribution amount${watches.recurrenceFrequency !== "ONE_OFF" ? " (one-off)" : ""}`}
         type="text"
-        prefix="£"
+        prefix={fundraiser.currency === "gbp" ? "£" : "$"}
         className="mt-2"
         error={errors.contributionAmount?.message}
         {...register("contributionAmount", {
@@ -489,14 +489,14 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
 
 const DonationFormPaymentAmount: React.FC<{ piResponse: PublicPaymentIntentResponse }> = ({ piResponse }) => {
   if (piResponse.futurePayments.length === 0) {
-    return <p>Amount due: {format.amountDropPenceIfZero(piResponse.amount)}</p>
+    return <p>Amount due: {format.amountShort(piResponse.currency, piResponse.amount)}</p>
   }
 
   return (
     <>
-      <p>Amount due: {format.amountDropPenceIfZero(piResponse.amount)} now, then:</p>
+      <p>Amount due: {format.amountShort(piResponse.currency, piResponse.amount)} now, then:</p>
       <ul className="list-disc pl-8 mb-1">
-        {piResponse.futurePayments.map((p) => <li key={p.at}>{format.amountDropPenceIfZero(p.amount)} on {format.date(p.at)}</li>)}
+        {piResponse.futurePayments.map((p) => <li key={p.at}>{format.amountShort(piResponse.currency, p.amount)} on {format.date(p.at)}</li>)}
       </ul>
       <p>(you can cancel your future payments at any time by contacting us)</p>
     </>

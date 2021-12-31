@@ -15,6 +15,7 @@ export const main = middyfy(fundraiserCreationSchema, ulidSchema, true, async (e
     activeTo: event.body.activeTo ?? Math.floor(new Date().getTime() / 1000),
     recurringDonationsTo: event.body.recurringDonationsTo ?? Math.floor(new Date().getTime() / 1000),
     paused: event.body.paused ?? false,
+    currency: event.body.currency ?? "gbp",
     goal: event.body.goal ?? 1_00,
     totalRaised: event.body.totalRaised ?? 0,
     donationsCount: event.body.donationsCount ?? 0,

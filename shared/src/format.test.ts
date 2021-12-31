@@ -2,35 +2,63 @@ import * as format from "./format"
 
 describe("amount", () => {
   test.each([
-    [0, "£0.00"],
-    [1, "£0.01"],
-    [10, "£0.10"],
-    [1_00, "£1.00"],
-    [10_00, "£10.00"],
-    [100_00, "£100.00"],
-    [12_34, "£12.34"],
-    [-56_78, "£-56.78"],
-    [undefined, "—"],
-    [null, "—"],
-  ])("%s → %s", (value, expected) => {
-    expect(format.amount(value)).toEqual(expected)
+    ["gbp", 0, "£0.00"],
+    ["gbp", 1, "£0.01"],
+    ["gbp", 10, "£0.10"],
+    ["gbp", 1_00, "£1.00"],
+    ["gbp", 10_00, "£10.00"],
+    ["gbp", 100_00, "£100.00"],
+    ["gbp", 12_34, "£12.34"],
+    ["gbp", -56_78, "£-56.78"],
+    ["gbp", undefined, "—"],
+    ["gbp", null, "—"],
+    ["usd", 0, "$0.00"],
+    ["usd", 1, "$0.01"],
+    ["usd", 10, "$0.10"],
+    ["usd", 1_00, "$1.00"],
+    ["usd", 10_00, "$10.00"],
+    ["usd", 100_00, "$100.00"],
+    ["usd", 12_34, "$12.34"],
+    ["usd", -56_78, "$-56.78"],
+    ["usd", undefined, "—"],
+    ["usd", null, "—"],
+    [undefined, 0, "—"],
+    [undefined, 100, "—"],
+    [null, 0, "—"],
+    [null, 100, "—"],
+  ] as const)("%s → %s", (currency, amountInMinorUnits, expected) => {
+    expect(format.amount(currency, amountInMinorUnits)).toEqual(expected)
   })
 })
 
-describe("amountDropPenceIfZero", () => {
+describe("amountShort", () => {
   test.each([
-    [0, "£0"],
-    [1, "£0.01"],
-    [10, "£0.10"],
-    [1_00, "£1"],
-    [10_00, "£10"],
-    [100_00, "£100"],
-    [12_34, "£12.34"],
-    [-56_78, "£-56.78"],
-    [undefined, "—"],
-    [null, "—"],
-  ])("%s → %s", (value, expected) => {
-    expect(format.amountDropPenceIfZero(value)).toEqual(expected)
+    ["gbp", 0, "£0"],
+    ["gbp", 1, "£0.01"],
+    ["gbp", 10, "£0.10"],
+    ["gbp", 1_00, "£1"],
+    ["gbp", 10_00, "£10"],
+    ["gbp", 100_00, "£100"],
+    ["gbp", 12_34, "£12.34"],
+    ["gbp", -56_78, "£-56.78"],
+    ["gbp", undefined, "—"],
+    ["gbp", null, "—"],
+    ["usd", 0, "$0"],
+    ["usd", 1, "$0.01"],
+    ["usd", 10, "$0.10"],
+    ["usd", 1_00, "$1"],
+    ["usd", 10_00, "$10"],
+    ["usd", 100_00, "$100"],
+    ["usd", 12_34, "$12.34"],
+    ["usd", -56_78, "$-56.78"],
+    ["usd", undefined, "—"],
+    ["usd", null, "—"],
+    [undefined, 0, "—"],
+    [undefined, 100, "—"],
+    [null, 0, "—"],
+    [null, 100, "—"],
+  ] as const)("%s → %s", (currency, amountInMinorUnits, expected) => {
+    expect(format.amountShort(currency, amountInMinorUnits)).toEqual(expected)
   })
 })
 
@@ -60,15 +88,26 @@ describe("date", () => {
 
 describe("matchFundingRate", () => {
   test.each([
-    [0, "0% (i.e. £1 donated, £0 matched, £1 total)"],
-    [50, "50% (i.e. £1 donated, £0.50 matched, £1.50 total)"],
-    [100, "100% (i.e. £1 donated, £1 matched, £2 total)"],
-    [200, "200% (i.e. £1 donated, £2 matched, £3 total)"],
-    [123, "123% (i.e. £1 donated, £1.23 matched, £2.23 total)"],
-    [undefined, "—"],
-    [null, "—"],
-  ])("%s → %s", (value, expected) => {
-    expect(format.matchFundingRate(value)).toEqual(expected)
+    ["gbp", 0, "0% (i.e. £1 donated, £0 matched, £1 total)"],
+    ["gbp", 50, "50% (i.e. £1 donated, £0.50 matched, £1.50 total)"],
+    ["gbp", 100, "100% (i.e. £1 donated, £1 matched, £2 total)"],
+    ["gbp", 200, "200% (i.e. £1 donated, £2 matched, £3 total)"],
+    ["gbp", 123, "123% (i.e. £1 donated, £1.23 matched, £2.23 total)"],
+    ["gbp", undefined, "—"],
+    ["gbp", null, "—"],
+    ["usd", 0, "0% (i.e. $1 donated, $0 matched, $1 total)"],
+    ["usd", 50, "50% (i.e. $1 donated, $0.50 matched, $1.50 total)"],
+    ["usd", 100, "100% (i.e. $1 donated, $1 matched, $2 total)"],
+    ["usd", 200, "200% (i.e. $1 donated, $2 matched, $3 total)"],
+    ["usd", 123, "123% (i.e. $1 donated, $1.23 matched, $2.23 total)"],
+    ["usd", undefined, "—"],
+    ["usd", null, "—"],
+    [undefined, 0, "0%"],
+    [undefined, 100, "100%"],
+    [null, 0, "0%"],
+    [null, 100, "100%"],
+  ] as const)("%s → %s", (currency, percentageInPoints, expected) => {
+    expect(format.matchFundingRate(currency, percentageInPoints)).toEqual(expected)
   })
 })
 

@@ -31,22 +31,25 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           activeTo: { label: "To", formatter: format.timestamp, inputType: "datetime-local" },
           recurringDonationsTo: { label: "Recurring donations to", formatter: format.timestamp, inputType: "datetime-local" },
           paused: { label: "Paused", formatter: format.boolean, inputType: "checkbox" },
-          goal: { label: "Goal", formatter: format.amount, inputType: "amount" },
+          currency: {
+            label: "Currency", formatter: (s: string) => s.toUpperCase(), inputType: "select", selectOptions: ["gbp", "usd"],
+          },
+          goal: { label: "Goal", formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), inputType: "amount" },
           totalRaised: {
-            label: "Total", formatter: format.amount, inputType: "amount", warning: "Do not edit the total unless you know what you are doing. You probably want to add a manual donation instead.",
+            label: "Total", formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), inputType: "amount", warning: "Do not edit the total unless you know what you are doing. You probably want to add a manual donation instead.",
           },
           donationsCount: {
             label: "Donation count", inputType: "number", warning: "Do not edit the donation count unless you know what you are doing. You probably want to add a manual donation instead.",
           },
-          matchFundingRate: { label: "Match funding rate", formatter: format.matchFundingRate, inputType: "number" },
-          matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: format.amount, inputType: "amount" },
+          matchFundingRate: { label: "Match funding rate", formatter: (v: number, i: Fundraiser) => format.matchFundingRate(i.currency, v), inputType: "number" },
+          matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: (v: number | null, i: Fundraiser) => format.amount(i.currency, v), inputType: "amount" },
           matchFundingRemaining: {
-            label: "Match funding remaining", formatter: format.amount, inputType: "amount", warning: "Do not edit the match funding remaining unless you know what you are doing.",
+            label: "Match funding remaining", formatter: (v: number | null, i: Fundraiser) => format.amount(i.currency, v), inputType: "amount", warning: "Do not edit the match funding remaining unless you know what you are doing.",
           },
-          minimumDonationAmount: { label: "Minimum donation amount", formatter: format.amount, inputType: "amount" },
-          suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: format.amount, inputType: "amount" },
-          suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: format.amount, inputType: "amount" },
-          suggestedContributionAmount: { label: "Suggested contribution amount", formatter: format.amount, inputType: "amount" },
+          minimumDonationAmount: { label: "Minimum donation amount", formatter: (v: number | null, i: Fundraiser) => format.amount(i.currency, v), inputType: "amount" },
+          suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), inputType: "amount" },
+          suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), inputType: "amount" },
+          suggestedContributionAmount: { label: "Suggested contribution amount", formatter: (v: number | null, i: Fundraiser) => format.amount(i.currency, v), inputType: "amount" },
           groupsWithAccess: {
             label: "Groups with access", formatter: (groups: string[]) => groups.join(", ") || "(none selected)", inputType: "multiselect", selectOptions: ["National", "Demo"],
           },
@@ -65,13 +68,13 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
       />
 
       <RequireGroup group={fundraiser.data?.groupsWithAccess}>
-        <DonationsSummaryView fundraiserId={fundraiserId} />
+        <DonationsSummaryView fundraiserId={fundraiserId} fundraiser={fundraiser.data} />
       </RequireGroup>
     </Section>
   )
 }
 
-const DonationsSummaryView: React.FC<{ fundraiserId?: string }> = ({ fundraiserId }) => {
+const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundraiser }> = ({ fundraiserId, fundraiser }) => {
   const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
   const [newDonationModalOpen, setNewDonationModalOpen] = React.useState(false)
   const [showUncounted, setShowUncounted] = React.useState(false)
@@ -150,8 +153,8 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string }> = ({ fundraiserI
           donorName: { label: "Name" },
           donorEmail: { label: "Email" },
           createdAt: { label: "At", formatter: format.timestamp },
-          donationAmount: { label: "Donated", formatter: format.amount },
-          matchFundingAmount: { label: "Matched", formatter: format.amount },
+          donationAmount: { label: "Donated", formatter: (v: number) => format.amount(fundraiser?.currency, v) },
+          matchFundingAmount: { label: "Matched", formatter: (v: number) => format.amount(fundraiser?.currency, v) },
         }}
         items={showUncounted ? donations : asResponseValues(donations.data?.filter((d) => d.donationCounted), donations)}
         onClick={(donation) => navigate(`/admin/${fundraiserId}/${donation.id}/`)}

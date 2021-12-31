@@ -1,8 +1,8 @@
 import {
-  convert, format, Donation, Payment,
+  convert, format, Donation, Payment, Fundraiser,
 } from "@raise/shared"
 
-export default (donation: Donation, payments: Payment[]): string => `<!doctype html>
+export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[]): string => `<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
   xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -216,11 +216,11 @@ export default (donation: Donation, payments: Payment[]): string => `<!doctype h
                                   style="color:#000000;font-family:'Helvetica', 'Arial', sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
                                   ${payments[0].donationAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
                                     <td style="padding: 2px 0;">Your donation to AMF</td>
-                                    <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountDropPenceIfZero(payments[0].donationAmount)}</td>
+                                    <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountShort(fundraiser.currency, payments[0].donationAmount)}</td>
                                   </tr>` : ""}
                                   ${payments[0].contributionAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
                                       <td style="padding: 2px 0;">Your contribution to Raise</td>
-                                      <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountDropPenceIfZero(payments[0].contributionAmount)}</td>
+                                      <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountShort(fundraiser.currency, payments[0].contributionAmount)}</td>
                                   </tr>` : ""}
                                   <tr style="height:6px">
                                     <td></td>
@@ -229,7 +229,7 @@ export default (donation: Donation, payments: Payment[]): string => `<!doctype h
                                   <tr
                                     style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;border-top:1px solid #bbb;font-weight:bold">
                                     <td style="padding: 8px 0 2px 0;">Total paid</td>
-                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;">${format.amountDropPenceIfZero(payments[0].donationAmount + payments[0].contributionAmount)}</td>
+                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;">${format.amountShort(fundraiser.currency, payments[0].donationAmount + payments[0].contributionAmount)}</td>
                                   </tr>
                                 </table>
                               </td>
@@ -247,7 +247,7 @@ export default (donation: Donation, payments: Payment[]): string => `<!doctype h
                                   style="color:#000000;font-family:'Helvetica', 'Arial', sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
                                   ${payments.slice(1).map((p) => `<tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
                                       <td style="padding: 2px 0;">${format.date(p.at)}</td>
-                                      <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountDropPenceIfZero(p.donationAmount + p.contributionAmount)}</td>
+                                      <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountShort(fundraiser.currency, p.donationAmount + p.contributionAmount)}</td>
                                   </tr>`).join("")}
                                   <tr style="height:6px">
                                     <td></td>
@@ -256,7 +256,7 @@ export default (donation: Donation, payments: Payment[]): string => `<!doctype h
                                   <tr
                                     style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;border-top:1px solid #bbb;font-weight:bold">
                                     <td style="padding: 8px 0 2px 0;">Total future donations</td>
-                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;">${format.amountDropPenceIfZero(payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0))}</td>
+                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;">${format.amountShort(fundraiser.currency, payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0))}</td>
                                   </tr>
                                 </table>
                               </td>

@@ -30,19 +30,19 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             activeTo: { label: "To", formatter: format.timestamp, inputType: "datetime-local" },
             recurringDonationsTo: { label: "Recurring donations to", formatter: format.timestamp, inputType: "datetime-local" },
             paused: { label: "Paused", formatter: format.boolean, inputType: "checkbox" },
-            goal: { label: "Goal", formatter: format.amount, inputType: "amount" },
+            goal: { label: "Goal", formatter: (v?: number) => format.amount("gbp", v), inputType: "amount" },
             totalRaised: { inputType: "hidden" },
             donationsCount: { inputType: "hidden" },
-            matchFundingRate: { label: "Match funding rate", formatter: format.matchFundingRate, inputType: "number" },
-            matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: format.amount, inputType: "amount" },
-            matchFundingRemaining: { label: "Match funding available", formatter: format.amount, inputType: "amount" },
-            minimumDonationAmount: { label: "Minimum donation", formatter: format.amount, inputType: "amount" },
+            matchFundingRate: { label: "Match funding rate", formatter: (v?: number) => format.matchFundingRate(null, v), inputType: "number" },
+            matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
+            matchFundingRemaining: { label: "Match funding available", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
+            minimumDonationAmount: { label: "Minimum donation", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
             groupsWithAccess: {
               label: "Groups with access", formatter: format.json, inputType: "multiselect", selectOptions: ["National"],
             },
-            suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: format.amount, inputType: "amount" },
-            suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: format.amount, inputType: "amount" },
-            suggestedContributionAmount: { label: "Suggested contribution amount", formatter: format.amount, inputType: "amount" },
+            suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
+            suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
+            suggestedContributionAmount: { label: "Suggested contribution amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
           }}
           initialValues={{
             fundraiserName: "New Fundraiser",
@@ -75,8 +75,8 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
           fundraiserName: { label: "Name", className: "whitespace-nowrap" },
           activeFrom: { label: "From", formatter: format.date, className: "w-36" },
           activeTo: { label: "To", formatter: format.date, className: "w-36" },
-          goal: { label: "Goal", formatter: format.amount, className: "w-36" },
-          totalRaised: { label: "Raised", formatter: format.amount, className: "w-36" },
+          goal: { label: "Goal", formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), className: "w-36" },
+          totalRaised: { label: "Raised", formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), className: "w-36" },
         }}
         items={fundraisers}
         onClick={(fundraiser) => navigate(`/admin/${fundraiser.id}/`)}
