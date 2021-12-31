@@ -168,7 +168,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                               <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
                                 <div
                                   style="font-family:'Helvetica', 'Arial', sans-serif;font-size:20px;line-height:1.5;text-align:left;color:#ffffff;">
-                                  ${donation.donorName.split(" ")[0]}, you've done a great thing today.<br /><br />Your donation will protect ${convert.gbpToPeopleProtected(payments[0].donationAmount + (payments[0].matchFundingAmount ?? 0))}
+                                  ${donation.donorName.split(" ")[0]}, you've done a great thing today.<br /><br />Your donation will protect ${convert.moneyToPeopleProtected(fundraiser.currency, payments[0].donationAmount + (payments[0].matchFundingAmount ?? 0))}
                                   people from malaria. You've also taken an important step on your journey to positive,
                                   deliberate, effective giving.</div>
                               </td>

@@ -26,7 +26,7 @@ test("renders email correctly with one payment", () => {
 
   // then we have expected data filled in
   expect(email).toContain("Greg, you've done a great thing today")
-  expect(email).toContain("Your donation will protect 240 people from malaria.")
+  expect(email).toContain("Your donation will protect 243 people from malaria.")
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
   expect(email).toMatch(/<td[^>]*>Your contribution to Raise<\/td>\s*<td[^>]*>£10<\/td>/)
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£110<\/td>/)
@@ -58,7 +58,7 @@ test("renders email correctly for payments with no contribution or match funding
 
   // then we have expected data filled in
   expect(email).toContain("Greg, you've done a great thing today")
-  expect(email).toContain("Your donation will protect 120 people from malaria.")
+  expect(email).toContain("Your donation will protect 121 people from malaria.")
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
   expect(email).not.toContain("Your contribution to Raise")
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£100<\/td>/)
@@ -112,12 +112,13 @@ test.each([
 
   // then we have expected data filled in
   expect(email).toContain("Greg, you've done a great thing today")
-  expect(email).toContain("Your donation will protect 21 people from malaria.")
   if (currency === "gbp") {
+    expect(email).toContain("Your donation will protect 21 people from malaria.")
     expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£9<\/td>/)
     expect(email).toMatch(/<td[^>]*>Your contribution to Raise<\/td>\s*<td[^>]*>£10<\/td>/)
     expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£19<\/td>/)
   } else {
+    expect(email).toContain("Your donation will protect 16 people from malaria.")
     expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>\$9<\/td>/)
     expect(email).toMatch(/<td[^>]*>Your contribution to Raise<\/td>\s*<td[^>]*>\$10<\/td>/)
     expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>\$19<\/td>/)
