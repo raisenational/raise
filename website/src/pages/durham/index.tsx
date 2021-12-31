@@ -45,8 +45,8 @@ const IndexPage = () => (
           title="Raise Durham"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
           statistics={{
-            years: 1,
-            students: 122,
+            years: 2,
+            students: 200,
             raised: 30714,
             protected: 37867,
           }}
