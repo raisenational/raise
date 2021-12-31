@@ -12,7 +12,7 @@ const env: Env = {
 
   // Stripe publishable key
   // The secret key should NEVER be exposed to the front-end
-  STRIPE_PUBLISHABLE_KEY: "pk_test_51JoQv0KzqibgSMB7aaaSq8ZJUsTwC4Hd1rfRwehKncms8iaHsKl941RvdBWNNVGQDcdRZmRaDaMknmBTilFqOhYU00EyfZikdJ",
+  STRIPE_PUBLISHABLE_KEY: "pk_test_51KCByfI5VgKIYyWlqwp6p3qRFscr4s7bAaIC7EjZAunHLJEQoclC4it33M4Iv0U5jCVlDMQ0g8nMcJngVnIwjIOJ00vfxDTCMw",
 
   // Whether to enable login methods
   GOOGLE_LOGIN_ENABLED: true,
