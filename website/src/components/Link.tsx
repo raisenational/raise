@@ -2,20 +2,21 @@ import * as React from "react"
 import { Link as GatsbyLink } from "gatsby"
 import classNames from "classnames"
 
-interface Props {
+interface Props extends Omit<React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>, "ref"> {
   href?: string,
   target?: React.HTMLAttributeAnchorTarget,
   onClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
   className?: string,
   disabled?: boolean,
+  children?: React.ReactNode,
 }
 
-const Link: React.FC<Props> = ({
-  children, href, target, onClick, className, disabled,
-}) => {
+const Link = React.forwardRef<any, Props>(({
+  children, href, target, onClick, className, disabled, ...anchorProps
+}, ref) => {
   if (disabled || (href === undefined && onClick === undefined)) {
     return (
-      <a href={href} onClick={() => false} className={classNames("opacity-40 pointer-events-none", className)}>
+      <a href={href} onClick={() => false} className={classNames("opacity-40 pointer-events-none", className)} ref={ref} {...anchorProps}>
         {children}
       </a>
     )
@@ -30,6 +31,8 @@ const Link: React.FC<Props> = ({
         to={href}
         onClick={onClick}
         className={classNames("cursor-pointer", className)}
+        ref={ref}
+        {...anchorProps}
       >
         {children}
       </GatsbyLink>
@@ -37,10 +40,10 @@ const Link: React.FC<Props> = ({
   }
 
   return (
-    <a href={href} target={target} rel="noreferrer" onClick={onClick} onKeyPress={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") onClick(e) } : undefined} tabIndex={0} className={classNames("cursor-pointer", className)}>
+    <a href={href} target={target} rel="noreferrer" onClick={onClick} onKeyPress={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") { onClick(e); e.preventDefault() } } : undefined} tabIndex={0} className={classNames("cursor-pointer", className)} ref={ref} {...anchorProps}>
       {children}
     </a>
   )
-}
+})
 
 export default Link

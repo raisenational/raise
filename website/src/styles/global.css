@@ -32,6 +32,20 @@
   :root {
     --reach-dialog: 1;
     --reach-listbox: 1;
+    --reach-tooltip: 1;
+  }
+
+  [data-reach-tooltip] {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    pointer-events: none;
+    position: absolute;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 85%;
+    max-width: 30rem;
   }
 
   html {
@@ -71,10 +85,10 @@
   }
 
   .Button {
-    @apply py-1 px-3 border-2 rounded text-white inline-block h-full -skew-x-15 transition-all duration-200 shadow hover:shadow-lg scale-100 hover:scale-105
+    @apply py-1 px-3 border-2 rounded text-white inline-block h-full transition-all duration-200 shadow hover:shadow-lg scale-100 hover:scale-105
   }
 
-  .Button + .Button {
+  .Button + .Button:not(.ml-0) {
     @apply ml-2
   }
 
