@@ -242,7 +242,6 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
       <div className="mb-4 text-lg">
         {page === 0 && <DonationFormDonate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 1 && <DonationFormCelebrate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-        {/* TODO: gift aid information page */}
         {page === 2 && <DonationFormDisplay formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} setPiResponse={setPiResponse} onPaymentSuccess={onPaymentSuccess} />}
         {page === 4 && piResponse && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse} />}
@@ -309,7 +308,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
         </Button>
         <Tooltip label={(<p>Weekly donations will be taken from the card you provide every seven days from now until {format.date(fundraiser.recurringDonationsTo)}.</p>)}>
           <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("p-4 text-center ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
-            a weekly donation<br /><span className="text-sm">(until {format.date(fundraiser.recurringDonationsTo)})</span>
+            a weekly donation <QuestionMarkCircleIcon width={22} height={22} />
           </Button>
         </Tooltip>
       </div>
@@ -356,7 +355,6 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
           <p>Amazing! {watches.recurrenceFrequency === "WEEKLY" ? "Every week, y" : "Y"}our donation will help protect {peopleProtected} people from malaria. We think that's something worth celebrating!</p>
           {peopleProtected > 600 ? <p className="mt-3">That's so many that we can't display them all here!</p> : (
             <p className={classNames("mt-3", { "text-lg": peopleProtected < 300, "text-2xl": peopleProtected < 200, "text-3xl": peopleProtected < 100 })}>{randomRepeat([
-              // "👶", "🧒", "👦", "👧", "🧑", "👨", "👩", "🧓", "🧔",
               "👶🏻", "🧒🏻", "👦🏻", "👧🏻", "🧑🏻", "👨🏻", "👩🏻", "🧓🏻", "🧔🏻",
               "👶🏼", "🧒🏼", "👦🏼", "👧🏼", "🧑🏼", "👨🏼", "👩🏼", "🧓🏼", "🧔🏼",
               "👶🏽", "🧒🏽", "👦🏽", "👧🏽", "🧑🏽", "👨🏽", "👩🏽", "🧓🏽", "🧔🏽",
@@ -386,6 +384,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
   return (
     <>
       <SectionTitle>Celebrate</SectionTitle>
+      {/* TODO: use public fundraiser name */}
       <p>At the end of this year, we'll invite everyone who's joined [Raise Chapter] to our Summer Party to celebrate our collective impact. We'd love to send you an invitation!</p>
 
       <LabelledInput className="mt-2" id="donorName" label="Name" type="text" autoComplete="name" error={errors.donorName?.message} {...register("donorName", { validate: (s) => (s ? true : "We need your name to send you an invite, and to identify your donation if you contact us") })} />
@@ -771,7 +770,6 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
           <Button variant="blue" target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fundraiserLink)}`}>Facebook</Button>
           <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(sharingText)}`}>Twitter</Button>
           <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fundraiserLink)}`}>LinkedIn</Button>
-          <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`mailto:?body=${encodeURIComponent(sharingText)}&subject=${encodeURIComponent("Donating money to Raise")}`}>Email</Button>
           <p className="mt-2">Sharing in other places is great too! Just direct them to <span className="select-all">{fundraiserLink}</span></p>
         </div>
       )}
