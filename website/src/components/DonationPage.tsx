@@ -10,8 +10,11 @@ import {
   format, convert, calcMatchFunding, PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse,
 } from "@raise/shared"
 import Helmet from "react-helmet"
+import Tooltip from "@reach/tooltip"
 import { ResponseValues } from "axios-hooks"
 import confetti from "canvas-confetti"
+import classNames from "classnames"
+import { QuestionMarkCircleIcon } from "@heroicons/react/outline"
 import logo from "../images/logo.png"
 import Button from "./Button"
 import DonationCard from "./DonationCard"
@@ -27,6 +30,7 @@ import Page from "./Page"
 import Navigation from "./Navigation"
 import FAQs, { FAQ } from "./FAQs"
 import Footer from "./Footer"
+import Link from "./Link"
 
 interface Props {
   title: string,
@@ -61,7 +65,7 @@ const DonationPage: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
               fundraiser={fundraiser}
               openModal={() => setModalOpen(true)}
             />
-            <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+            <Modal open={modalOpen} onClose={() => setModalOpen(false)} className="max-w-2xl">
               {fundraiser.data && <DonationForm fundraiser={fundraiser.data} setModalOpen={setModalOpen} refetchFundraiser={refetchFundraiser} />}
             </Modal>
           </>
@@ -157,9 +161,8 @@ interface DonationFormResponses {
   addressLine2: string,
   addressLine3: string,
   addressPostcode: string,
-  overallPublic: boolean,
-  namePublic: boolean,
-  donationAmountPublic: boolean,
+  nameHidden: boolean,
+  donationAmountHidden: boolean,
   comment: string,
 }
 
@@ -179,9 +182,8 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
       addressLine2: "",
       addressLine3: "",
       addressPostcode: "",
-      overallPublic: true,
-      namePublic: true,
-      donationAmountPublic: true,
+      nameHidden: false,
+      donationAmountHidden: false,
       comment: "",
     },
   })
@@ -237,11 +239,11 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
 
   return (
     <FormProvider {...formMethods}>
-      <SectionTitle>Donate</SectionTitle>
-      <div className="mb-4">
-        {page === 0 && <DonationFormAmounts formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-        {page === 1 && <DonationFormDetails formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-        {page === 2 && <DonationFormMessage formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
+      <div className="mb-4 text-lg">
+        {page === 0 && <DonationFormDonate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
+        {page === 1 && <DonationFormCelebrate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
+        {/* TODO: gift aid information page */}
+        {page === 2 && <DonationFormDisplay formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} setPiResponse={setPiResponse} onPaymentSuccess={onPaymentSuccess} />}
         {page === 4 && piResponse && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse} />}
       </div>
@@ -256,98 +258,138 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
   )
 }
 
-const DonationFormAmounts: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({
+const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({
   formMethods: {
     setValue, register, formState: { errors }, trigger, getValues,
   }, watches, fundraiser,
-}) => (
-  <>
-    <h3 className="text-2xl">Your Donation</h3>
-    {/* TODO: formatting */}
-    <div className="mt-2 grid gap-2 md:grid-cols-3 md:gap-4">
-      <button type="button" onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} className="rounded border border-gray-700 p-4 cursor-pointer transition-all hover:bg-gray-100 hover:scale-105">
-        {format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountOneOff)} one-off
-      </button>
-      <button type="button" onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} className="rounded border border-gray-700 p-4 cursor-pointer transition-all hover:bg-gray-100 hover:scale-105">
-        {format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountWeekly)} weekly
-      </button>
-    </div>
+}) => {
+  let donationAmount: null | number = null
+  try {
+    donationAmount = parseMoney(watches.donationAmount)
+  } catch { /* noop */ }
+  const shouldShowLowAmountWarning = donationAmount !== null && ((watches.recurrenceFrequency === "ONE_OFF" && donationAmount < 20_00) || (watches.recurrenceFrequency === "WEEKLY" && donationAmount < 2_00))
+  const matchFundingAmount = donationAmount === null ? null : calcMatchFunding({
+    donationAmount,
+    matchFundingRate: fundraiser.matchFundingRate,
+    matchFundingRemaining: fundraiser.matchFundingRemaining,
+    matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
+  })
+  const peopleProtected = donationAmount === null || matchFundingAmount === null ? null : convert.moneyToPeopleProtected(fundraiser.currency, donationAmount * (watches.giftAid ? 1.25 : 1) + matchFundingAmount)
 
-    <div className="mt-2 grid md:grid-cols-2 md:gap-4">
+  const randomRepeat = (charset: string[], count: number) => {
+    let s = ""
+    for (let i = 0; i < count; i++) {
+      s += charset[Math.floor(Math.random() * charset.length)]
+    }
+    return s
+  }
+
+  return (
+    <>
+      <SectionTitle>Donate</SectionTitle>
+      <p>
+        We recommend giving an amount that feels <span className="font-bold">significant to you</span>.
+        {" "}
+        {/* TODO: make the tooltip work with mobile touch events */}
+        <Tooltip
+          label={(
+            <p>
+              We hope that through joining Raise this year, you'll come to see how positive the experience of giving deliberately can be. To help you to engage in that way, we recommend that you donate an amount which requires you to think before you give and to reflect on the positive impact that your donation will have.
+            </p>
+          )}
+        >
+          <span className="underline underline-offset-1 decoration-dotted">How do I decide what that means for me?</span>
+        </Tooltip>
+      </p>
+      <p className="mt-2">I want to give...</p>
+
+      <div className="mt-2 grid grid-cols-2 gap-4">
+        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("p-4 text-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
+          a one-off donation
+        </Button>
+        <Tooltip label={(<p>Weekly donations will be taken from the card you provide every seven days from now until {format.date(fundraiser.recurringDonationsTo)}.</p>)}>
+          <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("p-4 text-center ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
+            a weekly donation<br /><span className="text-sm">(until {format.date(fundraiser.recurringDonationsTo)})</span>
+          </Button>
+        </Tooltip>
+      </div>
+
       <LabelledInput
         id="donationAmount"
-        label="Donation amount"
         type="number"
         prefix={fundraiser.currency === "gbp" ? "£" : "$"}
         error={errors.donationAmount?.message}
+        className="mt-4"
+        inputClassName="text-2xl"
         {...register("donationAmount", {
           validate: (s) => {
+            if (!s) return "Please enter an amount"
+
             try {
-              const donationAmount = parseMoney(s)
-              if (donationAmount < 1_00) {
-                return `The donation amount must be greater than ${format.amountShort(fundraiser.currency, 100)} to avoid excessive card transaction fees`
+              const value = parseMoney(s)
+              if (value < 1_00) {
+                return `The amount must be greater than ${format.amountShort(fundraiser.currency, 100)} to avoid excessive card transaction fees`
               }
 
+              // TODO: calculate for recurring donations
               const recurrenceFrequency = getValues("recurrenceFrequency")
               if (recurrenceFrequency === "ONE_OFF") {
-                if (fundraiser.minimumDonationAmount && donationAmount < fundraiser.minimumDonationAmount) {
-                  return `The donation amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}`
+                if (fundraiser.minimumDonationAmount && value < fundraiser.minimumDonationAmount) {
+                  return `The amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}`
                 }
               }
             } catch {
-              return "The donation amount must be a monetary value"
+              return "The amount must be a monetary value"
             }
             return true
           },
         })}
       />
-      <LabelledInput
-        id="recurrenceFrequency"
-        label="Donation frequency"
-        type="select"
-        options={{
-          ONE_OFF: "one-off",
-          WEEKLY: "weekly",
-        }}
-        {...register("recurrenceFrequency")}
-      />
-    </div>
 
-    <div className="mt-4">
-      <p>At the end of the academic year, we come together as a community for a Summer Party to celebrate our collective impact. Given that 100% of your donation above will go directly to charity, we suggest an optional, separate contribution of {format.amountShort(fundraiser.currency, fundraiser.suggestedContributionAmount)} to cover the costs of the event (which are generously subsidised by our sponsors). Importantly, everyone will be very welcome to join, whether or not they feel able to make this contribution.</p>
-      <LabelledInput
-        id="contributionAmount"
-        label={`Contribution amount${watches.recurrenceFrequency !== "ONE_OFF" ? " (one-off)" : ""}`}
-        type="text"
-        prefix={fundraiser.currency === "gbp" ? "£" : "$"}
-        className="mt-2"
-        error={errors.contributionAmount?.message}
-        {...register("contributionAmount", {
-          validate: (s) => {
-            if (!s) return true
-            try {
-              parseMoney(s)
-            } catch {
-              return "The contribution amount must be a monetary value"
-            }
-            return true
-          },
-        })}
-      />
-    </div>
+      {/* TODO: determine wording for this */}
+      {shouldShowLowAmountWarning && <p className="mt-1">[Text prompt that appears if someone tries to put in a donation of &lt;£20 one-off, or &lt;£2 weekly, and remains once it has appeared. Text explains the significant amount recommendation.]</p>}
 
-    <div className="mt-8">
-      <p>Gift Aid can boost your donation by 25% at no cost to you if you are a UK taxpayer and will pay more Income Tax or Capital Gains Tax in the current tax year than the amount of Gift Aid claimed on all your donations. <a href="https://www.gov.uk/donating-to-charity/gift-aid" target="_blank" rel="noreferrer">More info</a>.</p>
-      <LabelledInput id="giftAid" label="I meet the requirements for Gift Aid and want to Gift Aid my donation" className="mt-2" type="checkbox" {...register("giftAid")} />
-    </div>
-  </>
-)
+      <LabelledInput id="giftAid" label={<span>Add 25% <span className="hidden md:inline">to my donation </span>through <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}><span className="underline underline-offset-1 decoration-dotted">Gift Aid<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span></Tooltip></span>} className="my-4" type="checkbox" {...register("giftAid")} />
 
-const DonationFormDetails: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({ formMethods: { register, formState: { errors } }, watches }) => (
-  <><h3 className="text-2xl">Your Details</h3>
-    <p>Let's get to know you a bit better!{watches.giftAid && " (We need your address for Gift Aid)"}</p>
-    <div className="grid md:grid-cols-1 md:gap-2 mt-4">
-      <LabelledInput id="donorName" label="Name" type="text" autoComplete="name" error={errors.donorName?.message} {...register("donorName", { validate: (s) => (s ? true : "We need your name to identify your donation if you contact us") })} />
+      {peopleProtected && (
+        <>
+          <p>Amazing! {watches.recurrenceFrequency === "WEEKLY" ? "Every week, y" : "Y"}our donation will help protect {peopleProtected} people from malaria. We think that's something worth celebrating!</p>
+          {peopleProtected > 600 ? <p className="mt-3">That's so many that we can't display them all here!</p> : (
+            <p className={classNames("mt-3", { "text-lg": peopleProtected < 300, "text-2xl": peopleProtected < 200, "text-3xl": peopleProtected < 100 })}>{randomRepeat([
+              // "👶", "🧒", "👦", "👧", "🧑", "👨", "👩", "🧓", "🧔",
+              "👶🏻", "🧒🏻", "👦🏻", "👧🏻", "🧑🏻", "👨🏻", "👩🏻", "🧓🏻", "🧔🏻",
+              "👶🏼", "🧒🏼", "👦🏼", "👧🏼", "🧑🏼", "👨🏼", "👩🏼", "🧓🏼", "🧔🏼",
+              "👶🏽", "🧒🏽", "👦🏽", "👧🏽", "🧑🏽", "👨🏽", "👩🏽", "🧓🏽", "🧔🏽",
+              "👶🏾", "🧒🏾", "👦🏾", "👧🏾", "🧑🏾", "👨🏾", "👩🏾", "🧓🏾", "🧔🏾",
+              "👶🏿", "🧒🏿", "👦🏿", "👧🏿", "🧑🏿", "👨🏿", "👩🏿", "🧓🏿", "🧔🏿",
+            ], peopleProtected)}
+            </p>
+          )}
+        </>
+      )}
+    </>
+  )
+}
+
+const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({
+  formMethods: {
+    setValue, register, formState: { errors }, trigger,
+  }, watches, fundraiser,
+}) => {
+  let contributionAmount = 0
+  try {
+    contributionAmount = parseMoney(watches.contributionAmount)
+  } catch {
+    contributionAmount = 1 // so if they have entered something invalid the button doesn't change to 'I don't want to contribute'
+  }
+
+  return (
+    <>
+      <SectionTitle>Celebrate</SectionTitle>
+      <p>At the end of this year, we'll invite everyone who's joined [Raise Chapter] to our Summer Party to celebrate our collective impact. We'd love to send you an invitation!</p>
+
+      <LabelledInput className="mt-2" id="donorName" label="Name" type="text" autoComplete="name" error={errors.donorName?.message} {...register("donorName", { validate: (s) => (s ? true : "We need your name to send you an invite, and to identify your donation if you contact us") })} />
+
       <div>
         <LabelledInput
           id="donorEmail"
@@ -355,66 +397,98 @@ const DonationFormDetails: React.FC<{ formMethods: UseFormReturn<DonationFormRes
           type="email"
           autoComplete="email"
           error={errors.donorEmail?.message}
-          className={errors.donorEmail?.message ? "mb-4" : undefined}
+          className={errors.donorEmail?.message ? "mt-4 mb-4" : "mt-4"}
           {...register("donorEmail", {
             validate: (s) => {
-              if (!s) return "We need your email to contact you in there are any problems with your donation"
+              if (!s) return "We need your email to send you an invite, and to contact you in there are any problems with your donation"
               // Regex from https://html.spec.whatwg.org/multipage/forms.html#e-mail-state-(type=email)
               if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(s)) return "Please enter a valid email"
               return true
             },
           })}
         />
-        <LabelledInput id="emailConsentInformational" label="Tell me exactly where my donation goes (recommended)" type="checkbox" {...register("emailConsentInformational")} />
-        <LabelledInput id="emailConsentMarketing" label="Send me updates about Raise (recommended)" className="-mt-2" type="checkbox" {...register("emailConsentMarketing")} />
+        <LabelledInput id="emailConsentInformational" label="Tell me exactly where my donation goes" type="checkbox" {...register("emailConsentInformational")} />
+        <LabelledInput id="emailConsentMarketing" label="Send me updates about Raise" className="-mt-2" type="checkbox" {...register("emailConsentMarketing")} />
       </div>
-      <LabelledInput id="addressLine1" label={`Address line 1 (${watches.giftAid ? "for gift-aid" : "optional"})`} type="text" autoComplete="address-line1" error={errors.addressLine1?.message} {...register("addressLine1", { validate: (s) => (!watches.giftAid || s ? true : "We need your address for gift-aid") })} />
-      <LabelledInput id="addressLine2" label="Address line 2 (optional)" type="text" autoComplete="address-line2" {...register("addressLine2")} />
-      <div className="grid md:grid-cols-2 md:gap-2">
-        <LabelledInput id="addressLine3" label="Address line 3 (optional)" type="text" autoComplete="address-line3" {...register("addressLine3")} />
-        <LabelledInput id="addressPostcode" label={`Address postcode (${watches.giftAid ? "for gift-aid" : "optional"})`} type="text" autoComplete="postal-code" error={errors.addressPostcode?.message} {...register("addressPostcode", { validate: (s) => (!watches.giftAid || s ? true : "We need your address for gift-aid") })} />
-      </div>
-    </div>
-  </>
-)
 
-const DonationFormMessage: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({ formMethods: { register }, watches, fundraiser }) => (
+      {fundraiser.suggestedContributionAmount !== null && (
+        <>
+          <h3 className="text-2xl mt-8">Contribution</h3>
+          <p className="mt-1">As 100% of your donation goes to charity, we suggest an optional contribution to cover the costs of the Summer Party (which are generously subsidised by our sponsors). Everyone is welcome to join, whether or not they make this contribution.</p>
+
+          <div className="mt-2 grid grid-cols-2 gap-4">
+            <Button variant={contributionAmount > 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", ((fundraiser.suggestedContributionAmount ?? 10_00) / 100).toString()); trigger("contributionAmount") }} skew={false} className={classNames("p-4 text-center", { "text-gray-200": contributionAmount <= 0 })}>
+              I want to contribute
+            </Button>
+            <Button variant={contributionAmount <= 0 ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("contributionAmount", "0"); trigger("contributionAmount") }} skew={false} className={classNames("p-4 text-center ml-0", { "text-gray-200": contributionAmount > 0 })}>
+              I don't want to contribute
+            </Button>
+          </div>
+
+          <LabelledInput
+            id="contributionAmount"
+            label={`Contribution amount${watches.recurrenceFrequency !== "ONE_OFF" ? " (one-off)" : ""}`}
+            type="text"
+            prefix={fundraiser.currency === "gbp" ? "£" : "$"}
+            className="mt-2"
+            error={errors.contributionAmount?.message}
+            {...register("contributionAmount", {
+              validate: (s) => {
+                if (!s) return true
+                try {
+                  parseMoney(s)
+                } catch {
+                  return "The contribution amount must be a monetary value"
+                }
+                return true
+              },
+            })}
+          />
+        </>
+      )}
+
+      {watches.giftAid && (
+        <>
+          <h3 className="text-2xl mt-8">Gift Aid</h3>
+          <p className="mt-1">To claim Gift Aid on your donation we need your address.</p>
+          <LabelledInput id="addressLine1" label="Address" type="text" autoComplete="address-line1" error={errors.addressLine1?.message} className="mt-2" {...register("addressLine1", { validate: (s) => (!watches.giftAid || s ? true : "We need your address for gift-aid") })} />
+          <LabelledInput id="addressLine2" type="text" autoComplete="address-line2" {...register("addressLine2")} />
+          {watches.addressLine2 && <LabelledInput id="addressLine3" type="text" autoComplete="address-line3" {...register("addressLine3")} />}
+          <LabelledInput id="addressPostcode" label="Postcode" type="text" autoComplete="postal-code" error={errors.addressPostcode?.message} {...register("addressPostcode", { validate: (s) => (!watches.giftAid || s ? true : "We need your postcode for gift-aid") })} />
+        </>
+      )}
+    </>
+  )
+}
+
+const DonationFormDisplay: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({ formMethods: { register }, watches, fundraiser }) => (
   <>
-    <h3 className="text-2xl">Your Message</h3>
-    <p>Add a message to your donation to be displayed on the website</p>
+    <SectionTitle>Display</SectionTitle>
+    <p>Choose how your donation appears on our website:</p>
+    <DonationCard
+      donorName={watches.nameHidden ? undefined : watches.donorName}
+      createdAt="1 minute ago"
+      giftAid={watches.donationAmountHidden ? undefined : watches.giftAid}
+      comment={watches.comment || null}
+      currency={fundraiser.currency}
+      donationAmount={watches.donationAmountHidden ? undefined : parseMoney(watches.donationAmount)}
+      matchFundingAmount={watches.donationAmountHidden ? undefined : calcMatchFunding({
+        donationAmount: parseMoney(watches.donationAmount),
+        matchFundingRate: fundraiser.matchFundingRate,
+        matchFundingRemaining: fundraiser.matchFundingRemaining,
+        matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
+      })}
+      recurringAmount={!watches.donationAmountHidden && watches.recurrenceFrequency !== "ONE_OFF" ? parseMoney(watches.donationAmount) : null}
+      recurrenceFrequency={watches.recurrenceFrequency !== "ONE_OFF" ? watches.recurrenceFrequency : null}
+      className="bg-raise-red text-2xl text-white font-raise-content md:max-w-sm mt-2"
+    />
     <div className="grid md:grid-cols-1 md:gap-2 mt-4">
       <div>
-        <LabelledInput id="overallPublic" label="Show my donation publicly (recommended)" type="checkbox" {...register("overallPublic")} />
-        {watches.overallPublic && (
-          <>
-            <LabelledInput id="namePublic" label="Show my name" className="-mt-2" type="checkbox" {...register("namePublic")} />
-            <LabelledInput id="donationAmountPublic" label="Show the donation amount" className="-mt-2" type="checkbox" {...register("donationAmountPublic")} />
-          </>
-        )}
+        <LabelledInput id="nameHidden" label="Hide my name" className="-mt-2" type="checkbox" {...register("nameHidden")} />
+        <LabelledInput id="donationAmountHidden" label="Hide the donation amount" className="-mt-2" type="checkbox" {...register("donationAmountHidden")} />
       </div>
-      {watches.overallPublic && <LabelledInput id="comment" label="Message (optional)" type="text" {...register("comment")} />}
+      <LabelledInput id="comment" label="Message (optional)" type="text" {...register("comment")} />
     </div>
-    {watches.overallPublic && (
-      <>
-        <p className="mt-4">Your donation will appear on the site like this:</p>
-        <DonationCard
-          donorName={watches.namePublic ? watches.donorName : undefined}
-          createdAt="1 minute ago"
-          giftAid={watches.donationAmountPublic ? watches.giftAid : undefined}
-          comment={watches.comment || null}
-          donationAmount={watches.donationAmountPublic ? parseMoney(watches.donationAmount) : undefined}
-          matchFundingAmount={watches.donationAmountPublic ? calcMatchFunding({
-            donationAmount: parseMoney(watches.donationAmount),
-            matchFundingRate: fundraiser.matchFundingRate,
-            matchFundingRemaining: fundraiser.matchFundingRemaining,
-            matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
-          }) : undefined}
-          recurringAmount={watches.donationAmountPublic && watches.recurrenceFrequency !== "ONE_OFF" ? parseMoney(watches.donationAmount) : null}
-          recurrenceFrequency={watches.recurrenceFrequency !== "ONE_OFF" ? watches.recurrenceFrequency : null}
-          className="bg-raise-red text-2xl text-white font-raise-content md:max-w-md mt-2"
-        />
-      </>
-    )}
   </>
 )
 
@@ -427,10 +501,15 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
   }, { manual: true })
 
   React.useEffect(() => {
+    let contributionAmount = 0
+    try {
+      contributionAmount = parseMoney(watches.contributionAmount)
+    } catch { /* noop */ }
+
     const data: PublicDonationRequest = {
       donationAmount: parseMoney(watches.donationAmount),
       recurrenceFrequency: watches.recurrenceFrequency !== "ONE_OFF" ? watches.recurrenceFrequency : null,
-      contributionAmount: watches.contributionAmount ? parseMoney(watches.contributionAmount) : 0,
+      contributionAmount,
       giftAid: watches.giftAid,
       donorName: watches.donorName,
       donorEmail: watches.donorEmail,
@@ -441,18 +520,18 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
       addressLine3: watches.addressLine3 || null,
       addressPostcode: watches.addressPostcode || null,
       addressCountry: watches.addressPostcode ? "United Kingdom" : null,
-      overallPublic: watches.overallPublic,
-      namePublic: watches.namePublic,
-      donationAmountPublic: watches.donationAmountPublic,
+      overallPublic: true,
+      namePublic: !watches.nameHidden,
+      donationAmountPublic: !watches.donationAmountHidden,
       comment: watches.comment,
     }
     fetchPiResponse({ data }).then((r) => setPiResponse(r.data))
-  }, [watches.donationAmount, watches.recurrenceFrequency, watches.contributionAmount, watches.giftAid, watches.donorEmail, watches.emailConsentInformational, watches.emailConsentMarketing, watches.addressLine1, watches.addressLine2, watches.addressLine3, watches.addressPostcode, watches.overallPublic, watches.namePublic, watches.donationAmountPublic, watches.comment])
+  }, [watches.donationAmount, watches.recurrenceFrequency, watches.contributionAmount, watches.giftAid, watches.donorEmail, watches.emailConsentInformational, watches.emailConsentMarketing, watches.addressLine1, watches.addressLine2, watches.addressLine3, watches.addressPostcode, watches.nameHidden, watches.donationAmountHidden, watches.comment])
 
   if (piResponse.error) {
     return (
       <>
-        <h3 className="text-2xl">Payment</h3>
+        <SectionTitle>Payment</SectionTitle>
         <Alert>{piResponse.error}</Alert>
       </>
     )
@@ -461,7 +540,7 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
   if (piResponse.loading || !piResponse.data) {
     return (
       <>
-        <h3 className="text-2xl">Payment</h3>
+        <SectionTitle>Payment</SectionTitle>
         <p className="animate-pulse">Loading...</p>
       </>
     )
@@ -469,14 +548,16 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
 
   return (
     <>
-      <Alert className="mb-4" variant="warning">
-        This system is in development. Avoid using real cards and instead use a <a href="https://stripe.com/docs/testing#cards" target="_blank" rel="noreferrer">Stripe test card</a>, e.g.:<br />
-        Card number: <code className="select-all">4242 4242 4242 4242</code><br />
-        Expiry date (any future date): <code className="select-all">01 / {(new Date().getFullYear() + 1).toFixed(0).slice(2)}</code><br />
-        Security code (any 3 digits): <code className="select-all">123</code>
-      </Alert>
-      <h3 className="text-2xl">Payment</h3>
-      <DonationFormPaymentAmount piResponse={piResponse.data} />
+      <SectionTitle>Payment</SectionTitle>
+      {env.STAGE !== "prod" && (
+        <Alert className="mb-4" variant="warning">
+          This is a non-prod environment. Use a <a href="https://stripe.com/docs/testing#cards" target="_blank" rel="noreferrer">Stripe test card</a> instead of a real card, e.g.:<br />
+          Card number: <code className="select-all">4242 4242 4242 4242</code><br />
+          Expiry date (any future date): <code className="select-all">12 / 34</code><br />
+          Security code (any 3 digits): <code className="select-all">123</code>
+        </Alert>
+      )}
+      <DonationFormPaymentAmount watches={watches} piResponse={piResponse.data} />
       <Elements
         options={{ clientSecret: piResponse.data.stripeClientSecret }}
         stripe={stripePromise}
@@ -487,18 +568,35 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
   )
 }
 
-const DonationFormPaymentAmount: React.FC<{ piResponse: PublicPaymentIntentResponse }> = ({ piResponse }) => {
+const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piResponse: PublicPaymentIntentResponse }> = ({ watches, piResponse }) => {
+  let contributionAmount = 0
+  try {
+    contributionAmount = parseMoney(watches.contributionAmount)
+  } catch { /* noop */ }
+
+  const [showDetails, setShowDetails] = React.useState(false)
+
   if (piResponse.futurePayments.length === 0) {
+    if (contributionAmount > 0) {
+      return <p>Amount due: {format.amountShort(piResponse.currency, piResponse.amount)} ({format.amountShort(piResponse.currency, parseMoney(watches.donationAmount))} donation + {format.amountShort(piResponse.currency, contributionAmount)} contribution)</p>
+    }
     return <p>Amount due: {format.amountShort(piResponse.currency, piResponse.amount)}</p>
   }
 
   return (
     <>
-      <p>Amount due: {format.amountShort(piResponse.currency, piResponse.amount)} now, then:</p>
-      <ul className="list-disc pl-8 mb-1">
-        {piResponse.futurePayments.map((p) => <li key={p.at}>{format.amountShort(piResponse.currency, p.amount)} on {format.date(p.at)}</li>)}
-      </ul>
-      <p>(you can cancel your future payments at any time by contacting us)</p>
+      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+      <p>Amount due: {format.amountShort(piResponse.currency, piResponse.amount)}{contributionAmount > 0 ? ` (${format.amountShort(piResponse.currency, parseMoney(watches.donationAmount))} donation + ${format.amountShort(piResponse.currency, contributionAmount)} contribution)` : ""} now, then{contributionAmount > 0 ? " a" : ""} {format.amountShort(piResponse.currency, parseMoney(watches.donationAmount))} {contributionAmount > 0 ? "donation every" : "a"} week until {format.date(piResponse.futurePayments[piResponse.futurePayments.length - 1].at)}. <Link onClick={() => setShowDetails(!showDetails)}>{showDetails ? "Hide" : "View"} schedule</Link>.</p>
+
+      {showDetails && (
+        <ul className="list-disc pl-8 my-1">
+          {piResponse.futurePayments.map((p) => <li key={p.at}>{format.amountShort(piResponse.currency, p.amount)} on {format.date(p.at)}</li>)}
+        </ul>
+      )}
+
+      <p className="mt-2">
+        You can cancel your future payments at any time by contacting us.
+      </p>
     </>
   )
 }
@@ -573,6 +671,7 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
               classes: {
                 base: "w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 outline-none rounded",
                 focus: "border-gray-800 bg-white-important", // needs to be important to override bg-gray-200 style. can't use focus(-within):bg-white as not really focused
+                invalid: "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50",
               },
               style: {
                 base: {
@@ -595,6 +694,7 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
                 classes: {
                   base: "w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 outline-none rounded",
                   focus: "border-gray-800 bg-white-important", // needs to be important to override bg-gray-200 style. can't use focus(-within):bg-white as not really focused
+                  invalid: "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50",
                 },
                 style: {
                   base: {
@@ -616,6 +716,7 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
                 classes: {
                   base: "w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 outline-none rounded",
                   focus: "border-gray-800 bg-white-important", // needs to be important to override bg-gray-200 style. can't use focus(-within):bg-white as not really focused
+                  invalid: "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50",
                 },
                 style: {
                   base: {
@@ -637,9 +738,15 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
 // (for consistency of form page props)
 // eslint-disable-next-line react/no-unused-prop-types
 const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, piResponse: PublicPaymentIntentResponse }> = ({
-  piResponse,
+  watches, fundraiser, piResponse,
 }) => {
-  const peopleProtected = convert.moneyToPeopleProtected(piResponse.currency, piResponse?.totalDonationAmount)
+  const matchFundingAmount = calcMatchFunding({
+    donationAmount: piResponse.totalDonationAmount,
+    matchFundingRate: fundraiser.matchFundingRate,
+    matchFundingRemaining: fundraiser.matchFundingRemaining,
+    matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
+  })
+  const peopleProtected = convert.moneyToPeopleProtected(piResponse.currency, piResponse.totalDonationAmount * (watches.giftAid ? 1.25 : 1) + matchFundingAmount)
 
   const fundraiserLink = window.location.host.replace(/^www./, "") + window.location.pathname.replace(/(\/donate)?\/?$/, "")
   const sharingText = `I just donated to Raise, protecting ${peopleProtected} people from malaria! Raise is a movement encouraging people to adopt a positive approach towards deliberate effective giving - you can #joinraise at ${fundraiserLink} or ask me about it.`
@@ -650,7 +757,8 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
 
   return (
     <>
-      <h3 className="text-2xl">We've got your donation!</h3>
+      <SectionTitle>Thank you!</SectionTitle>
+      <h3 className="text-2xl">We've got your donation</h3>
       <p>You've done a great thing today: your donation will protect {peopleProtected} people from malaria!</p>
       {/* TODO: a visual? also maybe a visual should be earlier in the flow? */}
 

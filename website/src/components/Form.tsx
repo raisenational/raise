@@ -73,7 +73,7 @@ const mapToInput = <T,>(item: UnpackNestedValue<T>, definition: FormProps<T>["de
 // @ts-ignore
 const mapFromInput = <T,>(item: UnpackNestedValue<T>, definition: FormProps<T>["definition"]): UnpackNestedValue<T> => objMap(item, (k, v) => fromInput(v, definition[k].inputType, definition[k].selectOptions))
 
-export type LabelledInputProps = React.InputHTMLAttributes<HTMLInputElement> & { id: string, label: string, error?: string } & ({
+export type LabelledInputProps = React.InputHTMLAttributes<HTMLInputElement> & { id: string, label?: React.ReactNode, error?: string, inputClassName?: string } & ({
   type: "select" | "multiselect",
   options: string[] | Record<string, string | null>,
   prefix?: never,
@@ -91,7 +91,7 @@ export type LabelledInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 })
 
 export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputProps>(({
-  id, label, error, className, type, options, prefix, suffix, ...rest
+  id, label, error, className, inputClassName, type, options, prefix, suffix, ...rest
 }, ref) => {
   if (type === "hidden") return <input id={id} ref={ref} type={type} className={className} {...rest} />
 
@@ -102,7 +102,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
       const [value, setValue] = React.useState<string | string[] | undefined>(rest.value as string | string[] | undefined)
       return (
         <div className={className}>
-          <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1")}>{label}</label>
+          {label && <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1")}>{label}</label>}
           {/* @ts-ignore */}
           <Select type={type} value={value} onChange={(v) => { setValue(v); if (rest.onChange) rest.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>) }} error={error} options={options} />
           {error && <span className="text-raise-red">{error}</span>}
@@ -116,7 +116,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
         control={formContext.control}
         render={({ field }) => (
           <div className={className}>
-            <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1")}>{label}</label>
+            {label && <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1")}>{label}</label>}
             {/* @ts-ignore */}
             <Select type={type} value={field.value} onChange={(v) => field.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>)} error={error} options={options} />
             {error && <span className="text-raise-red">{error}</span>}
@@ -129,10 +129,10 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
   return (
     <div className={className}>
       {type === "checkbox" && <input id={id} ref={ref} type={type} className="mt-1 mr-1 mb-3" {...rest} />}
-      <label htmlFor={id} className={classNames("text-gray-700 font-bold", { "block pb-1": type !== "checkbox", "text-raise-red": error })}>{label}</label>
+      {label && <label htmlFor={id} className={classNames("text-gray-700 font-bold", { "block pb-1": type !== "checkbox", "text-raise-red": error })}>{label}</label>}
       <div className="flex flex-row mb-1">
         {prefix && (
-          <span className={classNames("rounded-l py-2 px-3", {
+          <span className={classNames(inputClassName, "rounded-l py-2 px-3", {
             "bg-gray-300": !error,
             "bg-red-200": error,
           })}
@@ -145,7 +145,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
             ref={ref}
             type={type}
             step={type === "number" ? "any" : undefined}
-            className={classNames("w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 outline-none", {
+            className={classNames(inputClassName, "w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 outline-none", {
               "rounded-l": !prefix,
               "rounded-r": !suffix,
               "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
@@ -155,7 +155,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
           />
         )}
         {suffix && (
-          <span className={classNames("rounded-l py-2 px-3", {
+          <span className={classNames(inputClassName, "rounded-l py-2 px-3", {
             "bg-gray-300": !error,
             "bg-red-200": error,
           })}
