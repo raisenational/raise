@@ -59,6 +59,11 @@ const DonationPage: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
       <Section>
         {fundraiser.error && !fundraiser.loading ? <Alert>{fundraiser.error}</Alert> : (
           <>
+            <noscript>
+              <Alert variant="warning" className="-mt-8 mb-8">
+                To use this page, and to make a donation, please <Link href="https://www.enable-javascript.com/" target="_blank">enable JavaScript in your browser</Link>.
+              </Alert>
+            </noscript>
             <IntroFundraiser
               title={title}
               tagline={tagline}
