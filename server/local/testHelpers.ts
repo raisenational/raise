@@ -77,7 +77,8 @@ export const call = (handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyRes
 
 export const makeFundraiser = <Override extends Partial<Fundraiser>>(override?: Override): Fundraiser & Override => ({
   id: ulid(),
-  fundraiserName: "Test Fundraiser",
+  internalName: "Raise Test 2022",
+  publicName: "Raise Test",
   activeFrom: Math.floor(new Date().getTime() / 1000),
   activeTo: Math.floor(new Date().getTime() / 1000) + 604800, // 1 week
   recurringDonationsTo: Math.floor(new Date().getTime() / 1000) + 2419200, // 4 weeks

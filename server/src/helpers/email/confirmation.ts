@@ -129,7 +129,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                               <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
                                 <div
                                   style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;line-height:1.375;text-align:left;color:#ffffff;">
-                                  Raise: A Celebration of Giving</div>
+                                  ${fundraiser.publicName}: A Celebration of Giving</div>
                               </td>
                             </tr>
                             <tr>
@@ -219,7 +219,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                     <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountShort(fundraiser.currency, payments[0].donationAmount)}</td>
                                   </tr>` : ""}
                                   ${payments[0].contributionAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
-                                      <td style="padding: 2px 0;">Your contribution to Raise</td>
+                                      <td style="padding: 2px 0;">Your contribution to ${fundraiser.publicName}</td>
                                       <td style="padding: 2px 0;text-align:right;white-space:pre;">${format.amountShort(fundraiser.currency, payments[0].contributionAmount)}</td>
                                   </tr>` : ""}
                                   <tr style="height:6px">
@@ -321,7 +321,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
       </table>
     </div>
     <!--[if mso | IE]></td></tr></table><![endif]-->
-    <!-- TODO: Get a Raise asset here -->
+    <!-- TODO: Get our own asset here -->
     <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="md-rounded-bottom-outlook" style="width:600px;" width="600" bgcolor="#ffffff" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
     <div class="md-rounded-bottom" style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
       <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"

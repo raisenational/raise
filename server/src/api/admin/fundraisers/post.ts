@@ -10,7 +10,8 @@ export const main = middyfy(fundraiserCreationSchema, ulidSchema, true, async (e
 
   const fundraiser = await insert(fundraiserTable, {
     id: ulid(),
-    fundraiserName: event.body.fundraiserName ?? "New Fundraiser",
+    internalName: event.body.internalName ?? "New Fundraiser",
+    publicName: event.body.publicName ?? "New Fundraiser",
     activeFrom: event.body.activeFrom ?? Math.floor(new Date().getTime() / 1000),
     activeTo: event.body.activeTo ?? Math.floor(new Date().getTime() / 1000),
     recurringDonationsTo: event.body.recurringDonationsTo ?? Math.floor(new Date().getTime() / 1000),

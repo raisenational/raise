@@ -3,7 +3,7 @@ import confirmation from "./confirmation"
 
 test("renders email correctly with one payment", () => {
   // given fundraiser, donation and payments
-  const fundraiser = makeFundraiser({ currency: "gbp" })
+  const fundraiser = makeFundraiser({ currency: "gbp", publicName: "Raise Test" })
   const donation = makeDonation({
     fundraiserId: fundraiser.id,
     donationAmount: 100_00,
@@ -28,14 +28,14 @@ test("renders email correctly with one payment", () => {
   expect(email).toContain("Greg, you've done a great thing today")
   expect(email).toContain("Your donation will protect 243 people from malaria.")
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
-  expect(email).toMatch(/<td[^>]*>Your contribution to Raise<\/td>\s*<td[^>]*>£10<\/td>/)
+  expect(email).toMatch(/<td[^>]*>Your contribution to Raise Test<\/td>\s*<td[^>]*>£10<\/td>/)
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£110<\/td>/)
   expect(email).not.toContain("You also set up future donations to AMF:")
 })
 
 test("renders email correctly for payments with no contribution or match funding", () => {
   // given fundraiser, donation and payments
-  const fundraiser = makeFundraiser({ currency: "gbp" })
+  const fundraiser = makeFundraiser({ currency: "gbp", publicName: "Raise Test" })
   const donation = makeDonation({
     fundraiserId: fundraiser.id,
     donationAmount: 100_00,
@@ -60,7 +60,7 @@ test("renders email correctly for payments with no contribution or match funding
   expect(email).toContain("Greg, you've done a great thing today")
   expect(email).toContain("Your donation will protect 121 people from malaria.")
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
-  expect(email).not.toContain("Your contribution to Raise")
+  expect(email).not.toContain("Your contribution to Raise Test")
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£100<\/td>/)
   expect(email).not.toContain("You also set up future donations to AMF:")
 })
@@ -69,7 +69,7 @@ test.each([
   ["gbp"], ["usd"],
 ] as const)("renders email correctly with %s scheduled payment", (currency) => {
   // given fundraiser, donation and payments
-  const fundraiser = makeFundraiser({ currency })
+  const fundraiser = makeFundraiser({ currency, publicName: "Raise Test" })
   const donation = makeDonation({
     fundraiserId: fundraiser.id,
     donationAmount: 9_00,
@@ -115,12 +115,12 @@ test.each([
   if (currency === "gbp") {
     expect(email).toContain("Your donation will protect 21 people from malaria.")
     expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£9<\/td>/)
-    expect(email).toMatch(/<td[^>]*>Your contribution to Raise<\/td>\s*<td[^>]*>£10<\/td>/)
+    expect(email).toMatch(/<td[^>]*>Your contribution to Raise Test<\/td>\s*<td[^>]*>£10<\/td>/)
     expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£19<\/td>/)
   } else {
     expect(email).toContain("Your donation will protect 16 people from malaria.")
     expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>\$9<\/td>/)
-    expect(email).toMatch(/<td[^>]*>Your contribution to Raise<\/td>\s*<td[^>]*>\$10<\/td>/)
+    expect(email).toMatch(/<td[^>]*>Your contribution to Raise Test<\/td>\s*<td[^>]*>\$10<\/td>/)
     expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>\$19<\/td>/)
   }
   expect(email).toContain("You also set up future donations to AMF:")
@@ -133,4 +133,20 @@ test.each([
     expect(email).toMatch(/<td[^>]*>26\/12\/2021<\/td>\s*<td[^>]*>\$9<\/td>/)
     expect(email).toMatch(/<td[^>]*>Total future donations<\/td>\s*<td[^>]*>\$18<\/td>/)
   }
+})
+
+test("does not confuse MWA and Raise branding", () => {
+  // given MWA fundraiser, donation and payments
+  const fundraiser = makeFundraiser({ currency: "gbp", publicName: "MWA" })
+  const donation = makeDonation()
+  const payments = [makePayment()]
+
+  // when we render the email
+  const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, " ")
+
+  // then we expect the email not to mention raise except for the support email and image assets
+  expect(email
+    .replace(/raisenational@gmail.com/g, "")
+    .replace(/src="https:\/\/joinraise.org/g, ""))
+    .not.toMatch(/raise/i)
 })

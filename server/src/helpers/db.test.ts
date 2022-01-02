@@ -49,7 +49,7 @@ describe("insert", () => {
   })
 
   test("fails with condition expression that evaluates to false", async () => {
-    await expect(insert(fundraiserTable, makeFundraiser(), "id = fundraiserName")).rejects.toThrowError("failed conditional expression")
+    await expect(insert(fundraiserTable, makeFundraiser(), "id = internalName")).rejects.toThrowError("failed conditional expression")
 
     expect(await scan(fundraiserTable)).toHaveLength(0)
   })

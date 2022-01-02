@@ -23,10 +23,11 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
 
   return (
     <Section>
-      <SectionTitle>{fundraiser.data?.fundraiserName || "Fundraiser"}</SectionTitle>
+      <SectionTitle>{fundraiser.data?.internalName || "Fundraiser"}</SectionTitle>
       <PropertyEditor
         definition={{
-          fundraiserName: { label: "Name", inputType: "text" },
+          internalName: { label: "Internal name", inputType: "text" },
+          publicName: { label: "Public name", inputType: "text" },
           activeFrom: { label: "From", formatter: format.timestamp, inputType: "datetime-local" },
           activeTo: { label: "To", formatter: format.timestamp, inputType: "datetime-local" },
           recurringDonationsTo: { label: "Recurring donations to", formatter: format.timestamp, inputType: "datetime-local" },
