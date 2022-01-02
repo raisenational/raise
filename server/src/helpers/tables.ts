@@ -12,7 +12,7 @@ export type DBAttributeValue = null | boolean | number | string | DBAttributeVal
 export interface Table<
   PartitionKey extends string,
   PrimaryKey extends string,
-  Schema extends Record<keyof Schema, DBAttributeValue> & Key,
+  Schema extends { [K in keyof Schema]: DBAttributeValue } & Key,
   Key extends Record<PartitionKey | PrimaryKey, string> = Record<PartitionKey | PrimaryKey, string>,
   _Edits extends { [K in keyof Schema]?: K extends keyof Key ? never : Schema[K] } = { [K in keyof Schema]?: K extends keyof Key ? never : Schema[K] }
   > {

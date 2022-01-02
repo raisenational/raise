@@ -50,7 +50,7 @@ const ajv = new Ajv({
 const handleDbError = <
   Pa extends string,
   Pr extends string,
-  S extends Record<keyof S, DBAttributeValue> & K,
+  S extends { [K in keyof S]: DBAttributeValue } & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table?: Table<Pa, Pr, S, K, E>) => async (err: unknown) => {
@@ -134,7 +134,7 @@ export const checkPrevious = <I extends { [key: string]: NativeAttributeValue }>
 export const scan = async <
   Pa extends string,
   Pr extends string,
-  S extends Record<keyof S, DBAttributeValue> & K,
+  S extends { [K in keyof S]: DBAttributeValue } & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>): Promise<S[]> => {
@@ -164,7 +164,7 @@ export const scan = async <
 export const query = async <
   Pa extends string,
   Pr extends string,
-  S extends Record<keyof S, DBAttributeValue> & K,
+  S extends { [K in keyof S]: DBAttributeValue } & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, key: Record<Pa, string>): Promise<S[]> => {
@@ -185,7 +185,7 @@ export const query = async <
 export const get = async <
   Pa extends string,
   Pr extends string,
-  S extends Record<keyof S, DBAttributeValue> & K,
+  S extends { [K in keyof S]: DBAttributeValue } & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, key: K): Promise<S> => {
@@ -234,7 +234,7 @@ export const insertAudit = async (auditDefinition: AuditDefinition): Promise<voi
 export const insert = async <
   Pa extends string,
   Pr extends string,
-  S extends Record<keyof S, DBAttributeValue> & K,
+  S extends { [K in keyof S]: DBAttributeValue } & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, data: S, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): Promise<S> => {
@@ -266,7 +266,7 @@ export type AWSTransactionDefinition = NonNullable<TransactWriteCommandInput["Tr
 export const insertT = <
   Pa extends string,
   Pr extends string,
-  S extends Record<keyof S, DBAttributeValue> & K,
+  S extends { [K in keyof S]: DBAttributeValue } & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, data: S, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): { tDef: AWSTransactionDefinition, auditDef: AuditDefinition } => {
@@ -293,7 +293,7 @@ export const insertT = <
 export const plusT = <
   Pa extends string,
   Pr extends string,
-  S extends Record<keyof S, DBAttributeValue> & K,
+  S extends { [K in keyof S]: DBAttributeValue } & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, key: K, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): { tDef: AWSTransactionDefinition, auditDef: AuditDefinition } => {
@@ -332,7 +332,7 @@ export const plusT = <
 export const updateT = <
   Pa extends string,
   Pr extends string,
-  S extends Record<keyof S, DBAttributeValue> & K,
+  S extends { [K in keyof S]: DBAttributeValue } & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, key: K, data: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): { tDef: AWSTransactionDefinition, auditDef: AuditDefinition } => {
@@ -378,7 +378,7 @@ export const inTransaction = async (args: { tDef: AWSTransactionDefinition, audi
 export const appendList = async <
   Pa extends string,
   Pr extends string,
-  S extends Record<keyof S, DBAttributeValue> & K,
+  S extends { [K in keyof S]: DBAttributeValue } & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   P extends keyof { [_K in keyof S as S[_K] extends unknown[] ? _K : never]: S[_K] } & keyof S & string,
@@ -417,7 +417,7 @@ export const appendList = async <
 export const update = async <
   Pa extends string,
   Pr extends string,
-  S extends Record<keyof S, DBAttributeValue> & K,
+  S extends { [K in keyof S]: DBAttributeValue } & K,
   K extends Record<Pa | Pr, string>,
   E extends { [_K in keyof S]?: _K extends keyof K ? never : S[_K] },
   >(table: Table<Pa, Pr, S, K, E>, key: K, edits: E, extraConditionExpression?: string, extraAttributeValues?: { [key: string]: NativeAttributeValue }, extraAttributeNames?: { [key: string]: NativeAttributeValue }): Promise<S> => {
