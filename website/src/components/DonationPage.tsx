@@ -263,7 +263,8 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
           <Button
             variant="blue"
             onClick={async () => {
-              await formMethods.trigger()
+              const okay = await formMethods.trigger()
+              if (!okay) return
               setPage(page + 1)
               const overlay = document.querySelector("[data-reach-dialog-overlay]")
               if (overlay) overlay.scrollTop = 0
@@ -458,7 +459,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
             <Button variant={contributionAmount > 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", ((fundraiser.suggestedContributionAmount ?? 10_00) / 100).toString()); trigger("contributionAmount") }} skew={false} className={classNames("p-4 text-center", { "text-gray-200": contributionAmount <= 0 })}>
               I want to contribute
             </Button>
-            <Button variant={contributionAmount <= 0 ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("contributionAmount", "0"); trigger("contributionAmount") }} skew={false} className={classNames("p-4 text-center ml-0", { "text-gray-200": contributionAmount > 0 })}>
+            <Button variant={contributionAmount <= 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", "0"); trigger("contributionAmount") }} skew={false} className={classNames("p-4 text-center ml-0", { "text-gray-200": contributionAmount > 0 })}>
               I don't want to contribute
             </Button>
           </div>
