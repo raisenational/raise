@@ -796,9 +796,6 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
   const sharingText = `I just donated to Raise, protecting ${peopleProtected} people from malaria! Raise is a movement encouraging people to adopt a positive approach towards deliberate effective giving - you can #joinraise at ${fundraiserLink} or ask me about it.`
   const shareData = { text: sharingText }
 
-  // TODO: add event link
-  // const eventLink = fundraiser.links.find((l) => l.key === "event")
-
   return (
     <>
       <SectionTitle>Thank you!</SectionTitle>
@@ -817,6 +814,13 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
           <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fundraiserLink)}`}>LinkedIn</Button>
           <p className="mt-2">Sharing in other places is great too! Just direct them to <span className="select-all">{fundraiserLink}</span></p>
         </div>
+      )}
+
+      {fundraiser.eventLink && (
+        <>
+          <h3 className="text-2xl mt-4">Join us at the summer party</h3>
+          <p className="mb-2">RSVP to our summer party on <Link href={fundraiser.eventLink} target="_blank">our event page</Link>.</p>
+        </>
       )}
     </>
   )
