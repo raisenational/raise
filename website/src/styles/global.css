@@ -32,20 +32,12 @@
   :root {
     --reach-dialog: 1;
     --reach-listbox: 1;
-    --reach-tooltip: 1;
   }
 
-  [data-reach-tooltip] {
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    border: none;
-    border-radius: 0.25rem;
-    padding: 0.5rem 0.75rem;
-    pointer-events: none;
-    position: absolute;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    font-size: 85%;
-    max-width: 30rem;
+  .tooltip {
+    @apply absolute invisible group-hover:visible bg-black text-white text-center font-normal p-3 rounded mt-8 text-sm pointer-events-none z-10;
+    width: 95%;
+    left: 2.5%;
   }
 
   html {
