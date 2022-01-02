@@ -297,7 +297,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
             </p>
           )}
         >
-          <span className="underline underline-offset-1 decoration-dotted">How do I decide what that means for me?</span>
+          <span className="underline underline-offset-1 decoration-dotted">How do I decide what that means for me?<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span>
         </Tooltip>
       </p>
       <p className="mt-2">I want to give...</p>
@@ -450,10 +450,10 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
         <>
           <h3 className="text-2xl mt-8">Gift Aid</h3>
           <p className="mt-1">To claim Gift Aid on your donation we need your address.</p>
-          <LabelledInput id="addressLine1" label="Address" type="text" autoComplete="address-line1" error={errors.addressLine1?.message} className="mt-2" {...register("addressLine1", { validate: (s) => (!watches.giftAid || s ? true : "We need your address for gift-aid") })} />
+          <LabelledInput id="addressLine1" label="Address" type="text" autoComplete="address-line1" error={errors.addressLine1?.message} className="mt-2" {...register("addressLine1", { validate: (s) => (!watches.giftAid || s ? true : "We need your address for Gift Aid") })} />
           <LabelledInput id="addressLine2" type="text" autoComplete="address-line2" {...register("addressLine2")} />
           {watches.addressLine2 && <LabelledInput id="addressLine3" type="text" autoComplete="address-line3" {...register("addressLine3")} />}
-          <LabelledInput id="addressPostcode" label="Postcode" type="text" autoComplete="postal-code" error={errors.addressPostcode?.message} {...register("addressPostcode", { validate: (s) => (!watches.giftAid || s ? true : "We need your postcode for gift-aid") })} />
+          <LabelledInput id="addressPostcode" label="Postcode" type="text" autoComplete="postal-code" error={errors.addressPostcode?.message} {...register("addressPostcode", { validate: (s) => (!watches.giftAid || s ? true : "We need your postcode for Gift Aid") })} />
         </>
       )}
     </>
