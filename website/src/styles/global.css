@@ -35,6 +35,23 @@
     --reach-tooltip: 1;
   }
 
+  .tooltip {
+    @apply absolute invisible group-hover:visible bg-black text-white text-center font-normal p-3 rounded top-full mt-2 w-64 text-sm pointer-events-none z-10;
+    /* 8rem for half the width, 11px for half the width of the question mark icon */
+    margin-left: calc(-8rem + -11px);
+  }
+
+  .tooltip::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+  }
+
   [data-reach-tooltip] {
     background: rgba(0, 0, 0, 0.9);
     color: white;

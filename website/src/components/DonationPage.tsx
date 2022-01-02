@@ -10,7 +10,6 @@ import {
   format, convert, calcMatchFunding, PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse,
 } from "@raise/shared"
 import Helmet from "react-helmet"
-import Tooltip from "@reach/tooltip"
 import { ResponseValues } from "axios-hooks"
 import confetti from "canvas-confetti"
 import classNames from "classnames"
@@ -31,6 +30,7 @@ import Navigation from "./Navigation"
 import FAQs, { FAQ } from "./FAQs"
 import Footer from "./Footer"
 import Link from "./Link"
+import Tooltip from "./Tooltip"
 
 interface Props {
   title: string,
@@ -239,7 +239,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
 
   return (
     <FormProvider {...formMethods}>
-      <div className="mb-4 text-lg">
+      <div className="mb-4 text-base sm:text-lg">
         {page === 0 && <DonationFormDonate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 1 && <DonationFormCelebrate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
         {page === 2 && <DonationFormDisplay formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
@@ -247,10 +247,43 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
         {page === 4 && piResponse && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse} />}
       </div>
       <div className="float-right">
-        {page !== 0 && page !== 4 && <Button variant="gray" onClick={() => setPage(page - 1)}>Back</Button>}
-        {page !== 3 && page !== 4 && <Button variant="blue" onClick={async () => await formMethods.trigger() && setPage(page + 1)}>Next</Button>}
+        {page !== 0 && page !== 4 && (
+          <Button
+            variant="gray"
+            onClick={() => {
+              setPage(page - 1)
+              const overlay = document.querySelector("[data-reach-dialog-overlay]")
+              if (overlay) overlay.scrollTop = 0
+            }}
+          >
+            Back
+          </Button>
+        )}
+        {page !== 3 && page !== 4 && (
+          <Button
+            variant="blue"
+            onClick={async () => {
+              await formMethods.trigger()
+              setPage(page + 1)
+              const overlay = document.querySelector("[data-reach-dialog-overlay]")
+              if (overlay) overlay.scrollTop = 0
+            }}
+          >
+            Next
+          </Button>
+        )}
         {page === 3 && payButton}
-        {page === 4 && <Button variant="gray" onClick={() => { setModalOpen(false); refetchFundraiser() }}>Close</Button>}
+        {page === 4 && (
+          <Button
+            variant="gray"
+            onClick={() => {
+              setModalOpen(false)
+              refetchFundraiser()
+            }}
+          >
+            Close
+          </Button>
+        )}
       </div>
       <div className="clear-both" />
     </FormProvider>
@@ -297,20 +330,18 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
             </p>
           )}
         >
-          <span className="underline underline-offset-1 decoration-dotted">How do I decide what that means for me?<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span>
+          How do I decide what that means for me?<QuestionMarkCircleIcon width={22} height={22} className="ml-1" />
         </Tooltip>
       </p>
-      <p className="mt-2">I want to give...</p>
+      <p className="mt-2">I want to give<span className="inline sm:hidden"> a</span>...</p>
 
       <div className="mt-2 grid grid-cols-2 gap-4">
-        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("p-4 text-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
-          a one-off donation
+        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("px-2 py-6 text-center leading-none flex flex-col justify-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
+          <span className="hidden sm:inline">a </span>one-off donation
         </Button>
-        <Tooltip label={(<p>Weekly donations will be taken from the card you provide every seven days from now until {format.date(fundraiser.recurringDonationsTo)}.</p>)}>
-          <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("p-4 text-center ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
-            a weekly donation <QuestionMarkCircleIcon width={22} height={22} />
-          </Button>
-        </Tooltip>
+        <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("px-2 py-6 text-center leading-none ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
+          <span className="hidden sm:inline">a </span>weekly donation<span className="block text-xs sm:text-sm">(to {format.date(fundraiser.recurringDonationsTo)})</span>
+        </Button>
       </div>
 
       <LabelledInput
@@ -348,13 +379,21 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
       {/* TODO: determine wording for this */}
       {shouldShowLowAmountWarning && <p className="mt-1">[Text prompt that appears if someone tries to put in a donation of &lt;£20 one-off, or &lt;£2 weekly, and remains once it has appeared. Text explains the significant amount recommendation.]</p>}
 
-      <LabelledInput id="giftAid" label={<span>Add 25% <span className="hidden md:inline">to my donation </span>through <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}><span className="underline underline-offset-1 decoration-dotted">Gift Aid<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span></Tooltip></span>} className="my-4" type="checkbox" {...register("giftAid")} />
+      <LabelledInput id="giftAid" label={<span>Add 25% <span className="hidden md:inline">to my donation </span>through <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}><span className="">Gift Aid<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span></Tooltip></span>} className="my-4" type="checkbox" {...register("giftAid")} />
 
       {peopleProtected && (
         <>
           <p>Amazing! {watches.recurrenceFrequency === "WEEKLY" ? "Every week, y" : "Y"}our donation will help protect {peopleProtected} people from malaria. We think that's something worth celebrating!</p>
           {peopleProtected > 600 ? <p className="mt-3">That's so many that we can't display them all here!</p> : (
-            <p className={classNames("mt-3", { "text-lg": peopleProtected < 300, "text-2xl": peopleProtected < 200, "text-3xl": peopleProtected < 100 })}>{randomRepeat([
+            <p className={classNames("mt-3", {
+              "text-xs": peopleProtected >= 500,
+              "text-sm": peopleProtected < 500,
+              "text-base": peopleProtected < 400,
+              "text-lg": peopleProtected < 300,
+              "text-2xl": peopleProtected < 200,
+              "text-3xl": peopleProtected < 100,
+            })}
+            >{randomRepeat([
               "👶🏻", "🧒🏻", "👦🏻", "👧🏻", "🧑🏻", "👨🏻", "👩🏻", "🧓🏻", "🧔🏻",
               "👶🏼", "🧒🏼", "👦🏼", "👧🏼", "🧑🏼", "👨🏼", "👩🏼", "🧓🏼", "🧔🏼",
               "👶🏽", "🧒🏽", "👦🏽", "👧🏽", "🧑🏽", "👨🏽", "👩🏽", "🧓🏽", "🧔🏽",
