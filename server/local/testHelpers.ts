@@ -94,6 +94,7 @@ export const makeFundraiser = <Override extends Partial<Fundraiser>>(override?: 
   suggestedDonationAmountOneOff: Math.ceil(Math.random() * 4) * 50_00,
   suggestedDonationAmountWeekly: Math.ceil(Math.random() * 4) * 5_00,
   suggestedContributionAmount: 10_00,
+  eventLink: null,
   ...override,
 } as Fundraiser & Override)
 

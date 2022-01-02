@@ -23,10 +23,11 @@ export const main = middyfy(fundraiserCreationSchema, ulidSchema, true, async (e
     matchFundingPerDonationLimit: event.body.matchFundingPerDonationLimit ?? null,
     matchFundingRemaining: event.body.matchFundingRemaining ?? null,
     minimumDonationAmount: event.body.minimumDonationAmount ?? null,
-    groupsWithAccess: event.body.groupsWithAccess ?? event.auth.payload.groups,
     suggestedDonationAmountOneOff: event.body.suggestedDonationAmountOneOff ?? 150_00,
     suggestedDonationAmountWeekly: event.body.suggestedDonationAmountWeekly ?? 9_00,
     suggestedContributionAmount: event.body.suggestedContributionAmount ?? 10_00,
+    eventLink: event.body.eventLink ?? null,
+    groupsWithAccess: event.body.groupsWithAccess ?? event.auth.payload.groups,
   })
 
   return fundraiser.id
