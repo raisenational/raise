@@ -328,7 +328,6 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
       <p>
         We recommend giving an amount that feels <span className="font-bold">significant to you</span>.
         {" "}
-        {/* TODO: make the tooltip work with mobile touch events */}
         <Tooltip
           label={(
             <p>
@@ -429,8 +428,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
   return (
     <>
       <SectionTitle>Celebrate</SectionTitle>
-      {/* TODO: use public fundraiser name */}
-      <p>At the end of this year, we'll invite everyone who's joined [Raise Chapter] to our Summer Party to celebrate our collective impact. We'd love to send you an invitation!</p>
+      <p>At the end of this year, we'll invite everyone who's joined {fundraiser.publicName} to our Summer Party to celebrate our collective impact. We'd love to send you an invitation!</p>
 
       <LabelledInput className="mt-2" id="donorName" label="Name" type="text" autoComplete="name" error={errors.donorName?.message} {...register("donorName", { validate: (s) => (s ? true : "We need your name to send you an invite, and to identify your donation if you contact us") })} />
 
@@ -801,7 +799,6 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
       <SectionTitle>Thank you!</SectionTitle>
       <h3 className="text-2xl">We've got your donation</h3>
       <p>You've done a great thing today: your donation will protect {peopleProtected} people from malaria!</p>
-      {/* TODO: a visual? also maybe a visual should be earlier in the flow? */}
 
       <h3 className="text-2xl mt-4">Multiply your impact</h3>
       <p className="mb-2">Sharing your donation on social media can massively increase your impact.</p>

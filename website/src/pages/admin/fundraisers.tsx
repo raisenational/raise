@@ -25,7 +25,8 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
         <Form<FundraiserEdits>
           title="New fundraiser"
           definition={{
-            fundraiserName: { label: "Name", inputType: "text" },
+            internalName: { label: "Internal name", inputType: "text" },
+            publicName: { label: "Public name", inputType: "text" },
             activeFrom: { label: "From", formatter: format.timestamp, inputType: "datetime-local" },
             activeTo: { label: "To", formatter: format.timestamp, inputType: "datetime-local" },
             recurringDonationsTo: { label: "Recurring donations to", formatter: format.timestamp, inputType: "datetime-local" },
@@ -46,7 +47,8 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             eventLink: { label: "Event link", inputType: "text" },
           }}
           initialValues={{
-            fundraiserName: "New Fundraiser",
+            internalName: "New Fundraiser",
+            publicName: "New Fundraiser",
             activeFrom: Math.floor(new Date().getTime() / 1000),
             activeTo: Math.floor(new Date().getTime() / 1000),
             recurringDonationsTo: Math.floor(new Date().getTime() / 1000),
@@ -74,7 +76,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
       </Modal>
       <Table
         definition={{
-          fundraiserName: { label: "Name", className: "whitespace-nowrap" },
+          internalName: { label: "Name", className: "whitespace-nowrap" },
           activeFrom: { label: "From", formatter: format.date, className: "w-36" },
           activeTo: { label: "To", formatter: format.date, className: "w-36" },
           goal: { label: "Goal", formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), className: "w-36" },

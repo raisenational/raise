@@ -145,7 +145,8 @@ export type Donations = {
 export type Email = string;
 
 export interface FundraiserCreation {
-  fundraiserName?: string;
+  internalName?: string;
+  publicName?: string;
   activeFrom?: number;
   activeTo?: number;
   recurringDonationsTo?: number;
@@ -166,7 +167,8 @@ export interface FundraiserCreation {
 }
 
 export interface FundraiserEdits {
-  fundraiserName?: string;
+  internalName?: string;
+  publicName?: string;
   activeFrom?: number;
   activeTo?: number;
   recurringDonationsTo?: number;
@@ -192,7 +194,8 @@ export interface FundraiserEdits {
 
 export interface Fundraiser {
   id: string;
-  fundraiserName: string;
+  internalName: string;
+  publicName: string;
   activeFrom: number;
   activeTo: number;
   recurringDonationsTo: number;
@@ -214,7 +217,8 @@ export interface Fundraiser {
 
 export type Fundraisers = {
   id: string;
-  fundraiserName: string;
+  internalName: string;
+  publicName: string;
   activeFrom: number;
   activeTo: number;
   recurringDonationsTo: number;
@@ -331,6 +335,7 @@ export interface PublicDonationRequest {
 
 export interface PublicFundraiser {
   id: string;
+  publicName: string;
   activeFrom: number;
   activeTo: number;
   recurringDonationsTo: number;
