@@ -115,8 +115,7 @@ export const fundraiserSchema: JSONSchema<S.Fundraiser> = {
     id: ulidSchema,
     ...fundraiserCreationSchema.properties,
   },
-  // TODO(migrate(eventLink)): Add eventLink here after migration
-  required: ["id", "fundraiserName", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "groupsWithAccess"],
+  required: ["id", "fundraiserName", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "eventLink", "groupsWithAccess"],
   additionalProperties: false,
 }
 
@@ -324,8 +323,7 @@ export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
       },
     },
   },
-  // TODO(migrate(eventLink)): Add eventLink here after migration
-  required: ["id", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "donations"],
+  required: ["id", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "eventLink", "donations"],
   additionalProperties: false,
 }
 

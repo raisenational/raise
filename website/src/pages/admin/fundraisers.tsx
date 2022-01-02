@@ -43,6 +43,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
             suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
             suggestedContributionAmount: { label: "Suggested contribution amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
+            eventLink: { label: "Event link", inputType: "text" },
           }}
           initialValues={{
             fundraiserName: "New Fundraiser",
@@ -61,6 +62,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             suggestedDonationAmountOneOff: 150_00,
             suggestedDonationAmountWeekly: 9_00,
             suggestedContributionAmount: 10_00,
+            eventLink: null,
           }}
           showCurrent={false}
           onSubmit={async (data) => {

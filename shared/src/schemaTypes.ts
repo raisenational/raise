@@ -208,7 +208,7 @@ export interface Fundraiser {
   suggestedDonationAmountOneOff: number;
   suggestedDonationAmountWeekly: number;
   suggestedContributionAmount: number | null;
-  eventLink?: string | null;
+  eventLink: string | null;
   groupsWithAccess: string[];
 }
 
@@ -230,7 +230,7 @@ export type Fundraisers = {
   suggestedDonationAmountOneOff: number;
   suggestedDonationAmountWeekly: number;
   suggestedContributionAmount: number | null;
-  eventLink?: string | null;
+  eventLink: string | null;
   groupsWithAccess: string[];
 }[];
 
@@ -346,7 +346,7 @@ export interface PublicFundraiser {
   suggestedDonationAmountOneOff: number;
   suggestedDonationAmountWeekly: number;
   suggestedContributionAmount: number | null;
-  eventLink?: string | null;
+  eventLink: string | null;
   donations: {
     donorName?: string;
     createdAt: number;

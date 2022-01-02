@@ -17,6 +17,7 @@
     "suggestedDonationAmountOneOff": 10000,
     "suggestedDonationAmountWeekly": 900,
     "suggestedContributionAmount": 1000,
+    "eventLink": null,
     "groupsWithAccess": [
       "National"
     ]
