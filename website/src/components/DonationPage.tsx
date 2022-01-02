@@ -382,6 +382,16 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
 
       <LabelledInput id="giftAid" label={<span>Add 25% <span className="hidden md:inline">to my donation </span>through <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}><span className="">Gift Aid<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span></Tooltip></span>} className="my-4" type="checkbox" {...register("giftAid")} />
 
+      {watches.giftAid && (
+        <>
+          <p>To claim Gift Aid on your donation we need your address.</p>
+          <LabelledInput id="addressLine1" label="Address" type="text" autoComplete="address-line1" error={errors.addressLine1?.message} className="mt-2" {...register("addressLine1", { validate: (s) => (!watches.giftAid || s ? true : "We need your address for Gift Aid") })} />
+          <LabelledInput id="addressLine2" type="text" autoComplete="address-line2" {...register("addressLine2")} />
+          {watches.addressLine2 && <LabelledInput id="addressLine3" type="text" autoComplete="address-line3" {...register("addressLine3")} />}
+          <LabelledInput id="addressPostcode" label="Postcode" type="text" autoComplete="postal-code" error={errors.addressPostcode?.message} {...register("addressPostcode", { validate: (s) => (!watches.giftAid || s ? true : "We need your postcode for Gift Aid") })} className="mb-8" />
+        </>
+      )}
+
       {peopleProtected && (
         <>
           <p>Amazing! {watches.recurrenceFrequency === "WEEKLY" ? "Every week, y" : "Y"}our donation will help protect {peopleProtected} people from malaria. We think that's something worth celebrating!</p>
@@ -483,17 +493,6 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
               },
             })}
           />
-        </>
-      )}
-
-      {watches.giftAid && (
-        <>
-          <h3 className="text-2xl mt-8">Gift Aid</h3>
-          <p className="mt-1">To claim Gift Aid on your donation we need your address.</p>
-          <LabelledInput id="addressLine1" label="Address" type="text" autoComplete="address-line1" error={errors.addressLine1?.message} className="mt-2" {...register("addressLine1", { validate: (s) => (!watches.giftAid || s ? true : "We need your address for Gift Aid") })} />
-          <LabelledInput id="addressLine2" type="text" autoComplete="address-line2" {...register("addressLine2")} />
-          {watches.addressLine2 && <LabelledInput id="addressLine3" type="text" autoComplete="address-line3" {...register("addressLine3")} />}
-          <LabelledInput id="addressPostcode" label="Postcode" type="text" autoComplete="postal-code" error={errors.addressPostcode?.message} {...register("addressPostcode", { validate: (s) => (!watches.giftAid || s ? true : "We need your postcode for Gift Aid") })} />
         </>
       )}
     </>
