@@ -100,12 +100,23 @@ const serverlessConfiguration: AWS = {
           "@aws-sdk/types",
         ],
       },
-      // For security reasons, ensures we never deploy prod config to dev environment etc.
+      // Exclude envs for security reasons, ensures we never deploy prod config to dev environment etc.
       excludeFiles: [
         "src/env/local.ts",
         "src/env/dev.ts",
         "src/env/prod.ts",
+        "src/**/*.test.ts",
       ],
+      packagerOptions: {
+        scripts: [
+          // Copy files and remove symlink to @raise/shared
+          "cp -Lr node_modules/@raise/shared tmp/ && rm node_modules/@raise/shared && mv tmp node_modules/@raise/shared",
+
+          // Remove unused code that the bundler misses
+          "rm -rf node_modules/@types",
+          "rm -rf node_modules/@raise/shared/node_modules node_modules/@raise/shared/src",
+        ],
+      },
     },
     "serverless-offline": {
       httpPort: 8001,
