@@ -342,10 +342,10 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
       <p className="mt-2">I want to give<span className="inline sm:hidden"> a</span>...</p>
 
       <div className="mt-2 grid grid-cols-2 gap-4">
-        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("px-2 py-6 text-center leading-none flex flex-col justify-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
+        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("px-2 py-3 text-center leading-none flex flex-col justify-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
           <span className="hidden sm:inline">a </span>one-off donation
         </Button>
-        <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("px-2 py-6 text-center leading-none ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
+        <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("px-2 py-3 text-center leading-none ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
           <span className="hidden sm:inline">a </span>weekly donation<span className="block text-xs sm:text-sm">(to {format.date(fundraiser.recurringDonationsTo)})</span>
         </Button>
       </div>
@@ -389,7 +389,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
 
       {peopleProtected && (
         <>
-          <p>Amazing! {watches.recurrenceFrequency === "WEEKLY" ? "Every week, y" : "Y"}our donation will help protect {peopleProtected} people from malaria. We think that's something worth celebrating!</p>
+          <p>Amazing! {watches.recurrenceFrequency === "WEEKLY" ? "Every week, y" : "Y"}our donation{matchFundingAmount !== null && matchFundingAmount > 0 ? " plus match funding" : ""} will help protect {peopleProtected} people from malaria. We think that's something worth celebrating!</p>
           {peopleProtected > 600 ? <p className="mt-3">That's so many that we can't display them all here!</p> : (
             <p className={classNames("mt-3", {
               "text-xs": peopleProtected >= 500,
@@ -461,10 +461,10 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
           <p className="mt-1">As 100% of your donation goes to charity, we suggest an optional contribution to cover the costs of the Summer Party (which are generously subsidised by our sponsors). Everyone is welcome to join, whether or not they make this contribution.</p>
 
           <div className="mt-2 grid grid-cols-2 gap-4">
-            <Button variant={contributionAmount > 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", ((fundraiser.suggestedContributionAmount ?? 10_00) / 100).toString()); trigger("contributionAmount") }} skew={false} className={classNames("p-4 text-center", { "text-gray-200": contributionAmount <= 0 })}>
+            <Button variant={contributionAmount > 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", ((fundraiser.suggestedContributionAmount ?? 10_00) / 100).toString()); trigger("contributionAmount") }} skew={false} className={classNames("p-2 text-center", { "text-gray-200": contributionAmount <= 0 })}>
               I want to contribute
             </Button>
-            <Button variant={contributionAmount <= 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", "0"); trigger("contributionAmount") }} skew={false} className={classNames("p-4 text-center ml-0", { "text-gray-200": contributionAmount > 0 })}>
+            <Button variant={contributionAmount <= 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", "0"); trigger("contributionAmount") }} skew={false} className={classNames("p-2 text-center ml-0", { "text-gray-200": contributionAmount > 0 })}>
               I don't want to contribute
             </Button>
           </div>
