@@ -235,9 +235,9 @@ const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) 
   )
 }
 
-type PropertyDefinition<V> = {
+type PropertyDefinition<I, V> = {
   label?: string,
-  formatter?: (v: V) => string,
+  formatter?: (v: V, i: I) => string,
   warning?: string,
 } & (
     | { inputType: Exclude<InputType<V>, "select" | "multiselect"> }
@@ -247,7 +247,7 @@ type PropertyDefinition<V> = {
 export interface FormProps<T> {
   title?: string,
   warning?: string,
-  definition: { [K in keyof UnpackNestedValue<T>]: PropertyDefinition<UnpackNestedValue<T>[K]> },
+  definition: { [K in keyof UnpackNestedValue<T>]: PropertyDefinition<UnpackNestedValue<T>, UnpackNestedValue<T>[K]> },
   initialValues: UnpackNestedValue<T>,
   showCurrent?: boolean,
   onSubmit: (item: UnpackNestedValue<T>) => void | Promise<void>,
@@ -286,7 +286,7 @@ export const Form = <T,>({
         {warning !== undefined && <Alert variant="warning" className="mb-4">{warning}</Alert>}
         {Object.entries(definition).map(([_k, _v], i, arr) => {
           const k = _k as keyof UnpackNestedValue<T> & Path<T>
-          const v = _v as PropertyDefinition<UnpackNestedValue<T>[keyof UnpackNestedValue<T>]>
+          const v = _v as PropertyDefinition<UnpackNestedValue<T>, UnpackNestedValue<T>[keyof UnpackNestedValue<T>]>
           const nInputType = v.inputType === "amount" ? "number" : v.inputType as LabelledInputProps["type"]
           if (nInputType === "hidden") {
             return <input type="hidden" {...register(k)} />
@@ -297,8 +297,8 @@ export const Form = <T,>({
               {v.warning && <Alert variant="warning" className="mb-4">{v.warning}</Alert>}
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <LabelledInput label={v.label ?? String(k)} id={String(k)} type={nInputType as any} options={(v as any).selectOptions} {...register(k)} />
-              {showCurrent && <p>Current value: {v.formatter ? v.formatter(initialValues[k]) : (initialValues[k] ?? "—")}</p>}
-              <p>{showCurrent ? "New value" : "Value"}: {v.formatter ? v.formatter(newValues[k]) : (newValues[k] ?? "—")}</p>
+              {showCurrent && <p>Current value: {v.formatter ? v.formatter(initialValues[k], initialValues) : (initialValues[k] ?? "—")}</p>}
+              <p>{showCurrent ? "New value" : "Value"}: {v.formatter ? v.formatter(newValues[k], newValues) : (newValues[k] ?? "—")}</p>
             </div>
           )
         })}

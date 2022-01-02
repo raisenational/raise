@@ -55,7 +55,13 @@ const PropertyEditor = <I,>({
           <Form<Partial<I>>
             title={`Editing ${definition[editingProperty]?.label?.toLowerCase()}` ?? editingProperty}
             definition={{
-              [editingProperty]: definition[editingProperty],
+              [editingProperty]: {
+                ...definition[editingProperty],
+                formatter: definition[editingProperty]?.formatter
+                  // @ts-ignore
+                  ? (i) => definition[editingProperty].formatter(i, nItem)
+                  : undefined,
+              },
             } as unknown as FormProps<Partial<I>>["definition"]}
             initialValues={{
               [editingProperty]: nItem[editingProperty],
