@@ -147,21 +147,19 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
           >{prefix}
           </span>
         )}
-        {type !== "checkbox" && (
-          <input
-            id={id}
-            ref={ref}
-            type={type}
-            step={type === "number" ? "any" : undefined}
-            className={classNames(inputClassName, "w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 outline-none", {
-              "rounded-l": !prefix,
-              "rounded-r": !suffix,
-              "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
-              "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": error,
-            })}
-            {...rest}
-          />
-        )}
+        <input
+          id={id}
+          ref={ref}
+          type={type}
+          step={type === "number" ? "any" : undefined}
+          className={classNames(inputClassName, "w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 outline-none", {
+            "rounded-l": !prefix,
+            "rounded-r": !suffix,
+            "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
+            "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": error,
+          })}
+          {...rest}
+        />
         {suffix && (
           <span className={classNames(inputClassName, "rounded-l py-2 px-3", {
             "bg-gray-300": !error,
