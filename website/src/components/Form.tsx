@@ -126,10 +126,18 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
     )
   }
 
+  if (type === "checkbox") {
+    return (
+      <div className={classNames(className, "flex items-center my-3")}>
+        {type === "checkbox" && <input id={id} ref={ref} type={type} className="flex-shrink-0 mr-1" {...rest} />}
+        {label && <label htmlFor={id} className={classNames("text-gray-700 font-bold leading-none", { "block pb-1": type !== "checkbox", "text-raise-red": error })}>{label}</label>}
+      </div>
+    )
+  }
+
   return (
     <div className={className}>
-      {type === "checkbox" && <input id={id} ref={ref} type={type} className="mt-1 mr-1 mb-3" {...rest} />}
-      {label && <label htmlFor={id} className={classNames("text-gray-700 font-bold", { "block pb-1": type !== "checkbox", "text-raise-red": error })}>{label}</label>}
+      {label && <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1", { "text-raise-red": error })}>{label}</label>}
       <div className="flex flex-row mb-1">
         {prefix && (
           <span className={classNames(inputClassName, "rounded-l py-2 px-3", {
@@ -139,21 +147,19 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
           >{prefix}
           </span>
         )}
-        {type !== "checkbox" && (
-          <input
-            id={id}
-            ref={ref}
-            type={type}
-            step={type === "number" ? "any" : undefined}
-            className={classNames(inputClassName, "w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 outline-none", {
-              "rounded-l": !prefix,
-              "rounded-r": !suffix,
-              "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
-              "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": error,
-            })}
-            {...rest}
-          />
-        )}
+        <input
+          id={id}
+          ref={ref}
+          type={type}
+          step={type === "number" ? "any" : undefined}
+          className={classNames(inputClassName, "w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 outline-none", {
+            "rounded-l": !prefix,
+            "rounded-r": !suffix,
+            "bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white": !error,
+            "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": error,
+          })}
+          {...rest}
+        />
         {suffix && (
           <span className={classNames(inputClassName, "rounded-l py-2 px-3", {
             "bg-gray-300": !error,
