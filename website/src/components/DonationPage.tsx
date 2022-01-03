@@ -384,7 +384,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
       {/* TODO: determine wording for this */}
       {shouldShowLowAmountWarning && <p className="mt-1">[Text prompt that appears if someone tries to put in a donation of &lt;£20 one-off, or &lt;£2 weekly, and remains once it has appeared. Text explains the significant amount recommendation.]</p>}
 
-      <LabelledInput id="giftAid" label={<span>Add 25% <span className="hidden md:inline">to my donation </span>through <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}><span className="">Gift Aid<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span></Tooltip></span>} className="my-4" type="checkbox" {...register("giftAid")} />
+      <LabelledInput id="giftAid" label={<span>Add 25% <span className="hidden md:inline">to my donation </span>through <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}><span className="">Gift Aid<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span></Tooltip></span>} type="checkbox" {...register("giftAid")} />
 
       {peopleProtected && (
         <>
@@ -450,7 +450,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
           })}
         />
         <LabelledInput id="emailConsentInformational" label="Have AMF send me one email on where my donation goes" type="checkbox" {...register("emailConsentInformational")} />
-        <LabelledInput id="emailConsentMarketing" label="Send me updates about Raise" className="-mt-2" type="checkbox" {...register("emailConsentMarketing")} />
+        <LabelledInput id="emailConsentMarketing" label="Send me updates about Raise" type="checkbox" {...register("emailConsentMarketing")} />
       </div>
 
       {fundraiser.suggestedContributionAmount !== null && (
@@ -526,8 +526,8 @@ const DonationFormDisplay: React.FC<{ formMethods: UseFormReturn<DonationFormRes
     />
     <div className="grid md:grid-cols-1 md:gap-2 mt-4">
       <div>
-        <LabelledInput id="nameHidden" label="Hide my name" className="-mt-2" type="checkbox" {...register("nameHidden")} />
-        <LabelledInput id="donationAmountHidden" label="Hide the donation amount" className="-mt-2" type="checkbox" {...register("donationAmountHidden")} />
+        <LabelledInput id="nameHidden" label="Hide my name" className="mt-0" type="checkbox" {...register("nameHidden")} />
+        <LabelledInput id="donationAmountHidden" label="Hide the donation amount" type="checkbox" {...register("donationAmountHidden")} />
       </div>
       <LabelledInput id="comment" label="Message (optional)" type="text" {...register("comment")} />
     </div>

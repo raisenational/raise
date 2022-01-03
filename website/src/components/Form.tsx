@@ -126,10 +126,18 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
     )
   }
 
+  if (type === "checkbox") {
+    return (
+      <div className={classNames(className, "flex items-center my-3")}>
+        {type === "checkbox" && <input id={id} ref={ref} type={type} className="flex-shrink-0 mr-1" {...rest} />}
+        {label && <label htmlFor={id} className={classNames("text-gray-700 font-bold leading-none", { "block pb-1": type !== "checkbox", "text-raise-red": error })}>{label}</label>}
+      </div>
+    )
+  }
+
   return (
     <div className={className}>
-      {type === "checkbox" && <input id={id} ref={ref} type={type} className="mt-1 mr-1 mb-3" {...rest} />}
-      {label && <label htmlFor={id} className={classNames("text-gray-700 font-bold", { "block pb-1": type !== "checkbox", "text-raise-red": error })}>{label}</label>}
+      {label && <label htmlFor={id} className={classNames("text-gray-700 font-bold block pb-1", { "text-raise-red": error })}>{label}</label>}
       <div className="flex flex-row mb-1">
         {prefix && (
           <span className={classNames(inputClassName, "rounded-l py-2 px-3", {
