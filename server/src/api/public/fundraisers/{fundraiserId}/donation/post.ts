@@ -2,7 +2,7 @@ import createHttpError from "http-errors"
 import { ulid } from "ulid"
 import Stripe from "stripe"
 import {
-  publicDonationRequest, publicPaymentIntentResponse, Fundraiser, PublicDonationRequest, format,
+  publicDonationRequest, publicPaymentIntentResponse, format, calcPaymentSchedule,
 } from "@raise/shared"
 import { middyfy } from "../../../../../helpers/wrapper"
 import { get, insert } from "../../../../../helpers/db"
@@ -33,7 +33,7 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     if (!event.body.addressCountry) throw new createHttpError.BadRequest("Gift-aided donation must provide address country")
   }
 
-  const paymentSchedule = calculatePaymentSchedule(event.body, fundraiser)
+  const paymentSchedule = calcPaymentSchedule(event.body.donationAmount, event.body.contributionAmount, event.body.recurrenceFrequency, fundraiser.recurringDonationsTo)
 
   // Validate payment amounts are greater than a global minimum (https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts)
   if (paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount < 1_00) {
@@ -139,31 +139,3 @@ export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, 
     totalDonationAmount,
   }
 })
-
-const addRecurrencePeriod = (date: Date, frequency: "WEEKLY" | "MONTHLY") => {
-  if (frequency === "WEEKLY") {
-    date.setDate(date.getDate() + 7)
-  } else if (frequency === "MONTHLY") {
-    date.setMonth(date.getMonth() + 1)
-  }
-}
-
-const calculatePaymentSchedule = (request: PublicDonationRequest, fundraiser: Fundraiser): { now: { donationAmount: number, contributionAmount: number }, future: { at: number, donationAmount: number, contributionAmount: number }[] } => {
-  const future: { at: number, donationAmount: number, contributionAmount: number }[] = []
-
-  // For recurring donations, insert future payments
-  if (request.recurrenceFrequency) {
-    const date = new Date()
-    date.setHours(0, 0, 0, 0)
-    addRecurrencePeriod(date, request.recurrenceFrequency)
-    while (Math.floor(date.getTime() / 1000) < fundraiser.recurringDonationsTo) {
-      future.push({ at: Math.floor(date.getTime() / 1000), donationAmount: request.donationAmount, contributionAmount: 0 })
-      addRecurrencePeriod(date, request.recurrenceFrequency)
-    }
-  }
-
-  return {
-    now: { donationAmount: request.donationAmount, contributionAmount: request.contributionAmount },
-    future,
-  }
-}
