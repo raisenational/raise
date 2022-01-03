@@ -109,12 +109,8 @@ const serverlessConfiguration: AWS = {
       ],
       packagerOptions: {
         scripts: [
-          // Copy files and remove symlink to @raise/shared
-          "cp -Lr node_modules/@raise/shared tmp/ && rm node_modules/@raise/shared && mv tmp node_modules/@raise/shared",
-
           // Remove unused code that the bundler misses
           "rm -rf node_modules/@types",
-          "rm -rf node_modules/@raise/shared/node_modules node_modules/@raise/shared/src",
         ],
       },
     },
