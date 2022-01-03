@@ -7,9 +7,9 @@ const hasGroup = (authState: AuthState, group?: string | string[]) => {
   return group.some((g) => authState.groups.includes(g))
 }
 
-export const RequireGroup: React.FC<{ group?: string | string[] }> = ({ group, children = null }) => {
+export const RequireGroup: React.FC<{ group?: string | string[], children?: React.ReactNode, otherwise?: React.ReactNode }> = ({ group, children = null, otherwise = null }) => {
   const [authState] = useAuthState()
-  if (!authState || !hasGroup(authState, group)) return null
+  if (!authState || !hasGroup(authState, group)) return otherwise as React.ReactElement
 
   return children as React.ReactElement
 }

@@ -16,10 +16,11 @@ interface Props<I> {
   onClick?: (item: I, event: React.MouseEvent) => void,
   emptyMessage?: string,
   itemRenderer?: (item: I, index: number) => JSX.Element,
+  className?: string,
 }
 
 const Table = <I,>({
-  definition, items, primaryKey, onClick, emptyMessage = "There are no entries", itemRenderer,
+  definition, items, primaryKey, onClick, emptyMessage = "There are no entries", itemRenderer, className,
 }: Props<I>) => {
   // Normalized properties
   const nItems = ((items === undefined || Array.isArray(items)) ? items : items.data) ?? []
@@ -27,12 +28,12 @@ const Table = <I,>({
 
   // Loading and error states
   if (items && !Array.isArray(items)) {
-    if (items.loading) return <div className="overflow-x-auto bg-black bg-opacity-20 rounded p-4"><span className="animate-pulse">Loading...</span></div>
-    if (items.error) return <Alert variant="error">{items.error}</Alert>
+    if (items.loading) return <div className={classNames(className, "overflow-x-auto bg-black bg-opacity-20 rounded p-4")}><span className="animate-pulse">Loading...</span></div>
+    if (items.error) return <Alert className={className} variant="error">{items.error}</Alert>
   }
 
   return (
-    <div className="overflow-x-auto bg-black bg-opacity-20 rounded py-2">
+    <div className={classNames(className, "overflow-x-auto bg-black bg-opacity-20 rounded py-2")}>
       <table className="w-full">
         <thead>
           <tr>

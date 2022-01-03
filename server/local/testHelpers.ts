@@ -3,7 +3,7 @@ import type {
 } from "aws-lambda"
 import jwt from "jsonwebtoken"
 import { ulid } from "ulid"
-import { Donation, Fundraiser, Payment } from "@raise/shared"
+import { AuditLog, Donation, Fundraiser, Payment } from "@raise/shared"
 import { AuthTokenPayload } from "../src/helpers/types"
 import env from "../src/env/env"
 import { NATIONAL } from "../src/helpers/groups"
@@ -142,6 +142,22 @@ export const makePayment = <Override extends Partial<Payment>>(override?: Overri
   status: "paid",
   ...override,
 } as Payment & Override)
+
+export const makeAuditLog = <Override extends Partial<AuditLog>>(override?: Override): AuditLog & Override => ({
+  id: ulid(),
+  object: ulid(),
+  subject: "raisenational@gmail.com",
+  action: "edit",
+  at: Math.floor(new Date().getTime() / 1000),
+  sourceIp: "1.1.1.1",
+  userAgent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/1.2 (KHTML, like Gecko) Chrome/1.2.3.4 Safari/1.2",
+  routeRaw: "GET /admin/somewhere",
+  metadata: {
+    extraDetailsLocation: "here",
+  },
+  ttl: null,
+  ...override,
+} as AuditLog & Override)
 
 export const unsupressConsole = (): void => {
   (console.error as jest.MockedFunction<typeof console.error>).mockRestore();

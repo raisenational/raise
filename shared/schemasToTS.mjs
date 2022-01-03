@@ -24,5 +24,27 @@ const deepClone = (item) => {
   return n
 }
 
-const schemaTypesSource = (await Promise.all(Object.entries(schemas).map(([k, v]) => compile(deepClone(v), k.replace(/Schema$/, ""), { bannerComment: "" })))).join("\n")
-writeFileSync(new URL("./src/schemaTypes.ts", import.meta.url), `/* eslint-disable */\n/**\n* This file was automatically generated. DO NOT MODIFY IT BY HAND.\n* Instead, modify schemas.ts, and run "npm run build".\n*/\n${schemaTypesSource}`)
+const sourceWithDuplicates = (await Promise.all(
+  Object.entries(schemas).map(([k, v]) =>
+    compile(deepClone(v), k.replace(/Schema$/, ""), { bannerComment: "" })
+  )
+)).join("\n")
+
+// Remove duplicate definitions
+const names = new Set()
+const source = sourceWithDuplicates.split(/^export /m).map((d) => {
+  if (!d) return d
+
+  const name = d.match(/(?:type|interface) (?<name>\w+) [={]/)?.groups?.name
+  if (!name) throw new Error('Failed to determine name for code: ' + d)
+
+  if (names.has(name)) return "";
+  names.add(name)
+
+  return "export " + d;
+}).join('')
+
+writeFileSync(
+  new URL("./src/schemaTypes.ts", import.meta.url),
+  `/* eslint-disable */\n/**\n* This file was automatically generated. DO NOT MODIFY IT BY HAND.\n* Instead, modify schemas.ts, and run "npm run build".\n*/\n${source}`
+)
