@@ -92,31 +92,9 @@ const serverlessConfiguration: AWS = {
   service: SERVICE_NAME,
   frameworkVersion: "2",
   custom: {
-    webpack: {
-      webpackConfig: "./webpack.config.js",
-      includeModules: {
-        forceExclude: [
-          // When the aws-sdk v3 is included in the lambda environment, we should exclude all of it
-          "@aws-sdk/types",
-        ],
-      },
-      // Exclude envs for security reasons, ensures we never deploy prod config to dev environment etc.
-      excludeFiles: [
-        "src/env/local.ts",
-        "src/env/dev.ts",
-        "src/env/prod.ts",
-        "src/**/*.test.ts",
-      ],
-      packagerOptions: {
-        scripts: [
-          // Copy files and remove symlink to @raise/shared
-          "cp -Lr node_modules/@raise/shared tmp/ && rm node_modules/@raise/shared && mv tmp node_modules/@raise/shared",
-
-          // Remove unused code that the bundler misses
-          "rm -rf node_modules/@types",
-          "rm -rf node_modules/@raise/shared/node_modules node_modules/@raise/shared/src",
-        ],
-      },
+    esbuild: {
+      minify: true,
+      // plugins: "./esbuild-plugins.js",
     },
     "serverless-offline": {
       httpPort: 8001,
@@ -153,7 +131,7 @@ const serverlessConfiguration: AWS = {
     },
   },
   plugins: [
-    "serverless-webpack",
+    "serverless-esbuild",
     "serverless-dynamodb-local",
     "serverless-offline",
     "serverless-offline-ses-v2",
