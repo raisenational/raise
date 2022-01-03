@@ -30,9 +30,10 @@ const TasksPage: React.FC<RouteComponentProps> = () => {
             }
           }}
           disabled={runResult.loading}
-        >Run task
+        >
+          Run task
         </Button>
-        {!runResult.loading && runResult && runResult.response?.config.url === `/admin/tasks/${selected?.id}` && (
+        {!runResult.loading && runResult && (runResult.response?.config.url === `/admin/tasks/${selected?.id}` || runResult.error?.response?.config.url === `/admin/tasks/${selected?.id}`) && (
           runResult.error
             ? <Alert className="mt-4" variant="error">{runResult.error}</Alert>
             : <Alert className="mt-4" variant="success">Task ran successfully</Alert>
