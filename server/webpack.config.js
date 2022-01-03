@@ -8,7 +8,7 @@ module.exports = {
   entry: slsw.lib.entries,
   devtool: slsw.lib.webpack.isLocal ? "eval-cheap-module-source-map" : "source-map",
   resolve: {
-    extensions: [".mjs", ".json", ".ts"],
+    extensions: [".js", ".mjs", ".ts", ".json"],
     symlinks: false,
     cacheWithContext: false,
   },
@@ -21,7 +21,9 @@ module.exports = {
     concatenateModules: false,
   },
   target: "node",
-  externals: [nodeExternals()],
+  externals: [nodeExternals({
+    allowlist: ['@raise/shared']
+  })],
   module: {
     rules: [
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
