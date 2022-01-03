@@ -7,7 +7,7 @@ import {
   Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements,
 } from "@stripe/react-stripe-js"
 import {
-  format, convert, calcMatchFunding, PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse,
+  format, convert, calcMatchFunding, PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse, calcPaymentSchedule,
 } from "@raise/shared"
 import Helmet from "react-helmet"
 import { ResponseValues } from "axios-hooks"
@@ -298,7 +298,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
 
 const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({
   formMethods: {
-    setValue, register, formState: { errors }, trigger, getValues,
+    setValue, register, formState: { errors, touchedFields }, trigger, getValues,
   }, watches, fundraiser,
 }) => {
   let donationAmount: null | number = null
@@ -362,15 +362,17 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
 
             try {
               const value = parseMoney(s)
+
               if (value < 1_00) {
-                return `The amount must be greater than ${format.amountShort(fundraiser.currency, 100)} to avoid excessive card transaction fees`
+                return `The amount must be at least ${format.amountShort(fundraiser.currency, 100)} to avoid excessive card transaction fees`
               }
 
-              // TODO: calculate for recurring donations
-              const recurrenceFrequency = getValues("recurrenceFrequency")
-              if (recurrenceFrequency === "ONE_OFF") {
-                if (fundraiser.minimumDonationAmount && value < fundraiser.minimumDonationAmount) {
-                  return `The amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}`
+              if (fundraiser.minimumDonationAmount) {
+                const recurrenceFrequency = getValues("recurrenceFrequency")
+                const schedule = calcPaymentSchedule(value, 0, recurrenceFrequency === "ONE_OFF" ? null : recurrenceFrequency, fundraiser.recurringDonationsTo)
+                const totalDonationAmount = schedule.now.donationAmount + schedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
+                if (totalDonationAmount < fundraiser.minimumDonationAmount) {
+                  return `The total donated amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, totalDonationAmount)}`}`
                 }
               }
             } catch {
@@ -382,7 +384,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
       />
 
       {/* TODO: determine wording for this */}
-      {shouldShowLowAmountWarning && <p className="mt-1">[Text prompt that appears if someone tries to put in a donation of &lt;£20 one-off, or &lt;£2 weekly, and remains once it has appeared. Text explains the significant amount recommendation.]</p>}
+      {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="mt-1">[Text prompt that appears if someone tries to put in a donation of &lt;£20 one-off, or &lt;£2 weekly, and remains once it has appeared. Text explains the significant amount recommendation.]</p>}
 
       <LabelledInput id="giftAid" label={<span>Add 25% <span className="hidden md:inline">to my donation </span>through <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}><span className="">Gift Aid<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span></Tooltip></span>} className="my-4" type="checkbox" {...register("giftAid")} />
 
