@@ -82,7 +82,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
   const [showUncounted, setShowUncounted] = React.useState(false)
   const axios = useRawAxios()
 
-  const downloadDonationsCSV = async () => {
+  const downloadDonationsCSV = donations.data ? async () => {
     const csv = donations.data && await jsonexport(donations.data)
     if (csv) {
       const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csv}`)
@@ -92,7 +92,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
       document.body.appendChild(link)
       link.click()
     }
-  }
+  } : undefined
 
   return (
     <>
@@ -100,7 +100,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
         <SectionTitle className="flex-1">Donations</SectionTitle>
         {!showUncounted && <Button onClick={() => setShowUncounted(true)}><EyeIcon className="h-6 mb-1" /> Show uncounted</Button>}
         {showUncounted && <Button onClick={() => setShowUncounted(false)}><EyeOffIcon className="h-6 mb-1" /> Hide uncounted</Button>}
-        <Button onClick={() => downloadDonationsCSV()}><DownloadIcon className="h-6 mb-1" /> CSV</Button>
+        <RequireGroup group="National"><Button onClick={downloadDonationsCSV}><DownloadIcon className="h-6 mb-1" /> CSV</Button></RequireGroup>
         <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New manual donation</Button>
       </div>
       <Modal open={newDonationModalOpen} onClose={() => setNewDonationModalOpen(false)}>
