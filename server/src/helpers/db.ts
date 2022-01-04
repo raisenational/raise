@@ -171,9 +171,13 @@ export const query = async <
   const entries = Object.entries(key).filter(([_k, v]) => v !== undefined)
   const result = await dbClient.send(new QueryCommand({
     TableName: table.name,
-    KeyConditionExpression: `${entries.map(([k]) => `${k} = :${k}`).join(" AND ")}`,
+    KeyConditionExpression: `${entries.map(([k]) => `#${k} = :${k}`).join(" AND ")}`,
     ExpressionAttributeValues: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k, v]) => {
       acc[`:${k}`] = v
+      return acc
+    }, {}),
+    ExpressionAttributeNames: entries.reduce<{ [key: string]: NativeAttributeValue }>((acc, [k]) => {
+      acc[`#${k}`] = k
       return acc
     }, {}),
     ScanIndexForward: false, // generally we want newest items first

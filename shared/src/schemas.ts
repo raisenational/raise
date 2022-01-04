@@ -285,6 +285,8 @@ export const auditLogSchema: JSONSchema<S.AuditLog> = {
   },
 }
 
+export const auditLogsSchema: JSONSchema<S.AuditLog[]> = { type: "array", items: auditLogSchema, definitions: auditLogSchema.definitions }
+
 export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
   type: "object",
   properties: {

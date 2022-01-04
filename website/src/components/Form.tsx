@@ -216,7 +216,7 @@ const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) 
             />
           </span>
         </ListboxButton>
-        <ListboxPopover portal={false} className="absolute z-10 w-full mt-1 py-1 overflow-auto text-base bg-white rounded shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+        <ListboxPopover portal={false} className="absolute z-10 w-full mt-1 py-1 overflow-auto text-base bg-white text-black rounded shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
           <ListboxList className="outline-none">
             {Object.entries(options).map(([k, v]) => (
               <ListboxOption

@@ -28,6 +28,21 @@ export interface AuditLog {
   ttl: number | null;
 }
 
+export type AuditLogs = {
+  id: string;
+  object: string;
+  subject: string;
+  action: "create" | "edit" | "login" | "plus" | "security" | "run";
+  at: number;
+  sourceIp: string;
+  userAgent: string;
+  routeRaw: string;
+  metadata: {
+    [k: string]: AuditLogMetadata;
+  };
+  ttl: number | null;
+}[];
+
 export interface DonationCreation {
   donorName?: string;
   donorEmail?: string;
