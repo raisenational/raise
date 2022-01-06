@@ -14,6 +14,7 @@ import { ResponseValues } from "axios-hooks"
 import confetti from "canvas-confetti"
 import classNames from "classnames"
 import { QuestionMarkCircleIcon } from "@heroicons/react/outline"
+import { UserIcon } from "@heroicons/react/solid"
 import logo from "../images/logo.png"
 import Button from "./Button"
 import DonationCard from "./DonationCard"
@@ -171,7 +172,7 @@ interface DonationFormResponses {
   comment: string,
 }
 
-const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: boolean) => void, refetchFundraiser: () => void }> = ({ fundraiser, setModalOpen, refetchFundraiser }) => {
+const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: boolean) => void, refetchFundraiser: () => void }> = ({ fundraiser }) => {
   const formMethods = useForm<DonationFormResponses>({
     mode: "onTouched",
     defaultValues: {
@@ -279,17 +280,6 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
           </Button>
         )}
         {page === 3 && payButton}
-        {page === 4 && (
-          <Button
-            variant="gray"
-            onClick={() => {
-              setModalOpen(false)
-              refetchFundraiser()
-            }}
-          >
-            Close
-          </Button>
-        )}
       </div>
       <div className="clear-both" />
     </FormProvider>
@@ -306,21 +296,15 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
     donationAmount = parseMoney(watches.donationAmount)
   } catch { /* noop */ }
   const shouldShowLowAmountWarning = donationAmount !== null && ((watches.recurrenceFrequency === "ONE_OFF" && donationAmount < 20_00) || (watches.recurrenceFrequency === "WEEKLY" && donationAmount < 2_00))
-  const matchFundingAmount = donationAmount === null ? null : calcMatchFunding({
-    donationAmount,
+  const schedule = donationAmount === null ? null : calcPaymentSchedule(donationAmount, 0, watches.recurrenceFrequency === "ONE_OFF" ? null : watches.recurrenceFrequency, fundraiser.recurringDonationsTo)
+  const totalDonationAmount = schedule === null ? null : schedule.now.donationAmount + schedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
+  const matchFundingAmount = totalDonationAmount === null ? null : calcMatchFunding({
+    donationAmount: totalDonationAmount,
     matchFundingRate: fundraiser.matchFundingRate,
     matchFundingRemaining: fundraiser.matchFundingRemaining,
     matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
   })
-  const peopleProtected = donationAmount === null || matchFundingAmount === null ? null : convert.moneyToPeopleProtected(fundraiser.currency, donationAmount * (watches.giftAid ? 1.25 : 1) + matchFundingAmount)
-
-  const randomRepeat = (charset: string[], count: number) => {
-    let s = ""
-    for (let i = 0; i < count; i++) {
-      s += charset[Math.floor(Math.random() * charset.length)]
-    }
-    return s
-  }
+  const peopleProtected = totalDonationAmount === null || matchFundingAmount === null ? null : convert.moneyToPeopleProtected(fundraiser.currency, totalDonationAmount * (watches.giftAid ? 1.25 : 1) + matchFundingAmount)
 
   return (
     <>
@@ -338,14 +322,14 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
           How do I decide what that means for me?<QuestionMarkCircleIcon width={22} height={22} className="ml-1" />
         </Tooltip>
       </p>
-      <p className="mt-2">I want to give<span className="inline sm:hidden"> a</span>...</p>
+      <p className="mt-2">I want to give...</p>
 
       <div className="mt-2 grid grid-cols-2 gap-4">
-        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("px-2 py-3 text-center leading-none flex flex-col justify-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
-          <span className="hidden sm:inline">a </span>one-off donation
+        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountOneOff / 100).toString()); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("p-2 text-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
+          a one-off donation
         </Button>
-        <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("px-2 py-3 text-center leading-none ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
-          <span className="hidden sm:inline">a </span>weekly donation<span className="block text-xs sm:text-sm">(to {format.date(fundraiser.recurringDonationsTo)})</span>
+        <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", (fundraiser.suggestedDonationAmountWeekly / 100).toString()); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("p-2 text-center ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
+          in weekly installments
         </Button>
       </div>
 
@@ -353,6 +337,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
         id="donationAmount"
         type="number"
         prefix={fundraiser.currency === "gbp" ? "£" : "$"}
+        // suffix={watches.recurrenceFrequency === "WEEKLY" ? "weekly" : ""}
         error={errors.donationAmount?.message}
         className="mt-4"
         inputClassName="text-2xl"
@@ -369,10 +354,10 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
 
               if (fundraiser.minimumDonationAmount) {
                 const recurrenceFrequency = getValues("recurrenceFrequency")
-                const schedule = calcPaymentSchedule(value, 0, recurrenceFrequency === "ONE_OFF" ? null : recurrenceFrequency, fundraiser.recurringDonationsTo)
-                const totalDonationAmount = schedule.now.donationAmount + schedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
-                if (totalDonationAmount < fundraiser.minimumDonationAmount) {
-                  return `The total donated amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, totalDonationAmount)}`}`
+                const localSchedule = calcPaymentSchedule(value, 0, recurrenceFrequency === "ONE_OFF" ? null : recurrenceFrequency, fundraiser.recurringDonationsTo)
+                const localTotalDonationAmount = localSchedule.now.donationAmount + localSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
+                if (localTotalDonationAmount < fundraiser.minimumDonationAmount) {
+                  return `The total donated amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, localTotalDonationAmount)}`}`
                 }
               }
             } catch {
@@ -384,31 +369,22 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
       />
 
       {/* TODO: determine wording for this */}
-      {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="mt-1">[Text prompt that appears if someone tries to put in a donation of &lt;£20 one-off, or &lt;£2 weekly, and remains once it has appeared. Text explains the significant amount recommendation.]</p>}
+      {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="mt-1">[Text prompt that appears if someone tries to put in a donation of &lt;£20 one-off, or &lt;£2 weekly. Text explains the significant amount recommendation.]</p>}
+
+      {fundraiser.matchFundingRate !== 0 && fundraiser.matchFundingPerDonationLimit !== null && fundraiser.matchFundingRemaining !== 0 && <p className="mt-1">All donations will be matched up to {format.amountShort(fundraiser.currency, fundraiser.matchFundingPerDonationLimit)} per donor.</p>}
 
       <LabelledInput id="giftAid" label={<span>Add 25% <span className="hidden md:inline">to my donation </span>through <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}><span className="">Gift Aid<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span></Tooltip></span>} type="checkbox" {...register("giftAid")} />
 
+      {watches.recurrenceFrequency === "WEEKLY" && donationAmount && totalDonationAmount && (
+        <p className="mb-4">
+          {format.amountShort(fundraiser.currency, donationAmount)} each week from now until {format.date(fundraiser.recurringDonationsTo)} comes to {format.amountShort(fundraiser.currency, totalDonationAmount)}.
+        </p>
+      )}
+
       {peopleProtected && (
         <>
-          <p>Amazing! {watches.recurrenceFrequency === "WEEKLY" ? "Every week, y" : "Y"}our donation{matchFundingAmount !== null && matchFundingAmount > 0 ? " plus match funding" : ""} will help protect {peopleProtected} people from malaria. We think that's something worth celebrating!</p>
-          {peopleProtected > 600 ? <p className="mt-3">That's so many that we can't display them all here!</p> : (
-            <p className={classNames("mt-3", {
-              "text-xs": peopleProtected >= 500,
-              "text-sm": peopleProtected < 500,
-              "text-base": peopleProtected < 400,
-              "text-lg": peopleProtected < 300,
-              "text-2xl": peopleProtected < 200,
-              "text-3xl": peopleProtected < 100,
-            })}
-            >{randomRepeat([
-              "👶🏻", "🧒🏻", "👦🏻", "👧🏻", "🧑🏻", "👨🏻", "👩🏻", "🧓🏻", "🧔🏻",
-              "👶🏼", "🧒🏼", "👦🏼", "👧🏼", "🧑🏼", "👨🏼", "👩🏼", "🧓🏼", "🧔🏼",
-              "👶🏽", "🧒🏽", "👦🏽", "👧🏽", "🧑🏽", "👨🏽", "👩🏽", "🧓🏽", "🧔🏽",
-              "👶🏾", "🧒🏾", "👦🏾", "👧🏾", "🧑🏾", "👨🏾", "👩🏾", "🧓🏾", "🧔🏾",
-              "👶🏿", "🧒🏿", "👦🏿", "👧🏿", "🧑🏿", "👨🏿", "👩🏿", "🧓🏿", "🧔🏿",
-            ], peopleProtected)}
-            </p>
-          )}
+          <p>Amazing! Your donation{matchFundingAmount !== null && matchFundingAmount > 0 ? " plus match funding" : ""} will help protect {peopleProtected} people from malaria. We think that's something worth celebrating!</p>
+          <ImpactRepresentation peopleProtected={peopleProtected} />
         </>
       )}
     </>
@@ -417,7 +393,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
 
 const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({
   formMethods: {
-    setValue, register, formState: { errors }, trigger,
+    setValue, register, formState: { errors, touchedFields }, trigger,
   }, watches, fundraiser,
 }) => {
   let contributionAmount = 0
@@ -444,7 +420,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
           className={errors.donorEmail?.message ? "mt-4 mb-4" : "mt-4"}
           {...register("donorEmail", {
             validate: (s) => {
-              if (!s) return "We need your email to send you an invite, and to contact you in there are any problems with your donation"
+              if (!s) return "We need your email to send you an invite, and to identify your donation if you contact us"
               // Regex from https://html.spec.whatwg.org/multipage/forms.html#e-mail-state-(type=email)
               if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(s)) return "Please enter a valid email"
               return true
@@ -472,7 +448,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
           <LabelledInput
             id="contributionAmount"
             label={`Contribution amount${watches.recurrenceFrequency !== "ONE_OFF" ? " (one-off)" : ""}`}
-            type="text"
+            type="number"
             prefix={fundraiser.currency === "gbp" ? "£" : "$"}
             className="mt-2"
             error={errors.contributionAmount?.message}
@@ -488,6 +464,9 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
               },
             })}
           />
+
+          {/* TODO: determine wording for this */}
+          {touchedFields.contributionAmount && contributionAmount > 20_00 && <p className="mt-1">[Text prompt that appears if someone tries to put in a contribution amount of &gt;£20. Text warns them to check this is what they meant.]</p>}
         </>
       )}
 
@@ -569,7 +548,7 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
       donationAmountPublic: !watches.donationAmountHidden,
       comment: watches.comment,
     }
-    fetchPiResponse({ data }).then((r) => setPiResponse(r.data))
+    fetchPiResponse({ data }).then((r) => setPiResponse(r.data)).catch(() => { /* noop, handled by axios-hooks */ })
   }, [watches.donationAmount, watches.recurrenceFrequency, watches.contributionAmount, watches.giftAid, watches.donorEmail, watches.emailConsentInformational, watches.emailConsentMarketing, watches.addressLine1, watches.addressLine2, watches.addressLine3, watches.addressPostcode, watches.nameHidden, watches.donationAmountHidden, watches.comment])
 
   if (piResponse.error) {
@@ -799,10 +778,22 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
   return (
     <>
       <SectionTitle>Thank you!</SectionTitle>
-      <h3 className="text-2xl">We've got your donation</h3>
-      <p>You've done a great thing today: your donation will protect {peopleProtected} people from malaria!</p>
+      <p>Your donation will protect {peopleProtected} people from malaria!</p>
+      <ImpactRepresentation peopleProtected={peopleProtected} />
+      <p className="my-2">That's amazing! We can't wait to celebrate that impact with you at our Summer Party!</p>
 
-      <h3 className="text-2xl mt-4">Multiply your impact</h3>
+      {fundraiser.eventLink && (
+        <>
+          <p className="mt-4">To stay updated about our Summer Party, RSVP to our event. Plus, why not invite your friends to join you in celebrating giving this year?</p>
+
+          <div className="mt-2 grid grid-cols-2 gap-4">
+            <Button variant="red" target="_blank" href={fundraiser.eventLink} skew={false} className="p-2 text-center">RSVP to our event</Button>
+            <Button variant="red" target="_blank" href="https://example.com" skew={false} className="p-2 text-center ml-0">Get more involved in Raise</Button>
+          </div>
+        </>
+      )}
+
+      <h3 className="text-2xl mt-12">Multiply your impact (deprecated, but here until figure out what to do about social sharing)</h3>
       <p className="mb-2">Sharing your donation on social media can massively increase your impact.</p>
       {window.navigator.canShare && window.navigator.canShare(shareData) ? <Button variant="blue" onClick={() => window.navigator.share(shareData)}>Share</Button> : (
         <div className="flex flex-wrap gap-y-2">
@@ -811,18 +802,29 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
           <Button variant="blue" target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fundraiserLink)}`}>Facebook</Button>
           <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(sharingText)}`}>Twitter</Button>
           <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fundraiserLink)}`}>LinkedIn</Button>
-          <p className="mt-2">Sharing in other places is great too! Just direct them to <span className="select-all">{fundraiserLink}</span></p>
+          <p className="mt-2">Sharing in other places is great too! Use the link <span className="select-all">{fundraiserLink}</span></p>
         </div>
-      )}
-
-      {fundraiser.eventLink && (
-        <>
-          <h3 className="text-2xl mt-4">Join us at the summer party</h3>
-          <p className="mb-2">RSVP to our summer party on <Link href={fundraiser.eventLink} target="_blank">our event page</Link>.</p>
-        </>
       )}
     </>
   )
 }
+
+const ImpactRepresentation: React.FC<{ peopleProtected: number }> = ({ peopleProtected }) => (
+  peopleProtected > 600
+    ? <p className="my-1">That's so many that we can't display them all here!</p>
+    : (
+      <p className={classNames("my-1", {
+        "text-xs": peopleProtected >= 500,
+        "text-sm": peopleProtected < 500,
+        "text-base": peopleProtected < 400,
+        "text-lg": peopleProtected < 300,
+        "text-2xl": peopleProtected < 200,
+        "text-3xl": peopleProtected < 100,
+      })}
+      >
+        {new Array(peopleProtected).fill(0).map(() => <UserIcon height="1em" width="1em" />)}
+      </p>
+    )
+)
 
 export default DonationPage

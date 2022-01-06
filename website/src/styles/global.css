@@ -35,7 +35,7 @@
   }
 
   .tooltip {
-    @apply absolute invisible group-hover:visible bg-black text-white text-center font-normal p-3 rounded mt-8 text-sm pointer-events-none z-10;
+    @apply absolute invisible group-hover:visible bg-black text-white font-normal p-3 rounded mt-8 text-base pointer-events-none z-10 shadow-raise;
     width: 95%;
     left: 2.5%;
   }
