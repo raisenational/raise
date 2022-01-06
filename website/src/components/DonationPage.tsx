@@ -172,7 +172,7 @@ interface DonationFormResponses {
   comment: string,
 }
 
-const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: boolean) => void, refetchFundraiser: () => void }> = ({ fundraiser, setModalOpen, refetchFundraiser }) => {
+const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: boolean) => void, refetchFundraiser: () => void }> = ({ fundraiser }) => {
   const formMethods = useForm<DonationFormResponses>({
     mode: "onTouched",
     defaultValues: {
@@ -354,10 +354,10 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
 
               if (fundraiser.minimumDonationAmount) {
                 const recurrenceFrequency = getValues("recurrenceFrequency")
-                const schedule = calcPaymentSchedule(value, 0, recurrenceFrequency === "ONE_OFF" ? null : recurrenceFrequency, fundraiser.recurringDonationsTo)
-                const totalDonationAmount = schedule.now.donationAmount + schedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
-                if (totalDonationAmount < fundraiser.minimumDonationAmount) {
-                  return `The total donated amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, totalDonationAmount)}`}`
+                const localSchedule = calcPaymentSchedule(value, 0, recurrenceFrequency === "ONE_OFF" ? null : recurrenceFrequency, fundraiser.recurringDonationsTo)
+                const localTotalDonationAmount = localSchedule.now.donationAmount + localSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
+                if (localTotalDonationAmount < fundraiser.minimumDonationAmount) {
+                  return `The total donated amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, localTotalDonationAmount)}`}`
                 }
               }
             } catch {
