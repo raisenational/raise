@@ -161,7 +161,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
           {...rest}
         />
         {suffix && (
-          <span className={classNames(inputClassName, "rounded-l py-2 px-3", {
+          <span className={classNames(inputClassName, "rounded-r py-2 px-3", {
             "bg-gray-300": !error,
             "bg-red-200": error,
           })}
