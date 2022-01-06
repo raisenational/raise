@@ -548,7 +548,7 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
       donationAmountPublic: !watches.donationAmountHidden,
       comment: watches.comment,
     }
-    fetchPiResponse({ data }).then((r) => setPiResponse(r.data))
+    fetchPiResponse({ data }).then((r) => setPiResponse(r.data)).catch(() => { /* noop, handled by axios-hooks */ })
   }, [watches.donationAmount, watches.recurrenceFrequency, watches.contributionAmount, watches.giftAid, watches.donorEmail, watches.emailConsentInformational, watches.emailConsentMarketing, watches.addressLine1, watches.addressLine2, watches.addressLine3, watches.addressPostcode, watches.nameHidden, watches.donationAmountHidden, watches.comment])
 
   if (piResponse.error) {
