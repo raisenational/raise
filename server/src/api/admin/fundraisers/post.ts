@@ -28,6 +28,7 @@ export const main = middyfy(fundraiserCreationSchema, ulidSchema, true, async (e
     suggestedDonationAmountWeekly: event.body.suggestedDonationAmountWeekly ?? 9_00,
     suggestedContributionAmount: event.body.suggestedContributionAmount ?? 10_00,
     eventLink: event.body.eventLink ?? null,
+    moreInvolvedLink: event.body.moreInvolvedLink ?? null,
     groupsWithAccess: event.body.groupsWithAccess ?? event.auth.payload.groups,
   })
 
