@@ -40,7 +40,7 @@ export const toInput = <T,>(raw: T, inputType: InputType<T>): string | string[] 
   if (raw !== undefined && inputType === "hidden") return JSON.stringify(raw)
   if (raw === undefined || raw === null) return ""
   if (inputType === "amount") return (raw as unknown as number / 100).toFixed(2)
-  if (inputType === "date" || inputType === "datetime-local") return new Date((raw as unknown as number * 1000) - (new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 19)
+  if (inputType === "date" || inputType === "datetime-local") return new Date((raw as unknown as number * 1000) - (new Date(raw as unknown as number * 1000).getTimezoneOffset() * 60000)).toISOString().slice(0, 19)
   if (inputType === "checkbox") return raw as unknown as boolean
   if (inputType === "multiselect") return raw as unknown as string[]
   return String(raw)
