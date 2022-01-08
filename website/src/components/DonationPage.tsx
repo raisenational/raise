@@ -787,7 +787,7 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
 
           <div className="mt-2 grid grid-cols-2 gap-4">
             <Button variant="red" target="_blank" href={fundraiser.eventLink} skew={false} className="p-2 text-center">RSVP to our event</Button>
-            <Button variant="red" target="_blank" href="https://example.com" skew={false} className="p-2 text-center ml-0">Get more involved in Raise</Button>
+            {fundraiser.moreInvolvedLink && <Button variant="red" target="_blank" href={fundraiser.moreInvolvedLink} skew={false} className="p-2 text-center ml-0">Get more involved in Raise</Button>}
           </div>
         </>
       )}

@@ -4,8 +4,8 @@
     "internalName": "Raise Demo 2022",
     "publicName": "Raise Demo",
     "activeFrom": 1632780000,
-    "activeTo": 1642118400,
-    "recurringDonationsTo": 1643673600,
+    "activeTo": 1648767600,
+    "recurringDonationsTo": 1651359600,
     "paused": false,
     "currency": "gbp",
     "goal": 100000,
@@ -18,7 +18,8 @@
     "suggestedDonationAmountOneOff": 10000,
     "suggestedDonationAmountWeekly": 900,
     "suggestedContributionAmount": 1000,
-    "eventLink": null,
+    "eventLink": "https://example.com/event",
+    "moreInvolvedLink": "https://example.com/more-involved",
     "groupsWithAccess": [
       "National"
     ]
