@@ -9,8 +9,11 @@ import {
 } from "../../../../../../../../helpers/db"
 import { donationTable, fundraiserTable, paymentTable } from "../../../../../../../../helpers/tables"
 import type { AWSTransactionDefinition, AuditDefinition } from "../../../../../../../../helpers/db"
+import { NATIONAL } from "../../../../../../../../helpers/groups"
 
 export const main = middyfy(paymentPropertyEditsSchema, null, true, async (event) => {
+  assertHasGroup(event, NATIONAL)
+
   const { fundraiserId, donationId, paymentId } = event.pathParameters
 
   // This will result in a 404 if these do not exist, confirming whether this payment/donation exists to an admin

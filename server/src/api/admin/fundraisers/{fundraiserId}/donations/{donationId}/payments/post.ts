@@ -5,9 +5,12 @@ import {
   assertHasGroup, get, inTransaction, insertT, plusT, updateT,
 } from "../../../../../../../helpers/db"
 import { fundraiserTable, donationTable, paymentTable } from "../../../../../../../helpers/tables"
+import { NATIONAL } from "../../../../../../../helpers/groups"
 
 export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
+  if (event.body.method === "card") assertHasGroup(event, NATIONAL)
+
   const paymentId = ulid()
   const { fundraiserId, donationId } = event.pathParameters
   const donationAmount = event.body.donationAmount ?? 0
