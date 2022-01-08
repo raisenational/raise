@@ -357,7 +357,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
                 const localSchedule = calcPaymentSchedule(value, 0, recurrenceFrequency === "ONE_OFF" ? null : recurrenceFrequency, fundraiser.recurringDonationsTo)
                 const localTotalDonationAmount = localSchedule.now.donationAmount + localSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
                 if (localTotalDonationAmount < fundraiser.minimumDonationAmount) {
-                  return `The total donated amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, localTotalDonationAmount)}`}`
+                  return `The total donated amount must be at least ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, localTotalDonationAmount)}`}`
                 }
               }
             } catch {
@@ -465,8 +465,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
             })}
           />
 
-          {/* TODO: determine wording for this */}
-          {touchedFields.contributionAmount && contributionAmount > 20_00 && <p className="mt-1">[Text prompt that appears if someone tries to put in a contribution amount of &gt;£20. Text warns them to check this is what they meant.]</p>}
+          {touchedFields.contributionAmount && contributionAmount > 20_00 && <p className="mt-1">While you're welcome to contribute as much as you want, we don't expect to spend more than £20 per head on the Summer Party.</p>}
         </>
       )}
 
