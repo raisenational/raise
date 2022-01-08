@@ -3,7 +3,7 @@ import type { Env } from "../helpers/types"
 const env: Env = {
   STAGE: "local",
 
-  CUSTOM_DOMAIN: "not used",
+  CUSTOM_DOMAIN: "localhost:8080",
 
   API_BASE_URL: "http://localhost:8001",
 
