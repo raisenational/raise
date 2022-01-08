@@ -178,6 +178,7 @@ export interface FundraiserCreation {
   suggestedDonationAmountWeekly?: number;
   suggestedContributionAmount?: number | null;
   eventLink?: string | null;
+  moreInvolvedLink?: string | null;
   groupsWithAccess?: string[];
 }
 
@@ -200,6 +201,7 @@ export interface FundraiserEdits {
   suggestedDonationAmountWeekly?: number;
   suggestedContributionAmount?: number | null;
   eventLink?: string | null;
+  moreInvolvedLink?: string | null;
   groupsWithAccess?: string[];
   previous?: {
     totalRaised?: number;
@@ -227,6 +229,7 @@ export interface Fundraiser {
   suggestedDonationAmountWeekly: number;
   suggestedContributionAmount: number | null;
   eventLink: string | null;
+  moreInvolvedLink: string | null;
   groupsWithAccess: string[];
 }
 
@@ -250,6 +253,7 @@ export type Fundraisers = {
   suggestedDonationAmountWeekly: number;
   suggestedContributionAmount: number | null;
   eventLink: string | null;
+  moreInvolvedLink: string | null;
   groupsWithAccess: string[];
 }[];
 
@@ -367,6 +371,7 @@ export interface PublicFundraiser {
   suggestedDonationAmountWeekly: number;
   suggestedContributionAmount: number | null;
   eventLink: string | null;
+  moreInvolvedLink: string | null;
   donations: {
     donorName?: string;
     createdAt: number;

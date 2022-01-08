@@ -88,6 +88,7 @@ export const fundraiserCreationSchema: JSONSchema<S.FundraiserCreation> = {
     suggestedDonationAmountWeekly: { type: "integer", minimum: 0 },
     suggestedContributionAmount: { type: ["integer", "null"], minimum: 0 },
     eventLink: { type: ["string", "null"] },
+    moreInvolvedLink: { type: ["string", "null"] },
     groupsWithAccess: { type: "array", items: { type: "string" } },
   },
   additionalProperties: false,
@@ -116,7 +117,7 @@ export const fundraiserSchema: JSONSchema<S.Fundraiser> = {
     id: ulidSchema,
     ...fundraiserCreationSchema.properties,
   },
-  required: ["id", "internalName", "publicName", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "eventLink", "groupsWithAccess"],
+  required: ["id", "internalName", "publicName", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "eventLink", "moreInvolvedLink", "groupsWithAccess"],
   additionalProperties: false,
 }
 
@@ -308,6 +309,7 @@ export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
     suggestedDonationAmountWeekly: { type: "integer", minimum: 0 },
     suggestedContributionAmount: { type: ["integer", "null"], minimum: 0 },
     eventLink: { type: ["string", "null"] },
+    moreInvolvedLink: { type: ["string", "null"] },
     donations: {
       type: "array",
       items: {
@@ -327,7 +329,7 @@ export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
       },
     },
   },
-  required: ["id", "publicName", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "eventLink", "donations"],
+  required: ["id", "publicName", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "eventLink", "moreInvolvedLink", "donations"],
   additionalProperties: false,
 }
 
