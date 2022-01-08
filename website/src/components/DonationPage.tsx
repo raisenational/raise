@@ -295,7 +295,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
   try {
     donationAmount = parseMoney(watches.donationAmount)
   } catch { /* noop */ }
-  const shouldShowLowAmountWarning = donationAmount !== null && ((watches.recurrenceFrequency === "ONE_OFF" && donationAmount < 20_00) || (watches.recurrenceFrequency === "WEEKLY" && donationAmount < 2_00))
+  const shouldShowLowAmountWarning = donationAmount !== null && ((watches.recurrenceFrequency === "ONE_OFF" && donationAmount <= 15_00) || (watches.recurrenceFrequency === "WEEKLY" && donationAmount < 2_00))
   const schedule = donationAmount === null ? null : calcPaymentSchedule(donationAmount, 0, watches.recurrenceFrequency === "ONE_OFF" ? null : watches.recurrenceFrequency, fundraiser.recurringDonationsTo)
   const totalDonationAmount = schedule === null ? null : schedule.now.donationAmount + schedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
   const matchFundingAmount = totalDonationAmount === null ? null : calcMatchFunding({
@@ -343,13 +343,13 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
         inputClassName="text-2xl"
         {...register("donationAmount", {
           validate: (s) => {
-            if (!s) return "Please enter an amount"
+            if (!s) return "Please enter an amount."
 
             try {
               const value = parseMoney(s)
 
               if (value < 1_00) {
-                return `The amount must be at least ${format.amountShort(fundraiser.currency, 100)} to avoid excessive card transaction fees`
+                return `The amount must be at least ${format.amountShort(fundraiser.currency, 100)} to avoid excessive card transaction fees.`
               }
 
               if (fundraiser.minimumDonationAmount) {
@@ -357,19 +357,18 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
                 const localSchedule = calcPaymentSchedule(value, 0, recurrenceFrequency === "ONE_OFF" ? null : recurrenceFrequency, fundraiser.recurringDonationsTo)
                 const localTotalDonationAmount = localSchedule.now.donationAmount + localSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
                 if (localTotalDonationAmount < fundraiser.minimumDonationAmount) {
-                  return `The total donated amount must be at least ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, localTotalDonationAmount)}`}`
+                  return `The total donated amount must be at least ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, localTotalDonationAmount)}`}.`
                 }
               }
             } catch {
-              return "The amount must be a monetary value"
+              return "The amount must be a monetary value."
             }
             return true
           },
         })}
       />
 
-      {/* TODO: determine wording for this */}
-      {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="mt-1">[Text prompt that appears if someone tries to put in a donation of &lt;£20 one-off, or &lt;£2 weekly. Text explains the significant amount recommendation.]</p>}
+      {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="mt-1">We encourage all students to donate an amount that's personally significant to them - and we know this is different for everyone! A good way of thinking about is to donate an amount that really makes you think about where and why you are donating. We can't wait to celebrate with you soon!</p>}
 
       {fundraiser.matchFundingRate !== 0 && fundraiser.matchFundingPerDonationLimit !== null && fundraiser.matchFundingRemaining !== 0 && <p className="mt-1">All donations will be matched up to {format.amountShort(fundraiser.currency, fundraiser.matchFundingPerDonationLimit)} per donor.</p>}
 
@@ -383,7 +382,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
 
       {peopleProtected && (
         <>
-          <p>Amazing! Your donation{matchFundingAmount !== null && matchFundingAmount > 0 ? " plus match funding" : ""} will help protect {peopleProtected} people from malaria. We think that's something worth celebrating!</p>
+          <p>Amazing! Your donation{matchFundingAmount !== null && matchFundingAmount > 0 ? " plus match funding" : ""} will help protect {peopleProtected} people from malaria through AMF. We think that's something worth celebrating!</p>
           <ImpactRepresentation peopleProtected={peopleProtected} />
         </>
       )}
@@ -408,7 +407,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
       <SectionTitle>Celebrate</SectionTitle>
       <p>At the end of this year, we'll invite everyone who's joined {fundraiser.publicName} to our Summer Party to celebrate our collective impact. We'd love to send you an invitation!</p>
 
-      <LabelledInput className="mt-2" id="donorName" label="Name" type="text" autoComplete="name" error={errors.donorName?.message} {...register("donorName", { validate: (s) => (s ? true : "We need your name to send you an invite, and to identify your donation if you contact us") })} />
+      <LabelledInput className="mt-2" id="donorName" label="Name" type="text" autoComplete="name" error={errors.donorName?.message} {...register("donorName", { validate: (s) => (s ? true : "We need your name to send you an invite, and to identify your donation if you contact us.") })} />
 
       <div>
         <LabelledInput
@@ -420,9 +419,9 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
           className={errors.donorEmail?.message ? "mt-4 mb-4" : "mt-4"}
           {...register("donorEmail", {
             validate: (s) => {
-              if (!s) return "We need your email to send you an invite, and to identify your donation if you contact us"
+              if (!s) return "We need your email to send you an invite, and to identify your donation if you contact us."
               // Regex from https://html.spec.whatwg.org/multipage/forms.html#e-mail-state-(type=email)
-              if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(s)) return "Please enter a valid email"
+              if (!/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(s)) return "Please enter a valid email."
               return true
             },
           })}
