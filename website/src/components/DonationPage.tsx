@@ -15,6 +15,7 @@ import confetti from "canvas-confetti"
 import classNames from "classnames"
 import { QuestionMarkCircleIcon } from "@heroicons/react/outline"
 import { UserIcon } from "@heroicons/react/solid"
+import { moneyToPeopleProtected } from "@raise/shared/dist/convert"
 import logo from "../images/logo.png"
 import Button from "./Button"
 import DonationCard from "./DonationCard"
@@ -28,26 +29,27 @@ import { parseMoney } from "../helpers/parse"
 import env from "../env/env"
 import Page from "./Page"
 import Navigation from "./Navigation"
-import FAQs, { FAQ } from "./FAQs"
 import Footer from "./Footer"
 import Link from "./Link"
 import Tooltip from "./Tooltip"
+import moneyBox from "../images/moneyBox.svg"
+import doubled from "../images/doubled.png"
+import party from "../images/party.svg"
 
 interface Props {
   title: string,
-  tagline: string,
   fundraiserId: string,
 }
 
-const DonationPage: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
+const DonationPage: React.FC<Props> = ({ title, fundraiserId }) => {
   const [fundraiser, refetchFundraiser] = useAxios<PublicFundraiser>(`/public/fundraisers/${fundraiserId}`)
   const [modalOpen, setModalOpen] = React.useState(false)
 
   return (
     <Page>
       <Helmet>
-        <title>{title}: Donate</title>
-        <meta property="og:title" content={`${title}: Donate`} />
+        <title>{fundraiser.data?.publicName ?? title}: Donate</title>
+        <meta property="og:title" content={`${fundraiser.data?.publicName ?? title}: Donate`} />
       </Helmet>
 
       <Navigation
@@ -66,8 +68,7 @@ const DonationPage: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
               </Alert>
             </noscript>
             <IntroFundraiser
-              title={title}
-              tagline={tagline}
+              title={fundraiser.data?.publicName ?? title}
               fundraiser={fundraiser}
               openModal={() => setModalOpen(true)}
             />
@@ -78,29 +79,14 @@ const DonationPage: React.FC<Props> = ({ title, tagline, fundraiserId }) => {
         )}
       </Section>
 
-      <Section id="faq">
-        <SectionTitle>FAQs</SectionTitle>
-        <FAQs>
-          <FAQ title="Are my details secure?">
-            <p>Yes</p>
-          </FAQ>
-
-          <FAQ title="Is donating the same as buying a ticket?">
-            <p>No</p>
-          </FAQ>
-        </FAQs>
-      </Section>
-
       <Footer />
     </Page>
   )
 }
 
-const IntroFundraiser: React.FC<{ title: string, tagline: string, fundraiser: ResponseValues<PublicFundraiser, unknown, unknown>, openModal: () => void }> = ({
-  title, tagline, fundraiser, openModal,
+const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<PublicFundraiser, unknown, unknown>, openModal: () => void }> = ({
+  title, fundraiser, openModal,
 }) => {
-  const [cardsOpen, setCardsOpen] = React.useState(false)
-
   const ref = React.useRef<HTMLDivElement>(null)
   const [hasAnimated, setHasAnimated] = React.useState(false)
   React.useLayoutEffect(() => {
@@ -110,44 +96,120 @@ const IntroFundraiser: React.FC<{ title: string, tagline: string, fundraiser: Re
     }
   })
 
+  const percentageToTarget = fundraiser.data ? Math.min(Math.round((fundraiser.data.totalRaised / fundraiser.data.goal) * 100), 100) : 0
+
   return (
     <div ref={ref}>
-      <div className="grid gap-8 md:grid-cols-2 md:gap-16 lg:gap-32">
-        <div className="md:text-left self-center">
-          <img alt="" src={logo} height={60} width={95} className="mb-8" />
-          <h1 className="text-5xl md:text-7xl font-raise-header font-black">{title}</h1>
-          <p className="text-2xl md:text-3xl">{tagline}</p>
-        </div>
-        <div className="self-center">
-          <p className="text-2xl"><span className="text-5xl md:text-7xl stat-animate">{format.amountShort(fundraiser.data?.currency, fundraiser.data?.totalRaised)}</span><br /> raised by {fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? "" : "s"}{fundraiser.data ? ` of a ${format.amountShort(fundraiser.data?.currency, fundraiser.data?.goal)} goal` : ""}</p>
+      <h1 className="text-5xl md:text-7xl font-raise-header font-black">{title}</h1>
 
-          <div className="mx-2 -mt-4 mb-8">
-            <div className="flex -skew-x-15 shadow-raise mt-8 rounded overflow-hidden">
-              <div className="py-3 bg-raise-red transition-all ease-in-out duration-1000" style={{ width: `${fundraiser.data ? Math.min(Math.round((fundraiser.data.totalRaised / fundraiser.data.goal) * 100), 100) : 0}%` }} />
-              <div className="flex-auto py-2 md:py-3 bg-raise-purple" />
+      <div className="mx-2 md:mx-0 md:flex my-4">
+        <div className="flex-1">
+          <div className="bg-raise-purple p-1 -skew-x-15 rounded shadow-raise flex">
+            <div className={classNames("whitespace-nowrap py-1 transition-all ease-in-out duration-1000 bg-raise-yellow rounded-sm", { "px-1": percentageToTarget !== 0 })} style={{ width: `${percentageToTarget}%` }}>
+              {percentageToTarget >= 50 && (
+                <p className="skew-x-15 md:text-4xl fade-in" style={{ animationDelay: "0.3s", animationFillMode: "both" }}>
+                  {format.amountShort(fundraiser.data?.currency, fundraiser.data?.totalRaised)} raised
+                </p>
+              )}
+            </div>
+            <div className={classNames("whitespace-nowrap py-1 flex-1", { "px-1": percentageToTarget !== 100 })}>
+              {percentageToTarget < 50 && (
+                <p className="skew-x-15 md:text-4xl fade-in" style={{ animationDelay: "0.3s", animationFillMode: "both" }}>
+                  {format.amountShort(fundraiser.data?.currency, fundraiser.data?.totalRaised)} raised
+                </p>
+              )}
             </div>
           </div>
-
-          <Button variant="outline" className="block mx-2 md:inline-block md:mx-0" disabled={!fundraiser.data} onClick={openModal}>Donate</Button>
+          <p className="font-bold">{fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? "" : "s"} have already raised {format.amountShort(fundraiser.data?.currency, fundraiser.data?.totalRaised)}{fundraiser.data ? ` of a ${format.amountShort(fundraiser.data?.currency, fundraiser.data?.goal)} target` : ""}</p>
+        </div>
+        <div className="inline-block mt-4 md:mt-0 md:w-64 md:mx-2">
+          <div className="bg-raise-purple p-1 -skew-x-15 rounded shadow-raise">
+            <p className="skew-x-15 md:text-4xl p-1">
+              {fundraiser.data ? moneyToPeopleProtected(fundraiser.data.currency, fundraiser.data.totalRaised) : "—"} people
+            </p>
+          </div>
+          <p className="font-bold">protected from malaria</p>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3 md:gap-8 text-left mt-16">
-        {/* Show the first six donations */}
-        {/* eslint-disable-next-line no-nested-ternary */
-          fundraiser.data ? (cardsOpen ? fundraiser.data.donations : fundraiser.data.donations.slice(0, 6)).map((d) => <DonationCard key={d.createdAt} className="bg-raise-red" currency={fundraiser.data?.currency} {...d} />)
-            : [12, 10, 14].map((d) => <DonationCard key={d} loading createdAt="1 hour ago" className="bg-raise-red" donorName={"a".repeat(d)} matchFundingAmount={1234} comment={"a".repeat(d * 2)} />)
-        }
+      <div className="flex bg-white text-black p-4 md:p-6 mt-4 md:mt-8 items-center rounded shadow-raise">
+        {/* TODO: get a svg copy of this logo that we can set the colour of properly */}
+        <img alt="" src={logo} height={60} width={95} className="hidden sm:block mr-6" style={{ filter: "invert(1)" }} />
+        <div className="flex-1 text-left">
+          <p className="mb-4 leading-none">
+            At Raise, we believe that when we adopt a positive, deliberate approach towards giving, it can become a meaningful part of our lives.
+          </p>
+          <p className="leading-none">
+            Join now and celebrate giving by making a personally significant donation today.
+          </p>
+        </div>
       </div>
-      {(fundraiser.data?.donations.length ?? 0) > 6
-        && (
-          <Button
-            className="mt-8"
-            onClick={() => setCardsOpen(!cardsOpen)}
-          >
-            {cardsOpen ? "Show less" : "Show all"}
-          </Button>
-        )}
+
+      <Button variant="red" className="mt-4 mb-12" disabled={!fundraiser.data} onClick={openModal}>Donate</Button>
+
+      <Tabs
+        tabs={{
+          Donors: (fundraiser.data?.donations.length === 0
+            ? <p>There haven't been any donations yet. Donate now to be the first!</p>
+            : (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6 text-left text-white">
+                {fundraiser.data
+                  ? fundraiser.data.donations.map((d) => <DonationCard key={d.createdAt} className="bg-raise-red" currency={fundraiser.data?.currency} {...d} />)
+                  : [12, 10, 14].map((d) => <DonationCard key={d} loading createdAt="1 hour ago" className="bg-raise-red" donorName={"a".repeat(d)} matchFundingAmount={1234} comment={"a".repeat(d * 2)} />)}
+              </div>
+            )
+          ),
+          "About Raise": (
+            <div>
+              <p>Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.</p>
+              {/* TODO: get square images, and standardize stroke widths */}
+              <div className="flex my-6 items-center">
+                {/* TODO: inline svg so don't need filter hack */}
+                <img alt="" src={moneyBox} height={60} width={60} className="mr-4" style={{ filter: "invert(1)" }} />
+                <p className="flex-1">We invite students to donate an amount significant to them to the Against Malaria Foundation.</p>
+              </div>
+              <div className="flex my-6 items-center">
+                {/* TODO: Get SVG image for this */}
+                <img alt="" src={doubled} height={60} width={60} className="mr-4" style={{ filter: "invert(1)" }} />
+                <p className="flex-1">Thanks to our matched funding, every donation is doubled for twice the impact.</p>
+              </div>
+              <div className="flex my-6 items-center">
+                {/* TODO: inline svg so don't need filter hack */}
+                <img alt="" src={party} height={60} width={60} className="mr-4" />
+                <p className="flex-1">Then we come together at the end of the academic year at our Summer Party to celebrate our collective impact.</p>
+              </div>
+              {/* TODO: add link to philosophy page when it exists */}
+              {/* <p>For more about our philosophy of celebrating deliberate, effective giving, visit our website.</p> */}
+            </div>
+          ),
+          "About AMF": (
+            <div className="flex">
+              {/* TODO: host this image ourselves */}
+              <img alt="" src="https://upload.wikimedia.org/wikipedia/en/6/6b/Against_Malaria_Foundation.svg" height={160} width={95} className="hidden sm:block mr-6" />
+              <div className="flex-1">
+                <p>Our recommended charity is the Against Malaria Foundation, which funds life-saving bed nets. [And another sentence here probably, words words words.] For more information about the work AMF do, see here. If you would like to join Raise Durham by donating to another charity get in touch via our website!</p>
+              </div>
+            </div>
+          ),
+        }}
+      />
+    </div>
+  )
+}
+
+const Tabs: React.FC<{ tabs: Record<string, React.ReactElement> }> = ({ tabs }) => {
+  const keys = Object.keys(tabs)
+  const [open, setOpen] = React.useState<keyof typeof tabs>(keys[0])
+
+  return (
+    <div className="bg-white text-black rounded shadow-raise overflow-hidden">
+      <div className="flex">
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        {keys.map((k, i) => <Link onClick={() => setOpen(k)} className={classNames("flex-1 border-gray-300 py-2", { "border-l-2": i !== 0, "border-b-2 bg-gray-200": k !== open })}>{k}</Link>)}
+      </div>
+      <div className="p-4 md:p-6 text-left">
+        {tabs[open]}
+      </div>
     </div>
   )
 }
