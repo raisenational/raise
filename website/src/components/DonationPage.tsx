@@ -187,7 +187,7 @@ const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<Publ
               {/* TODO: host this image ourselves */}
               <img alt="" src="https://upload.wikimedia.org/wikipedia/en/6/6b/Against_Malaria_Foundation.svg" height={160} width={95} className="hidden sm:block mr-6" />
               <div className="flex-1">
-                <p>Our recommended charity is the Against Malaria Foundation, which funds life-saving bed nets. [And another sentence here probably, words words words.] For more information about the work AMF do, see here. If you would like to join Raise Durham by donating to another charity get in touch via our website!</p>
+                <p>Our recommended charity is the Against Malaria Foundation, which funds life-saving bed nets. [And another sentence here probably, words words words.] For more information about the work AMF do, see here. If you would like to join Raise Demo by donating to another charity get in touch via our website!</p>
               </div>
             </div>
           ),
