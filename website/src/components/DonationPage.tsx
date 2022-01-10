@@ -234,7 +234,7 @@ interface DonationFormResponses {
   comment: string,
 }
 
-const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: boolean) => void, refetchFundraiser: () => void }> = ({ fundraiser }) => {
+const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: boolean) => void, refetchFundraiser: () => void }> = ({ fundraiser, refetchFundraiser }) => {
   const formMethods = useForm<DonationFormResponses>({
     mode: "onTouched",
     defaultValues: {
@@ -262,6 +262,11 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
 
   const onPaymentSuccess = () => {
     setPage(4)
+
+    // It'll take a few seconds for the payment webhook to reach the server and register the donation
+    // So we can see our new donation, try after 1 second. As a backup we also try after 15 seconds
+    setTimeout(() => refetchFundraiser(), 1_000)
+    setTimeout(() => refetchFundraiser(), 15_000)
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     if (prefersReducedMotion) return
@@ -831,10 +836,6 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
   })
   const peopleProtected = convert.moneyToPeopleProtected(piResponse.currency, piResponse.totalDonationAmount * (watches.giftAid ? 1.25 : 1) + matchFundingAmount)
 
-  const fundraiserLink = window.location.host.replace(/^www./, "") + window.location.pathname.replace(/(\/donate)?\/?$/, "")
-  const sharingText = `I just donated to Raise, protecting ${peopleProtected} people from malaria! Raise is a movement encouraging people to adopt a positive approach towards deliberate effective giving - you can #joinraise at ${fundraiserLink} or ask me about it.`
-  const shareData = { text: sharingText }
-
   return (
     <>
       <SectionTitle>Thank you!</SectionTitle>
@@ -851,19 +852,6 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
             {fundraiser.moreInvolvedLink && <Button variant="red" target="_blank" href={fundraiser.moreInvolvedLink} skew={false} className="p-2 text-center ml-0">Get more involved in Raise</Button>}
           </div>
         </>
-      )}
-
-      <h3 className="text-2xl mt-12">Multiply your impact (deprecated, but here until figure out what to do about social sharing)</h3>
-      <p className="mb-2">Sharing your donation on social media can massively increase your impact.</p>
-      {window.navigator.canShare && window.navigator.canShare(shareData) ? <Button variant="blue" onClick={() => window.navigator.share(shareData)}>Share</Button> : (
-        <div className="flex flex-wrap gap-y-2">
-          <Button variant="blue" target="_blank" href={`https://www.facebook.com/dialog/send?app_id=329829260786620&link=${encodeURIComponent(fundraiserLink)}&redirect_uri=${encodeURIComponent(fundraiserLink)}`}>Messenger</Button>
-          <Button variant="blue" target="_blank" href={`https://api.whatsapp.com/send?text=${encodeURIComponent(sharingText)}`}>WhatsApp</Button>
-          <Button variant="blue" target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fundraiserLink)}`}>Facebook</Button>
-          <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(sharingText)}`}>Twitter</Button>
-          <Button className="hidden md:inline-block" variant="blue" target="_blank" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(fundraiserLink)}`}>LinkedIn</Button>
-          <p className="mt-2">Sharing in other places is great too! Use the link <span className="select-all">{fundraiserLink}</span></p>
-        </div>
       )}
     </>
   )
