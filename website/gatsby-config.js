@@ -3,6 +3,9 @@ require('ts-node').register()
 const env = require('./src/env/env').default
 
 module.exports = {
+  // Always use the main site as the canonical one and where to get assets
+  // This helps keep things consistent, and allows us hosting subfolders (as we do for Cambridge)
+  assetPrefix: "https://" + env.CUSTOM_DOMAIN,
   siteMetadata: {
     title: "Raise",
     description: "A charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.",
