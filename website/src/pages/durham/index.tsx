@@ -29,11 +29,11 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Home", href: "/durham/" },
-          { text: "How It Works", href: "/durham/#how-it-works" },
-          { text: "FAQs", href: "/durham/#faq" },
-          { text: "Our Philosophy", href: "/durham/#our-philosophy" },
-          { text: "Contact", href: "/durham/#contact" },
+          { text: "Home", href: "." },
+          { text: "How It Works", href: "#how-it-works" },
+          { text: "FAQs", href: "#faq" },
+          { text: "Our Philosophy", href: "#our-philosophy" },
+          { text: "Contact", href: "#contact" },
         ]}
         right={[
           { text: "Become a Rep!", href: "https://docs.google.com/forms/d/e/1FAIpQLSe7nNtxUS9TbRJi0otRJNbfxHqLxcMV1wLt1LhfNli0hwOH0A/viewform" },
@@ -94,7 +94,7 @@ const IndexPage = () => (
           <p><b>Raise Reps:</b> Reps are a central part of Raise’s community and are crucial to spreading the Raise message! Rep recruitment for next academic year will start in Michaelmas Term, but we're always interested in hearing from people who want to get involved - register your interest <a href="https://forms.gle/cPwHFVeYu1z32QkF9">here</a>! See below for more details on what a Raise rep does.</p>
           <p><b>Spread the word:</b> Letting your friends know about Raise is one of the most valuable things you can do - aside from the huge impact of their donations, celebrating is more fun when we do it together! Why not show them our website, share our posts on social media, and invite friends to follow our <a href="https://www.facebook.com/raisedurham">Facebook</a> and <a href="https://www.instagram.com/raisedurham/">Instagram</a> pages themselves?</p>
           <p><b>Committee:</b> If you really want to shape the future of Raise, you could apply to join our committee, which coordinates everything we do, from events and partnerships to fundraising and publicity. Applications for the next academic year will open in the spring, but we're always interested in hearing from people who want to get involved!</p>
-          <p><b>Sponsorship:</b> The support of our generous partners is invaluable for helping us to put on our summer celebration at the end of each year. If you know anyone who may be interested in supporting Raise and allowing us to grow even more, please do <a href="./#contact">get in touch</a>.</p>
+          <p><b>Sponsorship:</b> The support of our generous partners is invaluable for helping us to put on our summer celebration at the end of each year. If you know anyone who may be interested in supporting Raise and allowing us to grow even more, please do <a href="#contact">get in touch</a>.</p>
         </FAQ>
 
         <FAQ title="What is a Raise Rep, and what do they do?">
@@ -107,7 +107,7 @@ const IndexPage = () => (
 
         <FAQ title="£100 is a lot of money - what if I can't donate that?">
           <p>We recognise that £100 is a large amount of money for many students, and whilst we have thought carefully about recommending this amount (see next question), it is important to us that any student feels able to join us in celebrating through giving.</p>
-          <p>As such, whilst we recommend £100, you are welcome to join Raise by making a donation of a size which is significant to you and allows you to put charity at the heart of your end-of-year celebrations. It is central to our philosophy (see <a href="./#our-philosophy">here</a> for more) that students actively engage with their decision to celebrate through giving, but we recognise that the donation that enables this will not be the same for everyone.</p>
+          <p>As such, whilst we recommend £100, you are welcome to join Raise by making a donation of a size which is significant to you and allows you to put charity at the heart of your end-of-year celebrations. It is central to our philosophy (see <a href="#our-philosophy">here</a> for more) that students actively engage with their decision to celebrate through giving, but we recognise that the donation that enables this will not be the same for everyone.</p>
           <p>In addition, you have the option of donating in weekly installments, as some have found this more manageable. A weekly donation of £5 from the donations launch up until our summer celebration adds up to about £100, which will still be doubled through our matched funding.</p>
           <p>Note: We have ensured that our donations page allows you to hide your name and/or donation amount, should you choose.</p>
         </FAQ>
