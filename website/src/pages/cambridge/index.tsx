@@ -101,7 +101,7 @@ const IndexPage = () => (
         <FAQ title="£150 is a lot of money - what if I can't donate that?">
           <p>We recognise that £150 is a large amount of money for many students, and whilst we have thought carefully about recommending this amount (see next question), it is important to us that any student feels able to join us in celebrating through giving.</p>
           <p>As such, whilst we recommend £150, you are welcome to join MWA by making a donation of a size which is significant to you and allows you to put charity at the heart of your May Week celebrations. It is central to our philosophy (see <a href="#our-philosophy">here</a> for more) that students actively engage with their decision to celebrate May Week through giving, but we recognise that the donation that enables this will not be the same for everyone.</p>
-          <p>In addition, you have the option of donating in weekly installments, as some have found this more manageable. A weekly donation of £5 from the donations launch up until our summer celebration adds up to about £100, which will still be doubled through our matched funding.</p>
+          <p>In addition, you have the option of donating in weekly installments, as some have found this more manageable. A weekly donation of £9 from the donations launch up until our summer celebration adds up to about £150, which will still be doubled through our matched funding.</p>
           <p>Note: We have ensured that our donations page allows you to hide your name and/or donation amount, should you choose.</p>
         </FAQ>
 

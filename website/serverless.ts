@@ -228,7 +228,7 @@ const serverlessConfiguration: AWS = {
             }],
             PriceClass: "PriceClass_100",
             ViewerCertificate: {
-              AcmCertificateArn: "arn:aws:acm:us-east-1:338337944728:certificate/1da4e440-ec4c-4d8f-8ec6-b1b85969d360",
+              AcmCertificateArn: "arn:aws:acm:us-east-1:338337944728:certificate/e6de0c70-749e-45f1-8258-4f13c4f40654",
               MinimumProtocolVersion: "TLSv1.2_2021",
               SslSupportMethod: "sni-only",
             },
