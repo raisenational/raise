@@ -12,7 +12,7 @@ const serverlessConfiguration: AWS = {
   custom: {
     s3Sync: [
       {
-        bucketName: RAISE_SERVICE_NAME,
+        bucketName: RAISE_S3_BUCKET_NAME,
         localDir: "./public-raise",
         params: [
           // https://www.gatsbyjs.com/docs/caching/
@@ -27,7 +27,7 @@ const serverlessConfiguration: AWS = {
         ],
       },
       {
-        bucketName: MWA_SERVICE_NAME,
+        bucketName: MWA_S3_BUCKET_NAME,
         localDir: "./public-mwa",
         params: [
           // https://www.gatsbyjs.com/docs/caching/
@@ -210,7 +210,6 @@ const serverlessConfiguration: AWS = {
                   },
                 ],
               },
-              OriginPath: "/cambridge",
               // eslint-disable-next-line no-template-curly-in-string
               Id: { "Fn::Sub": "S3-origin-${MWAWebsiteBucket}" },
               CustomOriginConfig: {

@@ -37,7 +37,7 @@ const IndexPage = () => (
           { text: "FAQs", href: "#faq" },
           { text: "Our Philosophy", href: "#our-philosophy" },
           { text: "Contact", href: "#contact" },
-          { text: "Partner", href: "./partner/" },
+          { text: "Partner", href: "partner/" },
         ]}
         right={[
           { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSciX_CSJm47pwbuPvqoE2QMNKDZ_iv4zNJ6Z9vppWXu67TGFg/viewform" },
