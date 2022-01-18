@@ -4,8 +4,7 @@ const env: Env = {
   STAGE: "prod",
 
   CUSTOM_RAISE_DOMAIN: "www.joinraise.org",
-  CUSTOM_MWA_DOMAIN: "prod-mwa.joinraise.org",
-  // CUSTOM_MWA_DOMAIN: "www.mayweekalternative.org.uk",
+  CUSTOM_MWA_DOMAIN: "www.mayweekalternative.org.uk",
 
   API_BASE_URL: "https://5kh7xzkn5m.execute-api.eu-west-1.amazonaws.com",
 
