@@ -7,7 +7,7 @@ import classNames from "classnames"
 const Philosophy: React.FC = () => (
   <div className="max-w-2xl mx-auto text-left">
     <Point className="bg-raise-purple" icon={StarIcon}>
-      At Raise, we believe in the power of giving positively and deliberately, rather than engaging with charity passively or out of obligation. In our view, giving in this way is more meaningful, more sustainable, and ultimately more impactful.
+      We believe in the power of giving positively and deliberately, rather than engaging with charity passively or out of obligation. In our view, giving in this way is more meaningful, more sustainable, and ultimately more impactful.
     </Point>
     <Point className="bg-raise-red" icon={CurrencyPoundIcon}>
       That’s why, once a year, we invite students to make a donation that feels personally significant - an amount that makes you think about the reasons for your donation. Ultimately, we want giving to become a considered and meaningful action.
@@ -19,7 +19,7 @@ const Philosophy: React.FC = () => (
       We want to create a culture where deliberate, positive giving is normalised at university and beyond. And so, we encourage students to take this philosophy forward into their future lives, for example by pursuing an impactful career or taking a long-term giving pledge.
     </Point>
 
-    <iframe className="w-full mt-12 rounded shadow-raise" title="YouTube: Rethinking Celebration: The Positive Case for Giving" width="560" height="315" src="https://www.youtube-nocookie.com/embed/fvjeG7xE-wE" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+    <iframe className="w-full mt-12 rounded shadow-raise" title="YouTube: Rethinking Celebration: The Positive Case for Giving" width="672" height="378" src="https://www.youtube-nocookie.com/embed/fvjeG7xE-wE" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
     <p className="text-center text-xl mt-2">Check out our founder's TEDx Talk, 'Rethinking Celebration: The Positive Case for Giving', which talks all about our feel-good philosophy!</p>
   </div>
 )
