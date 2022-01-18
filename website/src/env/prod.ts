@@ -3,7 +3,8 @@ import type { Env } from "../helpers/types"
 const env: Env = {
   STAGE: "prod",
 
-  CUSTOM_DOMAIN: "www.joinraise.org",
+  CUSTOM_RAISE_DOMAIN: "www.joinraise.org",
+  CUSTOM_MWA_DOMAIN: "www.mayweekalternative.org.uk",
 
   API_BASE_URL: "https://5kh7xzkn5m.execute-api.eu-west-1.amazonaws.com",
 
