@@ -52,7 +52,7 @@ const PartnerPage = () => (
       <div className="grid gap-5 md:grid-cols-3 md:gap-8 mt-8">
         <Panel
           title="Get in touch"
-          text="If you want to support the growth of Raise, please don't hesitate to get in touch! Whether you're a JCR president who has a great idea for reaching out to your students, or a Senior Tutor wanting to encourage social responsibility, we'd love you to join us in changing the way students think about charity. Contact us at raiseoxford@gmail.com or via the form below and we'd love to meet with you to discuss how we can work together."
+          text={<>If you want to support the growth of Raise, please don't hesitate to get in touch! Whether you're a JCR president who has a great idea for reaching out to your students, or a Senior Tutor wanting to encourage social responsibility, we'd love you to join us in changing the way students think about charity. Contact us at <a href="mailto:raiseoxford@gmail.com" className="text-blue-300">raiseoxford@gmail.com</a> or via the form below and we'd love to meet with you to discuss how we can work together.</>}
           className="bg-raise-purple"
         />
         <Panel

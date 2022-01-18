@@ -4,7 +4,7 @@ import * as React from "react"
 interface Props {
   image?: string,
   title: string,
-  text: string,
+  text: React.ReactNode,
   className?: string,
 }
 
