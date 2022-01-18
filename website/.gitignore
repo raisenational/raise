@@ -4,6 +4,8 @@
 
 # Build directory
 public/
+public-raise/
+public-mwa/
 
 # Gatsby cache
 .cache/

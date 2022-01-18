@@ -1,7 +1,8 @@
 export interface Env {
   STAGE: string,
 
-  CUSTOM_DOMAIN: string,
+  CUSTOM_RAISE_DOMAIN: string,
+  CUSTOM_MWA_DOMAIN: string,
 
   API_BASE_URL: string,
 
