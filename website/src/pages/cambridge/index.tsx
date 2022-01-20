@@ -20,6 +20,7 @@ import moneyBox from "../../images/moneyBox.svg"
 import doubled from "../../images/doubled.png"
 import party from "../../images/party.svg"
 import Footer from "../../components/Footer"
+import Button from "../../components/Button"
 
 const IndexPage = () => (
   <Page>
@@ -82,6 +83,11 @@ const IndexPage = () => (
           text="Each year during May Week, we come together as a community at a Summer Party to celebrate the end of exams and our collective impact. There's food and drink, great company and live entertainment!"
           className="bg-raise-yellow text-black"
         />
+      </div>
+
+      <div className="flex justify-center gap-2 mt-12">
+        <Button href="https://docs.google.com/forms/d/e/1FAIpQLSciX_CSJm47pwbuPvqoE2QMNKDZ_iv4zNJ6Z9vppWXu67TGFg/viewform">Get Involved!</Button>
+        <Button href="partner/">Become a Partner</Button>
       </div>
 
       <iframe className="w-full max-w-2xl mx-auto mt-12 rounded shadow-raise" title="YouTube: May Week Alternative: A New Way to Celebrate" width="672" height="378" src="https://www.youtube-nocookie.com/embed/nefUw0xT75Y" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
