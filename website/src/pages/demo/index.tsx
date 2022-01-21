@@ -19,6 +19,7 @@ import Cover, { CTADown } from "../../components/Cover"
 const IndexPage = () => (
   <Page>
     <Helmet>
+      <meta name="robots" content="noindex" />
       <title>Raise Demo</title>
       <meta property="og:title" content="Raise Demo" />
     </Helmet>
