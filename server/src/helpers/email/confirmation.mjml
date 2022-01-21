@@ -18,8 +18,7 @@
           Raise: A Celebration of Giving
         </mj-text>
         <mj-spacer height="60px"></mj-spacer>
-        <!-- TODO: get more permanent URL -->
-        <mj-image padding-bottom="8px" padding-left="0px" padding-right="0px" padding-top="0px" padding="0px" src="https://joinraise.org/static/logo-f03bd75fe8438dc33ade971089a649f0.png" width="125px" align="left">
+        <mj-image padding-bottom="8px" padding-left="0px" padding-right="0px" padding-top="0px" padding="0px" src="https://www.joinraise.org/shared/email-images/logo-white.png" width="125px" align="left">
         </mj-image>
         <mj-text color="#ffffff" font-size="40px" line-height="1.25" padding-bottom="30px" padding-left="8px" padding-right="8px" padding-top="8px" padding="8px">
           <strong>Thank you for your donation!</strong>
@@ -37,21 +36,21 @@
           Payment details
         </mj-text>
         <mj-table padding="8px">
-          <tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
-            <td style="padding: 2px 0;">Your donation to AMF</td>
-            <td style="padding: 2px 0;text-align:right;white-space:pre;">£100</td>
+          <tr style="font-family:'Helvetica', 'Arial', sans-serif;">
+            <td style="padding: 2px 0;font-size:18px">Your donation to AMF</td>
+            <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£100</td>
           </tr>
-          <tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
-            <td style="padding: 2px 0;">Your contribution to Raise</td>
-            <td style="padding: 2px 0;text-align:right;white-space:pre;">£10</td>
+          <tr style="font-family:'Helvetica', 'Arial', sans-serif;">
+            <td style="padding: 2px 0;font-size:18px">Your contribution to Raise</td>
+            <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£10</td>
           </tr>
           <tr style="height:6px">
             <td></td>
             <td></td>
           </tr>
-          <tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;border-top:1px solid #bbb;font-weight:bold">
-            <td style="padding: 8px 0 2px 0;">Total paid</td>
-            <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;">£110</td>
+          <tr style="font-family:'Helvetica', 'Arial', sans-serif;border-top:1px solid #bbb;font-weight:bold">
+            <td style="padding: 8px 0 2px 0;font-size:18px">Total paid</td>
+            <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;font-size:18px">£110</td>
           </tr>
         </mj-table>
         <mj-text color="#000000" font-size="18px" line-height="1.5" padding="32px 8px 5px 8px">
@@ -59,31 +58,31 @@
         </mj-text>
 
         <mj-table padding="8px">
-          <tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
-            <td style="padding: 2px 0;">19/12/2021</td>
-            <td style="padding: 2px 0;text-align:right;white-space:pre;">£9</td>
+          <tr style="font-family:'Helvetica', 'Arial', sans-serif">
+            <td style="padding: 2px 0;font-size:18px">19/12/2021</td>
+            <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£9</td>
           </tr>
-          <tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
-            <td style="padding: 2px 0;">26/12/2021</td>
-            <td style="padding: 2px 0;text-align:right;white-space:pre;">£9</td>
+          <tr style="font-family:'Helvetica', 'Arial', sans-serif">
+            <td style="padding: 2px 0;font-size:18px">26/12/2021</td>
+            <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£9</td>
           </tr>
-          <tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px">
-            <td style="padding: 2px 0;">02/01/2022</td>
-            <td style="padding: 2px 0;text-align:right;white-space:pre;">£9</td>
+          <tr style="font-family:'Helvetica', 'Arial', sans-serif">
+            <td style="padding: 2px 0;font-size:18px">02/01/2022</td>
+            <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£9</td>
           </tr>
           <tr style="height:6px">
             <td></td>
             <td></td>
           </tr>
-          <tr style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;border-top:1px solid #bbb;font-weight:bold">
-            <td style="padding: 8px 0 2px 0;">Total future donations</td>
-            <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;">£21</td>
+          <tr style="font-family:'Helvetica', 'Arial', sans-serif;border-top:1px solid #bbb;font-weight:bold">
+            <td style="padding: 8px 0 2px 0;font-size:18px">Total future donations</td>
+            <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;font-size:18px">£21</td>
           </tr>
         </mj-table>
       </mj-column>
     </mj-section>
 
-    <mj-section background-color="#5D215E" padding-bottom="30px" padding-left="30px" padding-right="30px" padding-top="20px" padding="30px">
+    <mj-section background-color="#5D215E" padding-bottom="30px" padding-left="30px" padding-right="30px" padding-top="20px" padding="30px" css-class="md-rounded-bottom">
       <mj-column padding="0">
         <mj-text color="#ffffff" font-size="28px" line-height="1.5" padding="8px">
           Multiply your impact
@@ -95,26 +94,6 @@
       </mj-column>
     </mj-section>
 
-    <!-- TODO: Get a Raise asset here -->
-    <mj-section background-color="#ffffff" padding-bottom="40px" padding-left="30px" padding-right="30px" padding-top="20px" padding="30px" css-class="md-rounded-bottom">
-      <mj-column padding="0">
-        <mj-image fluid-on-mobile="true" padding-bottom="0px" padding-left="0px" padding-right="0px" padding-top="0px" padding="0px" src="https://getvero.s3.amazonaws.com/uploads%2F6f361cb8c6e0b33c89cae59a1d3f944a%2Ffullsize%2F7b72034c-ab13-47aa-b3dd-f24939f3aef9-abstract.png">
-        </mj-image>
-        <mj-text color="#000000" font-size="28px" line-height="1.5" padding="8px">
-          Tell us how to be better
-        </mj-text>
-        <mj-text color="#000000" font-size="18px" line-height="1.5" padding="8px">
-          We're on a mission to make giving a deliberate, positive action. Your insights could help inform our future
-          strategy, so we'd really appreciate 2 mins of your time to complete a short feedback survey.<br /><br />If
-          you've got any other ideas or have a query about your donation, just hit reply or contact us at <a href="mailto:raisenational@gmail.com">raisenational@gmail.com</a>.
-        </mj-text>
-
-        <mj-spacer height="8px"></mj-spacer>
-        <mj-button background-color="#cccccc" border-radius="8px" color="#333" font-size="18px" line-height="1.75" padding="8px" width="100%" href="https://example.com" css-class="btn-block">
-          <strong>Start the survey</strong>
-        </mj-button>
-      </mj-column>
-    </mj-section>
     <mj-section padding="0" css-class="md-p-20px">
     </mj-section>
   </mj-body>
