@@ -31,6 +31,9 @@ test("renders email correctly with one payment", () => {
   expect(email).toMatch(/<td[^>]*>Your contribution to Raise Test<\/td>\s*<td[^>]*>£10<\/td>/)
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£110<\/td>/)
   expect(email).not.toContain("You also set up future donations to AMF:")
+  expect(email).toContain(fundraiser.id)
+  expect(email).toContain(donation.id)
+  expect(email).toContain(payments[0].id)
 })
 
 test("renders email correctly for payments with no contribution or match funding", () => {
@@ -63,6 +66,9 @@ test("renders email correctly for payments with no contribution or match funding
   expect(email).not.toContain("Your contribution to Raise Test")
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£100<\/td>/)
   expect(email).not.toContain("You also set up future donations to AMF:")
+  expect(email).toContain(fundraiser.id)
+  expect(email).toContain(donation.id)
+  expect(email).toContain(payments[0].id)
 })
 
 test.each([
@@ -133,6 +139,9 @@ test.each([
     expect(email).toMatch(/<td[^>]*>26\/12\/2021<\/td>\s*<td[^>]*>\$9<\/td>/)
     expect(email).toMatch(/<td[^>]*>Total future donations<\/td>\s*<td[^>]*>\$18<\/td>/)
   }
+  expect(email).toContain(fundraiser.id)
+  expect(email).toContain(donation.id)
+  expect(email).toContain(payments[0].id)
 })
 
 test("does not confuse MWA and Raise branding", () => {
@@ -144,9 +153,9 @@ test("does not confuse MWA and Raise branding", () => {
   // when we render the email
   const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, " ")
 
-  // then we expect the email not to mention raise except for the support email and image assets
+  // then we expect the email not to mention raise except for the image assets
   expect(email
-    .replace(/raisenational@gmail.com/g, "")
-    .replace(/src="https:\/\/joinraise.org/g, ""))
+    .replace(/fundraiserId/g, "")
+    .replace(/src="https:\/\/www.joinraise.org/g, ""))
     .not.toMatch(/raise/i)
 })
