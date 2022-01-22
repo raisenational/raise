@@ -31,9 +31,7 @@ import Navigation from "./Navigation"
 import Footer from "./Footer"
 import Link from "./Link"
 import Tooltip from "./Tooltip"
-import moneyBox from "../images/moneyBox.svg"
-import doubled from "../images/doubled.png"
-import party from "../images/party.svg"
+import { Doubled, MoneyBox, Party } from "../images/Icons"
 import Logo from "./Logo"
 
 interface Props {
@@ -161,24 +159,19 @@ const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<Publ
           "About Raise": (
             <div>
               <p>Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.</p>
-              {/* TODO: get square images, and standardize stroke widths */}
               <div className="flex my-6 items-center">
-                {/* TODO: inline svg so don't need filter hack */}
-                <img alt="" src={moneyBox} height={60} width={60} className="mr-4" style={{ filter: "invert(1)" }} />
+                <MoneyBox className="h-16 mr-4" />
                 <p className="flex-1">We invite students to donate an amount significant to them to the Against Malaria Foundation.</p>
               </div>
               <div className="flex my-6 items-center">
-                {/* TODO: Get SVG image for this */}
-                <img alt="" src={doubled} height={60} width={60} className="mr-4" style={{ filter: "invert(1)" }} />
+                <Doubled className="h-16 mr-4" />
                 <p className="flex-1">Thanks to our matched funding, every donation is doubled for twice the impact.</p>
               </div>
               <div className="flex my-6 items-center">
-                {/* TODO: inline svg so don't need filter hack */}
-                <img alt="" src={party} height={60} width={60} className="mr-4" />
+                <Party className="h-16 mr-4" />
                 <p className="flex-1">Then we come together at the end of the academic year at our Summer Party to celebrate our collective impact.</p>
               </div>
-              {/* TODO: add link to philosophy page when it exists */}
-              {/* <p>For more about our philosophy of celebrating deliberate, effective giving, visit our website.</p> */}
+              <p>For more about our philosophy of celebrating deliberate, effective giving, see our <Link href="/">homepage</Link>.</p>
             </div>
           ),
           "About AMF": (

@@ -10,9 +10,7 @@ import ContactForm from "../../components/ContactForm"
 import Panel from "../../components/Panel"
 import Footer from "../../components/Footer"
 
-import moneyBox from "../../images/moneyBox.svg"
-import doubled from "../../images/doubled.png"
-import party from "../../images/party.svg"
+import { Doubled, MoneyBox, Party } from "../../images/Icons"
 import IntroStats from "../../components/IntroStats"
 import Cover, { CTADown } from "../../components/Cover"
 
@@ -59,19 +57,19 @@ const IndexPage = () => (
       <SectionTitle>How it Works</SectionTitle>
       <div className="grid gap-5 md:grid-cols-3 md:gap-8">
         <Panel
-          image={moneyBox}
+          image={<MoneyBox className="h-16 mb-4" />}
           title="Donate"
           text="We invite students to make a personally significant donation to charity. We recommend a donation of £150 to the Against Malaria Foundation, but welcome any amount that is significant to you."
           className="bg-raise-purple"
         />
         <Panel
-          image={doubled}
+          image={<Doubled className="h-16 mb-4" />}
           title="Doubled"
           text="Thanks to our matched funding, 200% of the money you donate goes directly to AMF. That means that your £150, when doubled, can help protect over 350 people from malaria!"
           className="bg-raise-red"
         />
         <Panel
-          image={party}
+          image={<Party className="h-16 mb-4" />}
           title="Celebrate"
           text="In third term, we come together as a community to celebrate the end of the academic year and our collective impact. There's food and drink, great company and live entertainment!"
           className="bg-raise-yellow text-black"
