@@ -11,6 +11,8 @@ const NotFoundPage: React.FC<RouteComponentProps> = () => (
   <Page>
     <Helmet>
       <meta name="robots" content="noindex" />
+      <title>Raise: Page not found</title>
+      <meta property="og:title" content="Raise: Page not found" />
     </Helmet>
     <Section>
       <img alt="" src={logo} height={60} width={95} className="mb-8" />
