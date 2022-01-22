@@ -2,10 +2,12 @@ import * as React from "react"
 import Helmet from "react-helmet"
 import classNames from "classnames"
 import { withAssetPrefix } from "gatsby"
+import env from "../env/env"
 
 const Page: React.FC<{ className?: string }> = ({ children, className }) => (
   <>
     <Helmet>
+      {env.STAGE !== "prod" && <meta name="robots" content="noindex" />}
       <link rel="apple-touch-icon" sizes="180x180" href={withAssetPrefix("/shared/favicon/apple-touch-icon.png")} />
       <link rel="icon" type="image/png" sizes="32x32" href={withAssetPrefix("/shared/favicon/favicon-32x32.png")} />
       <link rel="icon" type="image/png" sizes="16x16" href={withAssetPrefix("/shared/favicon/favicon-16x16.png")} />
