@@ -16,7 +16,6 @@ import classNames from "classnames"
 import { QuestionMarkCircleIcon } from "@heroicons/react/outline"
 import { UserIcon } from "@heroicons/react/solid"
 import { moneyToPeopleProtected } from "@raise/shared/dist/convert"
-import logo from "../images/logo.png"
 import Button from "./Button"
 import DonationCard from "./DonationCard"
 import { animateStatsIn } from "./IntroStats"
@@ -35,6 +34,7 @@ import Tooltip from "./Tooltip"
 import moneyBox from "../images/moneyBox.svg"
 import doubled from "../images/doubled.png"
 import party from "../images/party.svg"
+import Logo from "./Logo"
 
 interface Props {
   title: string,
@@ -133,8 +133,7 @@ const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<Publ
       </div>
 
       <div className="flex bg-white text-black p-4 md:p-6 mt-4 md:mt-8 items-center rounded shadow-raise">
-        {/* TODO: get a svg copy of this logo that we can set the colour of properly */}
-        <img alt="" src={logo} height={60} width={95} className="hidden sm:block mr-6" style={{ filter: "invert(1)" }} />
+        <Logo className="hidden sm:block mr-6 w-24" />
         <div className="flex-1 text-left">
           <p className="mb-4 leading-none">
             At Raise, we believe that when we adopt a positive, deliberate approach towards giving, it can become a meaningful part of our lives.

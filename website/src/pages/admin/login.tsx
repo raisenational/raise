@@ -4,7 +4,7 @@ import { useGoogleLogin, GoogleLoginResponse } from "react-google-login"
 import { LoginResponse } from "@raise/shared"
 import Section, { SectionTitle } from "../../components/Section"
 import Alert from "../../components/Alert"
-import logo from "../../images/logo.png"
+import Logo from "../../components/Logo"
 import { useAuthState, useRawAxios } from "../../helpers/networking"
 import env from "../../env/env"
 import Button from "../../components/Button"
@@ -21,7 +21,7 @@ const Login: React.FC<RouteComponentProps> = () => {
 
   return (
     <Section className="mt-8 text-center">
-      <img alt="" src={logo} height={60} width={95} className="mb-8" />
+      <Logo className="my-8 w-24" />
       <div className="max-w-lg bg-black bg-opacity-20 rounded p-8 mx-auto">
         <SectionTitle>Admin Login</SectionTitle>
         {error && <Alert variant="error" className="-mt-2 mb-4">{error}</Alert>}

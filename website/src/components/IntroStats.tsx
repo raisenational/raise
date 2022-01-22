@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import * as React from "react"
 import { useState, useRef, useLayoutEffect } from "react"
-import logo from "../images/logo.png"
+import Logo from "./Logo"
 
 interface Props {
   title: string,
@@ -94,7 +94,7 @@ const IntroStats: React.FC<Props> = ({ title, tagline, statistics }) => {
 
   return (
     <div ref={ref}>
-      <img alt="" src={logo} height={60} width={95} className="mb-8" />
+      <Logo className="mb-8 w-24" />
       <h1 className="text-5xl sm:text-7xl font-raise-header font-black">{title}</h1>
       <p className="text-2xl sm:text-3xl">{tagline}</p>
       <div className="grid grid-cols-2 sm:flex sm:-skew-x-15 shadow-raise mt-8 rounded overflow-hidden font-light">
