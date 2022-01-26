@@ -98,6 +98,7 @@ const serverlessConfiguration: AWS = {
         forceExclude: [
           // When the aws-sdk v3 is included in the lambda environment, we should exclude all of it
           "@aws-sdk/types",
+          "mockdate",
         ],
       },
       // Exclude envs for security reasons, ensures we never deploy prod config to dev environment etc.
