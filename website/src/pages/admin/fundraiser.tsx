@@ -52,6 +52,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), inputType: "amount" },
           suggestedContributionAmount: { label: "Suggested contribution amount", formatter: (v: number | null, i: Fundraiser) => format.amount(i.currency, v), inputType: "amount" },
           eventLink: { label: "Event link", inputType: "text" },
+          moreInvolvedLink: { label: "More involved link", inputType: "text" },
           groupsWithAccess: {
             label: "Groups with access", formatter: (groups: string[]) => groups.join(", ") || "(none selected)", inputType: "multiselect", selectOptions: ["National", "Demo"],
           },
