@@ -3,7 +3,7 @@ import { RouteComponentProps } from "@reach/router"
 import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import { format, Fundraiser, FundraiserEdits } from "@raise/shared"
-import { useAxios, useRawAxios } from "../../helpers/networking"
+import { useAuthState, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import Table from "../../components/Table"
 import Button from "../../components/Button"
@@ -14,6 +14,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
   const [newFundraiserModalOpen, setNewFundraiserModalOpen] = React.useState(false)
   const axios = useRawAxios()
+  const [auth] = useAuthState()
 
   return (
     <Section>
@@ -30,21 +31,14 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             activeFrom: { label: "From", formatter: format.timestamp, inputType: "datetime-local" },
             activeTo: { label: "To", formatter: format.timestamp, inputType: "datetime-local" },
             recurringDonationsTo: { label: "Recurring donations to", formatter: format.timestamp, inputType: "datetime-local" },
-            paused: { label: "Paused", formatter: format.boolean, inputType: "checkbox" },
+            currency: { label: "Currency", inputType: "select", selectOptions: ["gbp", "usd"] },
             goal: { label: "Goal", formatter: (v?: number) => format.amount("gbp", v), inputType: "amount" },
-            totalRaised: { inputType: "hidden" },
-            donationsCount: { inputType: "hidden" },
-            matchFundingRate: { label: "Match funding rate", formatter: (v?: number) => format.matchFundingRate(null, v), inputType: "number" },
-            matchFundingPerDonationLimit: { label: "Match funding per donation limit", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
-            matchFundingRemaining: { label: "Match funding available", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
-            minimumDonationAmount: { label: "Minimum donation", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
             groupsWithAccess: {
-              label: "Groups with access", formatter: format.json, inputType: "multiselect", selectOptions: ["National"],
+              label: "Groups with access", formatter: format.json, inputType: "multiselect", selectOptions: ["National", "Cambridge"],
             },
             suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
             suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
             suggestedContributionAmount: { label: "Suggested contribution amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
-            eventLink: { label: "Event link", inputType: "text" },
           }}
           initialValues={{
             internalName: "New Fundraiser",
@@ -52,19 +46,12 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             activeFrom: Math.floor(new Date().getTime() / 1000),
             activeTo: Math.floor(new Date().getTime() / 1000),
             recurringDonationsTo: Math.floor(new Date().getTime() / 1000),
-            paused: false,
-            goal: 1_00,
-            totalRaised: 0,
-            donationsCount: 0,
-            matchFundingRate: 0,
-            matchFundingPerDonationLimit: null,
-            matchFundingRemaining: null,
-            minimumDonationAmount: null,
-            groupsWithAccess: ["National"],
+            currency: "gbp",
+            goal: 1000_00,
+            groupsWithAccess: auth?.groups,
             suggestedDonationAmountOneOff: 150_00,
             suggestedDonationAmountWeekly: 9_00,
             suggestedContributionAmount: 10_00,
-            eventLink: null,
           }}
           showCurrent={false}
           onSubmit={async (data) => {
