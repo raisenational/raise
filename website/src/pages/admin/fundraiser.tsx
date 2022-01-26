@@ -54,7 +54,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           eventLink: { label: "Event link", inputType: "text" },
           moreInvolvedLink: { label: "More involved link", inputType: "text" },
           groupsWithAccess: {
-            label: "Groups with access", formatter: (groups: string[]) => groups.join(", ") || "(none selected)", inputType: "multiselect", selectOptions: ["National", "Demo"],
+            label: "Groups with access", formatter: (groups: string[]) => groups.join(", ") || "(none selected)", inputType: "multiselect", selectOptions: ["National", "Cambridge"],
           },
         }}
         item={fundraiser}
