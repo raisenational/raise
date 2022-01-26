@@ -27,7 +27,10 @@ const USER_MAP: Record<Env["STAGE"], Record<string, string[]>> = {
     "e64a1becda7234d98691524ee0789e31372414ba": [NATIONAL], // Abe
     "ea72b00f4d71e8c8bca6089a741b848fc793d2c0": [NATIONAL], // raisenational@gmail.com
   },
-  // Before granting a user prod access, you MUST check they are adequately trained and have passed the security quiz
+  // Before granting a user prod access, you MUST check:
+  // - they are adequately trained
+  // - they have passed the security quiz
+  // - this is a individual's account, not a group of people
   "prod": {
     "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [NATIONAL], // Adam
   },
