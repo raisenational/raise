@@ -57,7 +57,7 @@ const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): 
   const result: AWS["functions"] = {}
   const files = readdirSync(path, { withFileTypes: true })
   for (const file of files) {
-    if (file.name.startsWith("_") || file.name.endsWith(".test.ts")) {
+    if (file.name.startsWith("_") || file.name.endsWith(".test.ts") || file.name === "router.ts") {
       // ignore
     } else if (file.isFile()) {
       const method = file.name.slice(0, file.name.lastIndexOf("."))
@@ -98,6 +98,7 @@ const serverlessConfiguration: AWS = {
         forceExclude: [
           // When the aws-sdk v3 is included in the lambda environment, we should exclude all of it
           "@aws-sdk/types",
+          "mockdate",
         ],
       },
       // Exclude envs for security reasons, ensures we never deploy prod config to dev environment etc.
@@ -200,7 +201,10 @@ const serverlessConfiguration: AWS = {
     },
   },
   functions: {
-    ...recursivelyFindFunctionsIn(resolve(__dirname, "src", "api")),
+    apiRouter: {
+      handler: "src/api/router.main",
+      events: Object.values(recursivelyFindFunctionsIn(resolve(__dirname, "src", "api"))).map((f) => f.events ?? []).flat(1),
+    },
     schedulerCollectPaymentsRun: {
       handler: "src/scheduler/collect-payments/run.main",
       events: [
