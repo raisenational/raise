@@ -34,7 +34,7 @@ const IndexPage = () => (
           { text: "Contact", href: "/imperial/#contact" },
         ]}
         right={[
-          { text: "Become a Rep", href: "https://docs.google.com/forms/d/e/1FAIpQLSfbeRgBxMW86fnw_qxZBZ8Glzm7qa5-FwjACjYw3F0NgBEIiw/viewform" },
+          // { text: "Become a Rep", href: "https://example.com" },
         ]}
       />
       <Section className="px-8">
