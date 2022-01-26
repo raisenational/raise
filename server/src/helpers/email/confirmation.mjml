@@ -12,6 +12,14 @@
     </mj-style>
   </mj-head>
   <mj-body background-color="#eeeeee">
+    <mj-section background-color="#F2CA1A" padding="12px 30px">
+      <mj-column padding="0">
+        <mj-text color="#000" font-size="18px" line-height="1.375" padding="8px">
+          Warning: This email was sent from a non-prod environment
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
     <mj-section background-color="#2ECAD6" padding-bottom="32px" padding-left="30px" padding-right="30px" padding-top="30px" padding="30px">
       <mj-column padding="0">
         <mj-text color="#fff" font-size="18px" line-height="1.375" padding="8px">
