@@ -28,7 +28,7 @@ const Alert: React.FC<Props> = ({ children, variant = "error", className }) => (
         <>
           {children.message}
           {/* @ts-ignore */}
-          {"isAxiosError" in children && children.response && children.response.data && <><br />{"message" in children.response.data && Object.keys(children.response.data).length === 1 ? children.response.data.message : <code className="text-sm whitespace-pre-wrap">{JSON.stringify(children.response.data, undefined, 2)}</code>}</>}
+          {"isAxiosError" in children && children.response && children.response.data && typeof children.response.data === "object" && <><br />{"message" in children.response.data && Object.keys(children.response.data).length === 1 ? children.response.data.message : <code className="text-sm whitespace-pre-wrap">{JSON.stringify(children.response.data, undefined, 2)}</code>}</>}
         </>
       ) : children}
     </span>
