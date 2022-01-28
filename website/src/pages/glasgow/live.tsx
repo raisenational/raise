@@ -24,7 +24,7 @@ const LivePage = () => {
   const totalDonated = (soGiveResponse.data?.cargo.donated.value100p ?? 0) / 100
   const target = (soGiveResponse.data?.cargo.userTarget.value100p ?? 1) / 100
 
-  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   React.useEffect(() => {
     if (!prefersReducedMotion) {
       const i = setInterval(() => {
