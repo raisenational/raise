@@ -15,9 +15,6 @@ interface Props {
 const LivePage: React.FC<Props> = ({ title, fundraiserId }) => {
   const [fundraiser, refetchFundraiser] = useAxios<PublicFundraiser>(`/public/fundraisers/${fundraiserId}`)
 
-  const totalDonated = fundraiser.data?.totalRaised
-  const target = fundraiser.data?.goal
-
   const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   React.useEffect(() => {
     if (!prefersReducedMotion) {
@@ -74,14 +71,14 @@ const LivePage: React.FC<Props> = ({ title, fundraiserId }) => {
       {fundraiser.error && <Alert className="m-16">{fundraiser.error}</Alert>}
       {fundraiser.data && (
         <div className="text-5xl flex flex-col h-screen overflow-hidden">
-          <div className="transition-all duration-1000" style={{ height: `${100 - Math.min(100, 100 * (totalDonated / target))}vh` }}>
-            <p className="py-4">Goal: {format.amountShort("gbp", target)}</p>
+          <div className="transition-all duration-1000" style={{ height: `${100 - Math.min(100, 100 * (fundraiser.data.totalRaised / fundraiser.data.goal))}vh` }}>
+            <p className="py-4">Goal: {format.amountShort("gbp", fundraiser.data.goal)}</p>
           </div>
           <div className="bg-raise-purple flex-1">
             <p className="py-4">
-              {totalDonated === 0
+              {fundraiser.data.totalRaised === 0
                 ? "We haven't receieved a donation yet - be the first to donate!"
-                : `Together we've raised ${format.amountShort("gbp", totalDonated)}, protecting ${convert.moneyToPeopleProtected("gbp", totalDonated)} people from malaria!`}
+                : `Together we've raised ${format.amountShort("gbp", fundraiser.data.totalRaised)}, protecting ${convert.moneyToPeopleProtected("gbp", fundraiser.data.totalRaised)} people from malaria!`}
             </p>
           </div>
         </div>
