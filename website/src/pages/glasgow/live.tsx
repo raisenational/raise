@@ -2,27 +2,18 @@ import * as React from "react"
 import Helmet from "react-helmet"
 import confetti from "canvas-confetti"
 
-import { convert, format } from "@raise/shared"
+import { convert, format, PublicFundraiser } from "@raise/shared"
 import Page from "../../components/Page"
 import { useAxios } from "../../helpers/networking"
 import Alert from "../../components/Alert"
 
 const LivePage = () => {
-  const [soGiveResponse, refetchSoGiveData] = useAxios<{
-    cargo: {
-      donationCount: number,
-      donated: {
-        value100p: number,
-      },
-      userTarget: {
-        value100p: number,
-      },
-    },
-  }>("https://app.sogive.org/fundraiser/raiseglasgow.jdqz3kp2.52af2e.json")
+  const fundraiserId = "01FGNSHH6X6X878ZNBZKY44JQA"
+  const [fundraiser, refetchFundraiser] = useAxios<PublicFundraiser>(`/public/fundraisers/${fundraiserId}`)
 
   // const donationCount = soGiveResponse.data?.cargo.donationCount ?? 0
-  const totalDonated = (soGiveResponse.data?.cargo.donated.value100p ?? 0) / 100
-  const target = (soGiveResponse.data?.cargo.userTarget.value100p ?? 1) / 100
+  const totalDonated = fundraiser.data?.totalRaised
+  const target = fundraiser.data?.goal
 
   const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   React.useEffect(() => {
@@ -55,7 +46,7 @@ const LivePage = () => {
 
   React.useEffect(() => {
     const i = setInterval(() => {
-      refetchSoGiveData()
+      refetchFundraiser().catch(() => { /* noop - errors handled in useAxios */ })
     }, 15_000)
 
     const t = setTimeout(() => {
@@ -77,8 +68,8 @@ const LivePage = () => {
         <meta property="og:title" content="Raise Glasgow: Live" />
       </Helmet>
 
-      {soGiveResponse.error && <Alert className="m-16">{soGiveResponse.error}</Alert>}
-      {soGiveResponse.data && (
+      {fundraiser.error && <Alert className="m-16">{fundraiser.error}</Alert>}
+      {fundraiser.data && (
         <div className="text-5xl flex flex-col h-screen overflow-hidden">
           <div className="transition-all duration-1000" style={{ height: `${100 - Math.min(100, 100 * (totalDonated / target))}vh` }}>
             <p className="py-4">Goal: {format.amountShort("gbp", target)}</p>
