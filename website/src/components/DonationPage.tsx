@@ -26,6 +26,7 @@ import { LabelledInput } from "./Form"
 import Alert from "./Alert"
 import { parseMoney } from "../helpers/parse"
 import env from "../env/env"
+import { Env } from "../helpers/types"
 import Page from "./Page"
 import Navigation from "./Navigation"
 import Footer from "./Footer"
@@ -36,10 +37,11 @@ import Logo from "./Logo"
 
 interface Props {
   title: string,
-  fundraiserId: string,
+  fundraiserIds: Record<Env["STAGE"], string>,
 }
 
-const DonationPage: React.FC<Props> = ({ title, fundraiserId }) => {
+const DonationPage: React.FC<Props> = ({ title, fundraiserIds }) => {
+  const fundraiserId = fundraiserIds[env.STAGE]
   const [fundraiser, refetchFundraiser] = useAxios<PublicFundraiser>(`/public/fundraisers/${fundraiserId}`)
   const [modalOpen, setModalOpen] = React.useState(false)
 
