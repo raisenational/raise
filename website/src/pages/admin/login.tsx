@@ -91,7 +91,7 @@ const ImpersonationLoginForm = ({ setError }: { setError: (err: React.ReactNode 
       onClick={async () => {
         try {
           // eslint-disable-next-line no-alert
-          const email = prompt("Email to login as:", "raisenational@gmail.com")
+          const email = prompt("Email to login as:", "raisedemo@gmail.com")
           if (!email) {
             setError("No email address provided")
             return

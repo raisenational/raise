@@ -18,6 +18,7 @@ const USER_MAP: Record<Env["STAGE"], Record<string, string[]>> = {
     "9c42b2f09ca8ade4772ffede4c988b3a6fb12b29": [NATIONAL], // Veer
     "e64a1becda7234d98691524ee0789e31372414ba": [NATIONAL], // Abe
     "ea72b00f4d71e8c8bca6089a741b848fc793d2c0": [NATIONAL], // raisenational@gmail.com
+    "94e827a024769e9176640c706ff36f921b9426b0": [DEMO], // raisedemo@gmail.com
   },
   "dev": {
     "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [NATIONAL], // Adam
@@ -26,6 +27,7 @@ const USER_MAP: Record<Env["STAGE"], Record<string, string[]>> = {
     "9c42b2f09ca8ade4772ffede4c988b3a6fb12b29": [NATIONAL], // Veer
     "e64a1becda7234d98691524ee0789e31372414ba": [NATIONAL], // Abe
     "ea72b00f4d71e8c8bca6089a741b848fc793d2c0": [NATIONAL], // raisenational@gmail.com
+    "94e827a024769e9176640c706ff36f921b9426b0": [DEMO], // raisedemo@gmail.com
   },
   // Before granting a user prod access, you MUST check:
   // - they are adequately trained
