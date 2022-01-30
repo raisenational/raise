@@ -6,13 +6,16 @@ import { convert, format, PublicFundraiser } from "@raise/shared"
 import Page from "./Page"
 import { useAxios } from "../helpers/networking"
 import Alert from "./Alert"
+import env from "../env/env"
+import { Env } from "../helpers/types"
 
 interface Props {
   title: string,
-  fundraiserId: string,
+  fundraiserIds: Record<Env["STAGE"], string>,
 }
 
-const LivePage: React.FC<Props> = ({ title, fundraiserId }) => {
+const LivePage: React.FC<Props> = ({ title, fundraiserIds }) => {
+  const fundraiserId = fundraiserIds[env.STAGE]
   const [fundraiser, refetchFundraiser] = useAxios<PublicFundraiser>(`/public/fundraisers/${fundraiserId}`)
 
   const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
