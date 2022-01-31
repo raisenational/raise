@@ -80,7 +80,7 @@ const LivePage: React.FC<Props> = ({ title, fundraiserIds }) => {
           <div className="bg-raise-purple flex-1">
             <p className="py-4">
               {fundraiser.data.totalRaised === 0
-                ? "We haven't receieved a donation yet - be the first to donate!"
+                ? "We haven't received a donation yet - be the first to donate!"
                 : `Together we've raised ${format.amountShort("gbp", fundraiser.data.totalRaised)}, protecting ${convert.moneyToPeopleProtected("gbp", fundraiser.data.totalRaised)} people from malaria!`}
             </p>
           </div>
