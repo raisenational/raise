@@ -69,6 +69,7 @@ const LivePage: React.FC<Props> = ({ title, fundraiserIds }) => {
       <Helmet>
         <title>{fundraiser.data?.publicName ?? title}: Live</title>
         <meta property="og:title" content={`${fundraiser.data?.publicName ?? title}: Live`} />
+        <meta name="robots" content="noindex" />
       </Helmet>
 
       {fundraiser.error && <Alert className="m-16">{fundraiser.error}</Alert>}
