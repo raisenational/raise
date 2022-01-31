@@ -8,6 +8,6 @@ export default () => (
       dev: "01FGNSHH6X6X878ZNBZKY44JQA", // Raise Demo
       prod: "",
     }}
-    title="Raise Durham"
+    title="Raise Demo"
   />
 )
