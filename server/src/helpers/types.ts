@@ -1,9 +1,9 @@
 import type { APIGatewayProxyEventV2, Context } from "aws-lambda"
-import type { JSONSchema } from "@raise/shared"
+import type { Group, JSONSchema } from "@raise/shared"
 
 export interface AuthTokenPayload {
   subject: string,
-  groups: string[],
+  groups: Group[],
   iat: number,
   exp: number,
 }

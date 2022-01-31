@@ -5,7 +5,7 @@ import {
 } from "@heroicons/react/outline"
 import jsonexport from "jsonexport/dist"
 import {
-  format, Fundraiser, Donation, DonationEdits,
+  format, Fundraiser, Donation, DonationEdits, groups, g,
 } from "@raise/shared"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
@@ -54,7 +54,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
           eventLink: { label: "Event link", inputType: "text" },
           moreInvolvedLink: { label: "More involved link", inputType: "text" },
           groupsWithAccess: {
-            label: "Groups with access", formatter: (groups: string[]) => groups.join(", ") || "(none selected)", inputType: "multiselect", selectOptions: ["National", "Cambridge"],
+            label: "Groups with access", formatter: (gs: string[]) => gs.join(", ") || "(none selected)", inputType: "multiselect", selectOptions: groups,
           },
         }}
         item={fundraiser}
@@ -101,7 +101,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
         <SectionTitle className="flex-1">Donations</SectionTitle>
         {!showUncounted && <Button onClick={() => setShowUncounted(true)}><EyeIcon className="h-6 mb-1" /> Show uncounted</Button>}
         {showUncounted && <Button onClick={() => setShowUncounted(false)}><EyeOffIcon className="h-6 mb-1" /> Hide uncounted</Button>}
-        <RequireGroup group="National"><Button onClick={downloadDonationsCSV}><DownloadIcon className="h-6 mb-1" /> CSV</Button></RequireGroup>
+        <RequireGroup group={g.National}><Button onClick={downloadDonationsCSV}><DownloadIcon className="h-6 mb-1" /> CSV</Button></RequireGroup>
         <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New manual donation</Button>
       </div>
       <Modal open={newDonationModalOpen} onClose={() => setNewDonationModalOpen(false)}>

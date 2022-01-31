@@ -1,9 +1,9 @@
 import { ulid } from "ulid"
+import { g } from "@raise/shared"
 import { insert } from "../../../../../helpers/db"
 import { auditLogTable } from "../../../../../helpers/tables"
 import { call, makeAuditLog } from "../../../../../../local/testHelpers"
 import { main } from "./get"
-import { NATIONAL } from "../../../../../helpers/groups"
 
 test("retrives audit logs", async () => {
   // given 2 relevant and 1 irrelevant audit log in the db
@@ -26,5 +26,5 @@ test("rejects non-national team", async () => {
 
   // we are rejected
   expect(response.statusCode).toBe(403)
-  expect(response.body).toContain(`[${NATIONAL}]`)
+  expect(response.body).toContain(`[${g.National}]`)
 })

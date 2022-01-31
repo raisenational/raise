@@ -1,12 +1,11 @@
 import { ulid } from "ulid"
-import { fundraiserCreationSchema, ulidSchema } from "@raise/shared"
+import { fundraiserCreationSchema, ulidSchema, g } from "@raise/shared"
 import { middyfy } from "../../../helpers/wrapper"
 import { assertHasGroup, insert } from "../../../helpers/db"
 import { fundraiserTable } from "../../../helpers/tables"
-import { NATIONAL } from "../../../helpers/groups"
 
 export const main = middyfy(fundraiserCreationSchema, ulidSchema, true, async (event) => {
-  assertHasGroup(event, NATIONAL)
+  assertHasGroup(event, g.National)
 
   const fundraiser = await insert(fundraiserTable, {
     id: ulid(),

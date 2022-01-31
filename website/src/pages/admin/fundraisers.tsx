@@ -2,7 +2,9 @@ import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
-import { format, Fundraiser, FundraiserEdits } from "@raise/shared"
+import {
+  format, Fundraiser, FundraiserEdits, groups,
+} from "@raise/shared"
 import { useAuthState, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import Table from "../../components/Table"
@@ -34,7 +36,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             currency: { label: "Currency", inputType: "select", selectOptions: ["gbp", "usd"] },
             goal: { label: "Goal", formatter: (v?: number) => format.amount("gbp", v), inputType: "amount" },
             groupsWithAccess: {
-              label: "Groups with access", formatter: format.json, inputType: "multiselect", selectOptions: ["National", "Cambridge"],
+              label: "Groups with access", formatter: format.json, inputType: "multiselect", selectOptions: groups,
             },
             suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
             suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
