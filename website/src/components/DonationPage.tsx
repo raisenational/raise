@@ -120,7 +120,7 @@ const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<Publ
               )}
             </div>
           </div>
-          <p className="font-bold">{fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? "" : "s"} have already raised {format.amountShort(fundraiser.data?.currency, fundraiser.data?.totalRaised)}{fundraiser.data ? ` of a ${format.amountShort(fundraiser.data?.currency, fundraiser.data?.goal)} target` : ""}</p>
+          <p className="font-bold">{fundraiser.data?.donationsCount} student{fundraiser.data?.donationsCount === 1 ? " has" : "s have"}  already raised {format.amountShort(fundraiser.data?.currency, fundraiser.data?.totalRaised)}{fundraiser.data ? ` of a ${format.amountShort(fundraiser.data?.currency, fundraiser.data?.goal)} target` : ""}</p>
         </div>
         <div className="inline-block mt-4 md:mt-0 md:w-64 md:mx-2">
           <div className="bg-raise-purple p-1 -skew-x-15 rounded shadow-raise">
