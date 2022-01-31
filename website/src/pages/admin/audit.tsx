@@ -59,7 +59,7 @@ const AuditPage: React.FC<RouteComponentProps> = () => {
               type="text"
               {...formMethods.register("query", {
                 validate: (s: string): string | true => {
-                  if (!s) return "Query must not be empty"
+                  if (!s.trim()) return "Query must not be empty"
                   return true
                 },
               })}

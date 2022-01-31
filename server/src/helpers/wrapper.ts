@@ -25,7 +25,7 @@ const middyPathParamsValidatorAndNormalizer: middy.MiddlewareFn<APIGatewayProxyE
 
   // check we have the path parameters defined in the url
   request.event.routeKey.match(/\{[a-zA-Z0-9]*\}/g)?.map((k) => k.slice(1, -1)).forEach((k) => {
-    if (request.event.pathParameters?.[k] === undefined) {
+    if (!request.event.pathParameters?.[k]) {
       throw new createHttpError.BadRequest(`Missing path parameter ${k}`)
     }
   })
