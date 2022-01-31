@@ -4,7 +4,7 @@ import { g, Group } from "@raise/shared"
 import env from "../env/env"
 import { Env } from "./types"
 
-// To add a user, SHA1 (lowercase hex) their Google account email and add them to this map
+// To add a user, SHA1 (lowercase hex) their lowercased Google account email and add them to this map
 // This is hopefully temporary until we get G Suite
 // We use hashes to avoid checking-in people's personal emails to the repo
 const USER_MAP: Record<Env["STAGE"], Record<string, Group[]>> = {
@@ -42,11 +42,14 @@ const USER_MAP: Record<Env["STAGE"], Record<string, Group[]>> = {
   // - they have passed the security quiz
   // - this is a individual's account, not a group of people
   "prod": {
-    "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [g.National], // Adam
-    "7b023b5154a262453b5c3f1157a866a8f3be6f63": [g.National], // Malena
-    "69121db77450a21ada845a6390feacc6ded18e41": [g.National], // Joe
+    "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [g.National], // Adam Jones
+    "7b023b5154a262453b5c3f1157a866a8f3be6f63": [g.National], // Malena Schmidt
+    "69121db77450a21ada845a6390feacc6ded18e41": [g.National], // Joe Benton
+    "e64a1becda7234d98691524ee0789e31372414ba": [g.National], // Abe Tolley
+    "697e0b1967671d86495a44290bf6d17a01b639f9": [g.Glasgow], // Andrew Taylor
+    "cbd2e0b2e4b5ba20ce967efefd508b211e15078f": [g.Durham], // Thomas Cohen
   },
 }
 
 // This should only be used for login. In other places, we should be getting groups from the decoded JWT
-export const getGroups = (email: string): Group[] | undefined => USER_MAP[env.STAGE][createHash("sha1").update(email).digest("hex")]
+export const getGroups = (email: string): Group[] | undefined => USER_MAP[env.STAGE][createHash("sha1").update(email.toLowerCase()).digest("hex")]
