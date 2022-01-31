@@ -443,12 +443,12 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
         </p>
       )}
 
-      {peopleProtected && (
+      {peopleProtected ? (
         <>
           <p>Amazing! Your donation{matchFundingAmount !== null && matchFundingAmount > 0 ? " plus match funding" : ""} will help protect {peopleProtected} people from malaria through AMF. We think that's something worth celebrating!</p>
           <ImpactRepresentation peopleProtected={peopleProtected} />
         </>
-      )}
+      ) : null}
     </>
   )
 }
