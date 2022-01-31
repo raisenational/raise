@@ -247,7 +247,7 @@ type PropertyDefinition<I, V> = {
   warning?: string,
 } & (
     | { inputType: Exclude<InputType<V>, "select" | "multiselect"> }
-    | { inputType: InputType<V> & ("select" | "multiselect"), selectOptions: string[] }
+    | { inputType: InputType<V> & ("select" | "multiselect"), selectOptions: readonly string[] }
   )
 
 export interface FormProps<T> {

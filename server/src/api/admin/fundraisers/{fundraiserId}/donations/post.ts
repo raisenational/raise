@@ -1,16 +1,17 @@
 import { ulid } from "ulid"
 import createHttpError from "http-errors"
-import { donationCreationSchema, ulidSchema, Donation } from "@raise/shared"
+import {
+  donationCreationSchema, ulidSchema, Donation, g,
+} from "@raise/shared"
 import { middyfy } from "../../../../../helpers/wrapper"
 import {
   assertHasGroup, assertHasGroupForProperties, get, insert, insertT, inTransaction, plusT,
 } from "../../../../../helpers/db"
 import { donationTable, fundraiserTable } from "../../../../../helpers/tables"
-import { NATIONAL } from "../../../../../helpers/groups"
 
 export const main = middyfy(donationCreationSchema, ulidSchema, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
-  assertHasGroupForProperties(event, NATIONAL, ["stripeCustomerId", "stripePaymentMethodId"])
+  assertHasGroupForProperties(event, g.National, ["stripeCustomerId", "stripePaymentMethodId"])
 
   const donationId = ulid()
 

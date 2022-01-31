@@ -3,10 +3,9 @@ import type {
 } from "aws-lambda"
 import jwt from "jsonwebtoken"
 import { ulid } from "ulid"
-import { AuditLog, Donation, Fundraiser, Payment } from "@raise/shared"
+import { AuditLog, Donation, Fundraiser, Payment, g } from "@raise/shared"
 import { AuthTokenPayload } from "../src/helpers/types"
 import env from "../src/env/env"
-import { NATIONAL } from "../src/helpers/groups"
 import MockDate from 'mockdate';
 import * as db from "../src/helpers/db"
 
@@ -26,7 +25,7 @@ export const call = (handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyRes
   const token = typeof options.auth === "string" ? options.auth : jwt.sign(
     {
       subject: "tests",
-      groups: [NATIONAL, "Test"],
+      groups: [g.National, g.Test],
       iat: now,
       exp: now + 60, // 1 minute
       ...options.auth

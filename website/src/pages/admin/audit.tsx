@@ -1,7 +1,7 @@
 import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 import {
-  AuditLog, AuditLogs, format,
+  AuditLog, AuditLogs, format, g,
 } from "@raise/shared"
 import { FormProvider, useForm } from "react-hook-form"
 import jsonexport from "jsonexport/dist"
@@ -44,7 +44,7 @@ const AuditPage: React.FC<RouteComponentProps> = () => {
 
   return (
     <Section>
-      <RequireGroup group="National" otherwise={<Alert variant="error">You don't have permission to access this page</Alert>}>
+      <RequireGroup group={g.National} otherwise={<Alert variant="error">You don't have permission to access this page</Alert>}>
         <div className="flex">
           <SectionTitle className="flex-1">Audit Logs</SectionTitle>
           <Button onClick={downloadAsCSV}><DownloadIcon className="h-6 mb-1" /> CSV</Button>

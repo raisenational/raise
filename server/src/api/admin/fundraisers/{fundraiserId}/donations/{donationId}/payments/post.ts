@@ -1,15 +1,16 @@
 import { ulid } from "ulid"
-import { paymentCreationSchema, ulidSchema, calcMatchFunding } from "@raise/shared"
+import {
+  paymentCreationSchema, ulidSchema, calcMatchFunding, g,
+} from "@raise/shared"
 import { middyfy } from "../../../../../../../helpers/wrapper"
 import {
   assertHasGroup, get, inTransaction, insertT, plusT, updateT,
 } from "../../../../../../../helpers/db"
 import { fundraiserTable, donationTable, paymentTable } from "../../../../../../../helpers/tables"
-import { NATIONAL } from "../../../../../../../helpers/groups"
 
 export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
-  if (event.body.method === "card") assertHasGroup(event, NATIONAL)
+  if (event.body.method === "card") assertHasGroup(event, g.National)
 
   const paymentId = ulid()
   const { fundraiserId, donationId } = event.pathParameters

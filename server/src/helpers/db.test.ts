@@ -8,7 +8,6 @@ import {
 } from "./tables"
 import { makeFundraiser, makeDonation, setMockDate } from "../../local/testHelpers"
 import { auditContext } from "./auditContext"
-import { NATIONAL } from "./groups"
 
 describe("scan", () => {
   test.each(Object.entries(tables))("%s table is empty by default", async (name, table) => {
@@ -428,17 +427,17 @@ describe("assertMatchesSchema", () => {
 })
 
 describe.each([
-  ["not", [NATIONAL]],
-  ["not", [NATIONAL, "Test"]],
+  ["not", ["National"]],
+  ["not", ["National", "Test"]],
   ["", []],
   ["", ["NotTest"]],
 ])("assertHasGroup", (notThrow, eventGroups) => {
   test.each([
-    ["group name", NATIONAL],
-    ["group array with one entry", [NATIONAL]],
-    ["group array with multiple entries", [NATIONAL, "Test"]],
-    ["groupsWithAccess object with one entry", { groupsWithAccess: [NATIONAL] }],
-    ["groupsWithAccess object with multiple entry", { groupsWithAccess: [NATIONAL, "Test"] }],
+    ["group name", "National"],
+    ["group array with one entry", ["National"]],
+    ["group array with multiple entries", ["National", "Test"]],
+    ["groupsWithAccess object with one entry", { groupsWithAccess: ["National"] }],
+    ["groupsWithAccess object with multiple entry", { groupsWithAccess: ["National", "Test"] }],
   ])(`does ${notThrow} throw for event and %s`, (_description, checkGroups) => {
     const e = expect(() => assertHasGroup({ auth: { payload: { groups: eventGroups } } }, checkGroups))
     if (!notThrow) e.toThrow()
@@ -447,25 +446,25 @@ describe.each([
 })
 
 describe.each([
-  ["not", [NATIONAL], "a", ["a"]],
-  ["not", [NATIONAL, "Test"], "a", ["a"]],
-  ["not", [NATIONAL], "a", ["a", "b"]],
-  ["not", [NATIONAL, "Test"], "a", ["a", "b"]],
+  ["not", ["National"], "a", ["a"]],
+  ["not", ["National", "Test"], "a", ["a"]],
+  ["not", ["National"], "a", ["a", "b"]],
+  ["not", ["National", "Test"], "a", ["a", "b"]],
   ["", [], "a", ["a"]],
   ["", ["NotTest"], "a", ["a"]],
   ["", [], "a", ["a", "b"]],
   ["", ["NotTest"], "a", ["a", "b"]],
-  ["not", [NATIONAL], "a", ["b"]],
-  ["not", [NATIONAL, "Test"], "a", ["b"]],
+  ["not", ["National"], "a", ["b"]],
+  ["not", ["National", "Test"], "a", ["b"]],
   ["not", [], "a", ["b"]],
   ["not", ["NotTest"], "a", ["b"]],
 ])("assertHasGroupForProperties: does %s throw with groups %s, editing property %s and checking properties %s", (notThrow, eventGroups, eventProperty, propertiesToCheck) => {
   test.each([
-    ["by group name", NATIONAL],
-    ["by group array with one entry", [NATIONAL]],
-    ["by group array with multiple entries", [NATIONAL, "Test"]],
-    ["by groupsWithAccess object with one entry", { groupsWithAccess: [NATIONAL] }],
-    ["by groupsWithAccess object with multiple entry", { groupsWithAccess: [NATIONAL, "Test"] }],
+    ["by group name", "National"],
+    ["by group array with one entry", ["National"]],
+    ["by group array with multiple entries", ["National", "Test"]],
+    ["by groupsWithAccess object with one entry", { groupsWithAccess: ["National"] }],
+    ["by groupsWithAccess object with multiple entry", { groupsWithAccess: ["National", "Test"] }],
   ])("%s", (_description, checkGroups) => {
     const e = expect(() => assertHasGroupForProperties({ auth: { payload: { groups: eventGroups } }, body: { [eventProperty]: null } }, checkGroups, propertiesToCheck))
     if (!notThrow) e.toThrow()

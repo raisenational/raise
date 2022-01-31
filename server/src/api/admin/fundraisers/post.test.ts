@@ -2,8 +2,8 @@
 // endpoints generally: that the wrapper, logic and database all glue together
 
 import { ulid } from "ulid"
+import { g } from "@raise/shared"
 import { get, scan } from "../../../helpers/db"
-import { NATIONAL } from "../../../helpers/groups"
 import { fundraiserTable } from "../../../helpers/tables"
 import { call, makeFundraiser } from "../../../../local/testHelpers"
 import { main } from "./post"
@@ -13,7 +13,7 @@ test.each([
   ["using defaults", {}],
 ])("national team member can create a fundraiser %s", async (description, fundraiser) => {
   // when we call the endpoint
-  const response = await call(main, { auth: { groups: [NATIONAL] } })(fundraiser)
+  const response = await call(main, { auth: { groups: [g.National] } })(fundraiser)
 
   // then we get back our new fundraiser's id
   expect(response).toMatch(/^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$/)
