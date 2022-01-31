@@ -1,5 +1,5 @@
 export interface Env {
-  STAGE: string,
+  STAGE: "local" | "dev" | "prod",
 
   CUSTOM_RAISE_DOMAIN: string,
   CUSTOM_MWA_DOMAIN: string,
