@@ -181,7 +181,9 @@ const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<Publ
               {/* TODO: host this image ourselves */}
               <img alt="" src="https://upload.wikimedia.org/wikipedia/en/6/6b/Against_Malaria_Foundation.svg" height={160} width={95} className="hidden sm:block mr-6" />
               <div className="flex-1">
-                <p>Our recommended charity is the Against Malaria Foundation, which funds life-saving bed nets. [And another sentence here probably, words words words.] For more information about the work AMF do, see here. If you would like to join Raise Demo by donating to another charity get in touch via our website!</p>
+                <p className="mb-2">Our recommended charity is the Against Malaria Foundation, which distributes long-lasting insecticide-treated nets for protection against malaria in developing countries. </p>
+                <p className="mb-2">Every year, malaria kills about 400,000 people, with a further 200 million falling ill; this burden of disease falls disproportionately on young children and pregnant women. The most effective means of preventing malaria is sleeping under a mosquito net, specifically a long-lasting insecticide treated net (LLIN). AMF works with local partners in a number of countries, predominantly in sub-Saharan Africa, to distribute these nets which protect people as they sleep. For more information about the work they do, <a href="https://www.againstmalaria.com/" target="_blank" rel="noreferrer">see here</a>. </p>
+                <p>We recommend AMF particularly because they are also independently rated as one of the most cost-effective charities in the world, by organisations such as GiveWell. For a thorough evaluation of the work that they do, check out <a href="https://www.givewell.org/charities/amf" target="_blank" rel="noreferrer">GiveWell's report on AMF</a>.</p>
               </div>
             </div>
           ),
