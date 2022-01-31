@@ -323,6 +323,15 @@ describe("path parameters", () => {
     expect(response).toEqual({ greeting: "Hello world!" })
   })
 
+  test("rejects empty path parameter", async () => {
+    const response = await call(handler, {
+      rawResponse: true, routeKey: "GET /greet/{greetee}", path: "/greet/", pathParameters: { greetee: "" },
+    })(null)
+
+    expect(response.statusCode).toBe(400)
+    expect(response.body).toContain("Missing path parameter greetee")
+  })
+
   test("rejects missing path parameter", async () => {
     const response = await call(handler, { rawResponse: true, routeKey: "GET /greet/{greetee}", path: "/greet/" })(null)
 
