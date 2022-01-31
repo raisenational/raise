@@ -93,17 +93,19 @@ const normalizeGroups = (groupDefinition: string | string[] | { groupsWithAccess
   return groupDefinition.groupsWithAccess
 }
 
+const withNational = (groups: string[]) => (groups.includes(g.National) ? groups : [...groups, g.National])
+
 const overlap = (a: string[], b: string[]): boolean => a.some((v) => b.includes(v))
 
 export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } }, groupDefinition: string | string[] | { groupsWithAccess: string[] }): void => {
-  const groups = [...normalizeGroups(groupDefinition), g.National]
+  const groups = withNational(normalizeGroups(groupDefinition))
   if (!overlap(event.auth.payload.groups, groups)) {
     throw new createHttpError.Forbidden(`This action requires you to be in one of the groups [${groups.join(", ")}], but you are in [${event.auth.payload.groups.join(", ")}]`)
   }
 }
 
 export const assertHasGroupForProperties = <B>(event: { auth: { payload: { groups: string[] } }, body: B }, groupDefinition: string | string[] | { groupsWithAccess: string[] }, properties: (keyof B)[]): void => {
-  const groups = [...normalizeGroups(groupDefinition), g.National]
+  const groups = withNational(normalizeGroups(groupDefinition))
   if (!overlap(event.auth.payload.groups, groups)) {
     properties.forEach((p) => {
       if (p in event.body) throw new createHttpError.Forbidden(`To edit ${p} you need to be in one of the groups [${groups.join(", ")}], but you are in ${event.auth.payload.groups}`)
