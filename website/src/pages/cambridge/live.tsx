@@ -5,9 +5,9 @@ export default () => (
   <LivePage
     fundraiserIds={{
       local: "01FGNSHH6X6X878ZNBZKY44JQA", // Raise Demo
-      dev: "01FTPRWC19XK0MY82RWWS9V48H",
-      prod: "01FTP655EDDFB6PT72S7VDNVVC",
+      dev: "01FTPR1THYQP39EBE1GG9HD41T",
+      prod: "01FT9ZGNNEY9WZX01EEXCTP9H4",
     }}
-    title="Raise Glasgow"
+    title="MWA"
   />
 )
