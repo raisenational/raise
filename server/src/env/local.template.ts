@@ -15,10 +15,11 @@ const env: Env = {
   GOOGLE_CLIENT_ID: "730827052132-u1tatnr4anip3vf7j5tq82k33gb5okpe.apps.googleusercontent.com",
 
   // Stripe keys and secrets
+  // Secret key is the restricted key with Customers and PaymentIntents read and write
   // https://dashboard.stripe.com/test/apikeys
   // https://dashboard.stripe.com/webhooks (locally: stripe listen --forward-to localhost:8001/stripe/webhook)
   STRIPE_PUBLISHABLE_KEY: "pk_test_51KCByfI5VgKIYyWlqwp6p3qRFscr4s7bAaIC7EjZAunHLJEQoclC4it33M4Iv0U5jCVlDMQ0g8nMcJngVnIwjIOJ00vfxDTCMw",
-  STRIPE_SECRET_KEY: "sk_test_51KCByfI5VgKIYyWliV6VxJ7qFw9xJm1K7eeB9HeGiQvAtvuRbKOPp9f1hQ4MDyKviZp4vQhIRVby5LbDmrjpdZnC00OUE1muam",
+  STRIPE_SECRET_KEY: "rk_test_51KCByfI5VgKIYyWltRhqNIY4rOF2N4NUugjagIsndS0VntmICvubfWqdUS54vbtyKOueWdFJ78gmE1MczkVul9rm00asSiKk1n",
   STRIPE_WEBHOOK_SECRET: "whsec_O8eBLpkh8HoNl5h2xfUbK4z2wa3111SA",
 
   // Slack configuration
