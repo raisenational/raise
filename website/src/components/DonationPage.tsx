@@ -236,7 +236,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
     defaultValues: {
       donationAmount: format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountOneOff, false),
       recurrenceFrequency: "ONE_OFF",
-      contributionAmount: format.amountShort(fundraiser.currency, fundraiser.suggestedContributionAmount, false),
+      contributionAmount: format.amountShort(fundraiser.currency, fundraiser.suggestedContributionAmount ?? 0, false),
       giftAid: false,
       donorName: "",
       donorEmail: "",

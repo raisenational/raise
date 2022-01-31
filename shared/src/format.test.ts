@@ -26,9 +26,11 @@ describe("amount", () => {
     [undefined, 100, true, "—"],
     [null, 0, true, "—"],
     [null, 100, true, "—"],
-    ["gbp", 450, false, "4.50"],
-    ["usd", 450, false, "4.50"],
-    [null, 450, false, "—"],
+    ["gbp", 4_50, false, "4.50"],
+    ["usd", 4_50, false, "4.50"],
+    ["gbp", 10_00, false, "10.00"],
+    ["usd", 10_00, false, "10.00"],
+    [null, 4_50, false, "—"],
   ] as const)("%s → %s", (currency, amountInMinorUnits, symbol, expected) => {
     expect(format.amount(currency, amountInMinorUnits, symbol)).toEqual(expected)
   })
@@ -36,32 +38,36 @@ describe("amount", () => {
 
 describe("amountShort", () => {
   test.each([
-    ["gbp", 0, "£0"],
-    ["gbp", 1, "£0.01"],
-    ["gbp", 10, "£0.10"],
-    ["gbp", 1_00, "£1"],
-    ["gbp", 10_00, "£10"],
-    ["gbp", 100_00, "£100"],
-    ["gbp", 12_34, "£12.34"],
-    ["gbp", -56_78, "£-56.78"],
-    ["gbp", undefined, "—"],
-    ["gbp", null, "—"],
-    ["usd", 0, "$0"],
-    ["usd", 1, "$0.01"],
-    ["usd", 10, "$0.10"],
-    ["usd", 1_00, "$1"],
-    ["usd", 10_00, "$10"],
-    ["usd", 100_00, "$100"],
-    ["usd", 12_34, "$12.34"],
-    ["usd", -56_78, "$-56.78"],
-    ["usd", undefined, "—"],
-    ["usd", null, "—"],
-    [undefined, 0, "—"],
-    [undefined, 100, "—"],
-    [null, 0, "—"],
-    [null, 100, "—"],
-  ] as const)("%s → %s", (currency, amountInMinorUnits, expected) => {
-    expect(format.amountShort(currency, amountInMinorUnits)).toEqual(expected)
+    ["gbp", 0, true, "£0"],
+    ["gbp", 1, true, "£0.01"],
+    ["gbp", 10, true, "£0.10"],
+    ["gbp", 1_00, true, "£1"],
+    ["gbp", 10_00, true, "£10"],
+    ["gbp", 100_00, true, "£100"],
+    ["gbp", 12_34, true, "£12.34"],
+    ["gbp", -56_78, true, "£-56.78"],
+    ["gbp", undefined, true, "—"],
+    ["gbp", null, true, "—"],
+    ["usd", 0, true, "$0"],
+    ["usd", 1, true, "$0.01"],
+    ["usd", 10, true, "$0.10"],
+    ["usd", 1_00, true, "$1"],
+    ["usd", 10_00, true, "$10"],
+    ["usd", 100_00, true, "$100"],
+    ["usd", 12_34, true, "$12.34"],
+    ["usd", -56_78, true, "$-56.78"],
+    ["usd", undefined, true, "—"],
+    ["usd", null, true, "—"],
+    [undefined, 0, true, "—"],
+    [undefined, 100, true, "—"],
+    [null, 0, true, "—"],
+    [null, 100, true, "—"],
+    ["gbp", 4_50, false, "4.50"],
+    ["gbp", 10_00, false, "10"],
+    ["usd", 4_50, false, "4.50"],
+    ["usd", 10_00, false, "10"],
+  ] as const)("%s → %s", (currency, amountInMinorUnits, symbol, expected) => {
+    expect(format.amountShort(currency, amountInMinorUnits, symbol)).toEqual(expected)
   })
 })
 
