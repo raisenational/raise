@@ -15,9 +15,9 @@
     "matchFundingPerDonationLimit": 15000,
     "matchFundingRemaining": null,
     "minimumDonationAmount": null,
-    "suggestedDonationAmountOneOff": 10000,
+    "suggestedDonationAmountOneOff": 15000,
     "suggestedDonationAmountWeekly": 450,
-    "suggestedContributionAmount": 1000,
+    "suggestedContributionAmount": 550,
     "eventLink": "https://example.com/event",
     "moreInvolvedLink": "https://example.com/more-involved",
     "groupsWithAccess": [
