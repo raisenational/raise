@@ -183,8 +183,7 @@ const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<Publ
               <div className="flex-1">
                 <p className="mb-2">Our recommended charity is the Against Malaria Foundation, which distributes long-lasting insecticide-treated nets for protection against malaria in developing countries. </p>
                 <p className="mb-2">Every year, malaria kills about 400,000 people, with a further 200 million falling ill; this burden of disease falls disproportionately on young children and pregnant women. The most effective means of preventing malaria is sleeping under a mosquito net, specifically a long-lasting insecticide treated net (LLIN). AMF works with local partners in a number of countries, predominantly in sub-Saharan Africa, to distribute these nets which protect people as they sleep. For more information about the work they do, <a href="https://www.againstmalaria.com/" target="_blank" rel="noreferrer">see here</a>. </p>
-                <p>We recommend AMF particularly because they are also independently rated as one of the most cost-effective charities in the world, by organisations such as GiveWell. For a thorough evaluation of the work that they do, check out <a href="https://www.givewell.org/charities/amf" target="_blank" rel="noreferrer">GiveWell's report on AMF</a>.
-                </p>
+                <p>We recommend AMF particularly because they are also independently rated as one of the most cost-effective charities in the world, by organisations such as GiveWell. For a thorough evaluation of the work that they do, check out <a href="https://www.givewell.org/charities/amf" target="_blank" rel="noreferrer">GiveWell's report on AMF</a>.</p>
               </div>
             </div>
           ),
