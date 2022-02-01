@@ -129,7 +129,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           method: { label: "Method" },
           status: { label: "Status" },
         }}
-        items={payments}
+        items={asResponseValues(payments.data?.sort((a, b) => b.at - a.at), payments)}
         onClick={(payment) => navigate(`/admin/${fundraiserId}/${donationId}/${payment.id}`)}
       />
 
