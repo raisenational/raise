@@ -34,6 +34,7 @@ test.each([
   [4, 5],
 ])("can set whether %sp donation is gift-aided", async (donationAmount, afterGiftAidAmount) => {
   // given a fundraiser and donation in the db
+  // fundraiser has 123_45 to simulate having some other donations we don't want to interfere with
   const fundraiser = makeFundraiser({ totalRaised: donationAmount + 123_45 })
   const donation = makeDonation({
     fundraiserId: fundraiser.id, donationAmount, giftAid: false, addressLine1: "10 Downing Street", addressPostcode: "SW1A 2AA", addressCountry: "UK",
