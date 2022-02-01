@@ -149,15 +149,12 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
 
     <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#2ECAD6" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
     <div style="background:#2ECAD6;background-color:#2ECAD6;margin:0px auto;max-width:600px;">
-      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
-        style="background:#2ECAD6;background-color:#2ECAD6;width:100%;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#2ECAD6;background-color:#2ECAD6;width:100%;">
         <tbody>
           <tr>
-            <td
-              style="direction:ltr;font-size:0px;padding:30px;padding-bottom:32px;padding-left:30px;padding-right:30px;padding-top:30px;text-align:center;">
+            <td style="direction:ltr;font-size:0px;padding:30px;text-align:center;">
               <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:540px;" ><![endif]-->
-              <div class="mj-column-per-100 mj-outlook-group-fix"
-                style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
                   <tbody>
                     <tr>
@@ -166,28 +163,16 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                           <tbody>
                             <tr>
                               <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
-                                <div
-                                  style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;line-height:1.375;text-align:left;color:#ffffff;">
-                                  ${fundraiser.publicName}: A Celebration of Giving</div>
+                                <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;line-height:1.375;text-align:left;color:#ffffff;">${fundraiser.publicName}: A Celebration of Giving</div>
                               </td>
                             </tr>
                             <tr>
-                              <td style="font-size:0px;word-break:break-word;">
-                                <div style="height:60px;line-height:60px;">&#8202;</div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td align="left"
-                                style="font-size:0px;padding:0px;padding-top:0px;padding-right:0px;padding-bottom:8px;padding-left:0px;word-break:break-word;">
-                                <table border="0" cellpadding="0" cellspacing="0" role="presentation"
-                                  style="border-collapse:collapse;border-spacing:0px;">
+                              <td align="left" style="font-size:0px;padding:0px;padding-top:40px;padding-right:0px;padding-bottom:8px;padding-left:0px;word-break:break-word;">
+                                <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border-spacing:0px;">
                                   <tbody>
                                     <tr>
                                       <td style="width:125px;">
-                                        <img height="auto"
-                                          src="https://www.joinraise.org/shared/email-images/logo-white.png"
-                                          style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;"
-                                          width="125" />
+                                        <img height="auto" src="https://www.joinraise.org/shared/email-images/logo-white.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px;" width="125" />
                                       </td>
                                     </tr>
                                   </tbody>
@@ -195,20 +180,8 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                               </td>
                             </tr>
                             <tr>
-                              <td align="left"
-                                style="font-size:0px;padding:8px;padding-top:8px;padding-right:8px;padding-bottom:30px;padding-left:8px;word-break:break-word;">
-                                <div
-                                  style="font-family:'Helvetica', 'Arial', sans-serif;font-size:40px;line-height:1.25;text-align:left;color:#ffffff;">
-                                  <strong>Thank you for your donation!</strong></div>
-                              </td>
-                            </tr>
-                            <tr>
                               <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
-                                <div
-                                  style="font-family:'Helvetica', 'Arial', sans-serif;font-size:20px;line-height:1.5;text-align:left;color:#ffffff;">
-                                  ${donation.donorName.split(" ")[0]}, you've done a great thing today.<br /><br />Your donation will protect ${convert.moneyToPeopleProtected(fundraiser.currency, payments[0].donationAmount + (payments[0].matchFundingAmount ?? 0))}
-                                  people from malaria. You've also taken an important step on your journey to positive,
-                                  deliberate, effective giving.</div>
+                                <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:40px;line-height:1.25;text-align:left;color:#ffffff;"><strong>Thank you for your donation!</strong></div>
                               </td>
                             </tr>
                           </tbody>
@@ -226,15 +199,12 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
     </div>
     <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#ffffff" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
     <div style="background:#ffffff;background-color:#ffffff;margin:0px auto;max-width:600px;">
-      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
-        style="background:#ffffff;background-color:#ffffff;width:100%;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#ffffff;background-color:#ffffff;width:100%;">
         <tbody>
           <tr>
-            <td
-              style="direction:ltr;font-size:0px;padding:30px;padding-bottom:30px;padding-left:30px;padding-right:30px;padding-top:20px;text-align:center;">
+            <td style="direction:ltr;font-size:0px;padding:30px;text-align:center;">
               <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:540px;" ><![endif]-->
-              <div class="mj-column-per-100 mj-outlook-group-fix"
-                style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
                   <tbody>
                     <tr>
@@ -243,21 +213,50 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                           <tbody>
                             <tr>
                               <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
-                                <div
-                                  style="font-family:'Helvetica', 'Arial', sans-serif;font-size:28px;line-height:1.5;text-align:left;color:#000000;">
-                                  Payment details</div>
+                                <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:20px;line-height:1.5;text-align:left;color:#000000;">Dear ${donation.donorName.split(" ")[0]},<br /><br /> Thank you so much for donating through ${fundraiser.publicName} this year and joining our community of students celebrating positive, deliberate giving!<br /><br /> Your donation will help to protect ${convert.moneyToPeopleProtected(fundraiser.currency, payments[0].donationAmount + (payments[0].matchFundingAmount ?? 0))} people from malaria. We think that impact is something worth celebrating, and we look forward to seeing you at ${fundraiser.eventLink ? `<a href="${fundraiser.eventLink}">one of our Summer Parties later in the year</a>` : "one of our Summer Parties later in the year"}.<br /><br /> In the meantime, if you are keen to get more involved in our movement, check out our website for ways you can help or ${fundraiser.moreInvolvedLink ? `<a href="${fundraiser.moreInvolvedLink}" target="_blank">get in touch with us</a>` : "get in touch with us"}. Alternatively, you can follow us on social media to keep up to date during our donations period. Plus, the Summer Party is more fun with friends, so why not encourage them to join too?<br /><br /> We're really looking forward to celebrating our collective impact with you soon!<br /><br /> Best wishes,<br /> The ${fundraiser.publicName} Team</div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="md-rounded-bottom-outlook" style="width:600px;" width="600" bgcolor="#5D215E" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    <div class="md-rounded-bottom" style="background:#5D215E;background-color:#5D215E;margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#5D215E;background-color:#5D215E;width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:30px;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:540px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                  <tbody>
+                    <tr>
+                      <td style="vertical-align:top;padding:0;">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                          <tbody>
+                            <tr>
+                              <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
+                                <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:28px;line-height:1.5;text-align:left;color:#ffffff;">Payment details</div>
                               </td>
                             </tr>
                             <tr>
                               <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
-                                <table cellpadding="0" cellspacing="0" width="100%" border="0"
-                                  style="color:#000000;font-family:'Helvetica', 'Arial', sans-serif;line-height:22px;table-layout:auto;width:100%;border:none;">
+                                <table cellpadding="0" cellspacing="0" width="100%" border="0" style="color:#ffffff;font-family:'Helvetica', 'Arial', sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
                                   ${payments[0].donationAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif">
                                     <td style="padding: 2px 0;font-size:18px">Your donation to AMF</td>
                                     <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount)}</td>
                                   </tr>` : ""}
                                   ${payments[0].contributionAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif">
-                                      <td style="padding: 2px 0;font-size:18px">Your contribution to ${fundraiser.publicName}</td>
+                                      <td style="padding: 2px 0;font-size:18px">Your Summer Party contribution</td>
                                       <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].contributionAmount)}</td>
                                   </tr>` : ""}
                                   <tr style="height:6px">
@@ -274,15 +273,13 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                             </tr>
                             ${payments.length > 1 ? `<tr>
                               <td align="left" style="font-size:0px;padding:32px 8px 5px 8px;word-break:break-word;">
-                                <div
-                                  style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;line-height:1.5;text-align:left;color:#000000;">
+                                <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;line-height:1.5;text-align:left;color:#ffffff;">
                                   You also set up future donations to AMF:</div>
                               </td>
                             </tr>
                             <tr>
                               <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
-                                <table cellpadding="0" cellspacing="0" width="100%" border="0"
-                                  style="color:#000000;font-family:'Helvetica', 'Arial', sans-serif;line-height:22px;table-layout:auto;width:100%;border:none;">
+                                <table cellpadding="0" cellspacing="0" width="100%" border="0" style="color:#ffffff;font-family:'Helvetica', 'Arial', sans-serif;line-height:22px;table-layout:auto;width:100%;border:none;">
                                   ${payments.slice(1).map((p) => `<tr style="font-family:'Helvetica', 'Arial', sans-serif">
                                       <td style="padding: 2px 0;font-size:18px">${format.date(p.at)}</td>
                                       <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">${format.amountShort(fundraiser.currency, p.donationAmount + p.contributionAmount)}</td>
@@ -299,52 +296,6 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                 </table>
                               </td>
                             </tr>` : ""}
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <!--[if mso | IE]></td></tr></table><![endif]-->
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="md-rounded-bottom-outlook" style="width:600px;" width="600" bgcolor="#5D215E" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-    <div class="md-rounded-bottom" style="background:#5D215E;background-color:#5D215E;margin:0px auto;max-width:600px;">
-      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation"
-        style="background:#5D215E;background-color:#5D215E;width:100%;">
-        <tbody>
-          <tr>
-            <td
-              style="direction:ltr;font-size:0px;padding:30px;padding-bottom:30px;padding-left:30px;padding-right:30px;padding-top:20px;text-align:center;">
-              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:540px;" ><![endif]-->
-              <div class="mj-column-per-100 mj-outlook-group-fix"
-                style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
-                <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
-                  <tbody>
-                    <tr>
-                      <td style="vertical-align:top;padding:0;">
-                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
-                          <tbody>
-                            <tr>
-                              <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
-                                <div
-                                  style="font-family:'Helvetica', 'Arial', sans-serif;font-size:28px;line-height:1.5;text-align:left;color:#ffffff;">
-                                  Multiply your impact</div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
-                                <div
-                                  style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;line-height:1.5;text-align:left;color:#ffffff;">
-                                  Want to go even further? Sharing your donation on social media can boost your impact
-                                  further! Talking about effective giving with friends and family can be a great way for
-                                  you to champion the movement.</div>
-                              </td>
-                            </tr>
                           </tbody>
                         </table>
                       </td>

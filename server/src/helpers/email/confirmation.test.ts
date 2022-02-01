@@ -25,10 +25,10 @@ test("renders email correctly with one payment", () => {
   const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, " ")
 
   // then we have expected data filled in
-  expect(email).toContain("Greg, you've done a great thing today")
-  expect(email).toContain("Your donation will protect 243 people from malaria.")
+  expect(email).toContain("Dear Greg,")
+  expect(email).toContain("Your donation will help to protect 243 people from malaria.")
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
-  expect(email).toMatch(/<td[^>]*>Your contribution to Raise Test<\/td>\s*<td[^>]*>£10<\/td>/)
+  expect(email).toMatch(/<td[^>]*>Your Summer Party contribution<\/td>\s*<td[^>]*>£10<\/td>/)
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£110<\/td>/)
   expect(email).not.toContain("You also set up future donations to AMF:")
   expect(email).toContain(fundraiser.id)
@@ -60,10 +60,10 @@ test("renders email correctly for payments with no contribution or match funding
   const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, " ")
 
   // then we have expected data filled in
-  expect(email).toContain("Greg, you've done a great thing today")
-  expect(email).toContain("Your donation will protect 121 people from malaria.")
+  expect(email).toContain("Dear Greg,")
+  expect(email).toContain("Your donation will help to protect 121 people from malaria.")
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
-  expect(email).not.toContain("Your contribution to Raise Test")
+  expect(email).not.toContain("Your Summer Party contribution")
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£100<\/td>/)
   expect(email).not.toContain("You also set up future donations to AMF:")
   expect(email).toContain(fundraiser.id)
@@ -117,16 +117,16 @@ test.each([
   const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, " ")
 
   // then we have expected data filled in
-  expect(email).toContain("Greg, you've done a great thing today")
+  expect(email).toContain("Dear Greg,")
   if (currency === "gbp") {
-    expect(email).toContain("Your donation will protect 21 people from malaria.")
+    expect(email).toContain("Your donation will help to protect 21 people from malaria.")
     expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£9<\/td>/)
-    expect(email).toMatch(/<td[^>]*>Your contribution to Raise Test<\/td>\s*<td[^>]*>£10<\/td>/)
+    expect(email).toMatch(/<td[^>]*>Your Summer Party contribution<\/td>\s*<td[^>]*>£10<\/td>/)
     expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£19<\/td>/)
   } else {
-    expect(email).toContain("Your donation will protect 16 people from malaria.")
+    expect(email).toContain("Your donation will help to protect 16 people from malaria.")
     expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>\$9<\/td>/)
-    expect(email).toMatch(/<td[^>]*>Your contribution to Raise Test<\/td>\s*<td[^>]*>\$10<\/td>/)
+    expect(email).toMatch(/<td[^>]*>Your Summer Party contribution<\/td>\s*<td[^>]*>\$10<\/td>/)
     expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>\$19<\/td>/)
   }
   expect(email).toContain("You also set up future donations to AMF:")

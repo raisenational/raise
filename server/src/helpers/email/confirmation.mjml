@@ -20,36 +20,45 @@
       </mj-column>
     </mj-section>
 
-    <mj-section background-color="#2ECAD6" padding-bottom="32px" padding-left="30px" padding-right="30px" padding-top="30px" padding="30px">
+    <mj-section background-color="#2ECAD6" padding="30px">
       <mj-column padding="0">
         <mj-text color="#fff" font-size="18px" line-height="1.375" padding="8px">
           Raise: A Celebration of Giving
         </mj-text>
-        <mj-spacer height="60px"></mj-spacer>
-        <mj-image padding-bottom="8px" padding-left="0px" padding-right="0px" padding-top="0px" padding="0px" src="https://www.joinraise.org/shared/email-images/logo-white.png" width="125px" align="left">
+        <mj-image padding-bottom="8px" padding-left="0px" padding-right="0px" padding-top="40px" padding="0px" src="https://www.joinraise.org/shared/email-images/logo-white.png" width="125px" align="left">
         </mj-image>
-        <mj-text color="#ffffff" font-size="40px" line-height="1.25" padding-bottom="30px" padding-left="8px" padding-right="8px" padding-top="8px" padding="8px">
+        <mj-text color="#ffffff" font-size="40px" line-height="1.25" padding="8px">
           <strong>Thank you for your donation!</strong>
-        </mj-text>
-        <mj-text color="#ffffff" font-size="20px" line-height="1.5" padding="8px">
-          Adam, you've done a great thing today.<br /><br />Your donation will protect 230 people from malaria. You've
-          also taken an important step on your journey to positive, deliberate, effective giving.
         </mj-text>
       </mj-column>
     </mj-section>
 
-    <mj-section background-color="#ffffff" padding-bottom="30px" padding-left="30px" padding-right="30px" padding-top="20px" padding="30px">
+    <mj-section background-color="#ffffff" padding="30px">
       <mj-column padding="0">
-        <mj-text color="#000000" font-size="28px" line-height="1.5" padding="8px">
+        <mj-text color="#000000" font-size="20px" line-height="1.5" padding="8px">
+          Dear Adam,<br /><br />
+          Thank you so much for donating through Raise this year and joining our community of students celebrating positive, deliberate giving!<br /><br />
+          Your donation will help to protect 230 people from malaria. We think that impact is something worth celebrating, and we look forward to seeing you at <a href="https://example.com/event">one of our Summer Parties later in the year</a>.<br /><br />
+          In the meantime, if you are keen to get more involved in our movement, check out our website for ways you can help or <a href="https://example.com/more-involved" target="_blank">get in touch with us</a>. Alternatively, you can follow us on social media to keep up to date during our donations period. Plus, the Summer Party is more fun with friends, so why not encourage them to join too?<br /><br />
+          We're really looking forward to celebrating our collective impact with you soon!<br /><br />
+          Best wishes,<br />
+          The Raise Team
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#5D215E" padding="30px" css-class="md-rounded-bottom">
+      <mj-column padding="0">
+        <mj-text color="#ffffff" font-size="28px" line-height="1.5" padding="8px">
           Payment details
         </mj-text>
-        <mj-table padding="8px">
+        <mj-table padding="8px" color="#ffffff">
           <tr style="font-family:'Helvetica', 'Arial', sans-serif;">
             <td style="padding: 2px 0;font-size:18px">Your donation to AMF</td>
             <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£100</td>
           </tr>
           <tr style="font-family:'Helvetica', 'Arial', sans-serif;">
-            <td style="padding: 2px 0;font-size:18px">Your contribution to Raise</td>
+            <td style="padding: 2px 0;font-size:18px">Your Summer Party contribution</td>
             <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£10</td>
           </tr>
           <tr style="height:6px">
@@ -61,11 +70,11 @@
             <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;font-size:18px">£110</td>
           </tr>
         </mj-table>
-        <mj-text color="#000000" font-size="18px" line-height="1.5" padding="32px 8px 5px 8px">
+        <mj-text color="#ffffff" font-size="18px" line-height="1.5" padding="32px 8px 5px 8px">
           You also set up future donations to AMF:
         </mj-text>
 
-        <mj-table padding="8px">
+        <mj-table padding="8px" color="#ffffff">
           <tr style="font-family:'Helvetica', 'Arial', sans-serif">
             <td style="padding: 2px 0;font-size:18px">19/12/2021</td>
             <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£9</td>
@@ -87,18 +96,6 @@
             <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;font-size:18px">£21</td>
           </tr>
         </mj-table>
-      </mj-column>
-    </mj-section>
-
-    <mj-section background-color="#5D215E" padding-bottom="30px" padding-left="30px" padding-right="30px" padding-top="20px" padding="30px" css-class="md-rounded-bottom">
-      <mj-column padding="0">
-        <mj-text color="#ffffff" font-size="28px" line-height="1.5" padding="8px">
-          Multiply your impact
-        </mj-text>
-        <mj-text color="#ffffff" font-size="18px" line-height="1.5" padding="8px">
-          Want to go even further? Sharing your donation on social media can boost your impact further! Talking about
-          effective giving with friends and family can be a great way for you to champion the movement.
-        </mj-text>
       </mj-column>
     </mj-section>
 
