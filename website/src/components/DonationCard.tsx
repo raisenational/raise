@@ -42,7 +42,7 @@ const DonationCard: React.FC<Props> = ({
       <p className="fade-in"><span className={classNames({ skeleton: loading })}>{title}</span></p>
       {recurringText && <p className={classNames("fade-in", { skeleton: loading, "text-base opacity-80": !loading })}>{recurringText}</p>}
       {extraAmountText && <p className="text-base fade-in"><span className={classNames({ skeleton: loading, "opacity-80": !loading })}>{extraAmountText}</span></p>}
-      {comment && <p className="text-base mt-2 break-words fade-in"><span className={classNames({ skeleton: loading })}>{comment}</span></p>}
+      {comment && <p className="text-base mt-2 word-wrap fade-in"><span className={classNames({ skeleton: loading })}>{comment}</span></p>}
       <p className="text-base mt-auto pt-2 text-right fade-in"><span className={classNames({ skeleton: loading, "opacity-80": !loading })}>{typeof createdAt === "string" ? createdAt : <TimeAgo date={createdAt * 1000} />}</span></p>
     </div>
   )
