@@ -9,6 +9,7 @@ import Philosophy from "../../components/Philosophy"
 import ContactForm from "../../components/ContactForm"
 import Panel from "../../components/Panel"
 import Footer from "../../components/Footer"
+import Button from "../../components/Button"
 
 import { Doubled, MoneyBox, Party } from "../../images/Icons"
 import IntroStats from "../../components/IntroStats"
@@ -46,6 +47,7 @@ const IndexPage = () => (
             protected: 340013,
           }}
         />
+        <Button variant="outline" className="mt-4 mb-12" href="/demo/donate"> Donate </Button>
       </Section>
       <CTADown
         text="How it works"
@@ -89,6 +91,7 @@ const IndexPage = () => (
           <p>If you're interested in helping out, <a href="/demo/#contact">get in touch</a>.</p>
         </FAQ>
       </FAQs>
+      <Button variant="outline" className="mt-4" href="/demo/donate"> Donate </Button>
     </Section>
 
     <Section id="our-philosophy">
