@@ -159,7 +159,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
           donationAmount: { label: "Donated", formatter: (v: number) => format.amount(fundraiser?.currency, v) },
           matchFundingAmount: { label: "Matched", formatter: (v: number) => format.amount(fundraiser?.currency, v) },
         }}
-        items={showUncounted ? donations : asResponseValues(donations.data?.filter((d) => d.donationCounted), donations)}
+        items={asResponseValues(donations.data?.filter((d) => showUncounted || d.donationCounted).sort((a, b) => b.createdAt - a.createdAt), donations)}
         onClick={(donation) => navigate(`/admin/${fundraiserId}/${donation.id}/`)}
       />
     </>

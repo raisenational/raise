@@ -5,7 +5,9 @@ import { PlusSmIcon } from "@heroicons/react/outline"
 import {
   format, Fundraiser, FundraiserEdits, groups,
 } from "@raise/shared"
-import { useAuthState, useAxios, useRawAxios } from "../../helpers/networking"
+import {
+  asResponseValues, useAuthState, useAxios, useRawAxios,
+} from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import Table from "../../components/Table"
 import Button from "../../components/Button"
@@ -71,7 +73,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
           goal: { label: "Goal", formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), className: "w-36" },
           totalRaised: { label: "Raised", formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), className: "w-36" },
         }}
-        items={fundraisers}
+        items={asResponseValues(fundraisers.data?.sort((a, b) => b.activeFrom - a.activeFrom), fundraisers)}
         onClick={(fundraiser) => navigate(`/admin/${fundraiser.id}/`)}
       />
     </Section>
