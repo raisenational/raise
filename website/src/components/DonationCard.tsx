@@ -39,7 +39,7 @@ const DonationCard: React.FC<Props> = ({
 
   return (
     <div className={classNames("p-4 rounded flex flex-col shadow-raise", className)}>
-      <p className="fade-in"><span className={classNames({ skeleton: loading })}>{title}</span></p>
+      <p className="fade-in word-wrap"><span className={classNames({ skeleton: loading })}>{title}</span></p>
       {recurringText && <p className={classNames("fade-in", { skeleton: loading, "text-base opacity-80": !loading })}>{recurringText}</p>}
       {extraAmountText && <p className="text-base fade-in"><span className={classNames({ skeleton: loading, "opacity-80": !loading })}>{extraAmountText}</span></p>}
       {comment && <p className="text-base mt-2 word-wrap fade-in"><span className={classNames({ skeleton: loading })}>{comment}</span></p>}

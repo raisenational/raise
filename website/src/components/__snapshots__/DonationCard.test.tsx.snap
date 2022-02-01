@@ -6,7 +6,7 @@ exports[`renders with a custom class name 1`] = `
     class="p-4 rounded flex flex-col shadow-raise bg-raise-red"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -38,7 +38,7 @@ exports[`renders with a date 1`] = `
     class="p-4 rounded flex flex-col shadow-raise"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -70,7 +70,7 @@ exports[`renders with a date string 1`] = `
     class="p-4 rounded flex flex-col shadow-raise"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -97,7 +97,7 @@ exports[`renders with a loading state 1`] = `
     class="p-4 rounded flex flex-col shadow-raise bg-raise-red"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -143,7 +143,7 @@ exports[`renders with a name and date 1`] = `
     class="p-4 rounded flex flex-col shadow-raise"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -175,7 +175,7 @@ exports[`renders with a name and date 2`] = `
     class="p-4 rounded flex flex-col shadow-raise"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -207,7 +207,7 @@ exports[`renders with a recurring amount and a date 1`] = `
     class="p-4 rounded flex flex-col shadow-raise"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -253,7 +253,7 @@ exports[`renders with a usd donation 1`] = `
     class="p-4 rounded flex flex-col shadow-raise bg-raise-red"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -299,7 +299,7 @@ exports[`renders with amounts (match funding and gift-aid) and a date 1`] = `
     class="p-4 rounded flex flex-col shadow-raise"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -340,7 +340,7 @@ exports[`renders with amounts (match funding and no gift-aid) and a date 1`] = `
     class="p-4 rounded flex flex-col shadow-raise"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -381,7 +381,7 @@ exports[`renders with amounts (no match funding and gift-aid) and a date 1`] = `
     class="p-4 rounded flex flex-col shadow-raise"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -422,7 +422,7 @@ exports[`renders with amounts (no match funding and no gift-aid) and a date 1`] 
     class="p-4 rounded flex flex-col shadow-raise"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
@@ -454,7 +454,7 @@ exports[`renders with amounts (whole numbers) and a date 1`] = `
     class="p-4 rounded flex flex-col shadow-raise"
   >
     <p
-      class="fade-in"
+      class="fade-in word-wrap"
     >
       <span
         class=""
