@@ -84,7 +84,7 @@ const PropertyEditor = <I,>({
         itemRenderer={(i) => (
           <tr key={String(i.property)} className={classNames("hover:bg-black hover:bg-opacity-20", { "cursor-pointer": definition[i.property]?.inputType !== undefined })} onClick={definition[i.property]?.inputType === undefined ? undefined : (e) => tableOnClick(i, e)}>
             {Object.keys(tableDefinition).map((k, cellIndex, arr) => (
-              <td key={k} className={classNames("p-2", { "pl-4": cellIndex === 0, "pr-4": cellIndex === arr.length - 1 })}>{(i[k as keyof typeof tableDefinition] ?? "—")}</td>
+              <td key={k} className={classNames("p-2 word-wrap", { "pl-4 lg:min-w-[24rem]": cellIndex === 0, "pr-4": cellIndex === arr.length - 1 })}>{(i[k as keyof typeof tableDefinition] ?? "—")}</td>
             ))}
           </tr>
         )}

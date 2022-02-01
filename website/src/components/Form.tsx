@@ -303,8 +303,8 @@ export const Form = <T,>({
               {v.warning && <Alert variant="warning" className="mb-4">{v.warning}</Alert>}
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <LabelledInput label={v.label ?? String(k)} id={String(k)} type={nInputType as any} options={(v as any).selectOptions} {...register(k)} />
-              {showCurrent && <p>Current value: {v.formatter ? v.formatter(initialValues[k], initialValues) : (initialValues[k] ?? "—")}</p>}
-              <p>{showCurrent ? "New value" : "Value"}: {v.formatter ? v.formatter(newValues[k], newValues) : (newValues[k] ?? "—")}</p>
+              {showCurrent && <p className="word-wrap">Current value: {v.formatter ? v.formatter(initialValues[k], initialValues) : (initialValues[k] ?? "—")}</p>}
+              <p className="word-wrap">{showCurrent ? "New value" : "Value"}: {v.formatter ? v.formatter(newValues[k], newValues) : (newValues[k] ?? "—")}</p>
             </div>
           )
         })}

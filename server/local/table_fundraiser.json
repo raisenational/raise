@@ -21,7 +21,8 @@
     "eventLink": "https://example.com/event",
     "moreInvolvedLink": "https://example.com/more-involved",
     "groupsWithAccess": [
-      "National"
+      "National",
+      "Demo"
     ]
   }
 ]
