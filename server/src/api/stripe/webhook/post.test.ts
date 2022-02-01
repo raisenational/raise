@@ -44,12 +44,13 @@ describe("signature validation", () => {
 
 describe("one-off donation", () => {
   test.each([
-    ["no match funding limits", null, null, null, 150_00],
-    ["fundraiser remaining match funding limit", 100_00, null, 0, 100_00],
-    ["per-donation match funding limit", null, 100_00, null, 100_00],
-  ])("%s", async (description, matchFundingRemaining, matchFundingPerDonationLimit, matchFundingRemainingAfter, matchFundingAmount) => {
+    ["no match funding limits", null, null, null, 150_00, false],
+    ["fundraiser remaining match funding limit", 100_00, null, 0, 100_00, false],
+    ["per-donation match funding limit", null, 100_00, null, 100_00, false],
+    ["with gift aid", null, null, null, 150_00, true],
+  ])("%s", async (description, matchFundingRemaining, matchFundingPerDonationLimit, matchFundingRemainingAfter, matchFundingAmount, giftAid) => {
     const fundraiser = makeFundraiser({ matchFundingRate: 100, matchFundingPerDonationLimit, matchFundingRemaining })
-    const donation = makeDonation({ fundraiserId: fundraiser.id, donationCounted: false })
+    const donation = makeDonation({ fundraiserId: fundraiser.id, donationCounted: false, giftAid })
     const payment = makePayment({
       fundraiserId: fundraiser.id,
       donationId: donation.id,
@@ -76,7 +77,7 @@ describe("one-off donation", () => {
 
     expect(await get(fundraiserTable, { id: fundraiser.id })).toMatchObject({
       donationsCount: 1,
-      totalRaised: 150_00 + matchFundingAmount,
+      totalRaised: 150_00 + matchFundingAmount + (giftAid ? 37_50 : 0),
       matchFundingRemaining: matchFundingRemainingAfter,
     })
     expect(await get(donationTable, { fundraiserId: fundraiser.id, id: donation.id })).toMatchObject({
@@ -283,20 +284,21 @@ test("can make first recurring donation with matchFundingPerDonationLimit", asyn
   })
 })
 
-test("can make later recurring donation with match funding committed previously", async () => {
+test("can make later recurring donation with gift-aid and match funding committed previously", async () => {
   const fundraiser = makeFundraiser({
     matchFundingRate: 100,
     matchFundingPerDonationLimit: 50_00,
     donationsCount: 1,
-    totalRaised: 60_00,
+    totalRaised: 67_54,
     matchFundingRemaining: 50_00,
   })
   const donation = makeDonation({
     fundraiserId: fundraiser.id,
-    donationAmount: 30_00,
+    donationAmount: 30_02,
     contributionAmount: 10_00,
-    matchFundingAmount: 30_00,
+    matchFundingAmount: 30_02,
     donationCounted: true,
+    giftAid: true,
   })
   const payments = [makePayment({
     fundraiserId: fundraiser.id,
@@ -304,9 +306,9 @@ test("can make later recurring donation with match funding committed previously"
     method: "card",
     status: "paid",
     reference: `pi_${ulid()}`,
-    donationAmount: 30_00,
+    donationAmount: 30_02,
     contributionAmount: 10_00,
-    matchFundingAmount: 30_00,
+    matchFundingAmount: 30_02,
   }), makePayment({
     at: Math.floor(new Date().getTime() / 1000) + 604800, // 1 week
     fundraiserId: fundraiser.id,
@@ -314,9 +316,9 @@ test("can make later recurring donation with match funding committed previously"
     method: "card",
     status: "scheduled",
     reference: `pi_${ulid()}`,
-    donationAmount: 30_00,
+    donationAmount: 30_02,
     contributionAmount: 0,
-    matchFundingAmount: 20_00,
+    matchFundingAmount: 19_98,
   }), makePayment({
     at: Math.floor(new Date().getTime() / 1000) + 1209600, // 2 weeks
     fundraiserId: fundraiser.id,
@@ -324,7 +326,7 @@ test("can make later recurring donation with match funding committed previously"
     method: "card",
     status: "scheduled",
     reference: `pi_${ulid()}`,
-    donationAmount: 30_00,
+    donationAmount: 30_02,
     contributionAmount: 0,
     matchFundingAmount: 0,
   })]
@@ -355,11 +357,11 @@ test("can make later recurring donation with match funding committed previously"
 
   expect(await get(fundraiserTable, { id: fundraiser.id })).toMatchObject({
     donationsCount: 1,
-    totalRaised: 110_00,
+    totalRaised: 125_05,
     matchFundingRemaining: 50_00,
   })
   expect(await get(donationTable, { fundraiserId: fundraiser.id, id: donation.id })).toMatchObject({
-    donationAmount: 60_00,
+    donationAmount: 60_04,
     contributionAmount: 10_00,
     matchFundingAmount: 50_00,
     donationCounted: true,
@@ -368,21 +370,21 @@ test("can make later recurring donation with match funding committed previously"
   })
   expect(await get(paymentTable, { donationId: donation.id, id: payments[0].id })).toEqual({
     ...payments[0],
-    donationAmount: 30_00,
+    donationAmount: 30_02,
     contributionAmount: 10_00,
-    matchFundingAmount: 30_00,
+    matchFundingAmount: 30_02,
     status: "paid",
   })
   expect(await get(paymentTable, { donationId: donation.id, id: payments[1].id })).toEqual({
     ...payments[1],
-    donationAmount: 30_00,
+    donationAmount: 30_02,
     contributionAmount: 0,
-    matchFundingAmount: 20_00,
+    matchFundingAmount: 19_98,
     status: "paid",
   })
   expect(await get(paymentTable, { donationId: donation.id, id: payments[2].id })).toEqual({
     ...payments[2],
-    donationAmount: 30_00,
+    donationAmount: 30_02,
     contributionAmount: 0,
     matchFundingAmount: 0,
     status: "scheduled",

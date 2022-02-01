@@ -64,6 +64,10 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
     matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
   })
 
+  const giftAidBefore = donation.giftAid ? Math.floor(donation.donationAmount * 0.25) : 0
+  const giftAidAfter = donation.giftAid ? Math.floor((donation.donationAmount + payment.donationAmount) * 0.25) : 0
+  const giftAidAdded = giftAidAfter - giftAidBefore
+
   // If the payment is paid, we've already done this. We should only do this if the payment is pending/scheduled.
   if (payment.status !== "paid") {
     // If recurring, create a Stripe customer and attach this payment method to them
@@ -109,8 +113,11 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
         },
         // Validate the matchFundingAmount has not changed since we got the data so that we do not violate the matchFundingPerDonation limit
         // Validate the donationCounted has not changed since we got the data so that we do not double count donations
-        "matchFundingAmount = :currentMatchFundingAmount AND donationCounted = :currentDonationCounted",
-        { ":currentMatchFundingAmount": donation.matchFundingAmount, ":currentDonationCounted": donation.donationCounted },
+        // Validate the donationAmount and giftAid has not changed since we got the data so that we apply the right amount to the fundraiser total
+        "matchFundingAmount = :currentMatchFundingAmount AND donationCounted = :currentDonationCounted AND donationAmount = :currentDonationAmount AND giftAid = :currentGiftAid",
+        {
+          ":currentMatchFundingAmount": donation.matchFundingAmount, ":currentDonationCounted": donation.donationCounted, ":currentDonationAmount": donation.donationAmount, ":currentGiftAid": donation.giftAid,
+        },
       ),
       // If matchFundingRemaining === null there is no overall limit on match funding
       //   If this is the case, we need to check that is still the case at the point of crediting the amount on the donation
@@ -118,15 +125,15 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
       // We also validate that the matchFundingPerDonationLimit has not changed since we just got the data
       // We only take off the match funding we did't commit before this point - i.e. if the payment already had a match funding amount on it this has already been accounted for in the match funding remaining of the fundraiser
       fundraiser.matchFundingRemaining === null
-        ? plusT(fundraiserTable, { id: fundraiserId }, { totalRaised: payment.donationAmount + matchFundingAdded, donationsCount: donation.donationCounted ? 0 : 1 }, "matchFundingRemaining = :matchFundingRemaining AND matchFundingPerDonationLimit = :matchFundingPerDonationLimit", { ":matchFundingRemaining": fundraiser.matchFundingRemaining, ":matchFundingPerDonationLimit": fundraiser.matchFundingPerDonationLimit })
-        : plusT(fundraiserTable, { id: fundraiserId }, { totalRaised: payment.donationAmount + matchFundingAdded, matchFundingRemaining: payment.matchFundingAmount !== null ? 0 : -matchFundingAdded, donationsCount: donation.donationCounted ? 0 : 1 }, "matchFundingRemaining >= :matchFundingAdded AND matchFundingPerDonationLimit = :matchFundingPerDonationLimit", { ":matchFundingAdded": matchFundingAdded, ":matchFundingPerDonationLimit": fundraiser.matchFundingPerDonationLimit }),
+        ? plusT(fundraiserTable, { id: fundraiserId }, { totalRaised: payment.donationAmount + matchFundingAdded + giftAidAdded, donationsCount: donation.donationCounted ? 0 : 1 }, "matchFundingRemaining = :matchFundingRemaining AND matchFundingPerDonationLimit = :matchFundingPerDonationLimit", { ":matchFundingRemaining": fundraiser.matchFundingRemaining, ":matchFundingPerDonationLimit": fundraiser.matchFundingPerDonationLimit })
+        : plusT(fundraiserTable, { id: fundraiserId }, { totalRaised: payment.donationAmount + matchFundingAdded + giftAidAdded, matchFundingRemaining: payment.matchFundingAmount !== null ? 0 : -matchFundingAdded, donationsCount: donation.donationCounted ? 0 : 1 }, "matchFundingRemaining >= :matchFundingAdded AND matchFundingPerDonationLimit = :matchFundingPerDonationLimit", { ":matchFundingAdded": matchFundingAdded, ":matchFundingPerDonationLimit": fundraiser.matchFundingPerDonationLimit }),
     ])
   }
 
   // For the first of a series of recurring donations, update future payments:
   // - mark them as scheduled
   // - allocate their matchFundingAmounts
-  const payments = await (await query(paymentTable, { donationId })).sort((a, b) => a.at - b.at)
+  const payments = (await query(paymentTable, { donationId })).sort((a, b) => a.at - b.at)
   const donationMatchFundingAlready = payments.reduce((acc, p) => acc + (p.matchFundingAmount ?? 0), 0)
   let donationMatchFundingAdded = 0
   const paymentTransactions = payments.filter((p) => (p.status === "pending" || p.status === "scheduled") && p.matchFundingAmount === null).map((p) => {

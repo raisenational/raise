@@ -23,8 +23,12 @@ export const main = middyfy(donationEditsSchema, null, true, async (event) => {
     }
   }
 
-  // Update the fundraiser if we are changing donationCounted
-  if (current.donationCounted !== after.donationCounted) {
+  // Update fundraiser total based on giftaid, and donations count based on donationCounted
+  const giftAidAdded = after.giftAid !== current.giftAid ? (after.giftAid ? 1 : -1) * Math.floor(after.donationAmount * 0.25) : 0
+  const donationsCountChange = after.donationCounted !== current.donationCounted ? (after.donationCounted ? 1 : -1) * 1 : 0
+
+  // Update the fundraiser if necessary
+  if (giftAidAdded !== 0 || donationsCountChange !== 0) {
     await inTransaction([
       updateT(donationTable, { fundraiserId: event.pathParameters.fundraiserId, id: event.pathParameters.donationId }, ...checkPrevious({
         ...event.body,
@@ -37,7 +41,7 @@ export const main = middyfy(donationEditsSchema, null, true, async (event) => {
           donationCounted: current.donationCounted,
         },
       })),
-      plusT(fundraiserTable, { id: event.pathParameters.fundraiserId }, { donationsCount: after.donationCounted ? 1 : -1 }),
+      plusT(fundraiserTable, { id: event.pathParameters.fundraiserId }, { donationsCount: donationsCountChange, totalRaised: giftAidAdded }),
     ])
     return
   }

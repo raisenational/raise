@@ -2,6 +2,7 @@ import { ulid } from "ulid"
 import {
   paymentCreationSchema, ulidSchema, calcMatchFunding, g,
 } from "@raise/shared"
+import createHttpError from "http-errors"
 import { middyfy } from "../../../../../../../helpers/wrapper"
 import {
   assertHasGroup, get, inTransaction, insertT, plusT, updateT,
@@ -30,6 +31,14 @@ export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (even
     matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
   })
 
+  if (donationAmount + donation.donationAmount < 0) throw new createHttpError.BadRequest("This payment would cause the donation to have a negative donation amount")
+  if (contributionAmount + donation.contributionAmount < 0) throw new createHttpError.BadRequest("This payment would cause the donation to have a negative contribution amount")
+  if (matchFundingAdded + donation.matchFundingAmount < 0) throw new createHttpError.BadRequest("This payment would cause the donation to have a negative match funding amount")
+
+  const giftAidBefore = donation.giftAid ? Math.floor(donation.donationAmount * 0.25) : 0
+  const giftAidAfter = donation.giftAid ? Math.floor((donation.donationAmount + donationAmount) * 0.25) : 0
+  const giftAidAdded = giftAidAfter - giftAidBefore
+
   await inTransaction([
     insertT(paymentTable, {
       id: paymentId,
@@ -51,17 +60,17 @@ export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (even
       { fundraiserId, id: donationId },
       { donationAmount, contributionAmount: event.body.contributionAmount ?? 0, matchFundingAmount: matchFundingAdded },
       // Validate the matchFundingAmount on this donation has not changed since we got the data so that we do not violate the matchFundingPerDonation limit
-      "matchFundingAmount = :currentMatchFundingAmount AND donationAmount >= :minusDonationAmount AND contributionAmount >= :minusContributionAmount AND matchFundingAmount >= :minusMatchFundingAmount",
+      "matchFundingAmount = :currentMatchFundingAmount AND donationAmount = :currentDonationAmount AND contributionAmount = :currentContributionAmount",
       {
-        ":currentMatchFundingAmount": donation.matchFundingAmount, ":minusDonationAmount": -donationAmount, ":minusContributionAmount": -contributionAmount, ":minusMatchFundingAmount": -matchFundingAdded,
+        ":currentMatchFundingAmount": donation.matchFundingAmount, ":currentDonationAmount": donation.donationAmount, ":currentContributionAmount": donation.contributionAmount,
       },
     ),
     // we differentiate between matchFundingRemaining === null which is when there is infinite matchfunding
     // if there is infinite matchfunding we need to check that is still the case when we try to add the matchfundingamount
     // if there is limited matchfunding we need to check that there is still enough matchfunding left for this payment (and this hasn't changed since we got the data from the database)
     fundraiser.matchFundingRemaining === null
-      ? plusT(fundraiserTable, { id: event.pathParameters.fundraiserId }, { totalRaised: donationAmount + matchFundingAdded }, "matchFundingRemaining = :null", { ":null": null })
-      : plusT(fundraiserTable, { id: event.pathParameters.fundraiserId }, { totalRaised: donationAmount + matchFundingAdded, matchFundingRemaining: -matchFundingAdded }, "matchFundingRemaining >= :matchFundingAdded", { ":matchFundingAdded": matchFundingAdded }),
+      ? plusT(fundraiserTable, { id: event.pathParameters.fundraiserId }, { totalRaised: donationAmount + matchFundingAdded + giftAidAdded }, "matchFundingRemaining = :null", { ":null": null })
+      : plusT(fundraiserTable, { id: event.pathParameters.fundraiserId }, { totalRaised: donationAmount + matchFundingAdded + giftAidAdded, matchFundingRemaining: -matchFundingAdded }, "matchFundingRemaining >= :matchFundingAdded", { ":matchFundingAdded": matchFundingAdded }),
   ])
 
   // If the donation and contribution amounts are now zero, and the donation was counted make it uncounted.

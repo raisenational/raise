@@ -28,6 +28,31 @@ test("can edit payment donation amount", async () => {
   expect(await get(fundraiserTable, { id: fundraiser.id })).toMatchObject({ totalRaised: 215_00, matchFundingRemaining: 15_00 })
 })
 
+test("can edit payment donation amount on a gift-aided donation", async () => {
+  // given a fundraiser, donation and payment in the db
+  const fundraiser = makeFundraiser({ totalRaised: 100_00 })
+  const donation = makeDonation({ fundraiserId: fundraiser.id, giftAid: true })
+  await insert(fundraiserTable, fundraiser)
+  await insert(donationTable, donation)
+  const paymentCreation: PaymentCreation = {
+    donationAmount: 11_11,
+    contributionAmount: 1_24,
+    matchFundingAmount: 11_11,
+    method: "cash",
+  }
+  const paymentId = await call(create, { pathParameters: { fundraiserId: fundraiser.id, donationId: donation.id } })(paymentCreation)
+  expect(await get(donationTable, { fundraiserId: fundraiser.id, id: donation.id })).toMatchObject({ donationAmount: 11_11, contributionAmount: 1_24, matchFundingAmount: 11_11 })
+  expect(await get(fundraiserTable, { id: fundraiser.id })).toMatchObject({ totalRaised: 124_99 })
+
+  // when we edit the payment
+  await call(main, { pathParameters: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId } })({ donationAmount: 11_12 })
+
+  // then the payment, donation and fundraiser are updated
+  expect(await get(paymentTable, { donationId: donation.id, id: paymentId })).toMatchObject({ ...paymentCreation, donationAmount: 11_12 })
+  expect(await get(donationTable, { fundraiserId: fundraiser.id, id: donation.id })).toMatchObject({ donationAmount: 11_12, contributionAmount: 1_24, matchFundingAmount: 11_11 })
+  expect(await get(fundraiserTable, { id: fundraiser.id })).toMatchObject({ totalRaised: 125_01 })
+})
+
 test("can edit payment contribution amount", async () => {
   // given a fundraiser, donation and payment in the db
   const fundraiser = makeFundraiser({ matchFundingRemaining: 125_00, matchFundingPerDonationLimit: null })

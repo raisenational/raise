@@ -160,15 +160,24 @@ async function updateDonationAmount(
   ))
   if (payment.status === "paid") {
     const donationAmountAdded: number = newDonationAmount - payment.donationAmount
+
+    const giftAidBefore = donation.giftAid ? Math.floor(donation.donationAmount * 0.25) : 0
+    const giftAidAfter = donation.giftAid ? Math.floor((donation.donationAmount + donationAmountAdded) * 0.25) : 0
+    const giftAidAdded = giftAidAfter - giftAidBefore
+
     updates.push(plusT(
       donationTable,
       { id: donation.id, fundraiserId: fundraiser.id },
       { donationAmount: donationAmountAdded },
+      "donationAmount = :currentDonationAmount AND giftAid = :currentGiftAid",
+      {
+        ":currentDonationAmount": donation.donationAmount, ":currentGiftAid": donation.giftAid,
+      },
     ))
     updates.push(plusT(
       fundraiserTable,
       { id: fundraiser.id },
-      { totalRaised: donationAmountAdded },
+      { totalRaised: donationAmountAdded + giftAidAdded },
     ))
   }
   await inTransaction(updates)

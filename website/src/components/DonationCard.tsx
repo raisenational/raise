@@ -34,7 +34,7 @@ const DonationCard: React.FC<Props> = ({
   const isRecurring = recurringAmount !== undefined && recurringAmount !== null && recurrenceFrequency !== undefined && recurrenceFrequency !== null
   const recurringText = isRecurring ? `giving ${format.amountShort(currency, recurringAmount)} ${recurrenceFrequency.toLowerCase()}` : undefined
   const matchFundingText = (matchFundingAmount !== undefined && matchFundingAmount > 0) ? `+${format.amountShort(currency, matchFundingAmount)} matched` : undefined
-  const giftAidText = (giftAid && donationAmount !== undefined) ? `+${format.amountShort(currency, donationAmount * 0.25)} gift-aided` : undefined
+  const giftAidText = (giftAid && donationAmount !== undefined) ? `+${format.amountShort(currency, Math.floor(donationAmount * 0.25))} gift-aided` : undefined
   const extraAmountText = (matchFundingText || giftAidText) ? `(${[matchFundingText, giftAidText].filter((x) => x).join(", ")})` : undefined
 
   return (
