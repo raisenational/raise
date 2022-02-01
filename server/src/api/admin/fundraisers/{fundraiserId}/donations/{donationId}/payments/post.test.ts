@@ -40,6 +40,42 @@ test("can insert multiple payments on a donation", async () => {
   expect(await get(fundraiserTable, { id: fundraiser.id })).toMatchObject({ totalRaised: 269_44, matchFundingRemaining: 0 })
 })
 
+test("can insert multiple payments on a gift-aided donation", async () => {
+  // given a fundraiser and donation in the db
+  const fundraiser = makeFundraiser({ matchFundingRemaining: 125_00, matchFundingRate: 100, matchFundingPerDonationLimit: null })
+  const donation = makeDonation({ fundraiserId: fundraiser.id, giftAid: true })
+  await insert(fundraiserTable, fundraiser)
+  await insert(donationTable, donation)
+
+  // when we call the endpoint
+  const paymentCreation1: PaymentCreation = {
+    donationAmount: 98_77,
+    contributionAmount: 1_23,
+    method: "cash",
+  }
+  const response1 = await call(main, { pathParameters: { fundraiserId: fundraiser.id, donationId: donation.id } })(paymentCreation1)
+
+  // we get back a payment ulid, the payment is inserted and the donation and fundraiser are updated
+  expect(typeof response1).toBe("string")
+  expect(await get(paymentTable, { donationId: donation.id, id: response1 })).toMatchObject({ ...paymentCreation1, matchFundingAmount: 98_77 })
+  expect(await get(donationTable, { fundraiserId: fundraiser.id, id: donation.id })).toMatchObject({ donationAmount: 98_77, contributionAmount: 1_23, matchFundingAmount: 98_77 })
+  expect(await get(fundraiserTable, { id: fundraiser.id })).toMatchObject({ totalRaised: 222_23, matchFundingRemaining: 26_23 })
+
+  // when we call the endpoint again
+  const paymentCreation2: PaymentCreation = {
+    donationAmount: 45_67,
+    contributionAmount: 2_01,
+    method: "cash",
+  }
+  const response2 = await call(main, { pathParameters: { fundraiserId: fundraiser.id, donationId: donation.id } })(paymentCreation2)
+
+  // we get back a payment ulid, the payment is inserted and the donation and fundraiser are updated
+  expect(typeof response2).toBe("string")
+  expect(await get(paymentTable, { donationId: donation.id, id: response2 })).toMatchObject({ ...paymentCreation2, matchFundingAmount: 26_23 })
+  expect(await get(donationTable, { fundraiserId: fundraiser.id, id: donation.id })).toMatchObject({ donationAmount: 144_44, contributionAmount: 3_24, matchFundingAmount: 125_00 })
+  expect(await get(fundraiserTable, { id: fundraiser.id })).toMatchObject({ totalRaised: 305_55, matchFundingRemaining: 0 })
+})
+
 test("can manually set match funding amount", async () => {
   // given a fundraiser and donation in the db
   const fundraiser = makeFundraiser({ matchFundingRemaining: 125_00, matchFundingPerDonationLimit: null })
