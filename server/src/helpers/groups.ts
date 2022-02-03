@@ -53,6 +53,7 @@ const USER_MAP: Record<Env["STAGE"], Record<string, Group[]>> = {
     "cbd2e0b2e4b5ba20ce967efefd508b211e15078f": [g.Durham], // Thomas Cohen
     "9d5eef6abcc85deeb6db5a5ecde8a39f6a804272": [g.Cambridge], // Rahul Shah
     "4423c1c1d952c230b42d1b621935e4222bae2a56": [g.Cambridge], // Riya Mody
+    "20e6081c59abea2fbca6c58b44c785ab7a80ca4f": [g.Oxford], // Neha Banerjee
   },
 }
 
