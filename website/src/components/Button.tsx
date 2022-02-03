@@ -7,7 +7,7 @@ interface Props {
   target?: React.HTMLAttributeAnchorTarget,
   onClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
   variant?: "red" | "purple" | "outline" | "blue" | "gray",
-  size?: "normal" | "small",
+  size?: "normal" | "small" | "large",
   skew?: boolean,
   className?: string,
   disabled?: boolean,
@@ -29,6 +29,7 @@ const Button = React.forwardRef<any, Props>(({
       "bg-gray-400 border-gray-400 hover:text-gray-200": variant === "gray",
       "px-2 py-0": size === "small",
       "border-4": size === "normal",
+      "border-4 py-2 px-5 text-[130%]": size === "large",
       "-skew-x-15": skew,
     }, className)}
     disabled={disabled}

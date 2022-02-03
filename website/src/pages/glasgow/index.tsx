@@ -49,7 +49,7 @@ const IndexPage = () => (
             protected: 12170,
           }}
         />
-        <Button variant="outline" className="mt-4 mb-12" href="/glasgow/donate"> Donate </Button>
+        <Button variant="outline" size="large" className="mt-4 mb-12" href="/glasgow/donate">Donate</Button>
       </Section>
       <CTADown
         text="How it works"
