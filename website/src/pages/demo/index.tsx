@@ -91,7 +91,7 @@ const IndexPage = () => (
           <p>If you're interested in helping out, <a href="/demo/#contact">get in touch</a>.</p>
         </FAQ>
       </FAQs>
-      <Button variant="outline" className="mt-4" href="/demo/donate"> Donate </Button>
+      <Button variant="outline" size="large" className="mt-4" href="/demo/donate">Donate</Button>
     </Section>
 
     <Section id="our-philosophy">
