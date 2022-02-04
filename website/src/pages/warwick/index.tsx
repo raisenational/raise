@@ -36,7 +36,7 @@ const IndexPage = () => (
         ]}
         right={[
           // { text: "Join the 2021/22 committee", href: "https://forms.gle/abcd" },
-          { text: "Donate", href: "warwick/donate" },
+          { text: "Donate", href: "/warwick/donate" },
         ]}
       />
       <Section className="px-8">
