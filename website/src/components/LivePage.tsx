@@ -76,10 +76,10 @@ const LivePage: React.FC<Props> = ({ title, fundraiserIds }) => {
       {fundraiser.data && (
         <div className="text-5xl flex flex-col h-screen overflow-hidden">
           <div className="transition-all duration-1000" style={{ height: `${100 - Math.min(100, 100 * (fundraiser.data.totalRaised / fundraiser.data.goal))}vh` }}>
-            <p className="py-4">Goal: {format.amountShort("gbp", fundraiser.data.goal)}</p>
+            <p className="py-8">Goal: {format.amountShort("gbp", fundraiser.data.goal)}</p>
           </div>
           <div className="bg-raise-purple flex-1">
-            <p className="py-4">
+            <p className="py-8 px-16">
               {fundraiser.data.totalRaised === 0
                 ? "We haven't received a donation yet - be the first to donate!"
                 : `Together we've raised ${format.amountShort("gbp", fundraiser.data.totalRaised)}, protecting ${convert.moneyToPeopleProtected("gbp", fundraiser.data.totalRaised)} people from malaria!`}
