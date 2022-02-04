@@ -87,7 +87,7 @@ const IndexPage = () => (
       <SectionTitle>More Info</SectionTitle>
       <FAQs>
         <FAQ title="Sounds great, where do I sign up?">
-          <p>Awesome! Our 2022 donations period is now open, and you can donate <a href="joinraise.org/durham/donate">here</a>!. You can also get involved by filling in the form <a href="https://forms.gle/wBmJQdMSMMrqLrBB7">here</a>!</p>
+          <p>Awesome! Our 2022 donations period is now open, and you can donate <a href="https://www.joinraise.org/durham/donate">here</a>! You can also get involved by filling in the form <a href="https://forms.gle/wBmJQdMSMMrqLrBB7">here</a>!</p>
         </FAQ>
 
         <FAQ title="How can I get involved?">
