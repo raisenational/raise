@@ -388,10 +388,10 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
       <p className="mt-2">I want to give...</p>
 
       <div className="mt-2 grid grid-cols-2 gap-4">
-        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountOneOff, false)); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("p-2 text-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
+        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountOneOff, false)); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("p-2 text-center flex justify-center items-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
           a one-off donation
         </Button>
-        <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountWeekly, false)); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("p-2 text-center ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
+        <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountWeekly, false)); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("p-2 text-center ml-0 flex justify-center items-center", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
           in weekly installments
         </Button>
       </div>
