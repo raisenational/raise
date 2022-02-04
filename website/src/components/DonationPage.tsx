@@ -316,7 +316,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
         {page === 4 && piResponse && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse} />}
       </div>
       <div className="float-right">
-        {page !== 0 && page !== 4 && (
+        {Math.floor(new Date().getTime() / 1000) >= fundraiser.activeFrom && page !== 0 && page !== 4 && (
           <Button
             variant="gray"
             onClick={() => {
@@ -328,7 +328,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
             Back
           </Button>
         )}
-        {page !== 3 && page !== 4 && (
+        {Math.floor(new Date().getTime() / 1000) >= fundraiser.activeFrom && page !== 3 && page !== 4 && (
           <Button
             variant="blue"
             onClick={async () => {
@@ -368,87 +368,95 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
     matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
   })
   const peopleProtected = totalDonationAmount === null || matchFundingAmount === null ? null : convert.moneyToPeopleProtected(fundraiser.currency, totalDonationAmount * (watches.giftAid ? 1.25 : 1) + matchFundingAmount)
+  if (Math.floor(new Date().getTime() / 1000) >= fundraiser.activeFrom) {
+    return (
+      <>
+        <SectionTitle>Donate</SectionTitle>
+        <p>
+          We recommend giving an amount that feels <span className="font-bold">significant to you</span>.
+          {" "}
+          <Tooltip
+            label={(
+              <p>
+                We hope that through joining Raise this year, you'll come to see how positive the experience of giving deliberately can be. To help you to engage in that way, we recommend that you donate an amount which requires you to think before you give and to reflect on the positive impact that your donation will have.
+              </p>
+            )}
+          >
+            How do I decide what that means for me?<QuestionMarkCircleIcon width={22} height={22} className="ml-1" />
+          </Tooltip>
+        </p>
+        <p className="mt-2">I want to give...</p>
 
+        <div className="mt-2 grid grid-cols-2 gap-4">
+          <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountOneOff, false)); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("p-2 text-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
+            a one-off donation
+          </Button>
+          <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountWeekly, false)); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("p-2 text-center ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
+            in weekly installments
+          </Button>
+        </div>
+
+        <LabelledInput
+          id="donationAmount"
+          type="number"
+          prefix={fundraiser.currency === "gbp" ? "£" : "$"}
+          // suffix={watches.recurrenceFrequency === "WEEKLY" ? "weekly" : ""}
+          error={errors.donationAmount?.message}
+          className="mt-4"
+          inputClassName="text-2xl"
+          {...register("donationAmount", {
+            validate: (s) => {
+              if (!s) return "Please enter an amount."
+
+              try {
+                const value = parseMoney(s)
+
+                if (value < 1_00) {
+                  return `The amount must be at least ${format.amountShort(fundraiser.currency, 100)} to avoid excessive card transaction fees.`
+                }
+
+                if (fundraiser.minimumDonationAmount) {
+                  const recurrenceFrequency = getValues("recurrenceFrequency")
+                  const localSchedule = calcPaymentSchedule(value, 0, recurrenceFrequency === "ONE_OFF" ? null : recurrenceFrequency, fundraiser.recurringDonationsTo)
+                  const localTotalDonationAmount = localSchedule.now.donationAmount + localSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
+                  if (localTotalDonationAmount < fundraiser.minimumDonationAmount) {
+                    return `The total donated amount must be at least ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, localTotalDonationAmount)}`}.`
+                  }
+                }
+              } catch {
+                return "The amount must be a monetary value."
+              }
+              return true
+            },
+          })}
+        />
+
+        {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="mt-1">We encourage all students to donate an amount that's personally significant to them - and we know this is different for everyone! A good way of thinking about is to donate an amount that really makes you think about where and why you are donating. We can't wait to celebrate with you soon!</p>}
+
+        {fundraiser.matchFundingRate !== 0 && fundraiser.matchFundingPerDonationLimit !== null && fundraiser.matchFundingRemaining !== 0 && <p className="mt-1">All donations will be matched up to {format.amountShort(fundraiser.currency, fundraiser.matchFundingPerDonationLimit)} per donor.</p>}
+
+        <LabelledInput id="giftAid" label={<span>Add 25% <span className="hidden md:inline">to my donation </span>through <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}><span className="">Gift Aid<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span></Tooltip></span>} type="checkbox" {...register("giftAid")} />
+
+        {watches.recurrenceFrequency === "WEEKLY" && donationAmount && totalDonationAmount && (
+          <p className="mb-4">
+            {format.amountShort(fundraiser.currency, donationAmount)} each week from now until {format.date(fundraiser.recurringDonationsTo)} comes to {format.amountShort(fundraiser.currency, totalDonationAmount)}.
+          </p>
+        )}
+
+        {peopleProtected ? (
+          <>
+            <p>Amazing! Your donation{matchFundingAmount !== null && matchFundingAmount > 0 ? " plus match funding" : ""} will help protect {peopleProtected} people from malaria through AMF. We think that's something worth celebrating!</p>
+            <ImpactRepresentation peopleProtected={peopleProtected} />
+          </>
+        ) : null}
+      </>
+    )
+  }
   return (
     <>
-      <SectionTitle>Donate</SectionTitle>
-      <p>
-        We recommend giving an amount that feels <span className="font-bold">significant to you</span>.
-        {" "}
-        <Tooltip
-          label={(
-            <p>
-              We hope that through joining Raise this year, you'll come to see how positive the experience of giving deliberately can be. To help you to engage in that way, we recommend that you donate an amount which requires you to think before you give and to reflect on the positive impact that your donation will have.
-            </p>
-          )}
-        >
-          How do I decide what that means for me?<QuestionMarkCircleIcon width={22} height={22} className="ml-1" />
-        </Tooltip>
-      </p>
-      <p className="mt-2">I want to give...</p>
-
-      <div className="mt-2 grid grid-cols-2 gap-4">
-        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountOneOff, false)); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("p-2 text-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
-          a one-off donation
-        </Button>
-        <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountWeekly, false)); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("p-2 text-center ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
-          in weekly installments
-        </Button>
-      </div>
-
-      <LabelledInput
-        id="donationAmount"
-        type="number"
-        prefix={fundraiser.currency === "gbp" ? "£" : "$"}
-        // suffix={watches.recurrenceFrequency === "WEEKLY" ? "weekly" : ""}
-        error={errors.donationAmount?.message}
-        className="mt-4"
-        inputClassName="text-2xl"
-        {...register("donationAmount", {
-          validate: (s) => {
-            if (!s) return "Please enter an amount."
-
-            try {
-              const value = parseMoney(s)
-
-              if (value < 1_00) {
-                return `The amount must be at least ${format.amountShort(fundraiser.currency, 100)} to avoid excessive card transaction fees.`
-              }
-
-              if (fundraiser.minimumDonationAmount) {
-                const recurrenceFrequency = getValues("recurrenceFrequency")
-                const localSchedule = calcPaymentSchedule(value, 0, recurrenceFrequency === "ONE_OFF" ? null : recurrenceFrequency, fundraiser.recurringDonationsTo)
-                const localTotalDonationAmount = localSchedule.now.donationAmount + localSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
-                if (localTotalDonationAmount < fundraiser.minimumDonationAmount) {
-                  return `The total donated amount must be at least ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}${recurrenceFrequency === "ONE_OFF" ? "" : `, but your donation works out to a total of ${format.amountShort(fundraiser.currency, localTotalDonationAmount)}`}.`
-                }
-              }
-            } catch {
-              return "The amount must be a monetary value."
-            }
-            return true
-          },
-        })}
-      />
-
-      {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="mt-1">We encourage all students to donate an amount that's personally significant to them - and we know this is different for everyone! A good way of thinking about is to donate an amount that really makes you think about where and why you are donating. We can't wait to celebrate with you soon!</p>}
-
-      {fundraiser.matchFundingRate !== 0 && fundraiser.matchFundingPerDonationLimit !== null && fundraiser.matchFundingRemaining !== 0 && <p className="mt-1">All donations will be matched up to {format.amountShort(fundraiser.currency, fundraiser.matchFundingPerDonationLimit)} per donor.</p>}
-
-      <LabelledInput id="giftAid" label={<span>Add 25% <span className="hidden md:inline">to my donation </span>through <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}><span className="">Gift Aid<QuestionMarkCircleIcon width={22} height={22} className="ml-1" /></span></Tooltip></span>} type="checkbox" {...register("giftAid")} />
-
-      {watches.recurrenceFrequency === "WEEKLY" && donationAmount && totalDonationAmount && (
-        <p className="mb-4">
-          {format.amountShort(fundraiser.currency, donationAmount)} each week from now until {format.date(fundraiser.recurringDonationsTo)} comes to {format.amountShort(fundraiser.currency, totalDonationAmount)}.
-        </p>
-      )}
-
-      {peopleProtected ? (
-        <>
-          <p>Amazing! Your donation{matchFundingAmount !== null && matchFundingAmount > 0 ? " plus match funding" : ""} will help protect {peopleProtected} people from malaria through AMF. We think that's something worth celebrating!</p>
-          <ImpactRepresentation peopleProtected={peopleProtected} />
-        </>
-      ) : null}
+      <SectionTitle>Fundraiser not open!</SectionTitle>
+      <p>Thank you for wanting to donate but this fundraiser is not open yet! We will start taking donations on {format.date(Math.floor(new Date().getTime() / 1000))}.</p>
+      <p>If you wish to donate to AMF now, you can donate directly to them <a href="https://www.againstmalaria.com/Donation.aspx">here</a>.</p>
     </>
   )
 }
@@ -852,7 +860,6 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
     </>
   )
 }
-
 const ImpactRepresentation: React.FC<{ peopleProtected: number }> = ({ peopleProtected }) => (
   peopleProtected > 600
     ? <p className="my-1">That's so many that we can't display them all here!</p>
