@@ -169,6 +169,6 @@ export const main = middyfy(stripeWebhookRequest, null, false, async (event) => 
   }
 
   if (payments[0].id === paymentId) {
-    await sendEmail("We've receieved your donation", confirmation(fundraiser, donation, payments), donation.donorEmail)
+    await sendEmail("We've received your donation", confirmation(fundraiser, donation, payments), donation.donorEmail)
   }
 })
