@@ -388,10 +388,10 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
       <p className="mt-2">I want to give...</p>
 
       <div className="mt-2 grid grid-cols-2 gap-4">
-        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountOneOff, false)); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("p-2 text-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
+        <Button variant={watches.recurrenceFrequency === "ONE_OFF" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountOneOff, false)); setValue("recurrenceFrequency", "ONE_OFF"); trigger() }} skew={false} className={classNames("p-2 text-center flex justify-center items-center", { "text-gray-200": watches.recurrenceFrequency !== "ONE_OFF" })}>
           a one-off donation
         </Button>
-        <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountWeekly, false)); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("p-2 text-center ml-0", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
+        <Button variant={watches.recurrenceFrequency === "WEEKLY" ? "purple" : "gray"} onClick={() => { setValue("donationAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedDonationAmountWeekly, false)); setValue("recurrenceFrequency", "WEEKLY"); trigger() }} skew={false} className={classNames("p-2 text-center ml-0 flex justify-center items-center", { "text-gray-200": watches.recurrenceFrequency !== "WEEKLY" })}>
           in weekly installments
         </Button>
       </div>
@@ -499,10 +499,10 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
           <p className="mt-1">As 100% of your donation goes to charity, we suggest an optional contribution to cover the costs of the Summer Party (which are generously subsidised by our sponsors). Everyone is welcome to join, whether or not they make this contribution.</p>
 
           <div className="mt-2 grid grid-cols-2 gap-4">
-            <Button variant={contributionAmount > 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedContributionAmount ?? 10_00, false)); trigger("contributionAmount") }} skew={false} className={classNames("p-2 text-center", { "text-gray-200": contributionAmount <= 0 })}>
+            <Button variant={contributionAmount > 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedContributionAmount ?? 10_00, false)); trigger("contributionAmount") }} skew={false} className={classNames("p-2 text-center  flex justify-center items-center", { "text-gray-200": contributionAmount <= 0 })}>
               I want to contribute
             </Button>
-            <Button variant={contributionAmount <= 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", "0"); trigger("contributionAmount") }} skew={false} className={classNames("p-2 text-center ml-0", { "text-gray-200": contributionAmount > 0 })}>
+            <Button variant={contributionAmount <= 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", "0"); trigger("contributionAmount") }} skew={false} className={classNames("p-2 text-center ml-0 flex justify-center items-center", { "text-gray-200": contributionAmount > 0 })}>
               I don't want to contribute
             </Button>
           </div>
@@ -844,8 +844,8 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
           <p className="mt-4">To stay updated about our Summer Party, RSVP to our event. Plus, why not invite your friends to join you in celebrating giving this year?</p>
 
           <div className="mt-2 grid grid-cols-2 gap-4">
-            <Button variant="red" target="_blank" href={fundraiser.eventLink} skew={false} className="p-2 text-center">RSVP to our event</Button>
-            {fundraiser.moreInvolvedLink && <Button variant="red" target="_blank" href={fundraiser.moreInvolvedLink} skew={false} className="p-2 text-center ml-0">Get more involved in Raise</Button>}
+            <Button variant="red" target="_blank" href={fundraiser.eventLink} skew={false} className="p-2 text-center flex justify-center items-center">RSVP to our event</Button>
+            {fundraiser.moreInvolvedLink && <Button variant="red" target="_blank" href={fundraiser.moreInvolvedLink} skew={false} className="p-2 text-center ml-0 flex justify-center items-center">Get more involved in Raise</Button>}
           </div>
         </>
       )}
