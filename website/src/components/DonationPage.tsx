@@ -499,10 +499,10 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
           <p className="mt-1">As 100% of your donation goes to charity, we suggest an optional contribution to cover the costs of the Summer Party (which are generously subsidised by our sponsors). Everyone is welcome to join, whether or not they make this contribution.</p>
 
           <div className="mt-2 grid grid-cols-2 gap-4">
-            <Button variant={contributionAmount > 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedContributionAmount ?? 10_00, false)); trigger("contributionAmount") }} skew={false} className={classNames("p-2 text-center", { "text-gray-200": contributionAmount <= 0 })}>
+            <Button variant={contributionAmount > 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", format.amountShort(fundraiser.currency, fundraiser.suggestedContributionAmount ?? 10_00, false)); trigger("contributionAmount") }} skew={false} className={classNames("p-2 text-center  flex justify-center items-center", { "text-gray-200": contributionAmount <= 0 })}>
               I want to contribute
             </Button>
-            <Button variant={contributionAmount <= 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", "0"); trigger("contributionAmount") }} skew={false} className={classNames("p-2 text-center ml-0", { "text-gray-200": contributionAmount > 0 })}>
+            <Button variant={contributionAmount <= 0 ? "purple" : "gray"} onClick={() => { setValue("contributionAmount", "0"); trigger("contributionAmount") }} skew={false} className={classNames("p-2 text-center ml-0 flex justify-center items-center", { "text-gray-200": contributionAmount > 0 })}>
               I don't want to contribute
             </Button>
           </div>
