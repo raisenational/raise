@@ -305,47 +305,56 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
       }, i * 50)
     }
   }
+  if (new Date().getTime() / 1000 >= fundraiser.activeFrom) {
+    return (
+      <FormProvider {...formMethods}>
+        <div className="mb-4 text-base sm:text-lg">
+          {page === 0 && <DonationFormDonate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
+          {page === 1 && <DonationFormCelebrate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
+          {page === 2 && <DonationFormDisplay formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
+          {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} setPiResponse={setPiResponse} onPaymentSuccess={onPaymentSuccess} />}
+          {page === 4 && piResponse && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse} />}
+        </div>
+        <div className="float-right">
+          {page !== 0 && page !== 4 && (
+            <Button
+              variant="gray"
+              onClick={() => {
+                setPage(page - 1)
+                const overlay = document.querySelector("[data-reach-dialog-overlay]")
+                if (overlay) overlay.scrollTop = 0
+              }}
+            >
+              Back
+            </Button>
+          )}
+          {page !== 3 && page !== 4 && (
+            <Button
+              variant="blue"
+              onClick={async () => {
+                const okay = await formMethods.trigger()
+                if (!okay) return
+                setPage(page + 1)
+                const overlay = document.querySelector("[data-reach-dialog-overlay]")
+                if (overlay) overlay.scrollTop = 0
+              }}
+            >
+              Next
+            </Button>
+          )}
+          {page === 3 && payButton}
+        </div>
+        <div className="clear-both" />
+      </FormProvider>
+    )
+  }
 
   return (
-    <FormProvider {...formMethods}>
-      <div className="mb-4 text-base sm:text-lg">
-        {page === 0 && <DonationFormDonate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-        {page === 1 && <DonationFormCelebrate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-        {page === 2 && <DonationFormDisplay formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-        {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} setPiResponse={setPiResponse} onPaymentSuccess={onPaymentSuccess} />}
-        {page === 4 && piResponse && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse} />}
-      </div>
-      <div className="float-right">
-        {page !== 0 && page !== 4 && (
-          <Button
-            variant="gray"
-            onClick={() => {
-              setPage(page - 1)
-              const overlay = document.querySelector("[data-reach-dialog-overlay]")
-              if (overlay) overlay.scrollTop = 0
-            }}
-          >
-            Back
-          </Button>
-        )}
-        {page !== 3 && page !== 4 && (
-          <Button
-            variant="blue"
-            onClick={async () => {
-              const okay = await formMethods.trigger()
-              if (!okay) return
-              setPage(page + 1)
-              const overlay = document.querySelector("[data-reach-dialog-overlay]")
-              if (overlay) overlay.scrollTop = 0
-            }}
-          >
-            Next
-          </Button>
-        )}
-        {page === 3 && payButton}
-      </div>
-      <div className="clear-both" />
-    </FormProvider>
+    <>
+      <SectionTitle>Fundraiser not open!</SectionTitle>
+      <p>Thank you for wanting to donate but this fundraiser is not open yet. We'll start taking donations on {format.date(Math.floor(new Date().getTime() / 1000))}.</p>
+      <p className="mt-4">To donate to AMF now, you can donate on <a href="https://www.againstmalaria.com/Donation.aspx"> AMF's website</a>.</p>
+    </>
   )
 }
 
@@ -368,7 +377,6 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
     matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
   })
   const peopleProtected = totalDonationAmount === null || matchFundingAmount === null ? null : convert.moneyToPeopleProtected(fundraiser.currency, totalDonationAmount * (watches.giftAid ? 1.25 : 1) + matchFundingAmount)
-
   return (
     <>
       <SectionTitle>Donate</SectionTitle>
