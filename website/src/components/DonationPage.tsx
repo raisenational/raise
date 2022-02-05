@@ -844,8 +844,8 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
           <p className="mt-4">To stay updated about our Summer Party, RSVP to our event. Plus, why not invite your friends to join you in celebrating giving this year?</p>
 
           <div className="mt-2 grid grid-cols-2 gap-4">
-            <Button variant="red" target="_blank" href={fundraiser.eventLink} skew={false} className="p-2 text-center">RSVP to our event</Button>
-            {fundraiser.moreInvolvedLink && <Button variant="red" target="_blank" href={fundraiser.moreInvolvedLink} skew={false} className="p-2 text-center ml-0">Get more involved in Raise</Button>}
+            <Button variant="red" target="_blank" href={fundraiser.eventLink} skew={false} className="p-2 text-center flex justify-center items-center">RSVP to our event</Button>
+            {fundraiser.moreInvolvedLink && <Button variant="red" target="_blank" href={fundraiser.moreInvolvedLink} skew={false} className="p-2 text-center ml-0 flex justify-center items-center">Get more involved in Raise</Button>}
           </div>
         </>
       )}
