@@ -37,7 +37,7 @@ const IndexPage = () => (
         ]}
         right={[
           { text: "Become a Rep", href: "https://forms.gle/pgiX8XXmZQ3wfp69A" },
-          { text: "Donate", href: "oxford/donate" },
+          { text: "Donate", href: "/oxford/donate" },
         ]}
       />
       <Section className="px-8">
