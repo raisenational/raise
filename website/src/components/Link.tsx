@@ -11,12 +11,12 @@ interface Props extends Omit<React.DetailedHTMLProps<React.AnchorHTMLAttributes<
   children?: React.ReactNode,
 }
 
-const Link = React.forwardRef<any, Props>(({
+const Link: React.FC<Props> = ({
   children, href, target, onClick, className, disabled, ...anchorProps
-}, ref) => {
+}) => {
   if (disabled || (href === undefined && onClick === undefined)) {
     return (
-      <a href={href} onClick={() => false} className={classNames("opacity-40 pointer-events-none", className)} ref={ref} {...anchorProps}>
+      <a href={href} onClick={() => false} className={classNames("opacity-40 pointer-events-none", className)} {...anchorProps}>
         {children}
       </a>
     )
@@ -31,7 +31,6 @@ const Link = React.forwardRef<any, Props>(({
         to={href}
         onClick={onClick}
         className={classNames("cursor-pointer", className)}
-        ref={ref}
         {...anchorProps}
       >
         {children}
@@ -40,10 +39,10 @@ const Link = React.forwardRef<any, Props>(({
   }
 
   return (
-    <a href={href} target={target} rel="noreferrer" onClick={onClick} onKeyPress={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") { onClick(e); e.preventDefault() } } : undefined} tabIndex={0} className={classNames("cursor-pointer", className)} ref={ref} {...anchorProps}>
+    <a href={href} target={target} rel="noreferrer" onClick={onClick} onKeyPress={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") { onClick(e); e.preventDefault() } } : undefined} tabIndex={0} className={classNames("cursor-pointer", className)} {...anchorProps}>
       {children}
     </a>
   )
-})
+}
 
 export default Link
