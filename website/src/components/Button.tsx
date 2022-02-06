@@ -14,18 +14,18 @@ interface Props {
   children?: React.ReactNode,
 }
 
-const Button = React.forwardRef<any, Props>(({
+const Button: React.FC<Props> = ({
   children, href, target, onClick, variant = "outline", size = "normal", skew = true, className, disabled, ...other
-}, ref) => (
+}) => (
   <Link
     href={href}
     target={target}
     onClick={onClick}
     className={classNames("Button", {
-      "bg-raise-red border-raise-red hover:text-gray-200": variant === "red",
-      "bg-raise-purple border-raise-purple hover:text-gray-200": variant === "purple",
-      "border-white hover:text-raise-blue hover:bg-white": variant === "outline",
-      "bg-raise-blue border-raise-blue hover:text-gray-200": variant === "blue",
+      "bg-raise-red border-raise-red hover:bg-raise-red-light hover:border-raise-red-light focus:bg-raise-red-light focus:border-raise-red-light active:bg-raise-red-dark active:border-raise-red-dark hover:text-gray-200": variant === "red",
+      "bg-raise-purple border-raise-purple hover:bg-raise-purple-light hover:border-raise-purple-light focus:bg-raise-purple-light focus:border-raise-purple-light active:bg-raise-purple-dark active:border-raise-purple-dark hover:text-gray-200": variant === "purple",
+      "border-white hover:text-raise-blue hover:bg-white focus:text-raise-blue focus:bg-white active:bg-opacity-80 active:border-opacity-0": variant === "outline",
+      "bg-raise-blue border-raise-blue hover:bg-raise-blue-light hover:border-raise-blue-light focus:bg-raise-blue-light focus:border-raise-blue-light active:bg-raise-blue-dark active:border-raise-blue-dark hover:text-gray-200": variant === "blue",
       "bg-gray-400 border-gray-400 hover:text-gray-200": variant === "gray",
       "px-2 py-0": size === "small",
       "border-4": size === "normal",
@@ -34,11 +34,10 @@ const Button = React.forwardRef<any, Props>(({
     }, className)}
     disabled={disabled}
     role="button"
-    ref={ref}
     {...other}
   >
     <span className={classNames("inline-block", { "skew-x-15": skew })}>{children}</span>
   </Link>
-))
+)
 
 export default Button

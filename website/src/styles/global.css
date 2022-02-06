@@ -77,7 +77,7 @@
   }
 
   .Button {
-    @apply py-1 px-3 border-2 rounded text-white inline-block h-full transition-all duration-200 shadow hover:shadow-lg scale-100 hover:scale-105
+    @apply py-1 px-3 border-2 rounded text-white inline-block h-full transition-all duration-200 shadow hover:shadow-lg scale-100 hover:scale-105 focus:scale-105 active:scale-100
   }
 
   .Button + .Button:not(.ml-0) {
