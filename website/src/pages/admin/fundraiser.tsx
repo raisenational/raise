@@ -99,10 +99,10 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
     <>
       <div className="flex mt-12">
         <SectionTitle className="flex-1">Donations</SectionTitle>
-        {!showUncounted && <Button onClick={() => setShowUncounted(true)}><EyeIcon className="h-6 mb-1" /> Show uncounted</Button>}
-        {showUncounted && <Button onClick={() => setShowUncounted(false)}><EyeOffIcon className="h-6 mb-1" /> Hide uncounted</Button>}
+        {!showUncounted && <Button onClick={() => setShowUncounted(true)}><EyeIcon className="h-6 mb-1" /> <span className="hidden lg:inline">Show uncounted</span><span className="lg:hidden">More</span></Button>}
+        {showUncounted && <Button onClick={() => setShowUncounted(false)}><EyeOffIcon className="h-6 mb-1" /> <span className="hidden lg:inline">Hide uncounted</span><span className="lg:hidden">Less</span></Button>}
         <RequireGroup group={g.National}><Button onClick={downloadDonationsCSV}><DownloadIcon className="h-6 mb-1" /> CSV</Button></RequireGroup>
-        <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New manual donation</Button>
+        <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New<span className="hidden lg:inline"> manual donation</span></Button>
       </div>
       <Modal open={newDonationModalOpen} onClose={() => setNewDonationModalOpen(false)}>
         <Form<DonationEdits>
