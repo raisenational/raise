@@ -273,7 +273,7 @@ export const Form = <T,>({
     try {
       const promise = onSubmit(newValues)
       if (promise) {
-        promise.catch((err) => {
+        return promise.catch((err) => {
           if (err instanceof Error) setError(err)
           else setError(new Error(String(err)))
         })
@@ -282,6 +282,7 @@ export const Form = <T,>({
       if (err instanceof Error) setError(err)
       else setError(new Error(String(err)))
     }
+    return undefined
   }
 
   return (
