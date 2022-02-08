@@ -136,7 +136,7 @@ const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<Publ
         <Logo className="hidden sm:block mr-6 w-24" />
         <div className="flex-1 text-left">
           <p className="mb-4 leading-none">
-            At Raise, we believe that when we adopt a positive, deliberate approach towards giving, it can become a meaningful part of our lives.
+            At {fundraiser.data?.publicName ?? title}, we believe that when we adopt a positive, deliberate approach towards giving, it can become a meaningful part of our lives.
           </p>
           <p className="leading-none">
             Join now and celebrate giving by making a personally significant donation today.
@@ -160,7 +160,7 @@ const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<Publ
           ),
           "About Raise": (
             <div>
-              <p>Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.</p>
+              <p>{fundraiser.data?.publicName ?? title} is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.</p>
               <div className="flex my-6 items-center">
                 <MoneyBox className="h-16 mr-4" />
                 <p className="flex-1">We invite students to donate an amount significant to them to the Against Malaria Foundation.</p>
@@ -386,7 +386,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
         <Tooltip
           label={(
             <p>
-              We hope that through joining Raise this year, you'll come to see how positive the experience of giving deliberately can be. To help you to engage in that way, we recommend that you donate an amount which requires you to think before you give and to reflect on the positive impact that your donation will have.
+              We hope that through joining {fundraiser.publicName} this year, you'll come to see how positive the experience of giving deliberately can be. To help you to engage in that way, we recommend that you donate an amount which requires you to think before you give and to reflect on the positive impact that your donation will have.
             </p>
           )}
         >
@@ -472,6 +472,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
   } catch {
     contributionAmount = 1 // so if they have entered something invalid the button doesn't change to 'I don't want to contribute'
   }
+  const name = fundraiser.publicName
 
   return (
     <>
@@ -498,7 +499,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
           })}
         />
         <LabelledInput id="emailConsentInformational" label="Have AMF send me one email on where my donation goes" type="checkbox" {...register("emailConsentInformational")} />
-        <LabelledInput id="emailConsentMarketing" label="Send me updates about Raise" type="checkbox" {...register("emailConsentMarketing")} />
+        <LabelledInput id="emailConsentMarketing" label={`Send me updates about ${fundraiser.publicName}`} type="checkbox" {...register("emailConsentMarketing")} />
       </div>
 
       {fundraiser.suggestedContributionAmount !== null && (
@@ -853,7 +854,7 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
 
           <div className="mt-2 grid grid-cols-2 gap-4">
             <Button variant="red" target="_blank" href={fundraiser.eventLink} skew={false} className="p-2 text-center flex justify-center items-center">RSVP to our event</Button>
-            {fundraiser.moreInvolvedLink && <Button variant="red" target="_blank" href={fundraiser.moreInvolvedLink} skew={false} className="p-2 text-center ml-0 flex justify-center items-center">Get more involved in Raise</Button>}
+            {fundraiser.moreInvolvedLink && <Button variant="red" target="_blank" href={fundraiser.moreInvolvedLink} skew={false} className="p-2 text-center ml-0 flex justify-center items-center">Get more involved in {fundraiser.publicName}</Button>}
           </div>
         </>
       )}
