@@ -158,7 +158,7 @@ const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<Publ
               </div>
             )
           ),
-          "About Raise": (
+          "About Us": (
             <div>
               <p>{fundraiser.data?.publicName ?? title} is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.</p>
               <div className="flex my-6 items-center">
