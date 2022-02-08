@@ -472,7 +472,6 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
   } catch {
     contributionAmount = 1 // so if they have entered something invalid the button doesn't change to 'I don't want to contribute'
   }
-  const name = fundraiser.publicName
 
   return (
     <>
