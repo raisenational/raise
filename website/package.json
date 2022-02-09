@@ -40,6 +40,7 @@
     "@stripe/stripe-js": "^1.22.0",
     "@testing-library/react": "^12.1.2",
     "@types/canvas-confetti": "^1.4.2",
+    "@types/aos": "^3.0.4",
     "@types/jest": "^27.0.2",
     "@types/jsonexport": "^3.0.2",
     "@types/node": "^14.18.2",
@@ -82,8 +83,5 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "jsdom"
-  },
-  "devDependencies": {
-    "@types/aos": "^3.0.4"
   }
 }
