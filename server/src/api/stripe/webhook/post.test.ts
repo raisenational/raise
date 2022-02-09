@@ -391,6 +391,113 @@ test("can make later recurring donation with gift-aid and match funding committe
   })
 })
 
+test("can make later recurring donation with match funding committed previously with zero match funding remaining", async () => {
+  const fundraiser = makeFundraiser({
+    matchFundingRate: 100,
+    matchFundingPerDonationLimit: 50_00,
+    donationsCount: 1,
+    totalRaised: 67_54,
+    matchFundingRemaining: 0,
+  })
+  const donation = makeDonation({
+    fundraiserId: fundraiser.id,
+    donationAmount: 30_02,
+    contributionAmount: 10_00,
+    matchFundingAmount: 30_02,
+    donationCounted: true,
+    giftAid: true,
+  })
+  const payments = [makePayment({
+    fundraiserId: fundraiser.id,
+    donationId: donation.id,
+    method: "card",
+    status: "paid",
+    reference: `pi_${ulid()}`,
+    donationAmount: 30_02,
+    contributionAmount: 10_00,
+    matchFundingAmount: 30_02,
+  }), makePayment({
+    at: Math.floor(new Date().getTime() / 1000) + 604800, // 1 week
+    fundraiserId: fundraiser.id,
+    donationId: donation.id,
+    method: "card",
+    status: "scheduled",
+    reference: `pi_${ulid()}`,
+    donationAmount: 30_02,
+    contributionAmount: 0,
+    matchFundingAmount: 19_98,
+  }), makePayment({
+    at: Math.floor(new Date().getTime() / 1000) + 1209600, // 2 weeks
+    fundraiserId: fundraiser.id,
+    donationId: donation.id,
+    method: "card",
+    status: "scheduled",
+    reference: `pi_${ulid()}`,
+    donationAmount: 30_02,
+    contributionAmount: 0,
+    matchFundingAmount: 0,
+  })]
+  const req = makeStripeWebhookRequest(undefined, {
+    id: payments[1].reference,
+    amount: payments[1].donationAmount + payments[1].contributionAmount,
+    amount_received: payments[1].donationAmount + payments[1].contributionAmount,
+    metadata: { fundraiserId: fundraiser.id, donationId: donation.id, paymentId: payments[1].id },
+    setup_future_usage: "off_session",
+  })
+  await Promise.all([insert(fundraiserTable, fundraiser), insert(donationTable, donation), Promise.all(payments.map((p) => insert(paymentTable, p)))])
+
+  const response = await call(main, { rawResponse: true, auth: false, headers: { "stripe-signature": "valid-signature" } })(req)
+
+  expect(webhookConstructEvent).toBeCalledTimes(1)
+  expect(webhookConstructEvent).toBeCalledWith(JSON.stringify(req), "valid-signature", env.STRIPE_WEBHOOK_SECRET)
+  expect(customersCreate).toBeCalledTimes(1)
+  expect(customersCreate).toBeCalledWith({
+    name: donation.donorName,
+    email: donation.donorEmail,
+    metadata: {
+      fundraiserId: fundraiser.id,
+      donationId: donation.id,
+    },
+    payment_method: req.data.object.payment_method,
+  }, { idempotencyKey: donation.id })
+  expect(response.statusCode).toBe(204)
+
+  expect(await get(fundraiserTable, { id: fundraiser.id })).toMatchObject({
+    donationsCount: 1,
+    totalRaised: 125_05,
+    matchFundingRemaining: 0,
+  })
+  expect(await get(donationTable, { fundraiserId: fundraiser.id, id: donation.id })).toMatchObject({
+    donationAmount: 60_04,
+    contributionAmount: 10_00,
+    matchFundingAmount: 50_00,
+    donationCounted: true,
+    stripeCustomerId: "cus_abcdef",
+    stripePaymentMethodId: req.data.object.payment_method,
+  })
+  expect(await get(paymentTable, { donationId: donation.id, id: payments[0].id })).toEqual({
+    ...payments[0],
+    donationAmount: 30_02,
+    contributionAmount: 10_00,
+    matchFundingAmount: 30_02,
+    status: "paid",
+  })
+  expect(await get(paymentTable, { donationId: donation.id, id: payments[1].id })).toEqual({
+    ...payments[1],
+    donationAmount: 30_02,
+    contributionAmount: 0,
+    matchFundingAmount: 19_98,
+    status: "paid",
+  })
+  expect(await get(paymentTable, { donationId: donation.id, id: payments[2].id })).toEqual({
+    ...payments[2],
+    donationAmount: 30_02,
+    contributionAmount: 0,
+    matchFundingAmount: 0,
+    status: "scheduled",
+  })
+})
+
 test("can make later recurring donation with match funding committed previously and existing stripe customer", async () => {
   const fundraiser = makeFundraiser({
     matchFundingRate: 100,
@@ -970,6 +1077,7 @@ describe("handles database conflicts", () => {
       method: "card",
       status: "pending",
       reference: `pi_${ulid()}`,
+      matchFundingAmount: null,
       ...(obj === "payment" ? { [property]: before } : {}),
     })
     const req = makeStripeWebhookRequest(undefined, {
