@@ -36,6 +36,15 @@ module.exports = {
       boxShadow: {
         raise: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
       },
+      keyframes: {
+        breathe: {
+          '0%, 100%': { transform: 'scale(1.05)' },
+          '50%': { transform: 'scale(1)' },
+        },
+      },
+      animation: {
+        breathe: 'breathe 2s ease-in-out infinite',
+      },
     },
   },
   plugins: [],

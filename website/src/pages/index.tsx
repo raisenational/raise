@@ -7,8 +7,10 @@ import Navigation from "../components/Navigation"
 import Cover, { CTADown } from "../components/Cover"
 import IntroStats from "../components/IntroStats"
 import Philosophy from "../components/Philosophy"
+import PhilosophyV2 from "../components/PhilosophyV2"
 import ContactForm from "../components/ContactForm"
 import Footer from "../components/Footer"
+import env from "../env/env"
 
 const IndexPage = () => (
   <Page>
@@ -50,7 +52,7 @@ const IndexPage = () => (
 
     <Section id="our-philosophy">
       <SectionTitle>Our Philosophy</SectionTitle>
-      <Philosophy />
+      {env.STAGE === "prod" ? <Philosophy /> : <PhilosophyV2 />}
     </Section>
 
     <Section id="contact">
