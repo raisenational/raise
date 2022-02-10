@@ -1,8 +1,5 @@
 import * as React from "react"
-import {
-  StarIcon, CakeIcon, AcademicCapIcon, CurrencyPoundIcon, EyeOffIcon, HeartIcon,
-} from "@heroicons/react/outline"
-import classNames from "classnames"
+import { CakeIcon, HeartIcon } from "@heroicons/react/outline"
 import confetti from "canvas-confetti"
 import AOS from "aos"
 import "aos/dist/aos.css"
