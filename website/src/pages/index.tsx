@@ -50,10 +50,12 @@ const IndexPage = () => (
       />
     </Cover>
 
-    <Section id="our-philosophy">
-      <SectionTitle>Our Philosophy</SectionTitle>
-      {env.STAGE === "prod" ? <Philosophy /> : <PhilosophyV2 />}
-    </Section>
+    <div className="bg-raise-purple -skew-y-6 pt-24 pb-16 mb-8">
+      <Section id="our-philosophy" className="skew-y-6">
+        <SectionTitle>Our Philosophy</SectionTitle>
+        {env.STAGE === "prod" ? <Philosophy /> : <PhilosophyV2 />}
+      </Section>
+    </div>
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
