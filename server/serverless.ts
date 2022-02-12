@@ -2,6 +2,7 @@
 import type { AWS } from "@serverless/typescript"
 import { readdirSync } from "fs"
 import { resolve } from "path"
+import { execSync } from "child_process"
 import env from "./src/env/env"
 import { Table, tables } from "./src/helpers/tables"
 
@@ -88,6 +89,13 @@ const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): 
   return result
 }
 
+const getVersion = (): string => {
+  const hash = execSync("git rev-parse --short HEAD", { encoding: "utf-8" })
+  return `${(new Date()).toISOString().replace(/-/g, "").replace(/\..*/, "")
+    .replace(/:/g, "")
+    .replace("T", ".")}.${hash.trim()}`
+}
+
 const serverlessConfiguration: AWS = {
   service: SERVICE_NAME,
   frameworkVersion: "2",
@@ -171,6 +179,7 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       STAGE: env.STAGE,
+      VERSION: getVersion(),
     },
     lambdaHashingVersion: "20201221",
     memorySize: 256,
