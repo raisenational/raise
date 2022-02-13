@@ -16,6 +16,7 @@ const middyJsonBodySerializer: middy.MiddlewareFn<unknown, unknown> = async (req
     body: request.response === undefined ? undefined : JSON.stringify(request.response),
     headers: {
       "Content-Type": "application/json",
+      "X-Raise-Version": process.env.VERSION,
     },
   }
 }

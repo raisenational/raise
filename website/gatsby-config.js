@@ -1,6 +1,14 @@
 require('ts-node').register()
 
 const env = require('./src/env/env').default
+const execSync = require("child_process").execSync
+
+const getVersion = () => {
+  const hash = execSync("git rev-parse --short HEAD", { encoding: "utf-8" })
+  return `${(new Date()).toISOString().replace(/-/g, "").replace(/\..*/, "")
+    .replace(/:/g, "")
+    .replace("T", ".")}.${hash.trim()}`
+}
 
 module.exports = {
   // Always use the main site as the canonical one and where to get assets
@@ -15,6 +23,7 @@ module.exports = {
       name: "Raise",
       url: "https://" + env.CUSTOM_RAISE_DOMAIN + "/",
     },
+    version: getVersion(),
   },
   plugins: [
     {
