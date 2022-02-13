@@ -139,12 +139,12 @@ const Philosophy: React.FC = () => {
 }
 
 const Scroller: React.FC<{ values: string[] }> = ({ values }) => (
-  <div className="Scroller">
-    <ul>
-      {values.map((v) => <li key={v}>{v}</li>)}
-      {values.map((v) => <li key={v} aria-hidden="true" className="select-none">{v}</li>)}
-    </ul>
-  </div>
+  <span className="Scroller">
+    <span>
+      {values.map((v) => <span key={v}>{v}</span>)}
+      {values.map((v) => <span key={v} aria-hidden="true" className="select-none">{v}</span>)}
+    </span>
+  </span>
 )
 
 export default Philosophy

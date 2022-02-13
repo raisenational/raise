@@ -120,16 +120,17 @@
     background: linear-gradient(180deg, rgba(46, 202, 214, 0), rgba(46, 202, 214, 1));
   }
 
-  .Scroller ul {
+  .Scroller > span {
+    display: inline-block;
     margin: 0;
     padding: 0;
     animation: scrollUp 6s linear infinite forwards;
   }
 
-  .Scroller ul li {
+  .Scroller > span > span {
     opacity: 1;
     height: 2rem;
-    list-style: none;
+    display: list-item;
   }
 
   @keyframes scrollUp {
