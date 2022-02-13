@@ -48,6 +48,7 @@ const USER_MAP: Record<Env["STAGE"], Record<string, Group[]>> = {
     "e64a1becda7234d98691524ee0789e31372414ba": [g.National], // Abe Tolley
     "92e6bbd90b80e38395c5f8935fd33912e70ca578": [g.National], // Susanne Karbe
     "397e695a66c7a39fd56784ab336030e668ec094b": [g.National], // George Rosenfeld
+    "98ce26167b64593f49a124209dcfaaf9ae31a2da": [g.National], // Clara Tuffrey
     "84c27a03d56e751ff8331777004b0b157c8e78a5": [g.Glasgow], // Andrew Taylor
     "1fa16431019b62af5bcbcb93b27f6b29014a5ba1": [g.Glasgow], // Rhiannon Fagan
     "cbd2e0b2e4b5ba20ce967efefd508b211e15078f": [g.Durham], // Thomas Cohen
