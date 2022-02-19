@@ -3,6 +3,7 @@ import { RouteComponentProps } from "@reach/router"
 import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import {
+  convert,
   format, Fundraiser, FundraiserEdits, groups,
 } from "@raise/shared"
 import {
@@ -13,6 +14,7 @@ import Table from "../../components/Table"
 import Button from "../../components/Button"
 import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
+import PropertyEditor from "../../components/PropertyEditor"
 
 const FundraisersPage: React.FC<RouteComponentProps> = () => {
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
@@ -66,6 +68,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
         />
       </Modal>
       <Table
+        className="mb-8"
         definition={{
           internalName: { label: "Name", className: "whitespace-nowrap" },
           activeFrom: { label: "From", formatter: format.date, className: "w-36" },
@@ -75,6 +78,16 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
         }}
         items={asResponseValues(fundraisers.data?.sort((a, b) => b.activeFrom - a.activeFrom), fundraisers)}
         onClick={(fundraiser) => navigate(`/admin/${fundraiser.id}/`)}
+      />
+      <PropertyEditor
+        definition={{
+          totalGbpRaised: { label: "Total £ raised", formatter: (v: number | undefined) => format.amountShort("gbp", v) },
+          totalPeopleProtected: { label: "Total people protected" },
+        }}
+        item={asResponseValues({
+          totalGbpRaised: fundraisers.data?.reduce((acc, cur) => acc + (cur.currency === "gbp" ? cur.totalRaised : 0), 0),
+          totalPeopleProtected: fundraisers.data?.reduce((acc, cur) => acc + convert.moneyToPeopleProtected(cur.currency, cur.totalRaised), 0),
+        }, fundraisers)}
       />
     </Section>
   )
