@@ -15,6 +15,7 @@ import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
 import Button from "../../components/Button"
 import { RequireGroup } from "../../helpers/security"
+import Link from "../../components/Link"
 
 const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> = ({ fundraiserId }) => {
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
@@ -77,23 +78,86 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> 
   )
 }
 
+const downloadFn = (data: object[] | undefined, name: string) => (data ? async () => {
+  const csv = await jsonexport(data)
+  if (csv) {
+    const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csv}`)
+    const link = document.createElement("a")
+    link.setAttribute("href", encodedUri)
+    link.setAttribute("download", `${(`${name}_at_${new Date().toISOString().slice(0, 10)}`).replace(/[^a-z0-9]+/gi, "_").toLowerCase()}.csv`)
+    document.body.appendChild(link)
+    link.click()
+  }
+} : undefined)
+
 const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundraiser }> = ({ fundraiserId, fundraiser }) => {
   const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
+  const [exportModalOpen, setExportModalOpen] = React.useState(false)
   const [newDonationModalOpen, setNewDonationModalOpen] = React.useState(false)
   const [showUncounted, setShowUncounted] = React.useState(false)
   const axios = useRawAxios()
 
-  const downloadDonationsCSV = donations.data ? async () => {
-    const csv = donations.data && await jsonexport(donations.data)
-    if (csv) {
-      const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csv}`)
-      const link = document.createElement("a")
-      link.setAttribute("href", encodedUri)
-      link.setAttribute("download", `${fundraiserId}-donations.csv`)
-      document.body.appendChild(link)
-      link.click()
-    }
-  } : undefined
+  const downloadMarketingEmails = downloadFn(
+    donations.data
+      ?.filter((d) => d.emailConsentMarketing)
+      .map((d) => ({
+        name: d.donorName, email: d.donorEmail, consentedToMarketing: d.emailConsentMarketing, "Remember to use mail merge or BCC!": "",
+      })),
+    `${fundraiser?.publicName}_marketing_emails`,
+  )
+
+  const downloadAllEmails = downloadFn(
+    donations.data
+      ?.map((d) => ({
+        name: d.donorName, email: d.donorEmail, consentedToMarketing: d.emailConsentMarketing, "Remember to use mail merge or BCC!": "",
+      })),
+    `${fundraiser?.publicName}_emails`,
+  )
+
+  const downloadForAMF = downloadFn(
+    donations.data
+      ?.map((d) => ({
+        Email: d.donorEmail,
+        "First Name": d.donorName.split(" ")[0],
+        "Last Name": d.donorName.split(" ").filter((_, i) => i > 0).join(" "),
+        // NB: this does not include match funding
+        Amount: format.amountShort(fundraiser?.currency, d.donationAmount),
+        "Gift Aid": d.giftAid,
+        Emailable: d.emailConsentInformational,
+        Company: "",
+        "Address 1": d.addressLine1,
+        "Address 2": d.addressLine2,
+        "Address 3": d.addressLine3,
+        Town: "",
+        County: "",
+        Postcode: d.addressPostcode,
+        Country: d.addressCountry,
+        Chapter: fundraiser?.publicName,
+      })),
+    `${fundraiser?.publicName}_amf_export`,
+  )
+
+  const downloadForAnalysisPseudonymous = downloadFn(
+    donations.data
+      ?.map((d) => ({
+        giftAid: d.giftAid,
+        recurringAmount: d.recurringAmount,
+        recurrenceFrequency: d.recurrenceFrequency,
+        charity: d.charity,
+        overallPublic: d.overallPublic,
+        namePublic: d.namePublic,
+        donationAmountPublic: d.donationAmountPublic,
+        donationCounted: d.donationCounted,
+        id: d.id,
+        fundraiserId: d.fundraiserId,
+        donationAmount: d.donationAmount,
+        matchFundingAmount: d.matchFundingAmount,
+        contributionAmount: d.contributionAmount,
+      })),
+    `${fundraiser?.publicName}_pseudonymous_analysis_export`,
+  )
+
+  const downloadForAnalysisIdentifiable = downloadFn(donations.data, `${fundraiser?.internalName}_analysis_export`)
 
   return (
     <>
@@ -101,9 +165,34 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
         <SectionTitle className="flex-1">Donations</SectionTitle>
         {!showUncounted && <Button onClick={() => setShowUncounted(true)}><EyeIcon className="h-6 mb-1" /> <span className="hidden lg:inline">Show uncounted</span><span className="lg:hidden">More</span></Button>}
         {showUncounted && <Button onClick={() => setShowUncounted(false)}><EyeOffIcon className="h-6 mb-1" /> <span className="hidden lg:inline">Hide uncounted</span><span className="lg:hidden">Less</span></Button>}
-        <RequireGroup group={g.National}><Button onClick={downloadDonationsCSV}><DownloadIcon className="h-6 mb-1" /> CSV</Button></RequireGroup>
-        <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New<span className="hidden lg:inline"> manual donation</span></Button>
+        <Button onClick={() => setExportModalOpen(true)}><DownloadIcon className="h-6 mb-1" /> Export</Button>
+        <Button onClick={() => setNewDonationModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New<span className="hidden lg:inline"> donation</span></Button>
       </div>
+      <Modal open={exportModalOpen} onClose={() => setExportModalOpen(false)}>
+        <SectionTitle>Export Data</SectionTitle>
+        <p className="my-4">By downloading this data you agree to use it only for the stated purpose, and will handle it securely and in line with the security policy. All exports will be in CSV format, which can be used in spreadsheeting tools such as Excel, LibreOffice Calc or Google Sheets.</p>
+
+        <h2 className="mt-8 text-2xl">I want to send marketing emails to donors</h2>
+        <p className="my-2">This contains donor names and emails who have agreed to receive marketing emails from Raise. You must not share this data with other organisations. Ideally use a mail merge tool or proper email software (such as Mailchimp) to send emails. If not, make sure you BCC recipients.</p>
+        <Button onClick={downloadMarketingEmails} variant="blue">Download names and emails</Button>
+
+        <h2 className="mt-8 text-2xl">I want to send non-marketing emails to donors</h2>
+        <p className="my-2">This contains all donor names and emails. Some of these may not have agreed to receive marketing emails. Make sure any emails you send do not contain marketing messages, for example promoting a certain thing such as taking a pledge. It is generally okay to use this list to send summer party RSVP or feedback surveys. More guidance on what is and isn't marketing is available from <Link href="https://ico.org.uk/media/for-organisations/documents/1555/direct-marketing-guidance.pdf#page=17">the ICO</Link> or the national team. You must not share this data with other organisations. Ideally use a mail merge tool or proper email software (such as Mailchimp) to send emails. If not, make sure you BCC recipients.</p>
+        <Button onClick={downloadAllEmails} variant="blue">Download names and emails</Button>
+
+        <RequireGroup group={g.National} otherwise={<p className="my-4 -mb-2">To export data for AMF or for analysis, please contact the national team.</p>}>
+          <h2 className="mt-8 text-2xl">I want to export the data for AMF</h2>
+          <p className="my-2">This contains donor data in the format Rob Mather from AMF has told us would be ideal for them.</p>
+          <Button onClick={downloadForAMF} variant="blue">Download data</Button>
+
+          <h2 className="mt-8 text-2xl">I want to analyse donor data</h2>
+          <p className="my-2">This contains all donor data, either with or without direct identifiers such as names, emails and addresses. Even without direct identifiers, there is a possiblity of re-identification from the pseudonymous data (e.g. through cross-checking amounts) so it is still considered personal data and as such must be handled with care.</p>
+          <Button onClick={downloadForAnalysisPseudonymous} variant="blue">Download without identifiers</Button>
+          <Button onClick={downloadForAnalysisIdentifiable} variant="blue">Download with identifiers</Button>
+        </RequireGroup>
+
+        <p className="mt-8">Got another use case? Contact the national team with feedback on what data you'd like to get.</p>
+      </Modal>
       <Modal open={newDonationModalOpen} onClose={() => setNewDonationModalOpen(false)}>
         <Form<DonationEdits>
           title="New donation"
