@@ -152,6 +152,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
         />
       </Modal>
       <Table
+        className="mb-8"
         definition={{
           donorName: { label: "Name" },
           donorEmail: { label: "Email" },
@@ -161,6 +162,18 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
         }}
         items={asResponseValues(donations.data?.filter((d) => showUncounted || d.donationCounted).sort((a, b) => b.createdAt - a.createdAt), donations)}
         onClick={(donation) => navigate(`/admin/${fundraiserId}/${donation.id}/`)}
+      />
+      <PropertyEditor
+        definition={{
+          totalDonations: { label: "Total donations", formatter: (v: number | undefined) => format.amount(fundraiser?.currency, v) },
+          totalMatching: { label: "Total matching", formatter: (v: number | undefined) => format.amount(fundraiser?.currency, v) },
+          totalContributions: { label: "Total contributions", formatter: (v: number | undefined) => format.amount(fundraiser?.currency, v) },
+        }}
+        item={asResponseValues({
+          totalDonations: donations.data?.reduce((acc, cur) => acc + cur.donationAmount, 0),
+          totalMatching: donations.data?.reduce((acc, cur) => acc + cur.matchFundingAmount, 0),
+          totalContributions: donations.data?.reduce((acc, cur) => acc + cur.contributionAmount, 0),
+        }, donations)}
       />
     </>
   )
