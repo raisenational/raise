@@ -81,7 +81,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
       />
       <PropertyEditor
         definition={{
-          totalGbpRaised: { label: "Total £ raised", formatter: (v: number | undefined) => format.amountShort("gbp", v) },
+          totalGbpRaised: { label: "Total GBP raised", formatter: (v: number | undefined) => format.amountShort("gbp", v) },
           totalPeopleProtected: { label: "Total people protected" },
         }}
         item={asResponseValues({
