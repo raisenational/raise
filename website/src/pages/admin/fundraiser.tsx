@@ -101,7 +101,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
     donations.data
       ?.filter((d) => d.emailConsentMarketing)
       .map((d) => ({
-        name: d.donorName, email: d.donorEmail, consentedToMarketing: d.emailConsentMarketing, "Rember to use mail merge or BCC!": "",
+        name: d.donorName, email: d.donorEmail, consentedToMarketing: d.emailConsentMarketing, "Remember to use mail merge or BCC!": "",
       })),
     `${fundraiser?.publicName}_marketing_emails`,
   )
@@ -109,7 +109,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
   const downloadAllEmails = downloadFn(
     donations.data
       ?.map((d) => ({
-        name: d.donorName, email: d.donorEmail, consentedToMarketing: d.emailConsentMarketing, "Rember to use mail merge or BCC!": "",
+        name: d.donorName, email: d.donorEmail, consentedToMarketing: d.emailConsentMarketing, "Remember to use mail merge or BCC!": "",
       })),
     `${fundraiser?.publicName}_emails`,
   )
@@ -177,10 +177,10 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
         <Button onClick={downloadMarketingEmails} variant="blue">Download names and emails</Button>
 
         <h2 className="mt-8 text-2xl">I want to send non-marketing emails to donors</h2>
-        <p className="my-2">This contains all donor names and emails. Some of these may not have agreed to recieve marketing emails. Make sure any emails you send do not contain marketing messages, for example promoting a certain thing such as taking a pledge. It is generally okay to use this list to send summer party RSVP or feedback surveys. More guidance on what is and isn't marketing is available from <Link href="https://ico.org.uk/media/for-organisations/documents/1555/direct-marketing-guidance.pdf#page=17">the ICO</Link> or the national team. You must not share this data with other organisations. Ideally use a mail merge tool or proper email software (such as Mailchimp) to send emails. If not, make sure you BCC recipients.</p>
+        <p className="my-2">This contains all donor names and emails. Some of these may not have agreed to receive marketing emails. Make sure any emails you send do not contain marketing messages, for example promoting a certain thing such as taking a pledge. It is generally okay to use this list to send summer party RSVP or feedback surveys. More guidance on what is and isn't marketing is available from <Link href="https://ico.org.uk/media/for-organisations/documents/1555/direct-marketing-guidance.pdf#page=17">the ICO</Link> or the national team. You must not share this data with other organisations. Ideally use a mail merge tool or proper email software (such as Mailchimp) to send emails. If not, make sure you BCC recipients.</p>
         <Button onClick={downloadAllEmails} variant="blue">Download names and emails</Button>
 
-        <RequireGroup group={g.National} otherwise={<p className="my-4 -mb-2">To export data for AMF or for analyses, please contact the national team.</p>}>
+        <RequireGroup group={g.National} otherwise={<p className="my-4 -mb-2">To export data for AMF or for analysis, please contact the national team.</p>}>
           <h2 className="mt-8 text-2xl">I want to export the data for AMF</h2>
           <p className="my-2">This contains donor data in the format Rob Mather from AMF has told us would be ideal for them.</p>
           <Button onClick={downloadForAMF} variant="blue">Download data</Button>
