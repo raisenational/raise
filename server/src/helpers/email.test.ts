@@ -38,7 +38,7 @@ test("sendEmail calls SES correctly", async () => {
       Destination: {
         ToAddresses: ["adam@joinraise.org"],
       },
-      FromEmailAddress: "raisenational@gmail.com",
+      FromEmailAddress: "\"Raise\" <raisenational@gmail.com>",
     },
   })
 })
