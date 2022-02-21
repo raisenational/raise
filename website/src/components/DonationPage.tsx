@@ -38,9 +38,10 @@ import Logo from "./Logo"
 interface Props {
   title: string,
   fundraiserIds: Record<Env["STAGE"], string>,
+  aboutUsOverride?: JSX.Element,
 }
 
-const DonationPage: React.FC<Props> = ({ title, fundraiserIds }) => {
+const DonationPage: React.FC<Props> = ({ title, fundraiserIds, aboutUsOverride }) => {
   const fundraiserId = fundraiserIds[env.STAGE]
   const [fundraiser, refetchFundraiser] = useAxios<PublicFundraiser>(`/public/fundraisers/${fundraiserId}`)
   const [modalOpen, setModalOpen] = React.useState(false)
@@ -71,6 +72,7 @@ const DonationPage: React.FC<Props> = ({ title, fundraiserIds }) => {
               title={fundraiser.data?.publicName ?? title}
               fundraiser={fundraiser}
               openModal={() => setModalOpen(true)}
+              aboutUsOverride={aboutUsOverride}
             />
             <Modal open={modalOpen} onClose={() => setModalOpen(false)} className="max-w-2xl">
               {fundraiser.data && <DonationForm fundraiser={fundraiser.data} setModalOpen={setModalOpen} refetchFundraiser={refetchFundraiser} />}
@@ -84,8 +86,15 @@ const DonationPage: React.FC<Props> = ({ title, fundraiserIds }) => {
   )
 }
 
-const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<PublicFundraiser, unknown, unknown>, openModal: () => void }> = ({
-  title, fundraiser, openModal,
+interface IntroFundraiserProps {
+  title: string,
+  fundraiser: ResponseValues<PublicFundraiser, unknown, unknown>,
+  openModal: () => void,
+  aboutUsOverride?: JSX.Element,
+}
+
+const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
+  title, fundraiser, openModal, aboutUsOverride,
 }) => {
   const ref = React.useRef<HTMLDivElement>(null)
   const [hasAnimated, setHasAnimated] = React.useState(false)
@@ -158,7 +167,7 @@ const IntroFundraiser: React.FC<{ title: string, fundraiser: ResponseValues<Publ
               </div>
             )
           ),
-          "About Us": (
+          "About Us": aboutUsOverride || (
             <div>
               <p>{fundraiser.data?.publicName ?? title} is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.</p>
               <div className="flex my-6 items-center">

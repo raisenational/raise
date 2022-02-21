@@ -20,7 +20,7 @@ const sesClient = env.STAGE === "local"
     requestHandler,
   })
 
-export const sendEmail = async (subject: string, html: string, to: string): Promise<void> => {
+export const sendEmail = async (subject: string, html: string, to: string, fromName = "Raise"): Promise<void> => {
   await sesClient.send(new SendEmailCommand({
     Content: {
       Simple: {
@@ -38,6 +38,6 @@ export const sendEmail = async (subject: string, html: string, to: string): Prom
     Destination: {
       ToAddresses: [to],
     },
-    FromEmailAddress: raiseEmailaddress,
+    FromEmailAddress: `"${fromName.replace(/[^a-z0-9 ]+/ig, " ").trim()}" <${raiseEmailaddress}>`,
   }))
 }
