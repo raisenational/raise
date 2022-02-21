@@ -91,7 +91,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
 
       <div className="flex mt-12">
         <SectionTitle className="flex-1">Payments</SectionTitle>
-        <Button onClick={() => setNewPaymentModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> Record manual payment</Button>
+        <Button onClick={() => setNewPaymentModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New<span className="hidden lg:inline"> manual payment</span></Button>
       </div>
       <Modal open={newPaymentModalOpen} onClose={() => setNewPaymentModalOpen(false)}>
         <Form<PaymentCreation>

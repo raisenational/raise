@@ -3,8 +3,7 @@ import { RouteComponentProps } from "@reach/router"
 import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import {
-  convert,
-  format, Fundraiser, FundraiserEdits, groups,
+  convert, format, Fundraiser, FundraiserEdits, g, groups,
 } from "@raise/shared"
 import {
   asResponseValues, useAuthState, useAxios, useRawAxios,
@@ -15,6 +14,7 @@ import Button from "../../components/Button"
 import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
 import PropertyEditor from "../../components/PropertyEditor"
+import { RequireGroup } from "../../helpers/security"
 
 const FundraisersPage: React.FC<RouteComponentProps> = () => {
   const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
@@ -26,7 +26,9 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
     <Section>
       <div className="flex">
         <SectionTitle className="flex-1">Fundraisers</SectionTitle>
-        <Button onClick={() => setNewFundraiserModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New fundraiser</Button>
+        <RequireGroup group={g.National}>
+          <Button onClick={() => setNewFundraiserModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New <span className="hidden lg:inline">fundraiser</span></Button>
+        </RequireGroup>
       </div>
       <Modal open={newFundraiserModalOpen} onClose={() => setNewFundraiserModalOpen(false)}>
         <Form<FundraiserEdits>
