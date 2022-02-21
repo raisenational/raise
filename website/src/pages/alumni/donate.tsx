@@ -12,7 +12,7 @@ const Page = () => (
     <DonationPage
       fundraiserIds={{
         local: "01FGNSHH6X6X878ZNBZKY44JQA", // Raise Demo
-        dev: "01FTPR1THYQP39EBE1GG9HD41T", // this is mwa atm, change in future
+        dev: "01FWF9B23419S5JFVV9A9XQG8E",
         prod: "01FVSAXB8YTDVPSGVGRTN61TQJ",
       }}
       title="Raise Alumni"
