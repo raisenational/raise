@@ -256,11 +256,16 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
         definition={{
           totalDonations: { label: "Total donations", formatter: (v: number | undefined) => format.amount(fundraiser?.currency, v) },
           totalMatching: { label: "Total matching", formatter: (v: number | undefined) => format.amount(fundraiser?.currency, v) },
+          totalGiftAid: { label: "Total gift-aid", formatter: (v: number | undefined) => format.amount(fundraiser?.currency, v) },
           totalContributions: { label: "Total contributions", formatter: (v: number | undefined) => format.amount(fundraiser?.currency, v) },
         }}
         item={asResponseValues({
           totalDonations: donations.data?.reduce((acc, cur) => acc + cur.donationAmount, 0),
           totalMatching: donations.data?.reduce((acc, cur) => acc + cur.matchFundingAmount, 0),
+          // NB: Adam spoke with HMRC and confirmed gift-aid is applied to the total sum of what you're claiming
+          // We actually calculate it per donation so that we can more easily reconcile between this and the total raised on the fundraiser
+          // but the actual amount may be slightly different (by a matter of a few pence)
+          totalGiftAid: donations.data?.filter((d) => d.giftAid).reduce((acc, cur) => acc + Math.floor(cur.matchFundingAmount * 0.25), 0),
           totalContributions: donations.data?.reduce((acc, cur) => acc + cur.contributionAmount, 0),
         }, donations)}
       />
