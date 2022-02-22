@@ -1,7 +1,7 @@
 import * as React from "react"
 import Helmet from "react-helmet"
 
-import { HandIcon, UserGroupIcon } from "@heroicons/react/outline"
+import { UserGroupIcon } from "@heroicons/react/outline"
 import Page from "../../components/Page"
 import Section, { SectionTitle } from "../../components/Section"
 import Navigation from "../../components/Navigation"
@@ -14,7 +14,6 @@ import SocialIcon from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
 import Button from "../../components/Button"
 
-import instagram from "../../images/instagram.png"
 import facebook from "../../images/facebook.svg"
 import email from "../../images/email.svg"
 import { MoneyBox, Party } from "../../images/Icons"
