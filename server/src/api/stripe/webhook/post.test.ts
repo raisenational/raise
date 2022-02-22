@@ -1,7 +1,7 @@
 import { ulid } from "ulid"
-import { stripeWebhookRequest, StripeWebhookRequest } from "@raise/shared"
+import { StripeWebhookRequest } from "@raise/shared"
 import {
-  call, makeFundraiser, makeDonation, makePayment, delayDb, unsupressConsole,
+  call, makeFundraiser, makeDonation, makePayment, delayDb,
 } from "../../../../local/testHelpers"
 import env from "../../../env/env"
 import * as db from "../../../helpers/db"
