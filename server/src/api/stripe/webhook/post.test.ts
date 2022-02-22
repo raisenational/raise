@@ -1069,7 +1069,9 @@ describe("handles database conflicts", () => {
     ["fundraiser", "matchFundingRemaining", 150_00, null],
     ["fundraiser", "matchFundingRemaining", 150_00, 9_00],
   ] as const)("%s %s changed from %s to %s", async (obj, property, before, after) => {
-    const fundraiser = makeFundraiser({ matchFundingPerDonationLimit: 150_00, matchFundingRemaining: 250_00, ...(obj === "fundraiser" ? { [property]: before } : {}) })
+    const fundraiser = makeFundraiser({
+      matchFundingPerDonationLimit: 150_00, matchFundingRemaining: 250_00, matchFundingRate: 100, ...(obj === "fundraiser" ? { [property]: before } : {}),
+    })
     const donation = makeDonation({ fundraiserId: fundraiser.id, ...(obj === "donation" ? { [property]: before } : {}) })
     const payment = makePayment({
       fundraiserId: fundraiser.id,
