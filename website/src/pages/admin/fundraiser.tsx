@@ -99,7 +99,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
 
   const downloadMarketingEmails = downloadFn(
     donations.data
-      ?.filter((d) => d.emailConsentMarketing)
+      ?.filter((d) => d.emailConsentMarketing && d.donationCounted)
       .map((d) => ({
         name: d.donorName, email: d.donorEmail, consentedToMarketing: d.emailConsentMarketing, "Remember to use mail merge or BCC!": "",
       })),
@@ -108,7 +108,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
 
   const downloadAllEmails = downloadFn(
     donations.data
-      ?.map((d) => ({
+      ?.filter((d) => d.donationCounted).map((d) => ({
         name: d.donorName, email: d.donorEmail, consentedToMarketing: d.emailConsentMarketing, "Remember to use mail merge or BCC!": "",
       })),
     `${fundraiser?.publicName}_emails`,
@@ -116,7 +116,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
 
   const downloadForAMF = downloadFn(
     donations.data
-      ?.map((d) => ({
+      ?.filter((d) => d.donationCounted).map((d) => ({
         Email: d.donorEmail,
         "First Name": d.donorName.split(" ")[0],
         "Last Name": d.donorName.split(" ").filter((_, i) => i > 0).join(" "),
