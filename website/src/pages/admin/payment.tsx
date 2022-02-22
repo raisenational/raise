@@ -2,7 +2,7 @@ import * as React from "react"
 import { RouteComponentProps } from "@reach/router"
 import { ExternalLinkIcon, ReceiptRefundIcon } from "@heroicons/react/outline"
 import {
-  format, Fundraiser, Donation, Payment, PaymentCreation,
+  format, Fundraiser, Donation, Payment, PaymentCreation, g,
 } from "@raise/shared"
 import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
@@ -10,6 +10,7 @@ import PropertyEditor from "../../components/PropertyEditor"
 import Button from "../../components/Button"
 import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
+import { RequireGroup } from "../../helpers/security"
 
 const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string, paymentId?: string }> = ({ fundraiserId, donationId, paymentId }) => {
   const [fundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
@@ -27,7 +28,9 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donat
     <Section>
       <div className="flex mt-12">
         <SectionTitle className="flex-1">{donation.data?.donorName ? `Payment from ${donation.data?.donorName}` : "Payment"}</SectionTitle>
-        {payment.data?.method === "card" && payment.data.reference && <Button href={`https://dashboard.stripe.com/payments/${payment.data?.reference}`} target="_blank"><ExternalLinkIcon className="h-6 mb-1" /> View on Stripe</Button>}
+        <RequireGroup group={g.National}>
+          {payment.data?.method === "card" && payment.data.reference && <Button href={`https://dashboard.stripe.com/payments/${payment.data?.reference}`} target="_blank"><ExternalLinkIcon className="h-6 mb-1" /> View on Stripe</Button>}
+        </RequireGroup>
         {(payment.data?.status === "paid" && (payment.data.donationAmount + payment.data.contributionAmount + (payment.data.matchFundingAmount ?? 0)) > 0) && <Button onClick={() => setRefundModalOpen(true)}><ReceiptRefundIcon className="h-6 mb-1" /> Mark refunded</Button>}
       </div>
       <Modal open={refundModalOpen} onClose={() => setRefundModalOpen(false)}>
