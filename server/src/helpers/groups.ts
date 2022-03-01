@@ -9,8 +9,8 @@ import { Env } from "./types"
 // We use hashes to avoid checking-in people's personal emails to the repo
 const USER_MAP: Record<Env["STAGE"], Record<string, Group[]>> = {
   "local": {
-    "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [g.National], // Adam
-    "7b023b5154a262453b5c3f1157a866a8f3be6f63": [g.National], // Malena
+    "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [g.National, g.NationalTech], // Adam
+    "7b023b5154a262453b5c3f1157a866a8f3be6f63": [g.National, g.NationalTech], // Malena
     "48a578c28e6c22a3075773c60a601c8971551518": [g.National], // Valentin
     "9c42b2f09ca8ade4772ffede4c988b3a6fb12b29": [g.National], // Veer
     "e64a1becda7234d98691524ee0789e31372414ba": [g.National], // Abe
@@ -20,14 +20,15 @@ const USER_MAP: Record<Env["STAGE"], Record<string, Group[]>> = {
     "94e827a024769e9176640c706ff36f921b9426b0": [g.Demo], // raisedemo@gmail.com
   },
   "dev": {
-    "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [g.National], // Adam
-    "7b023b5154a262453b5c3f1157a866a8f3be6f63": [g.National], // Malena
+    "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [g.National, g.NationalTech], // Adam
+    "7b023b5154a262453b5c3f1157a866a8f3be6f63": [g.National, g.NationalTech], // Malena
     "48a578c28e6c22a3075773c60a601c8971551518": [g.National], // Valentin
     "9c42b2f09ca8ade4772ffede4c988b3a6fb12b29": [g.National], // Veer
     "e64a1becda7234d98691524ee0789e31372414ba": [g.National], // Abe
     "69121db77450a21ada845a6390feacc6ded18e41": [g.National], // Joe
 
     "ea72b00f4d71e8c8bca6089a741b848fc793d2c0": [g.National], // raisenational@gmail.com
+    "c9c98271bd9417e5088546f8a2fb0dc43e015569": [g.NationalTech], // raisenationaltech@gmail.com
     "94e827a024769e9176640c706ff36f921b9426b0": [g.Demo], // raisedemo@gmail.com
     "75645e6de554c23dfdcca834864e0915656ced8e": [g.Cambridge], // mayweekalternative@gmail.com
     "5a2cb00a68211d0daf14de911f5fc6058adb660d": [g.Durham], // raisedurham@gmail.com
@@ -42,7 +43,7 @@ const USER_MAP: Record<Env["STAGE"], Record<string, Group[]>> = {
   // - they have passed the security quiz
   // - this is a individual's account, not a group of people
   "prod": {
-    "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [g.National], // Adam Jones
+    "715ec86cfb0e42b3f41aec77fa7b4a8441128d5e": [g.National, g.NationalTech], // Adam Jones
     "7b023b5154a262453b5c3f1157a866a8f3be6f63": [g.National], // Malena Schmidt
     "69121db77450a21ada845a6390feacc6ded18e41": [g.National], // Joe Benton
     "e64a1becda7234d98691524ee0789e31372414ba": [g.National], // Abe Tolley

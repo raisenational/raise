@@ -5,6 +5,7 @@ const mapOf = <T extends string>(keys: readonly T[]): { [K in T]: K } => keys.re
 
 export const groups = [
   "National",
+  "NationalTech",
 
   "Cambridge",
   "Durham",

@@ -93,7 +93,7 @@ const normalizeGroups = (groupDefinition: string | string[] | { groupsWithAccess
   return groupDefinition.groupsWithAccess
 }
 
-const withNational = (groups: string[]) => (groups.includes(g.National) ? groups : [...groups, g.National])
+const withNational = (groups: string[]) => (groups.includes(g.NationalTech) ? groups : [...groups, g.NationalTech])
 
 const overlap = (a: string[], b: string[]): boolean => a.some((v) => b.includes(v))
 
