@@ -361,7 +361,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
   return (
     <>
       <SectionTitle>Fundraiser not open!</SectionTitle>
-      <p>Thank you for wanting to donate but this fundraiser is not open yet. We'll start taking donations on {format.date(Math.floor(new Date().getTime() / 1000))}.</p>
+      <p>Thank you for wanting to donate but this fundraiser is not open yet. We'll start taking donations on {format.date(fundraiser.activeFrom)}.</p>
       <p className="mt-4">To donate to AMF now, you can donate on <a href="https://www.againstmalaria.com/Donation.aspx"> AMF's website</a>.</p>
     </>
   )
