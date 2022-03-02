@@ -6,10 +6,12 @@ import {
 } from "@raise/shared"
 import { middyfy } from "../../../../../../../../helpers/wrapper"
 import {
-  assertHasGroup, get, inTransaction, plusT, update, updateT,
+  assertHasGroup, get, inTransaction, plusT, update, updateT, withNational, normalizeGroups,
 } from "../../../../../../../../helpers/db"
 import { donationTable, fundraiserTable, paymentTable } from "../../../../../../../../helpers/tables"
-import type { AWSTransactionDefinition, AuditDefinition } from "../../../../../../../../helpers/db"
+import type {
+  AWSTransactionDefinition, AuditDefinition,
+} from "../../../../../../../../helpers/db"
 
 export const main = middyfy(paymentPropertyEditsSchema, null, true, async (event) => {
   assertHasGroup(event, g.National)
@@ -23,7 +25,7 @@ export const main = middyfy(paymentPropertyEditsSchema, null, true, async (event
     get(donationTable, { fundraiserId, id: donationId }),
     get(paymentTable, { donationId, id: paymentId }),
   ])
-  assertHasGroup(event, fundraiser)
+  assertHasGroup(event, withNational(normalizeGroups(fundraiser)))
 
   // these are important for security as otherwise the payment might not really sit
   // under the fundraiser an admin has access to according to assertHasGroup

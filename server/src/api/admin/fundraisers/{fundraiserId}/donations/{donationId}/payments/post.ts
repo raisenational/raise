@@ -5,12 +5,12 @@ import {
 import createHttpError from "http-errors"
 import { middyfy } from "../../../../../../../helpers/wrapper"
 import {
-  assertHasGroup, get, inTransaction, insertT, plusT, updateT,
+  assertHasGroup, get, inTransaction, insertT, plusT, updateT, withNational, normalizeGroups,
 } from "../../../../../../../helpers/db"
 import { fundraiserTable, donationTable, paymentTable } from "../../../../../../../helpers/tables"
 
 export const main = middyfy(paymentCreationSchema, ulidSchema, true, async (event) => {
-  assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
+  assertHasGroup(event, withNational(normalizeGroups(await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))))
   if (event.body.method === "card") assertHasGroup(event, g.National)
 
   const paymentId = ulid()

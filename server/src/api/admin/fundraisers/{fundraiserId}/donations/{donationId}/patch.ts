@@ -2,14 +2,14 @@ import createHttpError from "http-errors"
 import { donationEditsSchema, g } from "@raise/shared"
 import { middyfy } from "../../../../../../helpers/wrapper"
 import {
-  assertHasGroup, assertHasGroupForProperties, checkPrevious, get, inTransaction, plusT, update, updateT,
+  assertHasGroup, assertHasGroupForProperties, checkPrevious, get, inTransaction, plusT, update, updateT, withNational, normalizeGroups,
 } from "../../../../../../helpers/db"
 import { donationTable, fundraiserTable } from "../../../../../../helpers/tables"
 
 export const main = middyfy(donationEditsSchema, null, true, async (event) => {
-  assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
-  assertHasGroupForProperties(event, g.National, ["donationAmount", "matchFundingAmount", "contributionAmount", "stripeCustomerId", "stripePaymentMethodId"])
-
+  assertHasGroup(event, withNational(normalizeGroups(await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))))
+  assertHasGroupForProperties(event, g.National, ["matchFundingAmount"])
+  assertHasGroupForProperties(event, g.NationalTech, ["donationAmount", "contributionAmount", "stripeCustomerId", "stripePaymentMethodId"])
   const current = await get(donationTable, { fundraiserId: event.pathParameters.fundraiserId, id: event.pathParameters.donationId })
   const after = { ...current, ...event.body }
 

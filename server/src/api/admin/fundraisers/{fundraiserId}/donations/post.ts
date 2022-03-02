@@ -5,13 +5,12 @@ import {
 } from "@raise/shared"
 import { middyfy } from "../../../../../helpers/wrapper"
 import {
-  assertHasGroup, assertHasGroupForProperties, get, insert, insertT, inTransaction, plusT,
+  assertHasGroup, assertHasGroupForProperties, get, insert, insertT, inTransaction, plusT, normalizeGroups, withNational,
 } from "../../../../../helpers/db"
 import { donationTable, fundraiserTable } from "../../../../../helpers/tables"
 
 export const main = middyfy(donationCreationSchema, ulidSchema, true, async (event) => {
-  assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
-  assertHasGroupForProperties(event, g.NationalTech, ["stripeCustomerId", "stripePaymentMethodId"])
+  assertHasGroup(event, withNational(normalizeGroups(await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))))
 
   const donationId = ulid()
 

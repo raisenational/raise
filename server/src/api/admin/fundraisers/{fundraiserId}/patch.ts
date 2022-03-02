@@ -2,14 +2,14 @@ import { fundraiserEditsSchema, g } from "@raise/shared"
 import createHttpError from "http-errors"
 import { middyfy } from "../../../../helpers/wrapper"
 import {
-  assertHasGroup, assertHasGroupForProperties, checkPrevious, get, query, update,
+  assertHasGroup, assertHasGroupForProperties, checkPrevious, get, query, update, normalizeGroups, withNational,
 } from "../../../../helpers/db"
 import { donationTable, fundraiserTable } from "../../../../helpers/tables"
 
 export const main = middyfy(fundraiserEditsSchema, null, true, async (event) => {
-  assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
-  assertHasGroupForProperties(event, g.National, ["currency", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "groupsWithAccess"])
-  assertHasGroupForProperties(event, g.NationalTech, ["totalRaised", "matchFundingRemaining"])
+  assertHasGroup(event, withNational(normalizeGroups(await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))))
+  assertHasGroupForProperties(event, g.National, ["currency", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "groupsWithAccess"])
+  assertHasGroupForProperties(event, g.NationalTech, ["totalRaised", "donationsCount"])
 
   if (event.body.currency) {
     const donations = await query(donationTable, { fundraiserId: event.pathParameters.fundraiserId })
