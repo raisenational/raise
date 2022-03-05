@@ -51,10 +51,12 @@ const IndexPage = () => (
       />
     </Cover>
 
-    <Section id="our-philosophy">
-      <SectionTitle>Our Philosophy</SectionTitle>
-      {env.STAGE === "prod" ? <Philosophy /> : <PhilosophyV2 />}
-    </Section>
+    {env.STAGE === "prod" ? (
+      <Section id="our-philosophy">
+        <SectionTitle>Our Philosophy</SectionTitle>
+        <Philosophy />
+      </Section>
+    ) : <PhilosophyV2 />}
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
