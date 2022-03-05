@@ -64,7 +64,7 @@ const Philosophy: React.FC = () => {
           <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">At Raise, we think that's a <span className="font-bold">real missed opportunity</span>.</p>
           <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">We believe that when we pause to think about our giving, the experience can be incredibly rewarding.</p>
           <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">When we properly consider why we are giving and the impact our money will have - in short, when we give deliberately - we can really appreciate how positive donating to charity can be.</p>
-          <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">This way, giving becomes more <Scroller values={["meaningful", "enjoyable", "sustainable"]} /> and ultimately more <span className="animate-breathe inline-block cursor-pointer" onClick={launchConfetti} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { launchConfetti(); e.preventDefault() } }} role="button" tabIndex={0}>impactful</span>.</p>
+          <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">This way, giving becomes more <Scroller values={["meaningful", "enjoyable", "sustainable"]} /> and ultimately more <span className="whitespace-nowrap"><span className="animate-breathe inline-block cursor-pointer" onClick={launchConfetti} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { launchConfetti(); e.preventDefault() } }} role="button" tabIndex={0}>impactful</span>.</span></p>
           <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200"><HeartIcon width={60} height={60} className="block mx-auto my-4 hover:scale-125 active:scale-95 transition-all cursor-pointer" onClick={launchConfetti} /></div>
           <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">So, how does Raise work?</p>
           <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">We invite students to join us and celebrate the end of the academic year by making a personally significant donation to charity - an amount that will <span className="font-bold">make you think about what and why you are giving</span>.</p>
@@ -102,7 +102,7 @@ const Philosophy: React.FC = () => {
           </div>
 
           {/* Get Summer Party images */}
-          <div className="relative h-[34rem] -mt-10">
+          <div className="relative h-[34rem] md:-mt-10">
             <div className="absolute" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="100">
               <img src={oliLane} alt="Summer Party" className="shadow-raise rounded border-white border-8 w-96 h-60 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out" />
             </div>
