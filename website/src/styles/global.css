@@ -106,7 +106,7 @@
     content: '';
     height: 10px;
     position: absolute;
-    background: linear-gradient(180deg, rgba(46, 202, 214, 1), rgba(46, 202, 214, 0));
+    background: linear-gradient(180deg, rgba(93, 33, 94, 1), rgba(93, 33, 94, 0));
   }
 
   .Scroller::after {
@@ -117,7 +117,7 @@
     content: '';
     height: 10px;
     position: absolute;
-    background: linear-gradient(180deg, rgba(46, 202, 214, 0), rgba(46, 202, 214, 1));
+    background: linear-gradient(180deg, rgba(93, 33, 94, 0), rgba(93, 33, 94, 1));
   }
 
   .Scroller ul {
