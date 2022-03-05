@@ -57,7 +57,7 @@
   }
 
   .FAQ + .FAQ {
-    border-top: 1px solid rgba(35,35,35,.15);
+    @apply border-t border-gray-300
   }
 
   .FAQ p + p {
