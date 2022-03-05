@@ -2,19 +2,13 @@ import * as React from "react"
 import Helmet from "react-helmet"
 
 import {
-  AcademicCapIcon, CakeIcon, CashIcon, GlobeIcon, HeartIcon, PresentationChartLineIcon, RefreshIcon, UserGroupIcon,
+  CakeIcon, CashIcon, GlobeIcon, HeartIcon, PresentationChartLineIcon, RefreshIcon, UserGroupIcon,
 } from "@heroicons/react/outline"
 import classNames from "classnames"
 import Page from "../components/Page"
 import Section, { SectionTitle } from "../components/Section"
 import Navigation from "../components/Navigation"
-import Cover, { CTADown } from "../components/Cover"
-import IntroStats from "../components/IntroStats"
-import Philosophy from "../components/Philosophy"
-import PhilosophyV2 from "../components/PhilosophyV2"
-import ContactForm from "../components/ContactForm"
 import Footer from "../components/Footer"
-import env from "../env/env"
 import Logo from "../components/Logo"
 import FAQs, { FAQ } from "../components/FAQs"
 import Button from "../components/Button"
