@@ -162,7 +162,7 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
             : (
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6 text-left text-white">
                 {fundraiser.data
-                  ? fundraiser.data.donations.map((d) => <DonationCard key={d.createdAt} className="bg-raise-red" currency={fundraiser.data?.currency} {...d} />)
+                  ? fundraiser.data.donations.map((d) => <DonationCard key={d.id} className="bg-raise-red" currency={fundraiser.data?.currency} {...d} />)
                   : [12, 10, 14].map((d) => <DonationCard key={d} loading createdAt="1 hour ago" className="bg-raise-red" donorName={"a".repeat(d)} matchFundingAmount={1234} comment={"a".repeat(d * 2)} />)}
               </div>
             )

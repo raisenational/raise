@@ -30,6 +30,7 @@ export const main = middyfy(null, publicFundraiserSchema, false, async (event) =
     eventLink: fundraiser.eventLink,
     moreInvolvedLink: fundraiser.moreInvolvedLink,
     donations: donations.filter((d) => d.overallPublic && d.donationCounted).map((d) => ({
+      id: d.id,
       donorName: d.namePublic ? d.donorName : undefined,
       createdAt: d.createdAt,
       giftAid: d.donationAmountPublic ? d.giftAid : undefined,
