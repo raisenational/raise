@@ -40,7 +40,6 @@ const IndexPage = () => (
         ]}
         right={[
           { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSciX_CSJm47pwbuPvqoE2QMNKDZ_iv4zNJ6Z9vppWXu67TGFg/viewform" },
-          { text: "Donate", href: "donate/" },
         ]}
       />
       <Section className="px-8">
@@ -54,7 +53,6 @@ const IndexPage = () => (
             protected: 269737,
           }}
         />
-        <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
       </Section>
       <CTADown
         text="How it works"
@@ -88,7 +86,6 @@ const IndexPage = () => (
       <div className="flex justify-center gap-2 mt-12">
         <Button href="https://docs.google.com/forms/d/e/1FAIpQLSciX_CSJm47pwbuPvqoE2QMNKDZ_iv4zNJ6Z9vppWXu67TGFg/viewform">Get Involved!</Button>
         <Button href="partner/">Become a Partner</Button>
-        <Button href="donate/">Donate</Button>
       </div>
 
       <iframe className="w-full max-w-2xl mx-auto mt-12 rounded shadow-raise" title="YouTube: May Week Alternative: A New Way to Celebrate" width="672" height="378" src="https://www.youtube-nocookie.com/embed/nefUw0xT75Y" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />

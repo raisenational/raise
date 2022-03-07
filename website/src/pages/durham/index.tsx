@@ -11,7 +11,6 @@ import Philosophy from "../../components/Philosophy"
 import ContactForm from "../../components/ContactForm"
 import SocialIcon from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
-import Button from "../../components/Button"
 
 import instagram from "../../images/instagram.png"
 import facebook from "../../images/facebook.svg"
@@ -37,7 +36,6 @@ const IndexPage = () => (
         right={[
           // { text: "Become a Rep!", href: "https://docs.google.com/forms/d/e/1FAIpQLSe7nNtxUS9TbRJi0otRJNbfxHqLxcMV1wLt1LhfNli0hwOH0A/viewform" },
           // { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSfeK5cMn8ZWlRtFh5ZJHexjTiS0DVvfpL9E93Logd3CPLMK9A/viewform" },
-          { text: "Donate", href: "/durham/donate" },
         ]}
       />
       <Section className="px-8">
@@ -51,7 +49,6 @@ const IndexPage = () => (
             protected: 37867,
           }}
         />
-        <Button variant="outline" size="large" className="mt-4 mb-12" href="/durham/donate">Donate</Button>
       </Section>
       <CTADown
         text="How it works"
@@ -87,7 +84,7 @@ const IndexPage = () => (
       <SectionTitle>More Info</SectionTitle>
       <FAQs>
         <FAQ title="Sounds great, where do I sign up?">
-          <p>Awesome! Our 2022 donations period is now open, and you can donate <a href="https://www.joinraise.org/durham/donate">here</a>! You can also get involved by filling in the form <a href="https://forms.gle/wBmJQdMSMMrqLrBB7">here</a>!</p>
+          <p>Awesome! You can get involved by filling in the form <a href="https://forms.gle/wBmJQdMSMMrqLrBB7">here</a>!</p>
         </FAQ>
 
         <FAQ title="How can I get involved?">
@@ -144,7 +141,6 @@ const IndexPage = () => (
           <p>Naturally, we are aware that the COVID-19 pandemic may affect the ways in which we can come together over the course of this year, and we are keeping a close eye on the local and national guidance at every stage. However, even if we are not able to come together as an entire community, this will not stop us from marking the end of the year in true Raise style.  Whether in smaller groups or all together, we aim to create a meaningful and enjoyable format to bring the community together and celebrate our collective impact under these different circumstances.</p>
         </FAQ>
       </FAQs>
-      <Button variant="outline" className="mt-4" href="/durham/donate">Donate</Button>
     </Section>
 
     <Section id="our-philosophy">

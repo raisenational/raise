@@ -37,7 +37,6 @@ const IndexPage = () => (
         ]}
         right={[
           { text: "Join Facebook group", href: "https://www.facebook.com/groups/966154864287768" },
-          { text: "Donate", href: "/alumni/donate" },
         ]}
       />
       <Section className="px-8">
@@ -53,7 +52,6 @@ const IndexPage = () => (
         />
         <div className="mb-12">
           <Button variant="outline" size="large" className="mt-4" href="https://www.facebook.com/groups/966154864287768">Join Facebook group</Button>
-          <Button variant="outline" size="large" className="mt-4" href="/alumni/donate">Donate</Button>
         </div>
       </Section>
       <CTADown
@@ -92,7 +90,6 @@ const IndexPage = () => (
         <FAQ title="How can I get involved?">
           <p>First off, we're so glad you had good experiences with Raise that you want to stay involved with the Raise community. We'd love your support, and to stay in touch whether or not you do any of the following.</p>
           <p><b>Facebook group:</b> To foster a two-way dialogue, you're invited to join our <Link href="https://www.facebook.com/groups/966154864287768">Facebook group</Link>. This is probably the first place to see what we're up to and how things are going.</p>
-          <p><b>Donating:</b> Ultimately, we want to encourage a positive approach towards deliberate, effective giving. As part of this we're running our first ever alumni donations push. You can <Link href="/alumni/donate">donate online directly via our platform</Link> or give through other methods (such as payroll giving) and let us know so we can record it up on the donor wall.</p>
           <p><b>Advisory board:</b> We'd love alumni to get involved in steering the direction of Raise or picking up more self-contained projects. To do this, we've set up an advisory board of trusted Raise members who meet on a (semi-) regular basis to discuss what's going on with Raise. Get in touch if this sounds interesting to you!</p>
           <p><b>Helping us grow:</b> Are you able to help us by sponsoring Raise's efforts (whether through in-kind or direct donations), or know someone who can? Do you have some free time to improve how we run our operations, or mentor new chapters? Whatever it is, we'd love to hear from you!</p>
         </FAQ>
@@ -105,7 +102,6 @@ const IndexPage = () => (
         </FAQ>
       </FAQs>
       <Button variant="outline" className="mt-4" href="https://www.facebook.com/groups/966154864287768">Join Facebook group</Button>
-      <Button variant="outline" className="mt-4" href="/alumni/donate">Donate</Button>
     </Section>
 
     <Section id="our-philosophy">
