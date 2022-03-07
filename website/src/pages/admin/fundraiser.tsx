@@ -140,6 +140,8 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
   const downloadForAnalysisPseudonymous = downloadFn(
     donations.data
       ?.map((d) => ({
+        createdAt: d.createdAt,
+        createdAt_formatted: format.timestamp(d.createdAt),
         giftAid: d.giftAid,
         recurringAmount: d.recurringAmount,
         recurrenceFrequency: d.recurrenceFrequency,
@@ -157,7 +159,14 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
     `${fundraiser?.publicName}_pseudonymous_analysis_export`,
   )
 
-  const downloadForAnalysisIdentifiable = downloadFn(donations.data, `${fundraiser?.internalName}_analysis_export`)
+  const downloadForAnalysisIdentifiable = downloadFn(
+    donations.data
+      ?.map((d) => ({
+        ...d,
+        createdAt_formatted: format.timestamp(d.createdAt),
+      })),
+    `${fundraiser?.internalName}_analysis_export`,
+  )
 
   return (
     <>
