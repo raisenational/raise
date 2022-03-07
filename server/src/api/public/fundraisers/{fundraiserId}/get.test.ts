@@ -19,6 +19,7 @@ test("does not return private donations", async () => {
   const response = await call(main, { auth: false, pathParameters: { fundraiserId: fundraiser.id } })(null)
 
   expect(response.donations).toHaveLength(1)
+  expect(response.donations[0].id).toBe(publicDonation.id)
   expect(response.donations[0].comment).toBe(publicDonation.comment)
 })
 
@@ -59,6 +60,7 @@ test.each([
 
   if (namePublic && donationAmountPublic) {
     expect(response.donations).toEqual([{
+      id: donation.id,
       donorName: donation.donorName,
       createdAt: donation.createdAt,
       giftAid,
@@ -70,12 +72,14 @@ test.each([
     }])
   } else if (namePublic) {
     expect(response.donations).toEqual([{
+      id: donation.id,
       donorName: donation.donorName,
       createdAt: donation.createdAt,
       comment: donation.comment,
     }])
   } else if (donationAmountPublic) {
     expect(response.donations).toEqual([{
+      id: donation.id,
       createdAt: donation.createdAt,
       giftAid,
       comment: donation.comment,
@@ -86,6 +90,7 @@ test.each([
     }])
   } else {
     expect(response.donations).toEqual([{
+      id: donation.id,
       createdAt: donation.createdAt,
       comment: donation.comment,
     }])
