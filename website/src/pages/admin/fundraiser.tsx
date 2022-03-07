@@ -141,7 +141,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
     donations.data
       ?.map((d) => ({
         createdAt: d.createdAt,
-        createdAt_formatted: format.timestamp(d.createdAt),
+        createdAtFormatted: format.timestamp(d.createdAt),
         giftAid: d.giftAid,
         recurringAmount: d.recurringAmount,
         recurrenceFrequency: d.recurrenceFrequency,
@@ -155,6 +155,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
         donationAmount: d.donationAmount,
         matchFundingAmount: d.matchFundingAmount,
         contributionAmount: d.contributionAmount,
+        giftAidAmount: Math.floor(d.donationAmount * (d.giftAid ? 0.25 : 0)),
       })),
     `${fundraiser?.publicName}_pseudonymous_analysis_export`,
   )
@@ -163,7 +164,8 @@ const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundr
     donations.data
       ?.map((d) => ({
         ...d,
-        createdAt_formatted: format.timestamp(d.createdAt),
+        createdAtFormatted: format.timestamp(d.createdAt),
+        giftAidAmount: Math.floor(d.donationAmount * (d.giftAid ? 0.25 : 0)),
       })),
     `${fundraiser?.internalName}_analysis_export`,
   )
