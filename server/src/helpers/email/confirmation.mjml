@@ -55,11 +55,11 @@
         <mj-table padding="8px" color="#ffffff">
           <tr style="font-family:'Helvetica', 'Arial', sans-serif;">
             <td style="padding: 2px 0;font-size:18px">Your donation to AMF</td>
-            <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£100</td>
+            <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">£100</td>
           </tr>
           <tr style="font-family:'Helvetica', 'Arial', sans-serif;">
             <td style="padding: 2px 0;font-size:18px">Your Summer Party contribution</td>
-            <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£10</td>
+            <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">£10</td>
           </tr>
           <tr style="height:6px">
             <td></td>
@@ -67,7 +67,7 @@
           </tr>
           <tr style="font-family:'Helvetica', 'Arial', sans-serif;border-top:1px solid #bbb;font-weight:bold">
             <td style="padding: 8px 0 2px 0;font-size:18px">Total paid</td>
-            <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;font-size:18px">£110</td>
+            <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">£110</td>
           </tr>
         </mj-table>
         <mj-text color="#ffffff" font-size="18px" line-height="1.5" padding="32px 8px 5px 8px">
@@ -77,15 +77,15 @@
         <mj-table padding="8px" color="#ffffff">
           <tr style="font-family:'Helvetica', 'Arial', sans-serif">
             <td style="padding: 2px 0;font-size:18px">19/12/2021</td>
-            <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£9</td>
+            <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">£9</td>
           </tr>
           <tr style="font-family:'Helvetica', 'Arial', sans-serif">
             <td style="padding: 2px 0;font-size:18px">26/12/2021</td>
-            <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£9</td>
+            <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">£9</td>
           </tr>
           <tr style="font-family:'Helvetica', 'Arial', sans-serif">
             <td style="padding: 2px 0;font-size:18px">02/01/2022</td>
-            <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">£9</td>
+            <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">£9</td>
           </tr>
           <tr style="height:6px">
             <td></td>
@@ -93,7 +93,7 @@
           </tr>
           <tr style="font-family:'Helvetica', 'Arial', sans-serif;border-top:1px solid #bbb;font-weight:bold">
             <td style="padding: 8px 0 2px 0;font-size:18px">Total future donations</td>
-            <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;font-size:18px">£21</td>
+            <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">£21</td>
           </tr>
         </mj-table>
       </mj-column>
