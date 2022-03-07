@@ -1,9 +1,21 @@
 import {
-  convert, format, Donation, Payment, Fundraiser,
+  convert, format, Donation, Payment, Fundraiser, calcMatchFunding,
 } from "@raise/shared"
 import env from "../../env/env"
 
-export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[]): string => `<!doctype html>
+export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[]): string => {
+  const totalDonated = payments.reduce((acc, p) => acc + p.donationAmount, 0)
+  const totalExpectedMatchFunding = payments.reduce((acc, p) => acc + (p.matchFundingAmount ?? calcMatchFunding({
+    donationAmount: p.donationAmount,
+    matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit === null ? null : fundraiser.matchFundingPerDonationLimit - acc,
+    matchFundingRate: fundraiser.matchFundingRate,
+    matchFundingRemaining: fundraiser.matchFundingRemaining === null ? null : fundraiser.matchFundingRemaining - acc,
+    alreadyMatchFunded: acc,
+  })), 0)
+
+  const peopleProtected = convert.moneyToPeopleProtected(fundraiser.currency, totalDonated + (donation.giftAid ? 1.25 : 1) + totalExpectedMatchFunding)
+
+  return `<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
   xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -216,7 +228,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                 <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:20px;line-height:1.5;text-align:left;color:#000000;">
                                 Dear ${donation.donorName.split(" ")[0]},<br /><br />
                                 Thank you so much for donating through ${fundraiser.publicName} this year and joining our community celebrating positive, deliberate giving!<br /><br />
-                                Your donation will help protect ${convert.moneyToPeopleProtected(fundraiser.currency, (donation.giftAid ? 1.25 : 1) * payments.reduce((acc, p) => acc + p.donationAmount + (p.matchFundingAmount ?? 0), 0))} people from malaria. We think that impact is something worth celebrating, and we look forward to seeing you at ${fundraiser.eventLink ? `<a href="${fundraiser.eventLink}">our Summer Party</a>` : "our Summer Party"}.<br /><br />
+                                Your donation will help protect ${peopleProtected} people from malaria. We think that impact is something worth celebrating, and we look forward to seeing you at ${fundraiser.eventLink ? `<a href="${fundraiser.eventLink}">our Summer Party</a>` : "our Summer Party"}.<br /><br />
                                 In the meantime, if you are keen to get more involved in our movement, check out our website for ways you can help or ${fundraiser.moreInvolvedLink ? `<a href="${fundraiser.moreInvolvedLink}" target="_blank">get in touch with us</a>` : "get in touch with us"}. Alternatively, you can follow us on social media to keep up to date during our donations period. Plus, celebrating giving is more fun with friends, so why not encourage them to join too?<br /><br />
                                 We're looking forward to celebrating our collective impact with you soon!<br /><br />
                                 Best wishes,<br />
@@ -261,11 +273,11 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                 <table cellpadding="0" cellspacing="0" width="100%" border="0" style="color:#ffffff;font-family:'Helvetica', 'Arial', sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
                                   ${payments[0].donationAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif">
                                     <td style="padding: 2px 0;font-size:18px">Your donation to AMF</td>
-                                    <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount)}</td>
+                                    <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount)}</td>
                                   </tr>` : ""}
                                   ${payments[0].contributionAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif">
                                       <td style="padding: 2px 0;font-size:18px">Your Summer Party contribution</td>
-                                      <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].contributionAmount)}</td>
+                                      <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].contributionAmount)}</td>
                                   </tr>` : ""}
                                   <tr style="height:6px">
                                     <td></td>
@@ -274,7 +286,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                   <tr
                                     style="font-family:'Helvetica', 'Arial', sans-serif;border-top:1px solid #bbb;font-weight:bold">
                                     <td style="padding: 8px 0 2px 0;font-size:18px">Total paid</td>
-                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount + payments[0].contributionAmount)}</td>
+                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount + payments[0].contributionAmount)}</td>
                                   </tr>
                                 </table>
                               </td>
@@ -290,7 +302,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                 <table cellpadding="0" cellspacing="0" width="100%" border="0" style="color:#ffffff;font-family:'Helvetica', 'Arial', sans-serif;line-height:22px;table-layout:auto;width:100%;border:none;">
                                   ${payments.slice(1).map((p) => `<tr style="font-family:'Helvetica', 'Arial', sans-serif">
                                       <td style="padding: 2px 0;font-size:18px">${format.date(p.at)}</td>
-                                      <td style="padding: 2px 0;text-align:right;white-space:pre;font-size:18px">${format.amountShort(fundraiser.currency, p.donationAmount + p.contributionAmount)}</td>
+                                      <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, p.donationAmount + p.contributionAmount)}</td>
                                   </tr>`).join("")}
                                   <tr style="height:6px">
                                     <td></td>
@@ -299,7 +311,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                   <tr
                                     style="font-family:'Helvetica', 'Arial', sans-serif;border-top:1px solid #bbb;font-weight:bold">
                                     <td style="padding: 8px 0 2px 0;font-size:18px">Total future donations</td>
-                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:pre;font-size:18px">${format.amountShort(fundraiser.currency, payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0))}</td>
+                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0))}</td>
                                   </tr>
                                 </table>
                               </td>
@@ -334,3 +346,4 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
 </body>
 
 </html>`
+}
