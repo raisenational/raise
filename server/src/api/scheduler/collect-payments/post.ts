@@ -72,7 +72,10 @@ export const main = middyfy(null, null, true, async (event) => {
 
     // NB: the rest of the processing (validating amounts, marking the payment as paid, updating amounts on donation and fundraiser etc. are done when we get the stripe webhook confirming successful payment)
   }))).map((r, i) => ({
-    ...r, paymentId: payments[i].id, donationId: payments[i].donationId, fundraiserId: payments[i].fundraiserId,
+    ...r,
+    paymentId: scheduledCardPaymentsDue[i].id,
+    donationId: scheduledCardPaymentsDue[i].donationId,
+    fundraiserId: scheduledCardPaymentsDue[i].fundraiserId,
   }))
 
   const successes = results.filter((r) => r.status === "fulfilled")
