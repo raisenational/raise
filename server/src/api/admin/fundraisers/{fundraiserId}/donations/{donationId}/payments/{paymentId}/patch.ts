@@ -6,7 +6,7 @@ import {
 } from "@raise/shared"
 import { middyfy } from "../../../../../../../../helpers/wrapper"
 import {
-  assertHasGroup, get, inTransaction, plusT, update, updateT, withNational, normalizeGroups,
+  assertHasGroup, get, inTransaction, plusT, update, updateT,
 } from "../../../../../../../../helpers/db"
 import { donationTable, fundraiserTable, paymentTable } from "../../../../../../../../helpers/tables"
 import type {
@@ -25,7 +25,7 @@ export const main = middyfy(paymentPropertyEditsSchema, null, true, async (event
     get(donationTable, { fundraiserId, id: donationId }),
     get(paymentTable, { donationId, id: paymentId }),
   ])
-  assertHasGroup(event, withNational(normalizeGroups(fundraiser)))
+  assertHasGroup(event, fundraiser, g.National)
 
   // these are important for security as otherwise the payment might not really sit
   // under the fundraiser an admin has access to according to assertHasGroup

@@ -2,12 +2,12 @@ import { fundraiserEditsSchema, g } from "@raise/shared"
 import createHttpError from "http-errors"
 import { middyfy } from "../../../../helpers/wrapper"
 import {
-  assertHasGroup, assertHasGroupForProperties, checkPrevious, get, query, update, normalizeGroups, withNational,
+  assertHasGroup, assertHasGroupForProperties, checkPrevious, get, query, update, normalizeGroups,
 } from "../../../../helpers/db"
 import { donationTable, fundraiserTable } from "../../../../helpers/tables"
 
 export const main = middyfy(fundraiserEditsSchema, null, true, async (event) => {
-  assertHasGroup(event, withNational(normalizeGroups(await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))))
+  assertHasGroup(event, normalizeGroups(await get(fundraiserTable, { id: event.pathParameters.fundraiserId })), g.National)
   assertHasGroupForProperties(event, ["currency", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "groupsWithAccess"], g.National)
   assertHasGroupForProperties(event, ["totalRaised", "donationsCount"], g.NationalTech)
 

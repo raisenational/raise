@@ -21,7 +21,7 @@ test("Can edit totalRaised as NationalTech", async () => {
   await insert(fundraiserTable, fundraiser)
 
   // when we call the endpoint with NationalTech
-  const response = await call(main, { auth: { groups: [g.NationalTech] }, pathParameters: { fundraiserId: fundraiser.id }, rawResponse: true })({ totalRaised: 1000 })
+  await call(main, { auth: { groups: [g.NationalTech] }, pathParameters: { fundraiserId: fundraiser.id }, rawResponse: true })({ totalRaised: 1000 })
 
   // we have edited the totalraised
   expect(await get(fundraiserTable, { id: fundraiser.id })).toMatchObject({ totalRaised: 1000 })

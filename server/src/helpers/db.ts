@@ -9,7 +9,7 @@ import createHttpError from "http-errors"
 import type { NativeAttributeValue } from "@aws-sdk/util-dynamodb"
 import type { JSONSchema7 } from "json-schema"
 import { ulid } from "ulid"
-import { JSONSchema, AuditLog, g } from "@raise/shared"
+import { JSONSchema, AuditLog } from "@raise/shared"
 import { auditLogTable, DBAttributeValue, Table } from "./tables"
 import { auditContext } from "./auditContext"
 import env from "../env/env"
@@ -94,8 +94,6 @@ const normalizeGroup = (groupDefinition: string | string[] | { groupsWithAccess:
 }
 
 export const normalizeGroups = (...groupDefinitions: (string | string[] | { groupsWithAccess: string[] })[]): string[] => [...new Set(...groupDefinitions.map(normalizeGroup))]
-
-export const withNational = (groups: string[]): string[] => (groups.includes(g.National) ? groups : [...groups, g.National])
 
 const overlap = (a: string[], b: string[]): boolean => a.some((v) => b.includes(v))
 
