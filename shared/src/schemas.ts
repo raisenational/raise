@@ -315,6 +315,7 @@ export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
       items: {
         type: "object",
         properties: {
+          id: { type: "string" },
           donorName: { type: "string" },
           createdAt: { type: "integer" },
           giftAid: { type: "boolean" },
@@ -324,7 +325,7 @@ export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
           recurringAmount: { type: ["integer", "null"], minimum: 0 },
           recurrenceFrequency: { oneOf: [{ enum: ["WEEKLY", "MONTHLY"] }, { type: "null" }] },
         },
-        required: ["createdAt", "comment"],
+        required: ["id", "createdAt", "comment"],
         additionalProperties: false,
       },
     },

@@ -373,6 +373,7 @@ export interface PublicFundraiser {
   eventLink: string | null;
   moreInvolvedLink: string | null;
   donations: {
+    id: string;
     donorName?: string;
     createdAt: number;
     giftAid?: boolean;

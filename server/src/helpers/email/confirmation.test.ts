@@ -52,7 +52,7 @@ test("renders email correctly for payments with no contribution or match funding
       donationId: donation.id,
       donationAmount: 100_00,
       contributionAmount: 0,
-      matchFundingAmount: null,
+      matchFundingAmount: 0,
     }),
   ]
 
@@ -62,6 +62,43 @@ test("renders email correctly for payments with no contribution or match funding
   // then we have expected data filled in
   expect(email).toContain("Dear Greg,")
   expect(email).toContain("Your donation will help protect 121 people from malaria.")
+  expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
+  expect(email).not.toContain("Your Summer Party contribution")
+  expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£100<\/td>/)
+  expect(email).not.toContain("You also set up future donations to AMF:")
+  expect(email).toContain(fundraiser.id)
+  expect(email).toContain(donation.id)
+  expect(email).toContain(payments[0].id)
+})
+
+test("renders email correctly for payments with inferred match funding", () => {
+  // given fundraiser, donation and payments
+  const fundraiser = makeFundraiser({
+    currency: "gbp", publicName: "Raise Test", matchFundingRate: 200,
+  })
+  const donation = makeDonation({
+    fundraiserId: fundraiser.id,
+    donationAmount: 100_00,
+    contributionAmount: 0,
+    matchFundingAmount: 0,
+    donorName: "Greg McGregFace",
+  })
+  const payments = [
+    makePayment({
+      fundraiserId: fundraiser.id,
+      donationId: donation.id,
+      donationAmount: 100_00,
+      contributionAmount: 0,
+      matchFundingAmount: null,
+    }),
+  ]
+
+  // when we render the email
+  const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, " ")
+
+  // then we have expected data filled in
+  expect(email).toContain("Dear Greg,")
+  expect(email).toContain("Your donation will help protect 364 people from malaria.")
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
   expect(email).not.toContain("Your Summer Party contribution")
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£100<\/td>/)
