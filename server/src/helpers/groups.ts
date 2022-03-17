@@ -28,7 +28,7 @@ const USER_MAP: Record<Env["STAGE"], Record<string, Group[]>> = {
     "69121db77450a21ada845a6390feacc6ded18e41": [g.National], // Joe
 
     "ea72b00f4d71e8c8bca6089a741b848fc793d2c0": [g.National], // raisenational@gmail.com
-    "c9c98271bd9417e5088546f8a2fb0dc43e015569": [g.NationalTech], // raisenationaltech@gmail.com
+    "c9c98271bd9417e5088546f8a2fb0dc43e015569": [g.National, g.NationalTech], // raisenationaltech@gmail.com
     "94e827a024769e9176640c706ff36f921b9426b0": [g.Demo], // raisedemo@gmail.com
     "75645e6de554c23dfdcca834864e0915656ced8e": [g.Cambridge], // mayweekalternative@gmail.com
     "5a2cb00a68211d0daf14de911f5fc6058adb660d": [g.Durham], // raisedurham@gmail.com
