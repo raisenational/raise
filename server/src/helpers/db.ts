@@ -87,25 +87,27 @@ export const assertMatchesSchema = <T>(schema: JSONSchema<T>, data: unknown): vo
   throw error
 }
 
-export const normalizeGroups = (groupDefinition: string | string[] | { groupsWithAccess: string[] }): string[] => {
+const normalizeGroup = (groupDefinition: string | string[] | { groupsWithAccess: string[] }): string[] => {
   if (typeof groupDefinition === "string") return [groupDefinition]
   if (Array.isArray(groupDefinition)) return groupDefinition
   return groupDefinition.groupsWithAccess
 }
 
-export const withNational = (groups: string[]) => (groups.includes(g.National) ? groups : [...groups, g.National])
+export const normalizeGroups = (...groupDefinitions: (string | string[] | { groupsWithAccess: string[] })[]): string[] => [...new Set(...groupDefinitions.map(normalizeGroup))]
+
+export const withNational = (groups: string[]): string[] => (groups.includes(g.National) ? groups : [...groups, g.National])
 
 const overlap = (a: string[], b: string[]): boolean => a.some((v) => b.includes(v))
 
-export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } }, groupDefinition: string | string[] | { groupsWithAccess: string[] }): void => {
-  const groups = normalizeGroups(groupDefinition)
+export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } }, ...groupDefinitions: (string | string[] | { groupsWithAccess: string[] })[]): void => {
+  const groups = normalizeGroups(...groupDefinitions)
   if (!overlap(event.auth.payload.groups, groups)) {
     throw new createHttpError.Forbidden(`This action requires you to be in one of the groups [${groups.join(", ")}], but you are in [${event.auth.payload.groups.join(", ")}]`)
   }
 }
 
-export const assertHasGroupForProperties = <B>(event: { auth: { payload: { groups: string[] } }, body: B }, groupDefinition: string | string[] | { groupsWithAccess: string[] }, properties: (keyof B)[]): void => {
-  const groups = normalizeGroups(groupDefinition)
+export const assertHasGroupForProperties = <B>(event: { auth: { payload: { groups: string[] } }, body: B }, properties: (keyof B)[], ...groupDefinitions: (string | string[] | { groupsWithAccess: string[] })[]): void => {
+  const groups = normalizeGroups(...groupDefinitions)
   if (!overlap(event.auth.payload.groups, groups)) {
     properties.forEach((p) => {
       if (p in event.body) throw new createHttpError.Forbidden(`To edit ${p} you need to be in one of the groups [${groups.join(", ")}], but you are in ${event.auth.payload.groups}`)

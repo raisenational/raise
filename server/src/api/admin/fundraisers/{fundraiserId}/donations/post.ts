@@ -5,7 +5,7 @@ import {
 } from "@raise/shared"
 import { middyfy } from "../../../../../helpers/wrapper"
 import {
-  assertHasGroup, assertHasGroupForProperties, get, insert, insertT, inTransaction, plusT, normalizeGroups, withNational,
+  assertHasGroup, get, insert, insertT, inTransaction, plusT, normalizeGroups, withNational,
 } from "../../../../../helpers/db"
 import { donationTable, fundraiserTable } from "../../../../../helpers/tables"
 

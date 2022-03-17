@@ -466,7 +466,7 @@ describe.each([
     ["by groupsWithAccess object with one entry", { groupsWithAccess: ["National"] }],
     ["by groupsWithAccess object with multiple entry", { groupsWithAccess: ["National", "Test"] }],
   ])("%s", (_description, checkGroups) => {
-    const e = expect(() => assertHasGroupForProperties({ auth: { payload: { groups: eventGroups } }, body: { [eventProperty]: null } }, checkGroups, propertiesToCheck))
+    const e = expect(() => assertHasGroupForProperties({ auth: { payload: { groups: eventGroups } }, body: { [eventProperty]: null } }, propertiesToCheck, checkGroups))
     if (!notThrow) e.toThrow()
     else e.not.toThrow()
   })
