@@ -10,8 +10,8 @@ import {
 import { donationTable, fundraiserTable } from "../../../../../helpers/tables"
 
 export const main = middyfy(donationCreationSchema, ulidSchema, true, async (event) => {
-  assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }))
-  assertHasGroupForProperties(event, g.National, ["stripeCustomerId", "stripePaymentMethodId"])
+  assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }), g.National)
+  assertHasGroupForProperties(event, ["stripeCustomerId", "stripePaymentMethodId"], g.NationalTech)
 
   const donationId = ulid()
 
