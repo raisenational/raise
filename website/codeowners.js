@@ -9,6 +9,7 @@ const userAccess = {
   "Susanne Karbe": ["website"],
   "Andrew Launer": ["website/src/pages/glasgow/"],
   "Neha Banerjee": ["website/src/pages/oxford"],
+  "rahulrshah17": ["website/src/pages/cambridge"],
 }
 
 /* eslint-disable no-restricted-syntax */
