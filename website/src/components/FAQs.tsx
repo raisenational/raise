@@ -1,4 +1,5 @@
 import * as React from "react"
+// TODO: migrate to @reach/accordion
 import { Disclosure, DisclosureButton } from "@reach/disclosure"
 import { ChevronRightIcon } from "@heroicons/react/solid"
 import classNames from "classnames"
@@ -25,8 +26,8 @@ export const FAQ: React.FC<FaqProps> = ({ className, title, children }) => {
           <span className="text-2xl ml-2 align-text-top">{title}</span>
         </DisclosureButton>
         <div
-          className={classNames("transition-all duration-500 overflow-y-hidden opacity-0 max-h-0", {
-            "ease-in": open, "ease-out": !open, "opacity-100": open, "max-h-screen": open,
+          className={classNames("transition-all duration-500 overflow-y-hidden", {
+            "ease-in opacity-100 max-h-[500vh]": open, "ease-out opacity-0 max-h-0": !open,
           })}
         >
           <div className="px-4 pb-4 text-xl font-light">
