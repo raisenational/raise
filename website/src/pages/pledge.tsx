@@ -123,7 +123,7 @@ const IndexPage = () => (
 
         <p className="my-4">We've partnered with Giving What We Can to administer our pledges. To pledge, you'll be taken to their website where you can make an account and create your own customised pledge.</p>
         <div className="text-center">
-          <Button variant="red" size="large" href="https://www.givingwhatwecan.org/pledge/">I'd like to pledge</Button>
+          <Button variant="red" size="large" href="https://www.givingwhatwecan.org/pledge/?utm_campaign=raise">I'd like to pledge</Button>
         </div>
       </div>
     </Section>

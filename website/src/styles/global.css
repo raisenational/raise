@@ -32,6 +32,7 @@
   :root {
     --reach-dialog: 1;
     --reach-listbox: 1;
+    --reach-accordion: 1;
   }
 
   .tooltip {
