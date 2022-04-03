@@ -1,6 +1,6 @@
 import * as React from "react"
 import Helmet from "react-helmet"
-import { Router } from "@reach/router"
+import { Router } from "@gatsbyjs/reach-router"
 
 import Page from "../../components/Page"
 import FundraisersPage from "./fundraisers"

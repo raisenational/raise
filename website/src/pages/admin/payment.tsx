@@ -1,5 +1,5 @@
 import * as React from "react"
-import { RouteComponentProps } from "@reach/router"
+import { RouteComponentProps } from "@gatsbyjs/reach-router"
 import { ExternalLinkIcon, ReceiptRefundIcon } from "@heroicons/react/outline"
 import {
   format, Fundraiser, Donation, Payment, PaymentCreation, g,
