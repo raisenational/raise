@@ -88,7 +88,7 @@ const IndexPage = () => (
         <Button href="partner/">Become a Partner</Button>
       </div>
 
-      <iframe className="w-full max-w-2xl mx-auto mt-12 rounded shadow-raise" title="YouTube: May Week Alternative: A New Way to Celebrate" width="672" height="378" src="https://www.youtube-nocookie.com/embed/nefUw0xT75Y" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+      <iframe className="w-full max-w-2xl mx-auto mt-12 rounded shadow-raise" title="YouTube: May Week Alternative: A New Way to Celebrate" width="672" height="378" src="https://www.youtube-nocookie.com/embed/nefUw0xT75Y?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
     </Section>
 
     <Section id="faq">
