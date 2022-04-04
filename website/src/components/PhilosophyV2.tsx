@@ -152,7 +152,7 @@ const Philosophy: React.FC = () => {
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">So, however you've chosen to give before, why not join Raise this year and see how <span className="font-bold">charity can become a meaningful and positive part of all of our lives</span>.</p>
 
             <p className="mt-16 mb-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">P.S. Want to get to know us more? Check out our founder's TEDx Talk, 'Rethinking Celebration: The Positive Case for Giving', which talks all about our feel-good philosophy!</p>
-            <iframe className="w-full rounded shadow-raise" title="YouTube: Rethinking Celebration: The Positive Case for Giving" width="672" height="378" src="https://www.youtube-nocookie.com/embed/fvjeG7xE-wE" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200" />
+            <iframe className="w-full rounded shadow-raise" title="YouTube: Rethinking Celebration: The Positive Case for Giving" width="672" height="378" src="https://www.youtube-nocookie.com/embed/fvjeG7xE-wE?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200" />
           </div>
         </Section>
       </div>

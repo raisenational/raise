@@ -81,6 +81,8 @@ const IndexPage = () => (
           className="bg-raise-yellow text-black"
         />
       </div>
+
+      <iframe className="w-full max-w-2xl mx-auto mt-12 rounded shadow-raise" title="YouTube: Raise: A Celebration of Giving" width="672" height="378" src="https://www.youtube-nocookie.com/embed/6bEloAzIV2c?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
     </Section>
 
     <Section id="faq">
