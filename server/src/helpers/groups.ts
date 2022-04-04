@@ -36,7 +36,6 @@ const USER_MAP: Record<Env["STAGE"], Record<string, Group[]>> = {
     "79ddbd6325661f5d92f28790a0ba17740b49a96e": [g.Oxford], // raiseoxford@gmail.com
     "c2f0068ec52507376aab3b18769ec2695083b309": [g.Sheffield], // raisesheffield@gmail.com
     "74d103d8a3c04b7f427e377cf0787be96e51576a": [g.Warwick], // raisewarwick@gmail.com
-    "c14fd714d3274986212e1f51e70e6878aa28c641": [g.Imperial], // raiseimperial@gmail.com
   },
   // Before granting a user prod access, you MUST check:
   // - they are adequately trained
