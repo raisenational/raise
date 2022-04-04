@@ -13,7 +13,6 @@ export const groups = [
   "Oxford",
   "Sheffield",
   "Warwick",
-  "Imperial",
 
   "Demo",
   "Test",
