@@ -32,6 +32,7 @@
   :root {
     --reach-dialog: 1;
     --reach-listbox: 1;
+    --reach-accordion: 1;
   }
 
   .tooltip {
@@ -62,6 +63,22 @@
 
   .FAQ p + p {
     margin-top: 1em;
+  }
+
+  .FAQ[data-reach-accordion-item][data-state="open"] {
+    @apply text-black
+  }
+
+  .FAQ [data-reach-accordion-button][data-state="open"] svg {
+    @apply rotate-90
+  }
+
+  .FAQ[data-reach-accordion-item][data-state="open"] > div {
+    @apply ease-in opacity-100 max-h-[500vh]
+  }
+
+  .FAQ[data-reach-accordion-item][data-state="collapsed"] > div {
+    @apply ease-out opacity-0 max-h-0
   }
 
   .Section {

@@ -83,20 +83,17 @@ const IndexPage = () => (
                   At Raise, we aim to show that deliberate, effective giving can be very personally rewarding, as well as having a huge impact. Taking a pledge can solidify this commitment as a meaningful part of your life for years to come. Here are three reasons we think pledging is a great option:
                 </p>
 
-                <div className="flex my-6 items-center">
-                  <PresentationChartLineIcon className="h-16 mr-4" />
-                  <p className="flex-1"><span className="font-bold">Impact:</span> By pledging to give regularly and effectively, you'll have an extended impact over a long period of time - likely saving dozens of healthy lives over the course of your career. We think that this is a hugely valuable outcome, and the most important reason to pledge.</p>
-                </div>
+                <InlinePoint icon={PresentationChartLineIcon}>
+                  <span className="font-bold">Impact:</span> By pledging to give regularly and effectively, you'll have an extended impact over a long period of time - likely saving dozens of healthy lives over the course of your career. We think that this is a hugely valuable outcome, and the most important reason to pledge.
+                </InlinePoint>
 
-                <div className="flex my-6 items-center">
-                  <RefreshIcon className="h-16 mr-4" />
-                  <p className="flex-1"><span className="font-bold">Sustainability:</span> Giving pledges are a great way to give in a way which fits with the rest of your life, making this huge impact much more manageable. The amount you donate scales with the amount that you earn, so your donations will always be affordable and proportionate. If you're not earning, there's no pressure to give, and when your salary increases, your impact increases too.</p>
-                </div>
+                <InlinePoint icon={RefreshIcon}>
+                  <span className="font-bold">Sustainability:</span> Giving pledges are a great way to give in a way which fits with the rest of your life, making this huge impact much more manageable. The amount you donate scales with the amount that you earn, so your donations will always be affordable and proportionate. If you're not earning, there's no pressure to give, and when your salary increases, your impact increases too.
+                </InlinePoint>
 
-                <div className="flex my-6 items-center">
-                  <GlobeIcon className="h-16 mr-4" />
-                  <p className="flex-1"><span className="font-bold">Commitment:</span> Many people find that the pledge is a useful form of commitment - a psychological strategy for helping us live up to values and goals we currently hold but may be tempted to drop in the future. With Giving What We Can, you are also supported by a global community of wonderful people, contributing to a broader culture of meaningful, effective giving in line with the Raise philosophy.</p>
-                </div>
+                <InlinePoint icon={GlobeIcon}>
+                  <span className="font-bold">Commitment:</span> Many people find that the pledge is a useful form of commitment - a psychological strategy for helping us live up to values and goals we currently hold but may be tempted to drop in the future. With Giving What We Can, you are also supported by a global community of wonderful people, contributing to a broader culture of meaningful, effective giving in line with the Raise philosophy.
+                </InlinePoint>
               </div>
             </FAQ>
 
@@ -106,20 +103,17 @@ const IndexPage = () => (
                   The right pledge amount varies from person to person, and the exact amount that you choose to pledge will depend on your personal circumstances and motivations for pledging. When thinking about how much to pledge, we recommend selecting an amount which is:
                 </p>
 
-                <div className="flex my-6 items-center">
-                  <HeartIcon className="h-16 mr-4" />
-                  <p className="flex-1"><span className="font-bold">Meaningful:</span> Consider pledging an amount that will encourage you to consciously engage with the process of giving; at Raise we believe that giving deliberately can be a really positive experience and we hope that you'll continue to experience that through your pledge!</p>
-                </div>
+                <InlinePoint icon={HeartIcon}>
+                  <span className="font-bold">Meaningful:</span> Consider pledging an amount that will encourage you to consciously engage with the process of giving; at Raise we believe that giving deliberately can be a really positive experience and we hope that you'll continue to experience that through your pledge!
+                </InlinePoint>
 
-                <div className="flex my-6 items-center">
-                  <RefreshIcon className="h-16 mr-4" />
-                  <p className="flex-1"><span className="font-bold">Sustainable:</span> Make sure to choose a percentage that will be sustainable for you in the long term. Remember, you want to follow through on the pledge, so choose something you can stick to whilst balancing other important things in your life.</p>
-                </div>
+                <InlinePoint icon={RefreshIcon}>
+                  <span className="font-bold">Sustainable:</span> Make sure to choose a percentage that will be sustainable for you in the long term. Remember, you want to follow through on the pledge, so choose something you can stick to whilst balancing other important things in your life.
+                </InlinePoint>
 
-                <div className="flex my-6 items-center">
-                  <PresentationChartLineIcon className="h-16 mr-4" />
-                  <p className="flex-1"><span className="font-bold">Impactful:</span> Pledging a higher percentage will mean helping more people and doing more good!</p>
-                </div>
+                <InlinePoint icon={PresentationChartLineIcon}>
+                  <span className="font-bold">Impactful:</span> Pledging a higher percentage will mean helping more people and doing more good!
+                </InlinePoint>
 
                 <p>Based on these factors, Giving What We Can suggest pledging 10% or more on their main pledge. If you're not yet certain, you can start off by pledging 1% or more through their Trial Pledge for a limited time, and see how that feels. In either case, you can customise your pledge on their page or update it at any time - allowing flexibility in case you're uncertain about your future situation.</p>
               </div>
@@ -129,7 +123,7 @@ const IndexPage = () => (
 
         <p className="my-4">We've partnered with Giving What We Can to administer our pledges. To pledge, you'll be taken to their website where you can make an account and create your own customised pledge.</p>
         <div className="text-center">
-          <Button variant="red" size="large" href="https://www.givingwhatwecan.org/pledge/">I'd like to pledge</Button>
+          <Button variant="red" size="large" href="https://www.givingwhatwecan.org/pledge/?utm_campaign=raise">I'd like to pledge</Button>
         </div>
       </div>
     </Section>
@@ -169,9 +163,18 @@ const IndexPage = () => (
 )
 
 const Point: React.FC<{ className?: string, icon: React.FC<{ width?: number, height?: number }> }> = ({ className, icon: Icon, children }) => (
-  <div className={classNames("flex mt-4 p-6 rounded shadow-raise text-left", className)}>
-    <div><Icon width={60} height={60} /></div>
-    <p className="ml-6">
+  <div className={classNames("sm:flex mt-4 p-6 rounded shadow-raise text-left", className)}>
+    <div className="mb-2 sm:mb-0 text-center sm:mr-6"><Icon width={60} height={60} /></div>
+    <p>
+      {children}
+    </p>
+  </div>
+)
+
+const InlinePoint: React.FC<{ className?: string, icon: React.FC<{ width?: number, height?: number }> }> = ({ className, icon: Icon, children }) => (
+  <div className={classNames("sm:flex my-8 items-center", className)}>
+    <div className="mb-2 sm:mb-0 text-center sm:mr-4"><Icon width={60} height={60} /></div>
+    <p>
       {children}
     </p>
   </div>

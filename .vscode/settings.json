@@ -16,4 +16,5 @@
   "workbench.startupEditor": "none",
   "git.enableSmartCommit": true,
   "redhat.telemetry.enabled": false,
+  "css.format.enable": false,
 }
