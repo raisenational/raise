@@ -1,5 +1,5 @@
 import * as React from "react"
-import { RouteComponentProps } from "@gatsbyjs/reach-router"
+import { RouteComponentProps } from "@reach/router"
 import { Task } from "@raise/shared"
 import { useAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"

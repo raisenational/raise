@@ -1,5 +1,5 @@
 import * as React from "react"
-import { RouteComponentProps } from "@gatsbyjs/reach-router"
+import { RouteComponentProps } from "@reach/router"
 
 import { format, Profile } from "@raise/shared"
 import Section, { SectionTitle } from "../../components/Section"

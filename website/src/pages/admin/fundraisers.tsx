@@ -1,5 +1,5 @@
 import * as React from "react"
-import { RouteComponentProps } from "@gatsbyjs/reach-router"
+import { RouteComponentProps } from "@reach/router"
 import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import {
