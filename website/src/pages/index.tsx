@@ -18,7 +18,7 @@ const IndexPage = () => (
       <title>Raise</title>
       <meta property="og:title" content="Raise" />
     </Helmet>
-    <Cover>
+    <Cover heightClassName={env.STAGE === "prod" ? "min-h-screen" : "min-h-screen sm:min-h-[90vh]"}>
       <Navigation
         left={[
           { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
