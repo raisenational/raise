@@ -1,5 +1,5 @@
 import * as React from "react"
-import { RouteComponentProps } from "@reach/router"
+import { RouteComponentProps } from "@gatsbyjs/reach-router"
 import {
   AuditLog, AuditLogs, format, g,
 } from "@raise/shared"

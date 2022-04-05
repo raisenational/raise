@@ -1,5 +1,6 @@
 import * as React from "react"
-import { navigate, RouteComponentProps } from "@reach/router"
+import { RouteComponentProps } from "@gatsbyjs/reach-router"
+import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import {
   format, Donation, Payment, PaymentCreation, Fundraiser,
