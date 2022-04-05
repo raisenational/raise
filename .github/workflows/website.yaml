@@ -36,9 +36,7 @@ jobs:
 
       - name: "website: Install dependencies"
         working-directory: website
-        # TODO: remove --legacy-peer-deps after migrating to @gatsbyjs/reach-router
-        # Blocked on https://github.com/DefinitelyTyped/DefinitelyTyped/pull/59667
-        run: npm ci --legacy-peer-deps
+        run: npm ci
       - name: "website: Lint"
         working-directory: website
         run: npm run lint

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { RouteComponentProps } from "@reach/router"
+import { RouteComponentProps } from "@gatsbyjs/reach-router"
 import { useGoogleLogin, GoogleLoginResponse } from "react-google-login"
 import { LoginResponse } from "@raise/shared"
 import Section, { SectionTitle } from "../../components/Section"
