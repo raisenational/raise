@@ -19,6 +19,11 @@ declare module "*.png" {
   export = value;
 }
 
+declare module "*.jpg" {
+  const value: string
+  export = value;
+}
+
 declare module "*.svg" {
   const value: string
   export = value;

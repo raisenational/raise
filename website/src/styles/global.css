@@ -105,51 +105,6 @@
     @apply rounded p-4 break-words flex items-center overflow-x-auto
   }
 
-  .Scroller {
-    height: 2rem;
-    margin: auto;
-    overflow: hidden;
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-    text-align: center;
-  }
-
-  .Scroller::before {
-    top: 0;
-    left: 0;
-    z-index: 1;
-    width: 100%;
-    content: '';
-    height: 10px;
-    position: absolute;
-    background: linear-gradient(180deg, rgba(93, 33, 94, 1), rgba(93, 33, 94, 0));
-  }
-
-  .Scroller::after {
-    left: 0;
-    bottom: 0;
-    z-index: 1;
-    width: 100%;
-    content: '';
-    height: 10px;
-    position: absolute;
-    background: linear-gradient(180deg, rgba(93, 33, 94, 0), rgba(93, 33, 94, 1));
-  }
-
-  .Scroller > span {
-    display: inline-block;
-    margin: 0;
-    padding: 0;
-    animation: scrollUp 6s linear infinite forwards;
-  }
-
-  .Scroller > span > span {
-    opacity: 1;
-    height: 2rem;
-    display: list-item;
-  }
-
   @keyframes scrollUp {
     from {
       transform: translateY(0);

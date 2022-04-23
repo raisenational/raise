@@ -16,6 +16,7 @@ import email from "../../images/email.svg"
 import oliLane from "../../images/oli-lane.png"
 import Button from "../../components/Button"
 import Footer from "../../components/Footer"
+import Quote from "../../components/Quote"
 
 const PartnerPage = () => (
   <Page>
@@ -87,19 +88,9 @@ const PartnerPage = () => (
           className="bg-raise-purple"
         />
       </div>
-      <div className="flex my-16">
-        <div className="mr-12 ml-8 relative">
-          <p className="text-left before:content-['“'] before:absolute before:text-[20rem] before:leading-none before:font-black before:-left-12 before:-top-12 before:opacity-20">
-            We love what the May Week Alternative team are building, and we're thrilled to be able to support them. The movement they've built in such a short time is inspiring - it's fantastic to be a part of growing it for the future!
-          </p>
-          <p className="text-right font-bold">
-            Oli Lane, Gearset
-          </p>
-        </div>
-        <div className="hidden sm:block">
-          <img src={oliLane} alt="Headshot of Oli Lane" className="shadow-raise rounded-full" />
-        </div>
-      </div>
+      <Quote className="my-16 max-w-2xl mx-auto" by="Oli Lane, Gearset" headshotSrc={oliLane}>
+        We love what the May Week Alternative team are building, and we're thrilled to be able to support them. The movement they've built in such a short time is inspiring - it's fantastic to be a part of growing it for the future!
+      </Quote>
     </Section>
 
     <Section id="contact">
