@@ -3,8 +3,14 @@ import { CakeIcon, HeartIcon } from "@heroicons/react/outline"
 import confetti from "canvas-confetti"
 import AOS from "aos"
 import "aos/dist/aos.css"
-import oliLane from "../images/oli-lane.png"
+import rahulShah from "../images/rahul-shah.jpg"
+import claraTuffrey from "../images/clara-tuffrey.jpg"
+import susanneKarbe from "../images/susanne-karbe.jpg"
+import sp1 from "../images/summer-party-1.jpg"
+import sp2 from "../images/summer-party-2.jpg"
+import sp3 from "../images/summer-party-3.jpg"
 import Section, { SectionTitle } from "./Section"
+import Quote from "./Quote"
 
 const launchConfetti = () => {
   // Use simpler confetti for mobile to reduce lag
@@ -48,11 +54,20 @@ const launchConfetti = () => {
 
 const Philosophy: React.FC = () => {
   React.useEffect(() => {
-    AOS.init()
+    AOS.init({
+      disable: (
+        /bot|crawler|spider|crawling/i.test(navigator.userAgent)
+        || window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ),
+    })
   })
 
   return (
     <>
+      {/* fix so AOS styles don't hide the content when there's no JavaScript */}
+      <noscript>
+        <style>{"[data-aos] { opacity: 1 !important; transform: none !important; }"}</style>
+      </noscript>
       <div className="bg-raise-purple -skew-y-6 pb-8 pt-16">
         <Section id="our-philosophy" className="skew-y-6">
           <SectionTitle>Our Philosophy</SectionTitle>
@@ -65,7 +80,7 @@ const Philosophy: React.FC = () => {
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">At Raise, we think that's a <span className="font-bold">real missed opportunity</span>.</p>
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">We believe that when we pause to think about our giving, the experience can be incredibly rewarding.</p>
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">When we properly consider why we are giving and the impact our money will have - in short, when we give deliberately - we can really appreciate how positive donating to charity can be.</p>
-            <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">This way, giving becomes more <Scroller values={["meaningful", "enjoyable", "sustainable"]} /> and ultimately more <span className="whitespace-nowrap"><span className="animate-breathe inline-block cursor-pointer" onClick={launchConfetti} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { launchConfetti(); e.preventDefault() } }} role="button" tabIndex={0}>impactful</span>.</span></p>
+            <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">This way, giving becomes more meaningful, enjoyable, sustainable and ultimately more <span className="whitespace-nowrap"><span className="animate-breathe inline-block cursor-pointer" onClick={launchConfetti} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { launchConfetti(); e.preventDefault() } }} role="button" tabIndex={0}>impactful</span>.</span></p>
             <div data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200"><HeartIcon width={60} height={60} className="block mx-auto my-4 hover:scale-125 active:scale-95 transition-all cursor-pointer" onClick={launchConfetti} /></div>
           </div>
         </Section>
@@ -77,48 +92,25 @@ const Philosophy: React.FC = () => {
             <h2 className="mt-20 mb-4 text-2xl text-center sm:text-4xl font-raise-header font-black" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">How does Raise work?</h2>
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">We invite students to join us and celebrate the end of the academic year by making a personally significant donation to charity - an amount that will <span className="font-bold">make you think about what and why you are giving</span>.</p>
 
-            <div className="flex my-12" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
-              <div className="mr-12 ml-8 relative">
-                <p className="text-left before:content-['“'] before:absolute before:text-[20rem] before:leading-none before:font-black before:-left-12 before:-top-12 before:opacity-20">
-                  It took me a long time to decide to join Raise - I'd never given that much before - but when I finally donated, I saw our incredible impact and it really made donating an amazing positive experience.
-                </p>
-                <p className="text-right font-bold mt-2">
-                  Clara Tuffrey, Donor
-                </p>
-              </div>
-              <div className="hidden sm:block w-40 flex-shrink-0">
-                {/* TODO: get an image of Clara */}
-                <img src={oliLane} alt="Headshot of Clara Tuffrey" className="shadow-raise rounded-full hover:rotate-6 transition-all duration-500 ease-out" />
-              </div>
-            </div>
+            <Quote className="my-12" by="Susanne Karbe, Donor" headshotSrc={susanneKarbe} imagePlacement="right" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
+              It took me a long time to decide to join Raise - I'd never given that much before - but when I finally donated, I saw our incredible impact and it really made donating an amazing positive experience.
+            </Quote>
 
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">Then, at the end of the academic year, we come together as a community for our Summer Party. It's a time when we can reflect on and celebrate the impact of our donations, while enjoying the end of the year with a wonderful group of people.</p>
 
-            <div className="flex my-12" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
-              <div className="hidden sm:block w-40 flex-shrink-0">
-                {/* TODO: get an image of Rahul */}
-                <img src={oliLane} alt="Headshot of Rahul Shah" className="shadow-raise rounded-full hover:-rotate-6 transition-all duration-500 ease-out" />
-              </div>
-              <div className="ml-12 mr-8 relative">
-                <p className="text-left before:content-['“'] before:absolute before:text-[20rem] before:leading-none before:font-black before:-left-12 before:-top-12 before:opacity-20">
-                  It was at the Summer Party that I really appreciated just how powerful the idea of giving positively and deliberately can be. Everyone was having a great time, energised by the collective knowledge that together we'd done something incredible.
-                </p>
-                <p className="text-right font-bold mt-2">
-                  Rahul Shah, Donor
-                </p>
-              </div>
-            </div>
+            <Quote className="my-12" by="Rahul Shah, Donor" headshotSrc={rahulShah} imagePlacement="left" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
+              It was at the Summer Party that I really appreciated just how powerful the idea of giving positively and deliberately can be. Everyone was having a great time, energised by the collective knowledge that together we'd done something incredible.
+            </Quote>
 
-            {/* Get Summer Party images */}
             <div className="relative h-[34rem] md:-mt-10">
               <div className="absolute" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="100">
-                <img src={oliLane} alt="Summer Party" className="shadow-raise rounded border-white border-8 w-96 h-60 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out" />
+                <img src={sp1} alt="Summer Party" className="shadow-raise rounded border-white border-8 w-96 h-60 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out" />
               </div>
               <div className="absolute right-0 top-32" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="250">
-                <img src={oliLane} alt="Summer Party" className="shadow-raise rounded border-white border-8 w-96 h-60 rotate-6 hover:rotate-3 transition-all duration-500 ease-out" />
+                <img src={sp2} alt="Summer Party" className="shadow-raise rounded border-white border-8 w-96 h-60 rotate-6 hover:rotate-3 transition-all duration-500 ease-out" />
               </div>
               <div className=" absolute top-64" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="400">
-                <img src={oliLane} alt="Summer Party" className="shadow-raise rounded border-white border-8 w-96 h-60 -rotate-12 hover:-rotate-3 transition-all duration-500 ease-out" />
+                <img src={sp3} alt="Summer Party" className="shadow-raise rounded border-white border-8 w-96 h-60 -rotate-12 hover:-rotate-3 transition-all duration-500 ease-out" />
               </div>
             </div>
           </div>
@@ -128,26 +120,15 @@ const Philosophy: React.FC = () => {
       <div className="bg-raise-purple -skew-y-6 pb-20 mb-8">
         <Section className="skew-y-6 -mt-1">
           <div className="max-w-2xl mx-auto text-left -mt-8">
-            <h2 className="mt-20 mb-4 text-2xl text-center sm:text-4xl font-raise-header font-black" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">What are the long-term effects?</h2>
+            <h2 className="mt-20 mb-4 text-2xl text-center sm:text-4xl font-raise-header font-black" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">Our vision</h2>
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">Our hope is that through making a <span className="font-bold">personally significant donation</span> and then coming together to celebrate that, you'll be able to see the <span className="font-bold">huge impact</span> giving effectively can have and come to feel as positive about it as we do.</p>
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">Ultimately, <span className="font-bold">we want to change the culture around giving to charity</span>. We want giving to be something that is actively embraced and enjoyed, and a meaningful part of all of our lives.</p>
 
-            <div className="flex my-12" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
-              <div className="mr-12 ml-8 relative">
-                <p className="text-left before:content-['“'] before:absolute before:text-[20rem] before:leading-none before:font-black before:-left-12 before:-top-12 before:opacity-20">
-                  Raise really changed the way I approach giving. It's made me want to make deliberate giving a permanent part of my life even now I've graduated so, after joining Raise, I decided to donate 10% of my income to effective charities every year.
-
-                  <br /><br />I never really used to think about giving to charity, but I loved joining Raise and I now can't wait to donate again in the future.
-                </p>
-                <p className="text-right font-bold mt-2">
-                  George Rosenfeld, Donor
-                </p>
-              </div>
-              <div className="hidden sm:block w-40 flex-shrink-0">
-                {/* TODO: get an image of George */}
-                <img src={oliLane} alt="Headshot of George Rosenfeld" className="shadow-raise rounded-full hover:rotate-6 transition-all duration-500 ease-out" />
-              </div>
-            </div>
+            <Quote className="my-12" by="Clara Tuffrey, Donor" headshotSrc={claraTuffrey} imagePlacement="right" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
+              Raise really changed the way I approach giving. It's made me want to make deliberate giving a permanent part of my life even now I've graduated so, after joining Raise, I decided to donate 10% of my income to effective charities every year.
+              <br /><br />
+              I never really used to think about giving to charity, but I loved joining Raise and I now can't wait to donate again in the future.
+            </Quote>
 
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">So, however you've chosen to give before, why not join Raise this year and see how <span className="font-bold">charity can become a meaningful and positive part of all of our lives</span>.</p>
 
@@ -159,14 +140,5 @@ const Philosophy: React.FC = () => {
     </>
   )
 }
-
-const Scroller: React.FC<{ values: string[] }> = ({ values }) => (
-  <span className="Scroller">
-    <span>
-      {values.map((v) => <span key={v}>{v}</span>)}
-      {values.map((v) => <span key={v} aria-hidden="true" className="select-none">{v}</span>)}
-    </span>
-  </span>
-)
 
 export default Philosophy
