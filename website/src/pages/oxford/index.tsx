@@ -46,9 +46,9 @@ const IndexPage = () => (
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
           statistics={{
             years: 3,
-            students: 176,
-            raised: 30941,
-            protected: 37712,
+            students: 177,
+            raised: 30962,
+            protected: 37739,
           }}
         />
         <Button variant="outline" size="large" className="mt-4 mb-12" href="/oxford/donate">Donate</Button>
@@ -89,14 +89,14 @@ const IndexPage = () => (
       <SectionTitle>More Info</SectionTitle>
       <FAQs>
         <FAQ title="Sounds great, where do I sign up?">
-          <p>Our donations period is closed for 2022. We have just opened applications for our 2022/23 committee! <a href="https://forms.gle/Q628hYRY2Pc6ccVh6">Click here </a>to find out more about what roles we have available. <a href="https://forms.gle/Q628hYRY2Pc6ccVh6">Apply today</a> because applications close on Sunday the 8th of May.</p>
+          <p>Our donations period is closed for 2022. We have just opened applications for our 2022/23 committee! <a href="https://forms.gle/Q628hYRY2Pc6ccVh6">Click here </a>to find out more about what roles we have available. <a href="https://forms.gle/Q628hYRY2Pc6ccVh6">Apply today</a> because applications close on Sunday the 15th of May.</p>
         </FAQ>
 
         <FAQ title="How can I get involved?">
           <p>We're so pleased you're interested in Raise, and look forward to celebrating with you! Here are a few ways you can help grow the movement:</p>
           <p><b>Raise Reps:</b> Reps are a central part of Raise’s community and are crucial to spreading the Raise message! Keep an eye on our social media for udpates about rep recruitment for next academic year. See below for more details on what a Raise rep does.</p>
           <p><b>Spread the word:</b> Letting your friends know about Raise is one of the most valuable things you can do - aside from the huge impact of their donations, celebrating is more fun when we do it together! Why not show them our website, share our posts on social media, and invite friends to follow our <a href="https://www.facebook.com/raiseoxford">Facebook</a> and <a href="https://www.instagram.com/raiseoxford/">Instagram</a> pages themselves?</p>
-          <p><b>Committee:</b> If you really want to shape the future of Raise, you could apply to join our committee, which coordinates everything we do, from events and partnerships to fundraising and publicity. Applications are currently open, and close on Sunday the 8th of May!<a href="https://forms.gle/Q628hYRY2Pc6ccVh6"> Click here </a>to find out more about what roles we have available. <a href="https://forms.gle/Q628hYRY2Pc6ccVh6">Apply today</a> if you're interested in applying to be part of our 2022/23 committee.</p>
+          <p><b>Committee:</b> If you really want to shape the future of Raise, you could apply to join our committee, which coordinates everything we do, from events and partnerships to fundraising and publicity. Applications are currently open, and close on Sunday the 15th of May!<a href="https://forms.gle/Q628hYRY2Pc6ccVh6"> Click here </a>to find out more about what roles we have available. <a href="https://forms.gle/Q628hYRY2Pc6ccVh6">Apply today</a> if you're interested in applying to be part of our 2022/23 committee.</p>
           <p><b>Sponsorship:</b> The support of our generous partners is invaluable for helping us to put on our summer celebration at the end of each year. If you know anyone who may be interested in supporting Raise and allowing us to grow even more, please do <a href="./#contact">get in touch</a>.</p>
         </FAQ>
 
