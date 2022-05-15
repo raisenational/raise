@@ -46,10 +46,6 @@ jobs:
       - name: "website: Test"
         working-directory: website
         run: npm run test -- --verbose
-      - name: "website: Codeowners"
-        if: github.ref != 'refs/heads/master'
-        working-directory: website
-        run: npm run codeowners
 
       - name: "website: Deploy to dev environment"
         if: github.ref == 'refs/heads/master'

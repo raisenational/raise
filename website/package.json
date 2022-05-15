@@ -22,8 +22,7 @@
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "test": "TZ=utc jest",
     "test:watch": "TZ=utc jest --watch",
-    "type-check": "tsc",
-    "codeowners": "node codeowners.js"
+    "type-check": "tsc"
   },
   "engines": {
     "node": ">=14.15.0"
