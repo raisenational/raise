@@ -98,7 +98,7 @@ const getVersion = (): string => {
 
 const serverlessConfiguration: AWS = {
   service: SERVICE_NAME,
-  frameworkVersion: "2",
+  frameworkVersion: "3",
   custom: {
     webpack: {
       webpackConfig: "./webpack.config.js",
@@ -182,7 +182,6 @@ const serverlessConfiguration: AWS = {
       STAGE: env.STAGE,
       VERSION: getVersion(),
     },
-    lambdaHashingVersion: "20201221",
     memorySize: 256,
     timeout: 10,
     iam: {
@@ -204,10 +203,6 @@ const serverlessConfiguration: AWS = {
           },
         ],
       },
-    },
-    // https://www.serverless.com/framework/docs/providers/aws/events/event-bridge
-    eventBridge: {
-      useCloudFormation: true,
     },
   },
   functions: {
