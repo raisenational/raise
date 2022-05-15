@@ -1,13 +1,10 @@
 // NB: we use dynamodb-localhost as it's the same as serverless-offline, and reduces our dependencies
 const dynamodbLocal = require("dynamodb-localhost")
 const path = require("path")
-const Serverless = require("serverless")
+const execSync = require('child_process').execSync;
 
 module.exports = async () => {
-  // Set up a serverless instance
-  const serverless = new Serverless()
-  process.stdin.isTTY = false // prevent plugin errors
-  await serverless.init()
+  const service = JSON.parse(execSync('npx serverless print --format json', { encoding: 'utf-8' }))
 
   // Fix log from dynamodb-localhost as "Determining test suites to run..." misses trailing newline
   console.log()
@@ -15,12 +12,11 @@ module.exports = async () => {
   // Start dynamodb-localhost
   dynamodbLocal.start({
     port: 8005,
-    install_path: serverless.config && path.join(__dirname, '../.dynamodb'),
+    install_path: path.join(__dirname, '../.dynamodb'),
     sharedDb: false, // So each test gets its own database
   })
 
   // Store the table CloudFormation resources in the __DYNAMODB_TABLES environment variable
-  const service = await serverless.variables.populateService()
   process.env.__DYNAMODB_TABLES = JSON.stringify(
     Object.values(service.resources.Resources)
       .filter((resource) => resource.Type === "AWS::DynamoDB::Table")
