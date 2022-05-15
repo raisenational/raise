@@ -33,6 +33,7 @@
     "jsonwebtoken": "^8.5.1",
     "middy-middleware-jwt-auth": "^5.0.0",
     "serverless-dynamodb-local": "^0.2.40",
+    "source-map-support": "^0.5.21",
     "stripe": "^8.184.0",
     "ulid": "^2.3.0"
   },
