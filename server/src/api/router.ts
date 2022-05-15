@@ -1,4 +1,5 @@
 import type { APIGatewayProxyEventV2, APIGatewayProxyResult, Handler as AWSHandler } from "aws-lambda"
+import "source-map-support/register"
 
 // This router allows us to run the server with a single AWS Lambda. Doing this means:
 // - it is kept warm between time-proximate requests to different endpoints, e.g. when navigating around admin pages

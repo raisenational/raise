@@ -3,7 +3,8 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "noEmit": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true
   },
   "include": [
     "src/**/*.ts",

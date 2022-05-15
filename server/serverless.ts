@@ -119,7 +119,8 @@ const serverlessConfiguration: AWS = {
       packagerOptions: {
         scripts: [
           // Remove unused code that the bundler misses
-          "rm -rf node_modules/@types",
+          "find node_modules/ -name \"*.d.ts\" -type f -delete",
+          "find node_modules/ -name \"*.md\" ! -name \"LICENSE.md\" -type f -delete",
         ],
       },
     },

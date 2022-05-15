@@ -3,6 +3,7 @@ import axios from "axios"
 import jwt from "jsonwebtoken"
 import env from "../../env/env"
 import type { AuthTokenPayload } from "../../helpers/types"
+import "source-map-support/register"
 
 export const main: ScheduledHandler<unknown> = async () => {
   const now = Math.floor(new Date().getTime() / 1000)
