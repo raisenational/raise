@@ -5,7 +5,7 @@ import Page from "../../components/Page"
 import Section, { SectionTitle } from "../../components/Section"
 import Navigation from "../../components/Navigation"
 import FAQs, { FAQ } from "../../components/FAQs"
-import Philosophy from "../../components/Philosophy"
+import PhilosophyV2 from "../../components/PhilosophyV2"
 import ContactForm from "../../components/ContactForm"
 import Panel from "../../components/Panel"
 import Footer from "../../components/Footer"
@@ -96,10 +96,7 @@ const IndexPage = () => (
       <Button variant="outline" size="large" className="mt-4" href="/demo/donate">Donate</Button>
     </Section>
 
-    <Section id="our-philosophy">
-      <SectionTitle>Our Philosophy</SectionTitle>
-      <Philosophy />
-    </Section>
+    <PhilosophyV2 />
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>

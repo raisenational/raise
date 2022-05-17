@@ -8,7 +8,7 @@ import Navigation from "../../components/Navigation"
 import Cover, { CTADown } from "../../components/Cover"
 import IntroStats from "../../components/IntroStats"
 import FAQs, { FAQ } from "../../components/FAQs"
-import Philosophy from "../../components/Philosophy"
+import PhilosophyV2 from "../../components/PhilosophyV2"
 import ContactForm from "../../components/ContactForm"
 import SocialIcon from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
@@ -106,10 +106,7 @@ const IndexPage = () => (
       <Button variant="outline" className="mt-4" href="https://www.facebook.com/groups/966154864287768">Join Facebook group</Button>
     </Section>
 
-    <Section id="our-philosophy">
-      <SectionTitle>Our Philosophy</SectionTitle>
-      <Philosophy />
-    </Section>
+    <PhilosophyV2 />
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
