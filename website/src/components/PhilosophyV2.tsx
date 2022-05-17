@@ -60,6 +60,16 @@ const Philosophy: React.FC = () => {
         || window.matchMedia("(prefers-reduced-motion: reduce)").matches
       ),
     })
+
+    // Sometimes AOS will initialise before some animations that change the page height run
+    // (such as the minimization of FAQs). This causes a bug where elements aren't triggered
+    // at the right scroll offsets, so users can't see the content. We force a refresh 3s
+    // after first initalising AOS so it recalculates these heights, to cover for this.
+    const t = setTimeout(() => {
+      AOS.refresh()
+    }, 3000)
+
+    return () => clearTimeout(t)
   })
 
   return (
