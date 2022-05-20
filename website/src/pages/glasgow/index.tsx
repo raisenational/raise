@@ -7,7 +7,7 @@ import Navigation from "../../components/Navigation"
 import Cover, { CTADown } from "../../components/Cover"
 import IntroStats from "../../components/IntroStats"
 import FAQs, { FAQ } from "../../components/FAQs"
-import Philosophy from "../../components/Philosophy"
+import PhilosophyV2 from "../../components/PhilosophyV2"
 import ContactForm from "../../components/ContactForm"
 import SocialIcon from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
@@ -80,7 +80,7 @@ const IndexPage = () => (
       <iframe className="w-full max-w-2xl mx-auto mt-12 rounded shadow-raise" title="YouTube: Raise: A Celebration of Giving" width="672" height="378" src="https://www.youtube-nocookie.com/embed/6bEloAzIV2c?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
     </Section>
 
-    <Section id="faq">
+    <Section id="faq" className="mb-16 lg:mb-32">
       <SectionTitle>More Info</SectionTitle>
       <FAQs>
         <FAQ title="Sounds great, where do I sign up?">
@@ -134,10 +134,7 @@ const IndexPage = () => (
       </FAQs>
     </Section>
 
-    <Section id="our-philosophy">
-      <SectionTitle>Our Philosophy</SectionTitle>
-      <Philosophy />
-    </Section>
+    <PhilosophyV2 />
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>

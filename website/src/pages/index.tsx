@@ -4,13 +4,14 @@ import Helmet from "react-helmet"
 import Page from "../components/Page"
 import Section, { SectionTitle } from "../components/Section"
 import Navigation from "../components/Navigation"
-import Cover, { CTADown } from "../components/Cover"
+import { CTADown } from "../components/Cover"
 import IntroStats from "../components/IntroStats"
-import Philosophy from "../components/Philosophy"
 import PhilosophyV2 from "../components/PhilosophyV2"
 import ContactForm from "../components/ContactForm"
 import Footer from "../components/Footer"
-import env from "../env/env"
+import SocialIcon from "../components/SocialIcon"
+
+import email from "../images/email.svg"
 
 const IndexPage = () => (
   <Page>
@@ -18,42 +19,44 @@ const IndexPage = () => (
       <title>Raise</title>
       <meta property="og:title" content="Raise" />
     </Helmet>
-    <Cover heightClassName={env.STAGE === "prod" ? "min-h-screen" : "min-h-screen sm:min-h-[90vh]"}>
-      <Navigation
-        left={[
-          { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
-          { text: "Durham", href: "/durham/" },
-          { text: "Glasgow", href: "/glasgow/" },
-          { text: "Oxford", href: "/oxford/" },
-          { text: "Sheffield", href: "/sheffield/" },
-          { text: "Warwick", href: "/warwick/" },
-          { text: "Alumni", href: "/alumni/" },
-        ]}
-        right={[
-        ]}
+    <Navigation
+      left={[
+        { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
+        { text: "Durham", href: "/durham/" },
+        { text: "Glasgow", href: "/glasgow/" },
+        { text: "Oxford", href: "/oxford/" },
+        { text: "Sheffield", href: "/sheffield/" },
+        { text: "Warwick", href: "/warwick/" },
+        { text: "Alumni", href: "/alumni/" },
+      ]}
+      right={[
+      ]}
+    />
+    <Section className="px-8 my-16">
+      <IntroStats
+        title="Raise: A Celebration of Giving"
+        tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our chapter websites to learn more about what we do."
+        statistics={{
+          years: 4,
+          students: 1366,
+          raised: 284581,
+          protected: 340013,
+        }}
       />
-      <Section className="px-8">
-        <IntroStats
-          title="Raise: A Celebration of Giving"
-          tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our chapter websites to learn more about what we do."
-          statistics={{
-            years: 4,
-            students: 1366,
-            raised: 284581,
-            protected: 340013,
-          }}
-        />
-      </Section>
-      <CTADown
-        text="Our philosophy"
-        href="#our-philosophy"
-      />
-    </Cover>
+
+    </Section>
+    <CTADown
+      text="Our philosophy"
+      href="#our-philosophy"
+    />
 
     <PhilosophyV2 />
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
+      <div className="flex justify-center gap-8">
+        <SocialIcon icon={email} alt="Email" href="mailto:raisenational@gmail.com" />
+      </div>
       <ContactForm className="mt-8" action="https://formspree.io/f/mnqlrnvq" />
     </Section>
 
