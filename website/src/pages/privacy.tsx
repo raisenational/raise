@@ -33,7 +33,7 @@ const PrivacyPage = () => (
       <p className="font-black font-raise-header mt-8">Who we are and how to conatct us</p>
       <p>We are Raise, and are the data controller for your personal data. You can contact us via email at raisenational@gmail.com.</p>
 
-      <p className="font-black font-raise-header mt-8 mb-2">Why we process your data</p>
+      <p className="font-black font-raise-header mt-8 mb-2">Why we process your personal data</p>
       <Table
         definition={{
           purpose: { label: "Purpose", className: "whitespace-pre-line align-top" },
@@ -76,14 +76,14 @@ const PrivacyPage = () => (
         }]}
       />
 
-      <p className="font-black font-raise-header mt-8 mb-2">How long we store your data</p>
+      <p className="font-black font-raise-header mt-8 mb-2">How long we store your personal data</p>
       <Table
         definition={{
           category: { label: "Category", className: "whitespace-pre-line align-top" },
           heldUntil: { label: "How long is it held?", className: "whitespace-pre-line align-top" },
         }}
         items={[{
-          category: "Data where we have your consent, such as mailing list data",
+          category: "Data where we have your consent, such as mailing lists or yearbook pages",
           heldUntil: "Until you withdraw your consent.",
         }, {
           category: "Data we need to keep to comply with a legal obligation, such as tax or accounting records",
