@@ -83,10 +83,12 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
       />
       <PropertyEditor
         definition={{
+          totalDonations: { label: "Total number of donations" },
           totalGbpRaised: { label: "Total GBP raised", formatter: (v: number | undefined) => format.amountShort("gbp", v) },
           totalPeopleProtected: { label: "Total people protected" },
         }}
         item={asResponseValues({
+          totalDonations: fundraisers.data?.reduce((acc, cur) => acc + cur.donationsCount, 0),
           totalGbpRaised: fundraisers.data?.reduce((acc, cur) => acc + (cur.currency === "gbp" ? cur.totalRaised : 0), 0),
           totalPeopleProtected: fundraisers.data?.reduce((acc, cur) => acc + convert.moneyToPeopleProtected(cur.currency, cur.totalRaised), 0),
         }, fundraisers)}
