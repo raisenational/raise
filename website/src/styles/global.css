@@ -57,6 +57,10 @@
     @apply text-blue-700
   }
 
+  p a:hover {
+    @apply text-blue-500
+  }
+
   .FAQ + .FAQ {
     @apply border-t border-gray-300
   }

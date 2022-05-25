@@ -1,20 +1,21 @@
 import * as React from "react"
 import classNames from "classnames"
 
-const Quote: React.FC<{ className?: string, by: string, headshotSrc: string, imagePlacement?: "left" | "right" }> = ({
+const Quote: React.FC<{ className?: string, by: string, headshotSrc?: string, imagePlacement?: "left" | "right" }> = ({
   children, className, by, headshotSrc, imagePlacement = "right", ...props
 }) => (
   <div className={classNames("flex", className)} {...props}>
-    {imagePlacement === "left" && <QuoteImage by={by} headshotSrc={headshotSrc} imagePlacement={imagePlacement} />}
-    <div className={classNames("relative", imagePlacement === "right" ? "mr-12 ml-8" : "ml-12 mr-8")}>
+    {headshotSrc && imagePlacement === "left" && <QuoteImage by={by} headshotSrc={headshotSrc} imagePlacement={imagePlacement} />}
+    {/* eslint-disable-next-line no-nested-ternary */}
+    <div className={classNames("relative flex-grow", headshotSrc ? (imagePlacement === "right" ? "mr-12 ml-8" : "ml-12 mr-8") : "mx-8")}>
       <p className="text-left before:content-['“'] before:absolute before:text-[20rem] before:leading-none before:font-black before:-left-12 before:-top-12 before:opacity-20">
         {children}
       </p>
-      <p className="text-right font-bold mt-2">
+      <p className={classNames("font-bold mt-2", !children ? "text-left" : "text-right")}>
         {by}
       </p>
     </div>
-    {imagePlacement === "right" && <QuoteImage by={by} headshotSrc={headshotSrc} imagePlacement={imagePlacement} />}
+    {headshotSrc && imagePlacement === "right" && <QuoteImage by={by} headshotSrc={headshotSrc} imagePlacement={imagePlacement} />}
   </div>
 )
 
