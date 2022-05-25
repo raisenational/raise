@@ -18,12 +18,14 @@ const env: Env = {
   // Secret key is the restricted key with Customers and PaymentIntents read and write
   // https://dashboard.stripe.com/test/apikeys
   // https://dashboard.stripe.com/webhooks (locally: stripe listen --forward-to localhost:8001/stripe/webhook)
+  // These tokens are for the Raise Local Stripe account (acct_1KCByfI5VgKIYyWl) in test mode
   STRIPE_PUBLISHABLE_KEY: "pk_test_51KCByfI5VgKIYyWlqwp6p3qRFscr4s7bAaIC7EjZAunHLJEQoclC4it33M4Iv0U5jCVlDMQ0g8nMcJngVnIwjIOJ00vfxDTCMw",
   STRIPE_SECRET_KEY: "rk_test_51KCByfI5VgKIYyWltRhqNIY4rOF2N4NUugjagIsndS0VntmICvubfWqdUS54vbtyKOueWdFJ78gmE1MczkVul9rm00asSiKk1n",
   STRIPE_WEBHOOK_SECRET: "whsec_O8eBLpkh8HoNl5h2xfUbK4z2wa3111SA",
 
   // Slack configuration
   // The bot should have the chat:write scope and be able to access the channel
+  // This token is for the 'Errors Raise' bot, added to the #test-channel in the domdomegg.slack.com workspace
   SLACK_BOT_TOKEN: "xoxb-825862040501-2829297236371-ThN78vWqKY46NDUEtlbiLpGX",
   SLACK_CHANNEL_ID: "CQ9RC2HB7",
 
