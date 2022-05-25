@@ -1,6 +1,7 @@
 import * as React from "react"
 import Helmet from "react-helmet"
 
+import { convert } from "@raise/shared"
 import Page from "../components/Page"
 import Section, { SectionTitle } from "../components/Section"
 import Navigation from "../components/Navigation"
@@ -37,10 +38,10 @@ const IndexPage = () => (
         title="Raise: A Celebration of Giving"
         tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our chapter websites to learn more about what we do."
         statistics={{
-          years: 4,
-          students: 1366,
-          raised: 284581,
-          protected: 340013,
+          years: 4 + 1,
+          students: 1366 + 733,
+          raised: 284581 + 100445,
+          protected: 340013 + convert.moneyToPeopleProtected("gbp", 10044544),
         }}
       />
 

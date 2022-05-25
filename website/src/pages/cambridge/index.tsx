@@ -2,6 +2,7 @@ import * as React from "react"
 import Helmet from "react-helmet"
 import { withAssetPrefix } from "gatsby"
 
+import { convert } from "@raise/shared"
 import Page from "../../components/Page"
 import Section, { SectionTitle } from "../../components/Section"
 import Navigation from "../../components/Navigation"
@@ -47,10 +48,10 @@ const IndexPage = () => (
           title="May Week Alternative"
           tagline="MWA is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
           statistics={{
-            years: 4,
-            students: 1089,
-            raised: 228296,
-            protected: 269737,
+            years: 4 + 1,
+            students: 1089 + 385,
+            raised: 228296 + 51879,
+            protected: 269737 + convert.moneyToPeopleProtected("gbp", 5187926),
           }}
         />
       </Section>

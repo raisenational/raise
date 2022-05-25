@@ -1,6 +1,7 @@
 import * as React from "react"
 import Helmet from "react-helmet"
 
+import { convert } from "@raise/shared"
 import Page from "../../components/Page"
 import Section, { SectionTitle } from "../../components/Section"
 import Navigation from "../../components/Navigation"
@@ -45,10 +46,10 @@ const IndexPage = () => (
           title="Raise Oxford"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
           statistics={{
-            years: 3,
-            students: 177,
-            raised: 30962,
-            protected: 37739,
+            years: 3 + 1,
+            students: 177 + 95,
+            raised: 30962 + 17004,
+            protected: 37739 + convert.moneyToPeopleProtected("gbp", 1700381),
           }}
         />
         <Button variant="outline" size="large" className="mt-4 mb-12" href="/oxford/donate">Donate</Button>
