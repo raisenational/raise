@@ -58,6 +58,7 @@ const USER_MAP: Record<Env["STAGE"], Record<string, Group[]>> = {
     "20e6081c59abea2fbca6c58b44c785ab7a80ca4f": [g.Oxford], // Neha Banerjee
     "0361cc51f2c7f88fee8249b70da9c723bb7ee51d": [g.Oxford], // Oviya Anand
     "c37b818d29d0811a29f85348e9287e6a8e9b4447": [g.Sheffield], // Hannah Wragg
+    "127da419c96f6dfcfa2d32e71e1a9c2581b781ef": [g.Warwick], // Shahamath Hussain
   },
 }
 
