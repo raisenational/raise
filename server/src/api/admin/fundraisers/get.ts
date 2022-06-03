@@ -1,6 +1,6 @@
-import { fundraisersSchema } from "@raise/shared"
 import { scan } from "../../../helpers/db"
 import { fundraiserTable } from "../../../helpers/tables"
 import { middyfy } from "../../../helpers/wrapper"
+import { $Fundraisers } from "../../../schemas"
 
-export const main = middyfy(null, fundraisersSchema, true, async () => scan(fundraiserTable))
+export const main = middyfy(null, $Fundraisers, true, async () => scan(fundraiserTable))

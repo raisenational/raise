@@ -1,17 +1,16 @@
 import createHttpError from "http-errors"
 import { ulid } from "ulid"
 import Stripe from "stripe"
-import {
-  publicDonationRequest, publicPaymentIntentResponse, format, calcPaymentSchedule,
-} from "@raise/shared"
+import { format, calcPaymentSchedule } from "@raise/shared"
 import { middyfy } from "../../../../../helpers/wrapper"
 import { get, insert } from "../../../../../helpers/db"
 import { donationTable, fundraiserTable, paymentTable } from "../../../../../helpers/tables"
 import env from "../../../../../env/env"
+import { $PublicDonationRequest, $PublicPaymentIntentResponse } from "../../../../../schemas"
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
 
-export const main = middyfy(publicDonationRequest, publicPaymentIntentResponse, false, async (event) => {
+export const main = middyfy($PublicDonationRequest, $PublicPaymentIntentResponse, false, async (event) => {
   const now = Math.floor(new Date().getTime() / 1000)
   const fundraiser = await get(fundraiserTable, { id: event.pathParameters.fundraiserId })
 

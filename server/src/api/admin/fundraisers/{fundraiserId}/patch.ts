@@ -1,12 +1,13 @@
-import { fundraiserEditsSchema, g } from "@raise/shared"
+import { g } from "@raise/shared"
 import createHttpError from "http-errors"
 import { middyfy } from "../../../../helpers/wrapper"
 import {
   assertHasGroup, assertHasGroupForProperties, checkPrevious, get, query, update,
 } from "../../../../helpers/db"
 import { donationTable, fundraiserTable } from "../../../../helpers/tables"
+import { $FundraiserEdits } from "../../../../schemas"
 
-export const main = middyfy(fundraiserEditsSchema, null, true, async (event) => {
+export const main = middyfy($FundraiserEdits, null, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }), g.National)
   assertHasGroupForProperties(event, ["currency", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "groupsWithAccess"], g.National)
   assertHasGroupForProperties(event, ["totalRaised", "donationsCount"], g.NationalTech)

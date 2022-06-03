@@ -1,8 +1,8 @@
 import { ulid } from "ulid"
-import { PublicDonationRequest } from "@raise/shared"
 import { call, makeFundraiser, setMockDate } from "../../../../../../local/testHelpers"
 import { insert, scan } from "../../../../../helpers/db"
 import { donationTable, fundraiserTable, paymentTable } from "../../../../../helpers/tables"
+import { PublicDonationRequest } from "../../../../../schemas"
 import { main } from "./post"
 
 const paymentIntentCreate = jest.fn().mockResolvedValue({

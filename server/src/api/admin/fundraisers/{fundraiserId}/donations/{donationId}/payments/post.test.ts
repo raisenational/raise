@@ -1,7 +1,7 @@
-import { PaymentCreation } from "@raise/shared"
 import { makeFundraiser, makeDonation, call } from "../../../../../../../../local/testHelpers"
 import { get, insert, query } from "../../../../../../../helpers/db"
 import { fundraiserTable, donationTable, paymentTable } from "../../../../../../../helpers/tables"
+import { PaymentCreation } from "../../../../../../../schemas"
 import { main } from "./post"
 
 test("can insert multiple payments on a donation", async () => {

@@ -1,46 +1,135 @@
-/* eslint-disable */
 /**
 * This file was automatically generated. DO NOT MODIFY IT BY HAND.
-* Instead, modify schemas.ts, and run "npm run build".
+* Instead, modify schemas.ts, and run "npm run schemas".
 */
-export type AuditLogMetadata =
-  | null
-  | boolean
-  | number
-  | string
-  | AuditLogMetadata[]
-  | {
-      [k: string]: AuditLogMetadata;
-    };
+/* eslint-disable */
+export type Email = string;
 
-export interface AuditLog {
-  id: string;
-  object: string;
-  subject: string;
-  action: "create" | "edit" | "login" | "plus" | "security" | "run";
-  at: number;
-  sourceIp: string;
-  userAgent: string;
-  routeRaw: string;
-  metadata: {
-    [k: string]: AuditLogMetadata;
-  };
-  ttl: number | null;
+export type Ulid = string;
+
+export interface Status {
+  message: string;
 }
 
-export type AuditLogs = {
-  id: string;
-  object: string;
-  subject: string;
-  action: "create" | "edit" | "login" | "plus" | "security" | "run";
-  at: number;
+export interface LoginResponse {
+  accessToken: string;
+  expiresAt: number;
+  groups: string[];
+}
+
+export interface GoogleLoginRequest {
+  idToken: string;
+  accessToken: string;
+}
+
+export interface ImpersonationLoginRequest {
+  email: string;
+}
+
+export interface Profile {
+  email: string;
+  groups: string[];
+  issuedAt: number;
+  expiresAt: number;
   sourceIp: string;
-  userAgent: string;
-  routeRaw: string;
-  metadata: {
-    [k: string]: AuditLogMetadata;
+}
+
+export interface FundraiserCreation {
+  internalName?: string;
+  publicName?: string;
+  activeFrom?: number;
+  activeTo?: number;
+  recurringDonationsTo?: number;
+  paused?: boolean;
+  currency?: "gbp" | "usd";
+  goal?: number;
+  totalRaised?: number;
+  donationsCount?: number;
+  matchFundingRate?: number;
+  matchFundingPerDonationLimit?: number | null;
+  matchFundingRemaining?: number | null;
+  minimumDonationAmount?: number | null;
+  suggestedDonationAmountOneOff?: number;
+  suggestedDonationAmountWeekly?: number;
+  suggestedContributionAmount?: number | null;
+  eventLink?: string | null;
+  moreInvolvedLink?: string | null;
+  groupsWithAccess?: string[];
+}
+
+export interface FundraiserEdits {
+  internalName?: string;
+  publicName?: string;
+  activeFrom?: number;
+  activeTo?: number;
+  recurringDonationsTo?: number;
+  paused?: boolean;
+  currency?: "gbp" | "usd";
+  goal?: number;
+  totalRaised?: number;
+  donationsCount?: number;
+  matchFundingRate?: number;
+  matchFundingPerDonationLimit?: number | null;
+  matchFundingRemaining?: number | null;
+  minimumDonationAmount?: number | null;
+  suggestedDonationAmountOneOff?: number;
+  suggestedDonationAmountWeekly?: number;
+  suggestedContributionAmount?: number | null;
+  eventLink?: string | null;
+  moreInvolvedLink?: string | null;
+  groupsWithAccess?: string[];
+  previous?: {
+    totalRaised?: number;
+    donationsCount?: number;
   };
-  ttl: number | null;
+}
+
+export interface Fundraiser {
+  id: string;
+  internalName: string;
+  publicName: string;
+  activeFrom: number;
+  activeTo: number;
+  recurringDonationsTo: number;
+  paused: boolean;
+  currency: "gbp" | "usd";
+  goal: number;
+  totalRaised: number;
+  donationsCount: number;
+  matchFundingRate: number;
+  matchFundingPerDonationLimit: number | null;
+  matchFundingRemaining: number | null;
+  minimumDonationAmount: number | null;
+  suggestedDonationAmountOneOff: number;
+  suggestedDonationAmountWeekly: number;
+  suggestedContributionAmount: number | null;
+  eventLink: string | null;
+  moreInvolvedLink: string | null;
+  groupsWithAccess: string[];
+}
+
+export type Fundraisers = {
+  id: string;
+  internalName: string;
+  publicName: string;
+  activeFrom: number;
+  activeTo: number;
+  recurringDonationsTo: number;
+  paused: boolean;
+  currency: "gbp" | "usd";
+  goal: number;
+  totalRaised: number;
+  donationsCount: number;
+  matchFundingRate: number;
+  matchFundingPerDonationLimit: number | null;
+  matchFundingRemaining: number | null;
+  minimumDonationAmount: number | null;
+  suggestedDonationAmountOneOff: number;
+  suggestedDonationAmountWeekly: number;
+  suggestedContributionAmount: number | null;
+  eventLink: string | null;
+  moreInvolvedLink: string | null;
+  groupsWithAccess: string[];
 }[];
 
 export interface DonationCreation {
@@ -157,130 +246,6 @@ export type Donations = {
   contributionAmount: number;
 }[];
 
-export type Email = string;
-
-export interface FundraiserCreation {
-  internalName?: string;
-  publicName?: string;
-  activeFrom?: number;
-  activeTo?: number;
-  recurringDonationsTo?: number;
-  paused?: boolean;
-  currency?: "gbp" | "usd";
-  goal?: number;
-  totalRaised?: number;
-  donationsCount?: number;
-  matchFundingRate?: number;
-  matchFundingPerDonationLimit?: number | null;
-  matchFundingRemaining?: number | null;
-  minimumDonationAmount?: number | null;
-  suggestedDonationAmountOneOff?: number;
-  suggestedDonationAmountWeekly?: number;
-  suggestedContributionAmount?: number | null;
-  eventLink?: string | null;
-  moreInvolvedLink?: string | null;
-  groupsWithAccess?: string[];
-}
-
-export interface FundraiserEdits {
-  internalName?: string;
-  publicName?: string;
-  activeFrom?: number;
-  activeTo?: number;
-  recurringDonationsTo?: number;
-  paused?: boolean;
-  currency?: "gbp" | "usd";
-  goal?: number;
-  totalRaised?: number;
-  donationsCount?: number;
-  matchFundingRate?: number;
-  matchFundingPerDonationLimit?: number | null;
-  matchFundingRemaining?: number | null;
-  minimumDonationAmount?: number | null;
-  suggestedDonationAmountOneOff?: number;
-  suggestedDonationAmountWeekly?: number;
-  suggestedContributionAmount?: number | null;
-  eventLink?: string | null;
-  moreInvolvedLink?: string | null;
-  groupsWithAccess?: string[];
-  previous?: {
-    totalRaised?: number;
-    donationsCount?: number;
-  };
-}
-
-export interface Fundraiser {
-  id: string;
-  internalName: string;
-  publicName: string;
-  activeFrom: number;
-  activeTo: number;
-  recurringDonationsTo: number;
-  paused: boolean;
-  currency: "gbp" | "usd";
-  goal: number;
-  totalRaised: number;
-  donationsCount: number;
-  matchFundingRate: number;
-  matchFundingPerDonationLimit: number | null;
-  matchFundingRemaining: number | null;
-  minimumDonationAmount: number | null;
-  suggestedDonationAmountOneOff: number;
-  suggestedDonationAmountWeekly: number;
-  suggestedContributionAmount: number | null;
-  eventLink: string | null;
-  moreInvolvedLink: string | null;
-  groupsWithAccess: string[];
-}
-
-export type Fundraisers = {
-  id: string;
-  internalName: string;
-  publicName: string;
-  activeFrom: number;
-  activeTo: number;
-  recurringDonationsTo: number;
-  paused: boolean;
-  currency: "gbp" | "usd";
-  goal: number;
-  totalRaised: number;
-  donationsCount: number;
-  matchFundingRate: number;
-  matchFundingPerDonationLimit: number | null;
-  matchFundingRemaining: number | null;
-  minimumDonationAmount: number | null;
-  suggestedDonationAmountOneOff: number;
-  suggestedDonationAmountWeekly: number;
-  suggestedContributionAmount: number | null;
-  eventLink: string | null;
-  moreInvolvedLink: string | null;
-  groupsWithAccess: string[];
-}[];
-
-export interface GoogleLoginRequest {
-  idToken: string;
-  accessToken: string;
-}
-
-export interface ImpersonationLoginRequest {
-  email: string;
-}
-
-export interface LoginResponse {
-  accessToken: string;
-  expiresAt: number;
-  groups: string[];
-}
-
-export interface PaymentCreation {
-  at?: number;
-  donationAmount?: number;
-  contributionAmount?: number;
-  matchFundingAmount?: number | null;
-  method?: "card" | "cash" | "direct_to_charity";
-  reference?: string | null;
-}
-
 export type PaymentPropertyEdits =
   | {
       donationAmount: number;
@@ -297,6 +262,15 @@ export type PaymentPropertyEdits =
   | {
       status: "paid" | "pending" | "scheduled" | "cancelled";
     };
+
+export interface PaymentCreation {
+  at?: number;
+  donationAmount?: number;
+  contributionAmount?: number;
+  matchFundingAmount?: number | null;
+  method?: "card" | "cash" | "direct_to_charity";
+  reference?: string | null;
+}
 
 export interface Payment {
   at: number;
@@ -324,33 +298,45 @@ export type Payments = {
   fundraiserId: string;
 }[];
 
-export interface Profile {
-  email: string;
-  groups: string[];
-  issuedAt: number;
-  expiresAt: number;
+export type AuditLogMetadata =
+  | null
+  | boolean
+  | number
+  | string
+  | AuditLogMetadata[]
+  | {
+      [k: string]: AuditLogMetadata;
+    };
+
+export interface AuditLog {
+  id: string;
+  object: string;
+  subject: string;
+  action: "create" | "edit" | "login" | "plus" | "security" | "run";
+  at: number;
   sourceIp: string;
+  userAgent: string;
+  routeRaw: string;
+  metadata: {
+    [k: string]: AuditLogMetadata;
+  };
+  ttl: number | null;
 }
 
-export interface PublicDonationRequest {
-  donationAmount: number;
-  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
-  contributionAmount: number;
-  giftAid: boolean;
-  donorName: string;
-  donorEmail: string;
-  emailConsentInformational: boolean;
-  emailConsentMarketing: boolean;
-  addressLine1: string | null;
-  addressLine2: string | null;
-  addressLine3: string | null;
-  addressPostcode: string | null;
-  addressCountry: string | null;
-  overallPublic: boolean;
-  namePublic: boolean;
-  donationAmountPublic: boolean;
-  comment: string | null;
-}
+export type AuditLogs = {
+  id: string;
+  object: string;
+  subject: string;
+  action: "create" | "edit" | "login" | "plus" | "security" | "run";
+  at: number;
+  sourceIp: string;
+  userAgent: string;
+  routeRaw: string;
+  metadata: {
+    [k: string]: AuditLogMetadata;
+  };
+  ttl: number | null;
+}[];
 
 export interface PublicFundraiser {
   id: string;
@@ -385,6 +371,26 @@ export interface PublicFundraiser {
   }[];
 }
 
+export interface PublicDonationRequest {
+  donationAmount: number;
+  recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
+  contributionAmount: number;
+  giftAid: boolean;
+  donorName: string;
+  donorEmail: string;
+  emailConsentInformational: boolean;
+  emailConsentMarketing: boolean;
+  addressLine1: string | null;
+  addressLine2: string | null;
+  addressLine3: string | null;
+  addressPostcode: string | null;
+  addressCountry: string | null;
+  overallPublic: boolean;
+  namePublic: boolean;
+  donationAmountPublic: boolean;
+  comment: string | null;
+}
+
 export interface PublicPaymentIntentResponse {
   stripeClientSecret: string;
   currency: "gbp" | "usd";
@@ -394,10 +400,6 @@ export interface PublicPaymentIntentResponse {
     amount: number;
     at: number;
   }[];
-}
-
-export interface Status {
-  message: string;
 }
 
 export interface StripeWebhookRequest {
@@ -438,5 +440,3 @@ export type Tasks = {
   id: string;
   name: string;
 }[];
-
-export type Ulid = string;

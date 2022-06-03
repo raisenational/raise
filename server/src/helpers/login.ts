@@ -1,7 +1,7 @@
 import createHttpError from "http-errors"
 import jwt from "jsonwebtoken"
-import { LoginResponse } from "@raise/shared"
 import env from "../env/env"
+import { LoginResponse } from "../schemas"
 import { insertAudit } from "./db"
 import { getGroups } from "./groups"
 import { AuthTokenPayload } from "./types"

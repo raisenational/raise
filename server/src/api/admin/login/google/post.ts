@@ -1,12 +1,12 @@
 import { OAuth2Client } from "google-auth-library"
 import createHttpError from "http-errors"
-import { googleLoginRequestSchema, loginResponseSchema } from "@raise/shared"
 import { middyfy } from "../../../../helpers/wrapper"
 import env from "../../../../env/env"
 import { login } from "../../../../helpers/login"
+import { $GoogleLoginRequest, $LoginResponse } from "../../../../schemas"
 
 // Exchanges a Google id and access token for a Raise access token
-export const main = middyfy(googleLoginRequestSchema, loginResponseSchema, false, async (event) => {
+export const main = middyfy($GoogleLoginRequest, $LoginResponse, false, async (event) => {
   if (!env.GOOGLE_LOGIN_ENABLED) throw new createHttpError.Unauthorized("Google login is not enabled")
 
   const client = new OAuth2Client()

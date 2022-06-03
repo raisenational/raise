@@ -1,6 +1,6 @@
-import { statusSchema } from "@raise/shared"
 import { middyfy } from "../../../helpers/wrapper"
+import { $Status } from "../../../schemas"
 
-export const main = middyfy(null, statusSchema, false, async () => ({
+export const main = middyfy(null, $Status, false, async () => ({
   message: "Service online",
 }))

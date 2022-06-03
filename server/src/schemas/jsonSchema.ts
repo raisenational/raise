@@ -1,21 +1,21 @@
 import type { JSONSchema7Definition } from "json-schema"
-import type * as S from "./schemaTypes"
+import type * as S from "./typescript"
 
 // It'd be nice to use ajv's JSONSchemaType. However, it has poor performance and is incorrect: https://github.com/ajv-validator/ajv/issues/1664
 export type JSONSchema<T> = JSONSchema7Definition & { __type?: T };
 
-export const emailSchema: JSONSchema<S.Email> = {
+export const $Email: JSONSchema<S.Email> = {
   type: "string",
   // Regex from https://html.spec.whatwg.org/multipage/forms.html#e-mail-state-(type=email)
   pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
 }
 
-export const ulidSchema: JSONSchema<S.Ulid> = {
+export const $Ulid: JSONSchema<S.Ulid> = {
   type: "string",
   pattern: "^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$",
 }
 
-export const statusSchema: JSONSchema<S.Status> = {
+export const $Status: JSONSchema<S.Status> = {
   type: "object",
   properties: {
     message: { type: "string" },
@@ -24,7 +24,7 @@ export const statusSchema: JSONSchema<S.Status> = {
   additionalProperties: false,
 }
 
-export const loginResponseSchema: JSONSchema<S.LoginResponse> = {
+export const $LoginResponse: JSONSchema<S.LoginResponse> = {
   type: "object",
   properties: {
     accessToken: { type: "string" },
@@ -35,7 +35,7 @@ export const loginResponseSchema: JSONSchema<S.LoginResponse> = {
   additionalProperties: false,
 }
 
-export const googleLoginRequestSchema: JSONSchema<S.GoogleLoginRequest> = {
+export const $GoogleLoginRequest: JSONSchema<S.GoogleLoginRequest> = {
   type: "object",
   properties: {
     idToken: { type: "string" },
@@ -45,16 +45,16 @@ export const googleLoginRequestSchema: JSONSchema<S.GoogleLoginRequest> = {
   additionalProperties: false,
 }
 
-export const impersonationLoginRequestSchema: JSONSchema<S.ImpersonationLoginRequest> = {
+export const $ImpersonationLoginRequest: JSONSchema<S.ImpersonationLoginRequest> = {
   type: "object",
   properties: {
-    email: emailSchema,
+    email: $Email,
   },
   required: ["email"],
   additionalProperties: false,
 }
 
-export const profileSchema: JSONSchema<S.Profile> = {
+export const $Profile: JSONSchema<S.Profile> = {
   type: "object",
   properties: {
     email: { type: "string" },
@@ -67,7 +67,7 @@ export const profileSchema: JSONSchema<S.Profile> = {
   additionalProperties: false,
 }
 
-export const fundraiserCreationSchema: JSONSchema<S.FundraiserCreation> = {
+export const $FundraiserCreation: JSONSchema<S.FundraiserCreation> = {
   type: "object",
   properties: {
     internalName: { type: "string", minLength: 1, maxLength: 128 },
@@ -94,10 +94,10 @@ export const fundraiserCreationSchema: JSONSchema<S.FundraiserCreation> = {
   additionalProperties: false,
 }
 
-export const fundraiserEditsSchema: JSONSchema<S.FundraiserEdits> = {
+export const $FundraiserEdits: JSONSchema<S.FundraiserEdits> = {
   type: "object",
   properties: {
-    ...fundraiserCreationSchema.properties,
+    ...$FundraiserCreation.properties,
     previous: {
       type: "object",
       properties: {
@@ -111,23 +111,23 @@ export const fundraiserEditsSchema: JSONSchema<S.FundraiserEdits> = {
   additionalProperties: false,
 }
 
-export const fundraiserSchema: JSONSchema<S.Fundraiser> = {
+export const $Fundraiser: JSONSchema<S.Fundraiser> = {
   type: "object",
   properties: {
-    id: ulidSchema,
-    ...fundraiserCreationSchema.properties,
+    id: $Ulid,
+    ...$FundraiserCreation.properties,
   },
   required: ["id", "internalName", "publicName", "activeFrom", "activeTo", "recurringDonationsTo", "paused", "currency", "goal", "totalRaised", "donationsCount", "matchFundingRate", "matchFundingPerDonationLimit", "matchFundingRemaining", "minimumDonationAmount", "suggestedDonationAmountOneOff", "suggestedDonationAmountWeekly", "suggestedContributionAmount", "eventLink", "moreInvolvedLink", "groupsWithAccess"],
   additionalProperties: false,
 }
 
-export const fundraisersSchema: JSONSchema<S.Fundraiser[]> = { type: "array", items: fundraiserSchema }
+export const $Fundraisers: JSONSchema<S.Fundraiser[]> = { type: "array", items: $Fundraiser }
 
-export const donationCreationSchema: JSONSchema<S.DonationCreation> = {
+export const $DonationCreation: JSONSchema<S.DonationCreation> = {
   type: "object",
   properties: {
     donorName: { type: "string" },
-    donorEmail: emailSchema,
+    donorEmail: $Email,
     emailConsentInformational: { type: "boolean" },
     emailConsentMarketing: { type: "boolean" },
     createdAt: { type: "integer" },
@@ -151,10 +151,10 @@ export const donationCreationSchema: JSONSchema<S.DonationCreation> = {
   additionalProperties: false,
 }
 
-export const donationEditsSchema: JSONSchema<S.DonationEdits> = {
+export const $DonationEdits: JSONSchema<S.DonationEdits> = {
   type: "object",
   properties: {
-    ...donationCreationSchema.properties,
+    ...$DonationCreation.properties,
     donationAmount: { type: "number", minimum: 0 },
     matchFundingAmount: { type: "integer", minimum: 0 },
     contributionAmount: { type: "integer", minimum: 0 },
@@ -172,12 +172,12 @@ export const donationEditsSchema: JSONSchema<S.DonationEdits> = {
   additionalProperties: false,
 }
 
-export const donationSchema: JSONSchema<S.Donation> = {
+export const $Donation: JSONSchema<S.Donation> = {
   type: "object",
   properties: {
-    ...donationCreationSchema.properties,
-    id: ulidSchema,
-    fundraiserId: ulidSchema,
+    ...$DonationCreation.properties,
+    id: $Ulid,
+    fundraiserId: $Ulid,
     donationAmount: { type: "number", minimum: 0 },
     matchFundingAmount: { type: "integer", minimum: 0 },
     contributionAmount: { type: "integer", minimum: 0 },
@@ -186,9 +186,9 @@ export const donationSchema: JSONSchema<S.Donation> = {
   additionalProperties: false,
 }
 
-export const donationsSchema: JSONSchema<S.Donation[]> = { type: "array", items: donationSchema }
+export const $Donations: JSONSchema<S.Donation[]> = { type: "array", items: $Donation }
 
-export const paymentPropertyEditsSchema: JSONSchema<S.PaymentPropertyEdits> = {
+export const $PaymentPropertyEdits: JSONSchema<S.PaymentPropertyEdits> = {
   oneOf: [{
     type: "object",
     properties: {
@@ -228,7 +228,7 @@ export const paymentPropertyEditsSchema: JSONSchema<S.PaymentPropertyEdits> = {
   }],
 }
 
-export const paymentCreationSchema: JSONSchema<S.PaymentCreation> = {
+export const $PaymentCreation: JSONSchema<S.PaymentCreation> = {
   type: "object",
   properties: {
     at: { type: "integer" },
@@ -241,25 +241,25 @@ export const paymentCreationSchema: JSONSchema<S.PaymentCreation> = {
   additionalProperties: false,
 }
 
-export const paymentSchema: JSONSchema<S.Payment> = {
+export const $Payment: JSONSchema<S.Payment> = {
   type: "object",
   properties: {
-    ...paymentCreationSchema.properties,
+    ...$PaymentCreation.properties,
     status: { enum: ["paid", "pending", "scheduled", "cancelled"] },
-    id: ulidSchema,
-    donationId: ulidSchema,
-    fundraiserId: ulidSchema,
+    id: $Ulid,
+    donationId: $Ulid,
+    fundraiserId: $Ulid,
   },
   required: ["id", "donationId", "fundraiserId", "at", "donationAmount", "contributionAmount", "matchFundingAmount", "method", "reference", "status"],
   additionalProperties: false,
 }
 
-export const paymentsSchema: JSONSchema<S.Payment[]> = { type: "array", items: paymentSchema }
+export const $Payments: JSONSchema<S.Payment[]> = { type: "array", items: $Payment }
 
-export const auditLogSchema: JSONSchema<S.AuditLog> = {
+export const $AuditLog: JSONSchema<S.AuditLog> = {
   type: "object",
   properties: {
-    id: ulidSchema,
+    id: $Ulid,
     object: { type: "string" }, // a thing that can be created/edited e.g. a donation. If non-existent (e.g. for logins), same as id.
     subject: { type: "string" }, // e.g. a admin user email, "public" | "stripe" | "scheduler"
     action: { enum: ["create", "edit", "login", "plus", "security", "run"] },
@@ -286,9 +286,9 @@ export const auditLogSchema: JSONSchema<S.AuditLog> = {
   },
 }
 
-export const auditLogsSchema: JSONSchema<S.AuditLog[]> = { type: "array", items: auditLogSchema, definitions: auditLogSchema.definitions }
+export const $AuditLogs: JSONSchema<S.AuditLog[]> = { type: "array", items: $AuditLog, definitions: $AuditLog.definitions }
 
-export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
+export const $PublicFundraiser: JSONSchema<S.PublicFundraiser> = {
   type: "object",
   properties: {
     id: { type: "string" },
@@ -334,7 +334,7 @@ export const publicFundraiserSchema: JSONSchema<S.PublicFundraiser> = {
   additionalProperties: false,
 }
 
-export const publicDonationRequest: JSONSchema<S.PublicDonationRequest> = {
+export const $PublicDonationRequest: JSONSchema<S.PublicDonationRequest> = {
   type: "object",
   properties: {
     donationAmount: { type: "number", minimum: 0 },
@@ -342,7 +342,7 @@ export const publicDonationRequest: JSONSchema<S.PublicDonationRequest> = {
     contributionAmount: { type: "integer", minimum: 0 },
     giftAid: { type: "boolean" },
     donorName: { type: "string" },
-    donorEmail: emailSchema,
+    donorEmail: $Email,
     emailConsentInformational: { type: "boolean" },
     emailConsentMarketing: { type: "boolean" },
     addressLine1: { type: ["string", "null"] },
@@ -359,7 +359,7 @@ export const publicDonationRequest: JSONSchema<S.PublicDonationRequest> = {
   additionalProperties: false,
 }
 
-export const publicPaymentIntentResponse: JSONSchema<S.PublicPaymentIntentResponse> = {
+export const $PublicPaymentIntentResponse: JSONSchema<S.PublicPaymentIntentResponse> = {
   type: "object",
   properties: {
     stripeClientSecret: { type: "string" },
@@ -384,7 +384,7 @@ export const publicPaymentIntentResponse: JSONSchema<S.PublicPaymentIntentRespon
 }
 
 // https://stripe.com/docs/api/events/object
-export const stripeWebhookRequest: JSONSchema<S.StripeWebhookRequest> = {
+export const $StripeWebhookRequest: JSONSchema<S.StripeWebhookRequest> = {
   type: "object",
   properties: {
     id: { type: "string" },
@@ -407,9 +407,9 @@ export const stripeWebhookRequest: JSONSchema<S.StripeWebhookRequest> = {
             metadata: {
               type: "object",
               properties: {
-                fundraiserId: ulidSchema,
-                donationId: ulidSchema,
-                paymentId: ulidSchema,
+                fundraiserId: $Ulid,
+                donationId: $Ulid,
+                paymentId: $Ulid,
               },
               required: ["fundraiserId", "donationId", "paymentId"],
               additionalProperties: false,
@@ -436,14 +436,14 @@ export const stripeWebhookRequest: JSONSchema<S.StripeWebhookRequest> = {
   additionalProperties: true,
 }
 
-export const taskSchema: JSONSchema<S.Task> = {
+export const $Task: JSONSchema<S.Task> = {
   type: "object",
   properties: {
-    id: ulidSchema,
+    id: $Ulid,
     name: { type: "string" },
   },
   required: ["id", "name"],
   additionalProperties: false,
 }
 
-export const tasksSchema: JSONSchema<S.Task[]> = { type: "array", items: taskSchema }
+export const $Tasks: JSONSchema<S.Task[]> = { type: "array", items: $Task }

@@ -40,7 +40,24 @@ const middyPathParamsValidatorAndNormalizer: middy.MiddlewareFn<APIGatewayProxyE
   })
 }
 
-export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends boolean>(requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth, handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>): AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult> {
+export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends boolean>(
+  requestSchema: RequestSchema,
+  responseSchema: ResponseSchema,
+  requiresAuth: RequiresAuth,
+  handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>,
+): AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult> & { requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth } {
+  return Object.assign(
+    middyfyInternal(requestSchema, responseSchema, requiresAuth, handler),
+    { requestSchema, responseSchema, requiresAuth },
+  )
+}
+
+function middyfyInternal<RequestSchema, ResponseSchema, RequiresAuth extends boolean>(
+  requestSchema: RequestSchema,
+  responseSchema: ResponseSchema,
+  requiresAuth: RequiresAuth,
+  handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>,
+): AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult> {
   try {
     return middy(handler)
       .before(middyAuditContextManagerBefore)

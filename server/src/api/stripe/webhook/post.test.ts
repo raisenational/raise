@@ -1,5 +1,4 @@
 import { ulid } from "ulid"
-import { StripeWebhookRequest } from "@raise/shared"
 import {
   call, makeFundraiser, makeDonation, makePayment, delayDb,
 } from "../../../../local/testHelpers"
@@ -7,6 +6,7 @@ import env from "../../../env/env"
 import * as db from "../../../helpers/db"
 import { get, insert, update } from "../../../helpers/db"
 import { donationTable, fundraiserTable, paymentTable } from "../../../helpers/tables"
+import { StripeWebhookRequest } from "../../../schemas"
 import { main } from "./post"
 
 const webhookConstructEvent = jest.fn()

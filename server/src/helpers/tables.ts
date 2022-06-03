@@ -1,10 +1,10 @@
 import {
   JSONSchema,
-  donationSchema, Donation,
-  fundraiserSchema, Fundraiser,
-  paymentSchema, Payment,
-  auditLogSchema, AuditLog,
-} from "@raise/shared"
+  $Donation, Donation,
+  $Fundraiser, Fundraiser,
+  $Payment, Payment,
+  $AuditLog, AuditLog,
+} from "../schemas"
 import env from "../env/env"
 
 export type DBAttributeValue = null | boolean | number | string | DBAttributeValue[] | { [key: string]: DBAttributeValue }
@@ -28,7 +28,7 @@ export const fundraiserTable: Table<"id", "id", Fundraiser> = {
   entityName: "fundraiser",
   partitionKey: "id",
   primaryKey: "id",
-  schema: fundraiserSchema,
+  schema: $Fundraiser,
 }
 
 export const donationTable: Table<"fundraiserId", "id", Donation> = {
@@ -36,7 +36,7 @@ export const donationTable: Table<"fundraiserId", "id", Donation> = {
   entityName: "donation",
   partitionKey: "fundraiserId",
   primaryKey: "id",
-  schema: donationSchema,
+  schema: $Donation,
 }
 
 export const paymentTable: Table<"donationId", "id", Payment> = {
@@ -44,7 +44,7 @@ export const paymentTable: Table<"donationId", "id", Payment> = {
   entityName: "payment",
   partitionKey: "donationId",
   primaryKey: "id",
-  schema: paymentSchema,
+  schema: $Payment,
 }
 
 export const auditLogTable: Table<"object", "id", AuditLog> = {
@@ -52,7 +52,7 @@ export const auditLogTable: Table<"object", "id", AuditLog> = {
   entityName: "auditLog",
   partitionKey: "object",
   primaryKey: "id",
-  schema: auditLogSchema,
+  schema: $AuditLog,
 }
 
 export const tables = {
