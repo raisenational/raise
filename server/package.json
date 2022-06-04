@@ -61,6 +61,7 @@
     "serverless": "^3.17.0",
     "serverless-offline": "^8.8.0",
     "serverless-offline-ses-v2": "^1.0.0",
+    "serverless-offline-watcher": "^1.0.0",
     "serverless-webpack": "^5.7.1",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",

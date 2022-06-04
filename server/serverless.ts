@@ -116,12 +116,17 @@ const serverlessConfiguration: AWS = {
     "serverless-offline-ses-v2": {
       port: 8006,
     },
+    "serverless-offline-watcher": [{
+      path: "src/schemas/jsonSchema.ts",
+      command: "npm run generate:schemas",
+    }],
   },
   plugins: [
     "serverless-webpack",
     "serverless-dynamodb-local",
     "serverless-offline",
     "serverless-offline-ses-v2",
+    "serverless-offline-watcher",
   ],
   provider: {
     name: "aws",
