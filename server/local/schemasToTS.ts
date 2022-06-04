@@ -5,7 +5,7 @@ import { join } from "path"
 import type { JSONSchema4 } from "json-schema"
 
 const main = async () => {
-  const schemas = await import("./src/schemas/jsonSchema")
+  const schemas = await import("../src/schemas/jsonSchema")
 
   const deepClone = <T>(item: T): T => {
     if (Array.isArray(item)) return item.slice().map(deepClone) as unknown as T
@@ -38,23 +38,17 @@ const main = async () => {
   }).join("")
 
   writeFileSync(
-    join(__dirname, "./src/schemas/typescript.ts"),
-    `/**\n* This file was automatically generated. DO NOT MODIFY IT BY HAND.\n* Instead, modify schemas.ts, and run "npm run schemas".\n*/\n/* eslint-disable */\n${source}`,
+    join(__dirname, "../src/schemas/typescript.ts"),
+    `/**
+ * This file was automatically generated. DO NOT MODIFY IT BY HAND.
+ * Instead, modify schemas.ts, and run "npm run schemas".
+ */
+/* eslint-disable */
+
+${source}`,
   )
 
-  // const indexSource =
-  //   `export type {
-  // ${[...names].map(n => `  ${n},`).join('\n')}
-  // } from './typescript';
-
-  // export {
-  // ${Object.keys(schemas).map(n => `  ${n},`).join('\n')}
-  // } from './jsonSchema';`
-
-  // writeFileSync(
-  //   new URL("./src/schemas/index.ts", import.meta.url),
-  //   `/**\n* This file was automatically generated. DO NOT MODIFY IT BY HAND.\n* Instead, modify schemas.ts, and run "npm run schemas".\n*/\n/* eslint-disable */\n${indexSource}`
-  // )
+  console.log(`✔ Wrote ${names.size} types based on ${Object.keys(schemas).length} schemas`)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises

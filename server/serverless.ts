@@ -1,17 +1,11 @@
 /* eslint-disable guard-for-in,no-restricted-syntax */
 import type { AWS } from "@serverless/typescript"
-import { readdirSync } from "fs"
-import { resolve } from "path"
 import { execSync } from "child_process"
 import env from "./src/env/env"
 import { Table, tables } from "./src/helpers/tables"
+import { getFunctionEvent, getFunctionPaths, pascalCase } from "./local/helpers"
 
 const SERVICE_NAME = "raise-server"
-
-const allowedMethods = ["get", "post", "patch", "put", "delete"]
-
-const camelCase = (s: string): string => s.replace(/[/_\-\\ ]+([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
-const pascalCase = (s: string): string => s.replace(/(^|[/_\-\\ ]+)([a-zA-Z])/g, (g) => g.charAt(g.length - 1).toUpperCase())
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createResources = (definitions: Record<string, Table<any, any, any>>): NonNullable<NonNullable<AWS["resources"]>["Resources"]> => Object.values(definitions).reduce<NonNullable<NonNullable<AWS["resources"]>["Resources"]>>((acc, table) => {
@@ -53,41 +47,6 @@ const createResources = (definitions: Record<string, Table<any, any, any>>): Non
 }, {})
 
 const tableResources = createResources(tables)
-
-const recursivelyFindFunctionsIn = (basePath: string, path: string = basePath): NonNullable<AWS["functions"]> => {
-  const result: AWS["functions"] = {}
-  const files = readdirSync(path, { withFileTypes: true })
-  for (const file of files) {
-    if (file.name.startsWith("_") || file.name.endsWith(".test.ts") || file.name === "router.ts") {
-      // ignore
-    } else if (file.isFile()) {
-      const method = file.name.slice(0, file.name.lastIndexOf("."))
-      if (!allowedMethods.includes(method)) {
-        throw new Error(`Unexpected method ${method} at path ${path} found when scanning for functions`)
-      }
-
-      const relativePath = ((`${path}/`).slice(basePath.length + 1) + method)
-
-      const name = camelCase(relativePath.replace(/\{.*?\}/g, ""))
-      result[name] = {
-        handler: `src/api/${relativePath}.main`,
-        events: [
-          {
-            httpApi: {
-              method,
-              path: path.slice(basePath.length).replace(/\\+/g, "/"),
-            },
-          },
-        ],
-      }
-    } else if (file.isDirectory()) {
-      Object.assign(result, recursivelyFindFunctionsIn(basePath, resolve(path, file.name)))
-    } else {
-      throw new Error(`Unexpected file ${file.name} at path ${path} found when scanning for functions`)
-    }
-  }
-  return result
-}
 
 const getVersion = (): string => {
   const hash = execSync("git rev-parse --short HEAD", { encoding: "utf-8" })
@@ -208,7 +167,7 @@ const serverlessConfiguration: AWS = {
   functions: {
     apiRouter: {
       handler: "src/api/router.main",
-      events: Object.values(recursivelyFindFunctionsIn(resolve(__dirname, "src", "api"))).map((f) => f.events ?? []).flat(1),
+      events: getFunctionPaths().map(getFunctionEvent),
     },
     schedulerCollectPaymentsRun: {
       handler: "src/scheduler/collect-payments/run.main",

@@ -9,7 +9,6 @@
   "include": [
     "src/**/*.ts",
     "local/**/*.ts",
-    "schemasToTS.ts",
     "serverless.ts"
   ],
   "exclude": [

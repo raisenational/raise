@@ -1,8 +1,9 @@
 /**
-* This file was automatically generated. DO NOT MODIFY IT BY HAND.
-* Instead, modify schemas.ts, and run "npm run schemas".
-*/
+ * This file was automatically generated. DO NOT MODIFY IT BY HAND.
+ * Instead, modify schemas.ts, and run "npm run schemas".
+ */
 /* eslint-disable */
+
 export type Email = string;
 
 export type Ulid = string;

@@ -5,7 +5,9 @@ import middyJsonBodyParser from "@middy/http-json-body-parser"
 import createHttpError from "http-errors"
 import { EncryptionAlgorithms, JWTAuthMiddleware } from "middy-middleware-jwt-auth"
 import type { APIGatewayProxyEventV2, APIGatewayProxyResult, Handler as AWSHandler } from "aws-lambda"
-import type { Handler, AuthTokenPayload, APIGatewayEvent } from "./types"
+import type {
+  Handler, ExternalHandler, AuthTokenPayload, APIGatewayEvent,
+} from "./types"
 import { middyAuditContextManagerAfter, middyAuditContextManagerBefore } from "./auditContext"
 import middyErrorHandler from "./middy-error-handler"
 import env from "../env/env"
@@ -45,7 +47,7 @@ export function middyfy<RequestSchema, ResponseSchema, RequiresAuth extends bool
   responseSchema: ResponseSchema,
   requiresAuth: RequiresAuth,
   handler: Handler<RequestSchema, ResponseSchema, RequiresAuth>,
-): AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult> & { requestSchema: RequestSchema, responseSchema: ResponseSchema, requiresAuth: RequiresAuth } {
+): ExternalHandler<RequestSchema, ResponseSchema, RequiresAuth> {
   return Object.assign(
     middyfyInternal(requestSchema, responseSchema, requiresAuth, handler),
     { requestSchema, responseSchema, requiresAuth },

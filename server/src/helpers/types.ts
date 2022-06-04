@@ -1,4 +1,6 @@
-import type { APIGatewayProxyEventV2, Context } from "aws-lambda"
+import type {
+  APIGatewayProxyEventV2, APIGatewayProxyResult, Handler as AWSHandler, Context,
+} from "aws-lambda"
 import type { Group } from "@raise/shared"
 import type { JSONSchema } from "../schemas"
 
@@ -15,7 +17,21 @@ export interface TaskDefinition {
   run: () => unknown | Promise<unknown>,
 }
 
-// The API event we have to handle after our middlewares have run
+/**
+ * The type for the inner handler, that needs to be wrapped by middify.
+ * Generally will take some request and return some response (as JS objects).
+ * */
+export type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
+  event: APIGatewayEvent<
+    RequestSchema extends JSONSchema<infer T> ? T : null,
+    RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined
+  >,
+  context: Context) => Promise<ResponseSchema extends JSONSchema<infer T> ? T : void>
+
+/**
+ * The API event we have to handle after our middlewares have run.
+ * The type of event passed to our inner handler.
+ * */
 export type APIGatewayEvent<Body = unknown, Auth = { payload: AuthTokenPayload, token: string } | undefined> = Omit<APIGatewayProxyEventV2, "body" | "pathParameters"> & {
   body: Body,
   rawBody: Body extends null ? unknown : string,
@@ -23,12 +39,16 @@ export type APIGatewayEvent<Body = unknown, Auth = { payload: AuthTokenPayload, 
   auth: Auth,
 }
 
-export type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
-  event: APIGatewayEvent<
-    RequestSchema extends JSONSchema<infer T> ? T : null,
-    RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined
-  >,
-  context: Context) => Promise<ResponseSchema extends JSONSchema<infer T> ? T : void>
+/**
+ * The type each API main function is expected to be, i.e. the result of middify.
+ * */
+export type ExternalHandler<RequestSchema, ResponseSchema, RequiresAuth> =
+  AWSHandler<APIGatewayProxyEventV2, APIGatewayProxyResult>
+  & {
+    requestSchema: RequestSchema,
+    responseSchema: ResponseSchema,
+    requiresAuth: RequiresAuth,
+  }
 
 export interface Env {
   STAGE: "local" | "dev" | "prod",
