@@ -1,6 +1,6 @@
-import { ResponseValues } from "axios-hooks"
 import classNames from "classnames"
 import * as React from "react"
+import { ResponseValues } from "../helpers/networking"
 import Alert from "./Alert"
 
 interface PropertyDefinition<I, V> {

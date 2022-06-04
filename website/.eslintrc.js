@@ -43,6 +43,10 @@ module.exports = {
         "paths": [
           {
             "name": "axios",
+            "importNames": [
+              "default",
+              "axios"
+            ],
             "message": "Use src/components/networking.ts instead"
           },
           {

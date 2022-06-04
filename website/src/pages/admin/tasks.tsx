@@ -1,17 +1,17 @@
 import * as React from "react"
 import { RouteComponentProps } from "@gatsbyjs/reach-router"
-import { Task } from "@raise/shared"
-import { useAxios } from "../../helpers/networking"
+import { useReq } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import Table from "../../components/Table"
 import Modal from "../../components/Modal"
 import Button from "../../components/Button"
 import Alert from "../../components/Alert"
+import { Task } from "../../helpers/generated-api-client"
 
 const TasksPage: React.FC<RouteComponentProps> = () => {
   const [selected, setSelected] = React.useState<Task | undefined>()
-  const [tasks] = useAxios<Task[]>("/admin/tasks")
-  const [runResult, runTask] = useAxios<undefined>({ url: `/admin/tasks/${selected?.id}`, method: "post" }, { manual: true })
+  const [tasks] = useReq("get /admin/tasks")
+  const [runResult, runTask] = useReq("post /admin/tasks/{taskId}", { taskId: selected?.id ?? "" }, { manual: true })
 
   return (
     <Section>
@@ -26,7 +26,7 @@ const TasksPage: React.FC<RouteComponentProps> = () => {
             try {
               await runTask()
             } catch {
-              // errors handled by axios hook logic
+              // errors handled by useReq hook logic
             }
           }}
           disabled={runResult.loading}

@@ -1,13 +1,13 @@
 import * as React from "react"
 import { RouteComponentProps } from "@gatsbyjs/reach-router"
 
-import { format, Profile } from "@raise/shared"
+import { format } from "@raise/shared"
 import Section, { SectionTitle } from "../../components/Section"
 import PropertyEditor from "../../components/PropertyEditor"
-import { useAxios } from "../../helpers/networking"
+import { useReq } from "../../helpers/networking"
 
 const ProfilePage: React.FC<RouteComponentProps> = () => {
-  const [profile] = useAxios<Profile>("/admin/login")
+  const [profile] = useReq("get /admin/login")
 
   return (
     <Section>

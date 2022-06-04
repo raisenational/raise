@@ -41,7 +41,7 @@ const main = async () => {
     join(__dirname, "../src/schemas/typescript.ts"),
     `/**
  * This file was automatically generated. DO NOT MODIFY IT BY HAND.
- * Instead, modify schemas.ts, and run "npm run schemas".
+ * Instead, modify jsonSchema.ts, and run "npm run generate:schemas".
  */
 /* eslint-disable */
 
