@@ -49,14 +49,6 @@ module.exports = {
             ],
             "message": "Use src/components/networking.ts instead"
           },
-          {
-            "name": "axios-hooks",
-            "importNames": [
-              "default",
-              "makeUseAxios"
-            ],
-            "message": "Use src/components/networking.ts instead"
-          }
         ]
       }
     ],

@@ -1,5 +1,8 @@
 /* eslint-disable no-restricted-imports */
-import _axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios"
+import _axios, {
+  AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse,
+} from "axios"
+import cachios from "cachios"
 import { useEffect, useState } from "react"
 import env from "../env/env"
 import { makeClient, routes, Routes } from "./generated-api-client"
@@ -79,8 +82,8 @@ const logoutOnTokenExpiry = (err: unknown) => {
   return Promise.reject(err)
 }
 
-const axiosWithDefaults = _axios.create(defaultConfig)
-axiosWithDefaults.interceptors.response.use(undefined, logoutOnTokenExpiry)
+const axiosWithDefaults = cachios.create(_axios.create(defaultConfig))
+axiosWithDefaults.axiosInstance.interceptors.response.use(undefined, logoutOnTokenExpiry)
 
 export interface ResponseValues<Result, RequestData, ErrorResult = unknown> {
   data?: Result,
@@ -196,7 +199,7 @@ const useReqCore = <
   const [error, setError] = useState<AxiosError<ErrorResult, RequestData> | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
 
-  const fetchData = async (...overrideArgsArr: [] | [
+  const fetchData = async (bypassCache?: boolean, ...overrideArgsArr: [] | [
     ...Params extends null ? [] : [params: Params],
     ...RequestData extends null ? [] : [data: RequestData],
   ]): Promise<AxiosResponse<Result, RequestData>> => {
@@ -210,6 +213,9 @@ const useReqCore = <
         url: routes[route].makePath(args.params as any),
         data: args.data,
       } : undefined),
+      ...(bypassCache ? {
+        force: true,
+      } : {}),
     })
     try {
       const r = await p
@@ -231,7 +237,7 @@ const useReqCore = <
 
   return [{
     data, loading, error, response,
-  }, (...a) => fetchData(...a)]
+  }, (...a) => fetchData(true, ...a)]
 }
 
 const isEmpty = <T>(arg: T[]): arg is [] => arg.length === 0
@@ -264,7 +270,7 @@ const convertArgsToObj = <
 
 export const useRawReq = () => makeClient(useRawAxios())
 
-export const useRawAxios = () => {
+export const useRawAxios = (): AxiosInstance => {
   const [auth] = useAuthState()
   if (auth?.token) {
     const axios = _axios.create({
@@ -279,7 +285,7 @@ export const useRawAxios = () => {
     return axios
   }
 
-  return axiosWithDefaults
+  return axiosWithDefaults.axiosInstance
 }
 
 export const asResponseValues = <TResponse, TBody, TError>(item: TResponse | undefined, inheritFrom: ResponseValues<unknown, TBody, TError>): ResponseValues<TResponse, TBody, TError> => ({

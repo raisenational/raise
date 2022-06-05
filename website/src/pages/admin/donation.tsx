@@ -115,7 +115,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId: string, donat
           showCurrent={false}
           onSubmit={async (data) => {
             await axios.post<string>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`, data)
-            await refetchPayments()
+            await Promise.all([refetchPayments(), refetchDonations()])
             setNewPaymentModalOpen(false)
           }}
         />
