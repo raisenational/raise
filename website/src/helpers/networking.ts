@@ -205,8 +205,6 @@ const useReqCore = <
   ]): Promise<AxiosResponse<Result, RequestData>> => {
     const overrideArgs = isEmpty(overrideArgsArr) ? undefined : convertArgsToObj(routes[route], overrideArgsArr)
 
-    // console.log(`fetching ${routes[route].makePath(args.params as any)}`)
-
     setLoading(true)
     const p = axiosWithDefaults.request({
       ...config,
@@ -223,8 +221,6 @@ const useReqCore = <
     })
     try {
       const r = await p
-      console.log(`fetched ${routes[route].makePath(args.params as any)}, cached: ${r.cached}, id: ${r.id}`)
-      console.log(await axiosWithDefaults.storage.get(r.id))
       setResponse(r)
       setData(r.data)
     } catch (err) {
