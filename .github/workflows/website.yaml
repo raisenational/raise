@@ -27,16 +27,17 @@ jobs:
       - name: Use NPM 8
         run: npm i -g npm@8
 
+      - name: "Delete workspaces postinstall"
+        run: npm pkg delete scripts.postinstall
+
       - name: "shared: Install dependencies"
-        working-directory: shared
-        run: npm ci
+        run: npm ci --workspace shared && npm run postinstall --workspace shared
       - name: "shared: Build"
         working-directory: shared
         run: npm run build
 
       - name: "website: Install dependencies"
-        working-directory: website
-        run: npm ci
+        run: npm ci --workspace website && npm run postinstall --workspace website
       - name: "website: Lint"
         working-directory: website
         run: npm run lint
