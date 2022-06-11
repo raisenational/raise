@@ -2,9 +2,9 @@ import * as React from "react"
 import Helmet from "react-helmet"
 import confetti from "canvas-confetti"
 
-import { convert, format, PublicFundraiser } from "@raise/shared"
+import { convert, format } from "@raise/shared"
 import Page from "./Page"
-import { useAxios } from "../helpers/networking"
+import { useReq } from "../helpers/networking"
 import Alert from "./Alert"
 import env from "../env/env"
 import { Env } from "../helpers/types"
@@ -16,7 +16,7 @@ interface Props {
 
 const LivePage: React.FC<Props> = ({ title, fundraiserIds }) => {
   const fundraiserId = fundraiserIds[env.STAGE]
-  const [fundraiser, refetchFundraiser] = useAxios<PublicFundraiser>(`/public/fundraisers/${fundraiserId}`)
+  const [fundraiser, refetchFundraiser] = useReq("get /public/fundraisers/{fundraiserId}", { fundraiserId })
 
   const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
   React.useEffect(() => {

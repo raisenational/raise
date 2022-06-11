@@ -81,9 +81,9 @@ const IndexLayout = () => {
         {auth && (
           <>
             <FundraisersPage path="/" />
-            <FundraiserPage path="/:fundraiserId" />
-            <DonationPage path="/:fundraiserId/:donationId" />
-            <PaymentPage path="/:fundraiserId/:donationId/:paymentId" />
+            <FundraiserPage fundraiserId="" path="/:fundraiserId" />
+            <DonationPage fundraiserId="" donationId="" path="/:fundraiserId/:donationId" />
+            <PaymentPage fundraiserId="" donationId="" paymentId="" path="/:fundraiserId/:donationId/:paymentId" />
             <TasksPage path="/tasks" />
             <AuditPage path="/audit" />
             <ProfilePage path="/profile" />

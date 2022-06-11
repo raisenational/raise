@@ -1,5 +1,5 @@
 import { ulid } from "ulid"
-import { JSONSchema } from "@raise/shared"
+import { JSONSchema } from "../schemas"
 import {
   insert, scan, get, query, insertAudit, update, inTransaction, updateT, plusT, insertT, AuditDefinition, assertMatchesSchema, assertHasGroup, assertHasGroupForProperties, checkPrevious,
 } from "./db"

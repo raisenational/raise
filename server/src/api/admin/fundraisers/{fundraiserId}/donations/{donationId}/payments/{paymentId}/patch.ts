@@ -1,9 +1,5 @@
 import createHttpError from "http-errors"
-import {
-  Fundraiser, Donation, Payment,
-  paymentPropertyEditsSchema,
-  g,
-} from "@raise/shared"
+import { g } from "@raise/shared"
 import { middyfy } from "../../../../../../../../helpers/wrapper"
 import {
   assertHasGroup, get, inTransaction, plusT, update, updateT,
@@ -12,8 +8,12 @@ import { donationTable, fundraiserTable, paymentTable } from "../../../../../../
 import type {
   AWSTransactionDefinition, AuditDefinition,
 } from "../../../../../../../../helpers/db"
+import {
+  $PaymentPropertyEdits,
+  Donation, Fundraiser, Payment,
+} from "../../../../../../../../schemas"
 
-export const main = middyfy(paymentPropertyEditsSchema, null, true, async (event) => {
+export const main = middyfy($PaymentPropertyEdits, null, true, async (event) => {
   assertHasGroup(event, g.National)
 
   const { fundraiserId, donationId, paymentId } = event.pathParameters

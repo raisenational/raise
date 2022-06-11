@@ -7,10 +7,9 @@ import {
   Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements,
 } from "@stripe/react-stripe-js"
 import {
-  format, convert, calcMatchFunding, PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse, calcPaymentSchedule,
+  format, convert, calcMatchFunding, calcPaymentSchedule,
 } from "@raise/shared"
 import Helmet from "react-helmet"
-import { ResponseValues } from "axios-hooks"
 import confetti from "canvas-confetti"
 import classNames from "classnames"
 import { QuestionMarkCircleIcon } from "@heroicons/react/outline"
@@ -19,7 +18,7 @@ import { moneyToPeopleProtected } from "@raise/shared/dist/convert"
 import Button from "./Button"
 import DonationCard from "./DonationCard"
 import { animateStatsIn } from "./IntroStats"
-import { useAxios } from "../helpers/networking"
+import { ResponseValues, useManualReq, useReq } from "../helpers/networking"
 import Modal from "./Modal"
 import Section, { SectionTitle } from "./Section"
 import { LabelledInput } from "./Form"
@@ -34,6 +33,7 @@ import Link from "./Link"
 import Tooltip from "./Tooltip"
 import { Doubled, MoneyBox, Party } from "../images/Icons"
 import Logo from "./Logo"
+import { PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse } from "../helpers/generated-api-client"
 
 interface Props {
   title: string,
@@ -43,7 +43,7 @@ interface Props {
 
 const DonationPage: React.FC<Props> = ({ title, fundraiserIds, aboutUsOverride }) => {
   const fundraiserId = fundraiserIds[env.STAGE]
-  const [fundraiser, refetchFundraiser] = useAxios<PublicFundraiser>(`/public/fundraisers/${fundraiserId}`)
+  const [fundraiser, refetchFundraiser] = useReq("get /public/fundraisers/{fundraiserId}", { fundraiserId })
   const [modalOpen, setModalOpen] = React.useState(false)
 
   return (
@@ -598,10 +598,7 @@ const DonationFormDisplay: React.FC<{ formMethods: UseFormReturn<DonationFormRes
 const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, setPayButton: (e: JSX.Element) => void, setPiResponse: (piResponse: PublicPaymentIntentResponse) => void, onPaymentSuccess: () => void }> = ({
   formMethods, watches, fundraiser, setPayButton, setPiResponse, onPaymentSuccess,
 }) => {
-  const [piResponse, fetchPiResponse] = useAxios<PublicPaymentIntentResponse>({
-    url: `/public/fundraisers/${fundraiser.id}/donation`,
-    method: "POST",
-  }, { manual: true })
+  const [piResponse, fetchPiResponse] = useManualReq("post /public/fundraisers/{fundraiserId}/donation")
 
   React.useEffect(() => {
     let contributionAmount = 0
@@ -628,7 +625,7 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
       donationAmountPublic: !watches.donationAmountHidden,
       comment: watches.comment,
     }
-    fetchPiResponse({ data }).then((r) => setPiResponse(r.data)).catch(() => { /* noop, handled by axios-hooks */ })
+    fetchPiResponse({ fundraiserId: fundraiser.id }, data).then((r) => setPiResponse(r.data)).catch(() => { /* noop, handled by useReq hook */ })
   }, [watches.donationAmount, watches.recurrenceFrequency, watches.contributionAmount, watches.giftAid, watches.donorEmail, watches.emailConsentInformational, watches.emailConsentMarketing, watches.addressLine1, watches.addressLine2, watches.addressLine3, watches.addressPostcode, watches.nameHidden, watches.donationAmountHidden, watches.comment])
 
   if (piResponse.error) {

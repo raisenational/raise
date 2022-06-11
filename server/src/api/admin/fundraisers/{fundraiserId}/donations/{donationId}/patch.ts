@@ -1,12 +1,13 @@
 import createHttpError from "http-errors"
-import { donationEditsSchema, g } from "@raise/shared"
+import { g } from "@raise/shared"
 import { middyfy } from "../../../../../../helpers/wrapper"
 import {
   assertHasGroup, assertHasGroupForProperties, checkPrevious, get, inTransaction, plusT, update, updateT,
 } from "../../../../../../helpers/db"
 import { donationTable, fundraiserTable } from "../../../../../../helpers/tables"
+import { $DonationEdits } from "../../../../../../schemas"
 
-export const main = middyfy(donationEditsSchema, null, true, async (event) => {
+export const main = middyfy($DonationEdits, null, true, async (event) => {
   assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }), g.National)
   assertHasGroupForProperties(event, ["matchFundingAmount"], g.National)
   assertHasGroupForProperties(event, ["donationAmount", "contributionAmount", "stripeCustomerId", "stripePaymentMethodId"], g.NationalTech)

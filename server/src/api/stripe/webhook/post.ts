@@ -1,6 +1,6 @@
 import createHttpError from "http-errors"
 import Stripe from "stripe"
-import { stripeWebhookRequest, calcMatchFunding } from "@raise/shared"
+import { calcMatchFunding } from "@raise/shared"
 import { middyfy } from "../../../helpers/wrapper"
 import {
   get, inTransaction, plusT, query, update, updateT,
@@ -10,10 +10,11 @@ import env from "../../../env/env"
 import { auditContext } from "../../../helpers/auditContext"
 import { sendEmail } from "../../../helpers/email"
 import confirmation from "../../../helpers/email/confirmation"
+import { $StripeWebhookRequest } from "../../../schemas"
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
 
-export const main = middyfy(stripeWebhookRequest, null, false, async (event) => {
+export const main = middyfy($StripeWebhookRequest, null, false, async (event) => {
   const signature = event.headers["stripe-signature"]
   if (!signature) throw new createHttpError.Unauthorized("Missing Stripe-Signature header")
   try {

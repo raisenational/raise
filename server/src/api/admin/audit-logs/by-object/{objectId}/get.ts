@@ -1,9 +1,10 @@
-import { auditLogsSchema, g } from "@raise/shared"
+import { g } from "@raise/shared"
 import { middyfy } from "../../../../../helpers/wrapper"
 import { auditLogTable } from "../../../../../helpers/tables"
 import { assertHasGroup, query } from "../../../../../helpers/db"
+import { $AuditLogs } from "../../../../../schemas"
 
-export const main = middyfy(null, auditLogsSchema, true, async (event) => {
+export const main = middyfy(null, $AuditLogs, true, async (event) => {
   assertHasGroup(event, g.National)
   return query(auditLogTable, { object: event.pathParameters.objectId })
 })

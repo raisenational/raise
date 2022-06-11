@@ -1,6 +1,6 @@
 import createHttpError from "http-errors"
 import { ulid } from "ulid"
-import { JSONSchema, ulidSchema } from "@raise/shared"
+import { JSONSchema, $Ulid } from "../schemas"
 import { call } from "../../local/testHelpers"
 import { middyfy } from "./wrapper"
 import { AuditContext, auditContext } from "./auditContext"
@@ -244,7 +244,7 @@ describe("request body validation", () => {
       required: ["person"],
     }, { person: { firstName: "Adam", lastName: "Jones" } }],
     ["string", { type: "string" }, "Hello world!"],
-    ["ulid", ulidSchema, ulid()],
+    ["ulid", $Ulid, ulid()],
     ["boolean", { type: "boolean" }, true],
     ["number", { type: "number" }, 123],
     ["integer", { type: "integer" }, 123],
@@ -394,7 +394,7 @@ describe("response body validation", () => {
       required: ["person"],
     }, { person: { firstName: "Adam", lastName: "Jones" } }],
     ["string", { type: "string" }, "Hello world!"],
-    ["ulid", ulidSchema, ulid()],
+    ["ulid", $Ulid, ulid()],
     ["boolean", { type: "boolean" }, true],
     ["number", { type: "number" }, 123],
     ["integer", { type: "integer" }, 123],

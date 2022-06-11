@@ -1,9 +1,9 @@
-import { publicFundraiserSchema } from "@raise/shared"
 import { middyfy } from "../../../../helpers/wrapper"
 import { donationTable, fundraiserTable } from "../../../../helpers/tables"
 import { query, get } from "../../../../helpers/db"
+import { $PublicFundraiser } from "../../../../schemas"
 
-export const main = middyfy(null, publicFundraiserSchema, false, async (event) => {
+export const main = middyfy(null, $PublicFundraiser, false, async (event) => {
   const [fundraiser, donations] = await Promise.all([
     get(fundraiserTable, { id: event.pathParameters.fundraiserId }),
     query(donationTable, { fundraiserId: event.pathParameters.fundraiserId }),

@@ -1,10 +1,11 @@
 /* eslint-disable no-restricted-imports */
-import _axios, { AxiosError, AxiosRequestConfig } from "axios"
-import {
-  makeUseAxios, Options, ResponseValues, UseAxios, UseAxiosResult,
-} from "axios-hooks"
+import _axios, {
+  AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse,
+} from "axios"
+import cachios from "cachios"
 import { useEffect, useState } from "react"
 import env from "../env/env"
+import { makeClient, routes, Routes } from "./generated-api-client"
 
 export interface AuthState {
   token: string,
@@ -81,48 +82,195 @@ const logoutOnTokenExpiry = (err: unknown) => {
   return Promise.reject(err)
 }
 
-const clearCacheOnNonGet = (config: AxiosRequestConfig) => {
-  if (config.method !== "get" && config.method !== "GET") {
-    realUseAxios.clearCache()
-  }
-  return config
+const axiosWithDefaults = cachios.create(_axios.create(defaultConfig))
+axiosWithDefaults.axiosInstance.interceptors.response.use(undefined, logoutOnTokenExpiry)
+
+export interface ResponseValues<Result, RequestData, ErrorResult = unknown> {
+  data?: Result,
+  loading: boolean,
+  error?: AxiosError<ErrorResult, RequestData>,
+  response?: AxiosResponse<Result, RequestData>,
 }
 
-const axiosWithDefaults = _axios.create(defaultConfig)
-axiosWithDefaults.interceptors.request.use(clearCacheOnNonGet, undefined)
-axiosWithDefaults.interceptors.response.use(undefined, logoutOnTokenExpiry)
+type UseReqCoreResult<
+  Route extends keyof Routes,
+  RequestData extends Routes[Route]["request"],
+  Params extends Routes[Route]["params"],
+  Result extends Routes[Route]["response"],
+  ErrorResult,
+  RefetchArgs extends [] | [
+    ...Params extends null ? [] : [params: Params],
+    ...RequestData extends null ? [] : [data: RequestData],
+  ] = [] | [
+    ...Params extends null ? [] : [params: Params],
+    ...RequestData extends null ? [] : [data: RequestData],
+  ]
+  > = [
+    ResponseValues<Result, RequestData, ErrorResult>,
+    (...args: RefetchArgs) => Promise<AxiosResponse<Result>>
+  ]
 
-const realUseAxios = makeUseAxios({ axios: axiosWithDefaults })
+export type UseReqResult<
+  Route extends keyof Routes,
+  RequestData extends Routes[Route]["request"],
+  Params extends Routes[Route]["params"],
+  Result extends Routes[Route]["response"],
+  ErrorResult = unknown> = UseReqCoreResult<Route, RequestData, Params, Result, ErrorResult, [] | [
+    ...Params extends null ? [] : [params: Params],
+    ...RequestData extends null ? [] : [data: RequestData],
+  ]>
 
-export const useAxios = (<TResponse = unknown, TBody = unknown, TError = unknown>(config: AxiosRequestConfig | string, options?: Options) => {
+export type UseManualReqResult<
+  Route extends keyof Routes,
+  RequestData extends Routes[Route]["request"],
+  Params extends Routes[Route]["params"],
+  Result extends Routes[Route]["response"],
+  ErrorResult = unknown> = UseReqCoreResult<Route, RequestData, Params, Result, ErrorResult, [
+    ...Params extends null ? [] : [params: Params],
+    ...RequestData extends null ? [] : [data: RequestData],
+  ]>
+
+export interface UseReqOptions {
+  manual?: boolean,
+}
+
+export const useManualReq = <
+  Route extends keyof Routes,
+  RequestData extends Routes[Route]["request"],
+  Params extends Routes[Route]["params"],
+  Result extends Routes[Route]["response"],
+  ErrorResult = unknown,
+  >(
+    route: Route,
+    ...argArr: [
+      ...[options?: UseReqOptions & { manual: true }]
+    ]
+  ): UseManualReqResult<Route, RequestData, Params, Result, ErrorResult> => useReqCore(route, { options: { ...argArr[0], manual: true } })
+
+export const useReq = <
+  Route extends keyof Routes,
+  RequestData extends Routes[Route]["request"],
+  Params extends Routes[Route]["params"],
+  Result extends Routes[Route]["response"],
+  ErrorResult = unknown,
+  >(
+    route: Route,
+    ...argArr: [
+      ...Params extends null ? [] : [params: Params],
+      ...RequestData extends null ? [] : [data: RequestData],
+      ...[options?: UseReqOptions]
+    ]
+  ): UseReqResult<Route, RequestData, Params, Result, ErrorResult> => useReqCore(route, convertArgsToObj(routes[route], argArr))
+
+const useReqCore = <
+  Route extends keyof Routes,
+  RequestData extends Routes[Route]["request"],
+  Params extends Routes[Route]["params"],
+  Result extends Routes[Route]["response"],
+  ErrorResult = unknown,
+  >(route: Route, args: {
+    params?: Params extends null ? Record<string, never> : Params,
+    data?: RequestData extends null ? undefined : RequestData,
+    options: UseReqOptions,
+  }): UseReqCoreResult<Route, RequestData, Params, Result, ErrorResult> => {
   // Hack for Gatsby SSR so that dynamic components appear to be loading
   if (typeof window === "undefined") {
     return [{
       loading: true,
-      error: null,
-    }, () => { /* noop */ }, () => { /* noop */ }] as UseAxiosResult<TResponse, TBody, TError>
-  }
-
-  if (typeof config === "string") {
-    // eslint-disable-next-line no-param-reassign
-    config = { url: config }
+    }, (..._a) => Promise.reject()]
   }
 
   const [auth] = useAuthState()
-  if (auth?.token) {
-    // eslint-disable-next-line no-param-reassign
-    config.headers = config.headers ?? {}
-    // eslint-disable-next-line no-param-reassign
-    config.headers.Authorization = `Bearer ${auth.token}`
+
+  const config: AxiosRequestConfig<RequestData> = {
+    method: routes[route].method,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    url: routes[route].makePath(args.params as any),
+    data: args.data,
+    ...(auth?.token ? {
+      headers: {
+        Authorization: `Bearer ${auth.token}`,
+      },
+    } : {}),
   }
 
-  return realUseAxios<TResponse, TBody, TError>(config, options)
-}) as UseAxios
-// @ts-ignore
-// eslint-disable-next-line no-restricted-syntax,guard-for-in
-for (const key in realUseAxios) useAxios[key] = realUseAxios[key]
+  const [data, setData] = useState<Result | undefined>(undefined)
+  const [response, setResponse] = useState<AxiosResponse<Result, RequestData> | undefined>(undefined)
+  const [error, setError] = useState<AxiosError<ErrorResult, RequestData> | undefined>(undefined)
+  const [loading, setLoading] = useState<boolean>(false)
 
-export const useRawAxios = () => {
+  const fetchData = async (bypassCache?: boolean, ...overrideArgsArr: [] | [
+    ...Params extends null ? [] : [params: Params],
+    ...RequestData extends null ? [] : [data: RequestData],
+  ]): Promise<AxiosResponse<Result, RequestData>> => {
+    const overrideArgs = isEmpty(overrideArgsArr) ? undefined : convertArgsToObj(routes[route], overrideArgsArr)
+
+    setLoading(true)
+    const p = axiosWithDefaults.request({
+      ...config,
+      ...(overrideArgs ? {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        url: routes[route].makePath(args.params as any),
+        data: args.data,
+      } : undefined),
+      ...(bypassCache ? {
+        force: true,
+      } : {}),
+    })
+    try {
+      const r = await p
+      setResponse(r)
+      setData(r.data)
+    } catch (err) {
+      setError(err as AxiosError<ErrorResult, RequestData>)
+    } finally {
+      setLoading(false)
+    }
+    return p
+  }
+
+  useEffect(() => {
+    if (!args.options.manual) {
+      fetchData()
+    }
+  }, []) // execute once only
+
+  return [{
+    data, loading, error, response,
+  }, (...a) => fetchData(true, ...a)]
+}
+
+const isEmpty = <T>(arg: T[]): arg is [] => arg.length === 0
+
+const convertArgsToObj = <
+  Route extends keyof Routes,
+  RequestData extends Routes[Route]["request"],
+  Params extends Routes[Route]["params"]>(route: typeof routes[keyof typeof routes], args: [
+    ...Params extends null ? [] : [params: Params],
+    ...RequestData extends null ? [] : [data: RequestData],
+    ...([] | [options?: UseReqOptions])
+  ]): {
+    params: Params extends null ? Record<string, never> : Params,
+    data: RequestData extends null ? undefined : RequestData,
+    options: UseReqOptions,
+  } => {
+  const paramsIndex = route.hasParams ? 0 : null
+  const params = (paramsIndex === null ? {} : args[paramsIndex]) as Params extends null ? Record<string, never> : Params
+  // eslint-disable-next-line no-nested-ternary
+  const dataIndex = route.hasRequest ? (route.hasParams ? 1 : 0) : null
+  const data = (dataIndex === null ? undefined : args[dataIndex]) as RequestData extends null ? undefined : RequestData
+  // eslint-disable-next-line no-nested-ternary
+  const optionsIndexIfPresent = route.hasRequest ? (route.hasParams ? 2 : 1) : (route.hasParams ? 1 : 0)
+  const options = (args[optionsIndexIfPresent] ?? {}) as UseReqOptions
+
+  return {
+    params, data, options,
+  }
+}
+
+export const useRawReq = () => makeClient(useRawAxios())
+
+export const useRawAxios = (): AxiosInstance => {
   const [auth] = useAuthState()
   if (auth?.token) {
     const axios = _axios.create({
@@ -132,13 +280,12 @@ export const useRawAxios = () => {
         Authorization: `Bearer ${auth.token}`,
       },
     })
-    axios.interceptors.request.use(clearCacheOnNonGet, undefined)
     axios.interceptors.response.use(undefined, logoutOnTokenExpiry)
 
     return axios
   }
 
-  return axiosWithDefaults
+  return axiosWithDefaults.axiosInstance
 }
 
 export const asResponseValues = <TResponse, TBody, TError>(item: TResponse | undefined, inheritFrom: ResponseValues<unknown, TBody, TError>): ResponseValues<TResponse, TBody, TError> => ({

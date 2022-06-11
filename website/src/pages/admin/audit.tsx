@@ -1,21 +1,24 @@
 import * as React from "react"
 import { RouteComponentProps } from "@gatsbyjs/reach-router"
-import {
-  AuditLog, AuditLogs, format, g,
-} from "@raise/shared"
+import { format, g } from "@raise/shared"
 import { FormProvider, useForm } from "react-hook-form"
 import jsonexport from "jsonexport/dist"
 import { DownloadIcon } from "@heroicons/react/outline"
-import { useAxios } from "../../helpers/networking"
+import { AxiosError } from "axios"
+import { useRawReq } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import Table from "../../components/Table"
 import { LabelledInput } from "../../components/Form"
 import Button from "../../components/Button"
 import { RequireGroup } from "../../helpers/security"
 import Alert from "../../components/Alert"
+import { AuditLog } from "../../helpers/generated-api-client"
 
 const AuditPage: React.FC<RouteComponentProps> = () => {
-  const [auditLogs, fetchAuditLogs] = useAxios<AuditLogs>("", { manual: true })
+  const req = useRawReq()
+  const [loading, setLoading] = React.useState<boolean>(false)
+  const [error, setError] = React.useState<AxiosError | undefined>()
+  const [auditLogs, setAuditLogs] = React.useState<AuditLog[] | undefined>()
 
   const formMethods = useForm<{ queryType: "object" | "subject", query: string }>({
     defaultValues: {
@@ -26,12 +29,21 @@ const AuditPage: React.FC<RouteComponentProps> = () => {
 
   const onSubmit = async (q: { queryType: "object" | "subject", query: string }) => {
     try {
-      await fetchAuditLogs({ url: `/admin/audit-logs/by-${q.queryType}/${q.query}` })
-    } catch { /* noop, we handle errors in table */ }
+      setLoading(true)
+
+      const response = await (q.queryType === "object"
+        ? req("get /admin/audit-logs/by-object/{objectId}", { objectId: q.query })
+        : req("get /admin/audit-logs/by-subject/{subjectId}", { subjectId: q.query }))
+
+      setAuditLogs(response.data)
+      setLoading(false)
+    } catch (err) {
+      setError(err as AxiosError)
+    }
   }
 
-  const downloadAsCSV = auditLogs.data ? async () => {
-    const csv = auditLogs.data && await jsonexport(auditLogs.data.map((d) => ({ ...d, metadata: JSON.stringify(d.metadata) })))
+  const downloadAsCSV = auditLogs ? async () => {
+    const csv = auditLogs && await jsonexport(auditLogs.map((d) => ({ ...d, metadata: JSON.stringify(d.metadata) })))
     if (csv) {
       const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${csv}`)
       const link = document.createElement("a")
@@ -77,7 +89,11 @@ const AuditPage: React.FC<RouteComponentProps> = () => {
             metadata: { label: "Metadata", formatter: format.json },
             routeRaw: { label: "Route", className: "whitespace-nowrap" },
           }}
-          items={auditLogs}
+          items={{
+            data: auditLogs,
+            loading,
+            error,
+          }}
         />
       </RequireGroup>
     </Section>

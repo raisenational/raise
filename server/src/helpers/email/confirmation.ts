@@ -1,7 +1,8 @@
 import {
-  convert, format, Donation, Payment, Fundraiser, calcMatchFunding,
+  convert, format, calcMatchFunding,
 } from "@raise/shared"
 import env from "../../env/env"
+import { Donation, Fundraiser, Payment } from "../../schemas"
 
 export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[]): string => {
   const totalDonated = payments.reduce((acc, p) => acc + p.donationAmount, 0)

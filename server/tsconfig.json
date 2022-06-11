@@ -8,6 +8,7 @@
   },
   "include": [
     "src/**/*.ts",
+    "local/**/*.ts",
     "serverless.ts"
   ],
   "exclude": [

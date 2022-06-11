@@ -54,7 +54,7 @@
     "aos": "^2.3.4",
     "autoprefixer": "^10.3.4",
     "axios": "^0.24.0",
-    "axios-hooks": "^3.0.0",
+    "cachios": "^3.1.2",
     "canvas-confetti": "^1.4.0",
     "classnames": "^2.3.1",
     "eslint": "^7.32.0",

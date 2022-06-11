@@ -3,10 +3,10 @@ import { RouteComponentProps } from "@gatsbyjs/reach-router"
 import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import {
-  convert, format, Fundraiser, FundraiserEdits, g, groups,
+  convert, format, g, groups,
 } from "@raise/shared"
 import {
-  asResponseValues, useAuthState, useAxios, useRawAxios,
+  asResponseValues, useAuthState, useReq, useRawAxios,
 } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import Table from "../../components/Table"
@@ -15,9 +15,10 @@ import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
 import PropertyEditor from "../../components/PropertyEditor"
 import { RequireGroup } from "../../helpers/security"
+import { Fundraiser, FundraiserEdits } from "../../helpers/generated-api-client"
 
 const FundraisersPage: React.FC<RouteComponentProps> = () => {
-  const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
+  const [fundraisers, refetchFundraisers] = useReq("get /admin/fundraisers")
   const [newFundraiserModalOpen, setNewFundraiserModalOpen] = React.useState(false)
   const axios = useRawAxios()
   const [auth] = useAuthState()

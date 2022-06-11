@@ -1,5 +1,4 @@
 import * as React from "react"
-import { ResponseValues } from "axios-hooks"
 import { UnpackNestedValue } from "react-hook-form"
 import classNames from "classnames"
 
@@ -7,6 +6,7 @@ import Alert from "./Alert"
 import Table from "./Table"
 import Modal from "./Modal"
 import { Form, FormProps, InputType } from "./Form"
+import { ResponseValues } from "../helpers/networking"
 
 type PropertyDefinition<I, V> = {
   label?: string,

@@ -5,10 +5,8 @@ import {
   DownloadIcon, EyeIcon, EyeOffIcon, PlusSmIcon,
 } from "@heroicons/react/outline"
 import jsonexport from "jsonexport/dist"
-import {
-  format, Fundraiser, Donation, DonationEdits, groups, g,
-} from "@raise/shared"
-import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
+import { format, groups, g } from "@raise/shared"
+import { asResponseValues, useReq, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import Table from "../../components/Table"
 import PropertyEditor from "../../components/PropertyEditor"
@@ -17,9 +15,10 @@ import { Form } from "../../components/Form"
 import Button from "../../components/Button"
 import { RequireGroup } from "../../helpers/security"
 import Link from "../../components/Link"
+import { DonationEdits, Fundraiser } from "../../helpers/generated-api-client"
 
-const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId?: string }> = ({ fundraiserId }) => {
-  const [fundraisers, refetchFundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
+const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId: string }> = ({ fundraiserId }) => {
+  const [fundraisers, refetchFundraisers] = useReq("get /admin/fundraisers")
   const fundraiser = asResponseValues(fundraisers.data?.find((f) => f.id === fundraiserId), fundraisers)
   const axios = useRawAxios()
 
@@ -91,8 +90,8 @@ const downloadFn = (data: object[] | undefined, name: string) => (data ? async (
   }
 } : undefined)
 
-const DonationsSummaryView: React.FC<{ fundraiserId?: string, fundraiser?: Fundraiser }> = ({ fundraiserId, fundraiser }) => {
-  const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
+const DonationsSummaryView: React.FC<{ fundraiserId: string, fundraiser?: Fundraiser }> = ({ fundraiserId, fundraiser }) => {
+  const [donations, refetchDonations] = useReq("get /admin/fundraisers/{fundraiserId}/donations", { fundraiserId })
   const [exportModalOpen, setExportModalOpen] = React.useState(false)
   const [newDonationModalOpen, setNewDonationModalOpen] = React.useState(false)
   const [showUncounted, setShowUncounted] = React.useState(false)

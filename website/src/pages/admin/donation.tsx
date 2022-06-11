@@ -2,10 +2,8 @@ import * as React from "react"
 import { RouteComponentProps } from "@gatsbyjs/reach-router"
 import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
-import {
-  format, Donation, Payment, PaymentCreation, Fundraiser,
-} from "@raise/shared"
-import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
+import { format } from "@raise/shared"
+import { asResponseValues, useReq, useRawAxios } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import Table from "../../components/Table"
 import PropertyEditor from "../../components/PropertyEditor"
@@ -13,11 +11,12 @@ import Button from "../../components/Button"
 import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
 import DonationCard from "../../components/DonationCard"
+import { PaymentCreation } from "../../helpers/generated-api-client"
 
-const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string }> = ({ fundraiserId, donationId }) => {
-  const [fundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
-  const [donations, refetchDonations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
-  const [payments, refetchPayments] = useAxios<Payment[]>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`)
+const DonationPage: React.FC<RouteComponentProps & { fundraiserId: string, donationId: string }> = ({ fundraiserId, donationId }) => {
+  const [fundraisers] = useReq("get /admin/fundraisers")
+  const [donations, refetchDonations] = useReq("get /admin/fundraisers/{fundraiserId}/donations", { fundraiserId })
+  const [payments, refetchPayments] = useReq("get /admin/fundraisers/{fundraiserId}/donations/{donationId}/payments", { fundraiserId, donationId })
   const axios = useRawAxios()
 
   const [newPaymentModalOpen, setNewPaymentModalOpen] = React.useState(false)
@@ -116,7 +115,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId?: string, dona
           showCurrent={false}
           onSubmit={async (data) => {
             await axios.post<string>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`, data)
-            await refetchPayments()
+            await Promise.all([refetchPayments(), refetchDonations()])
             setNewPaymentModalOpen(false)
           }}
         />

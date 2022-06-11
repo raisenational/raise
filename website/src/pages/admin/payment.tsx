@@ -1,22 +1,21 @@
 import * as React from "react"
 import { RouteComponentProps } from "@gatsbyjs/reach-router"
 import { ExternalLinkIcon, ReceiptRefundIcon } from "@heroicons/react/outline"
-import {
-  format, Fundraiser, Donation, Payment, PaymentCreation, g,
-} from "@raise/shared"
-import { asResponseValues, useAxios, useRawAxios } from "../../helpers/networking"
+import { format, g } from "@raise/shared"
+import { asResponseValues, useReq, useRawReq } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import PropertyEditor from "../../components/PropertyEditor"
 import Button from "../../components/Button"
 import Modal from "../../components/Modal"
 import { Form } from "../../components/Form"
 import { RequireGroup } from "../../helpers/security"
+import { PaymentCreation, PaymentPropertyEdits } from "../../helpers/generated-api-client"
 
-const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donationId?: string, paymentId?: string }> = ({ fundraiserId, donationId, paymentId }) => {
-  const [fundraisers] = useAxios<Fundraiser[]>("/admin/fundraisers")
-  const [donations] = useAxios<Donation[]>(`/admin/fundraisers/${fundraiserId}/donations`)
-  const [payments, refetchPayments] = useAxios<Payment[]>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`)
-  const axios = useRawAxios()
+const PaymentPage: React.FC<RouteComponentProps & { fundraiserId: string, donationId: string, paymentId: string }> = ({ fundraiserId, donationId, paymentId }) => {
+  const [fundraisers] = useReq("get /admin/fundraisers")
+  const [donations] = useReq("get /admin/fundraisers/{fundraiserId}/donations", { fundraiserId })
+  const [payments, refetchPayments] = useReq("get /admin/fundraisers/{fundraiserId}/donations/{donationId}/payments", { fundraiserId, donationId })
+  const req = useRawReq()
 
   const [refundModalOpen, setRefundModalOpen] = React.useState(false)
 
@@ -55,7 +54,7 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donat
           }}
           showCurrent={false}
           onSubmit={async (data) => {
-            await axios.post<string>(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments`, {
+            await req("post /admin/fundraisers/{fundraiserId}/donations/{donationId}/payments", { fundraiserId, donationId }, {
               ...data,
               donationAmount: data.donationAmount !== undefined ? -data.donationAmount : 0,
               contributionAmount: data.contributionAmount !== undefined ? -data.contributionAmount : 0,
@@ -78,7 +77,8 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId?: string, donat
         }}
         item={payment}
         onSave={async (data) => {
-          await axios.patch(`/admin/fundraisers/${fundraiserId}/donations/${donationId}/payments/${paymentId}`, data)
+          // TODO: We shouldn't have to do the cast to never, but we do because of the weirdness created by the arg array expasion.
+          await req("patch /admin/fundraisers/{fundraiserId}/donations/{donationId}/payments/{paymentId}", { fundraiserId, donationId, paymentId }, data as PaymentPropertyEdits as never)
           refetchPayments()
         }}
       />

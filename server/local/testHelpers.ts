@@ -3,11 +3,12 @@ import type {
 } from "aws-lambda"
 import jwt from "jsonwebtoken"
 import { ulid } from "ulid"
-import { AuditLog, Donation, Fundraiser, Payment, g } from "@raise/shared"
+import { g } from "@raise/shared"
 import { AuthTokenPayload } from "../src/helpers/types"
 import env from "../src/env/env"
 import MockDate from 'mockdate';
 import * as db from "../src/helpers/db"
+import { AuditLog, Donation, Fundraiser, Payment } from "../src/schemas"
 
 interface CallOptions {
   path?: string,
