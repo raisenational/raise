@@ -2,7 +2,7 @@
 import _axios, {
   AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse,
 } from "axios"
-import cachios from "cachios"
+import { setupCache } from "axios-cache-interceptor"
 import { useEffect, useState } from "react"
 import env from "../env/env"
 import { makeClient, routes, Routes } from "./generated-api-client"
@@ -82,8 +82,8 @@ const logoutOnTokenExpiry = (err: unknown) => {
   return Promise.reject(err)
 }
 
-const axiosWithDefaults = cachios.create(_axios.create(defaultConfig))
-axiosWithDefaults.axiosInstance.interceptors.response.use(undefined, logoutOnTokenExpiry)
+const axiosWithDefaults = setupCache(_axios.create(defaultConfig), { interpretHeader: false })
+axiosWithDefaults.interceptors.response.use(undefined, logoutOnTokenExpiry)
 
 export interface ResponseValues<Result, RequestData, ErrorResult = unknown> {
   data?: Result,
@@ -205,6 +205,8 @@ const useReqCore = <
   ]): Promise<AxiosResponse<Result, RequestData>> => {
     const overrideArgs = isEmpty(overrideArgsArr) ? undefined : convertArgsToObj(routes[route], overrideArgsArr)
 
+    // console.log(`fetching ${routes[route].makePath(args.params as any)}`)
+
     setLoading(true)
     const p = axiosWithDefaults.request({
       ...config,
@@ -214,11 +216,15 @@ const useReqCore = <
         data: args.data,
       } : undefined),
       ...(bypassCache ? {
-        force: true,
+        cache: {
+          override: true,
+        },
       } : {}),
     })
     try {
       const r = await p
+      console.log(`fetched ${routes[route].makePath(args.params as any)}, cached: ${r.cached}, id: ${r.id}`)
+      console.log(await axiosWithDefaults.storage.get(r.id))
       setResponse(r)
       setData(r.data)
     } catch (err) {
@@ -285,7 +291,7 @@ export const useRawAxios = (): AxiosInstance => {
     return axios
   }
 
-  return axiosWithDefaults.axiosInstance
+  return axiosWithDefaults
 }
 
 export const asResponseValues = <TResponse, TBody, TError>(item: TResponse | undefined, inheritFrom: ResponseValues<unknown, TBody, TError>): ResponseValues<TResponse, TBody, TError> => ({

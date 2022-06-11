@@ -108,7 +108,7 @@ export const assertHasGroupForProperties = <B>(event: { auth: { payload: { group
   const groups = normalizeGroups(...groupDefinitions)
   if (!overlap(event.auth.payload.groups, groups)) {
     properties.forEach((p) => {
-      if (p in event.body) throw new createHttpError.Forbidden(`To edit ${p} you need to be in one of the groups [${groups.join(", ")}], but you are in ${event.auth.payload.groups}`)
+      if (p in event.body) throw new createHttpError.Forbidden(`To edit ${String(p)} you need to be in one of the groups [${groups.join(", ")}], but you are in ${event.auth.payload.groups}`)
     })
   }
 }

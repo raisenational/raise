@@ -1,2 +1,4 @@
 # tmp dir created in MWA website build
 website-mwa/
+
+node_modules
