@@ -16,6 +16,8 @@ jobs:
   is-required:
     runs-on: ubuntu-20.04
     timeout-minutes: 2
+    outputs:
+      should-run: ${{ steps.filter.outputs.should-run }}
     steps:
       - name: Determine if relevant paths changed
         uses: dorny/paths-filter@v2.10.2
