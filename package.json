@@ -1,0 +1,12 @@
+{
+  "name": "raise",
+  "workspaces": [
+    "shared",
+    "server",
+    "website"
+  ],
+  "scripts": {
+    "postinstall": "npm run postinstall --if-present --workspaces",
+    "start": "npm run start --workspace=server & npm run start --workspace=website"
+  }
+}

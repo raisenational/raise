@@ -8,7 +8,7 @@ const MWA_S3_BUCKET_NAME = `${MWA_SERVICE_NAME}-${env.STAGE}`
 
 const serverlessConfiguration: AWS = {
   service: RAISE_SERVICE_NAME,
-  frameworkVersion: "2",
+  frameworkVersion: "3",
   custom: {
     s3Sync: [
       {
