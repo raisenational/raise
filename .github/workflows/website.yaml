@@ -8,6 +8,11 @@ on:
       - ".github/workflows/website.yaml"
       - "website/**"
       - "shared/**"
+  pull_request:
+    paths:
+      - ".github/workflows/website.yaml"
+      - "website/**"
+      - "shared/**"
 
 jobs:
   build:
