@@ -4,9 +4,9 @@ Back-end code and resources for the Raise platform.
 
 ## ⏱ Quick Start
 
-This quick start will help you get the server up and running on your local machine, and explain how to make changes.
+This quick start get the server up and running on your local machine, and explain how to make changes.
 
-Commands should be typed into your terminal, in the raise-server directory if not otherwise specified. VS Code comes with a built-in terminal that sets this up for you when you've opened the folder (Menu > Terminal > New Terminal).
+Commands should be typed into your terminal, in the `server` directory if not otherwise specified. VS Code comes with a built-in terminal to do this (Menu > Terminal > New Terminal).
 
 ### 🔧 Setup
 
