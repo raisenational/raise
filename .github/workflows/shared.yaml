@@ -4,6 +4,12 @@ name: shared
 
 on:
   push:
+    branches:
+      - master
+    paths:
+      - ".github/workflows/shared.yaml"
+      - "shared/**"
+  pull_request:
     paths:
       - ".github/workflows/shared.yaml"
       - "shared/**"

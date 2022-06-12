@@ -4,6 +4,13 @@ name: server
 
 on:
   push:
+    branches:
+      - master
+    paths:
+      - ".github/workflows/server.yaml"
+      - "server/**"
+      - "shared/**"
+  pull_request:
     paths:
       - ".github/workflows/server.yaml"
       - "server/**"
