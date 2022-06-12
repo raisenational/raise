@@ -11,27 +11,13 @@ on:
       - "server/**"
       - "shared/**"
   pull_request:
+    paths:
+      - ".github/workflows/server.yaml"
+      - "server/**"
+      - "shared/**"
 
 jobs:
-  is-required:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 2
-    outputs:
-      should-run: ${{ steps.filter.outputs.should-run }}
-    steps:
-      - name: Determine if relevant paths changed
-        uses: dorny/paths-filter@v2.10.2
-        id: path-filter
-        with:
-          filters: |
-            should-run:
-              - ".github/workflows/server.yaml"
-              - "server/**"
-              - "shared/**"
-
   build:
-    needs: is-required
-    if: ${{ needs.is-required.outputs.should-run == 'true' }}
     runs-on: ubuntu-20.04
     timeout-minutes: 20
     strategy:
