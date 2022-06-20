@@ -30,7 +30,7 @@ const PrivacyPage = () => (
     <Section className="text-left">
       <SectionTitle>Raise Privacy Policy</SectionTitle>
 
-      <p className="font-black font-raise-header mt-8">Who we are and how to conatct us</p>
+      <p className="font-black font-raise-header mt-8">Who we are and how to contact us</p>
       <p>We are Raise, and are the data controller for your personal data. You can contact us via email at raisenational@gmail.com.</p>
 
       <p className="font-black font-raise-header mt-8 mb-2">Why we process your personal data</p>

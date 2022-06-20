@@ -29,7 +29,7 @@ const PrivacyPage = () => (
     <Section className="text-left">
       <SectionTitle>MWA Privacy Policy</SectionTitle>
 
-      <p className="font-black font-raise-header mt-8">Who we are and how to conatct us</p>
+      <p className="font-black font-raise-header mt-8">Who we are and how to contact us</p>
       <p>We are Raise, also known as May Week Alternative (MWA), and are the data controller for your personal data. You can contact us via email at raisenational@gmail.com.</p>
 
       <p className="font-black font-raise-header mt-8 mb-2">Why we process your data</p>
