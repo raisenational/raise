@@ -45,7 +45,7 @@ export const main = middyfy($DonationCreation, $Ulid, true, async (event) => {
     recurrenceFrequency: event.body.recurrenceFrequency ?? null,
     stripeCustomerId: event.body.stripeCustomerId ?? null,
     stripePaymentMethodId: event.body.stripePaymentMethodId ?? null,
-    charity: event.body.charity ?? "AMF",
+    charity: event.body.charity ?? "Unknown",
     overallPublic: event.body.overallPublic ?? false,
     namePublic: event.body.namePublic ?? false,
     donationAmountPublic: event.body.donationAmountPublic ?? false,

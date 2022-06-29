@@ -238,7 +238,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId: string, fundraiser?: Fundra
             addressCountry: null,
             giftAid: false,
             comment: null,
-            charity: "AMF",
+            charity: "Unknown",
             overallPublic: false,
             namePublic: false,
             donationAmountPublic: false,
