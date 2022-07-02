@@ -50,8 +50,8 @@ const IndexPage = () => (
           statistics={{
             years: 4 + 1,
             students: 1089 + 385,
-            raised: 228296 + 51879,
-            protected: 269737 + convert.moneyToPeopleProtected("gbp", 5187926),
+            raised: 228296 + 52735,
+            protected: 269737 + convert.moneyToPeopleProtected("gbp", 5273585),
           }}
         />
       </Section>

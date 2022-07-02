@@ -39,10 +39,10 @@ const IndexPage = () => (
           title="Raise: A Celebration of Giving"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our chapter websites to learn more about what we do."
           statistics={{
-            years: 4 + 1,
-            students: 1366 + 733,
-            raised: 284581 + 100445,
-            protected: 340013 + convert.moneyToPeopleProtected("gbp", 10044544),
+            years: 5,
+            students: 2099,
+            raised: 382739,
+            protected: 455285,
           }}
         />
 
