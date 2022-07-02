@@ -5,13 +5,13 @@ describe("gbpToPeopleProtected", () => {
     // Regular amounts (GBP)
     ["gbp", 0, 0],
     ["gbp", 100, 1],
-    ["gbp", 500, 6],
-    ["gbp", 1000, 12],
-    ["gbp", 2000, 24],
-    ["gbp", 2500, 30],
-    ["gbp", 5000, 60],
-    ["gbp", 7500, 91],
-    ["gbp", 10000, 121],
+    ["gbp", 500, 5],
+    ["gbp", 1000, 11],
+    ["gbp", 2000, 23],
+    ["gbp", 2500, 29],
+    ["gbp", 5000, 59],
+    ["gbp", 7500, 89],
+    ["gbp", 10000, 119],
     // Regular amounts (USD)
     ["usd", 0, 0],
     ["usd", 100, 0],
@@ -24,7 +24,7 @@ describe("gbpToPeopleProtected", () => {
     ["usd", 10000, 90],
     // Irregular amounts (GBP)
     ["gbp", 123, 1],
-    ["gbp", 4567, 55],
+    ["gbp", 4567, 54],
     ["gbp", 89, 1],
     // Irregular amounts (USD)
     ["usd", 123, 1],

@@ -26,7 +26,7 @@ test("renders email correctly with one payment", () => {
 
   // then we have expected data filled in
   expect(email).toContain("Dear Greg,")
-  expect(email).toContain("Your donation will help protect 243 people from malaria.")
+  expect(email).toContain("Your donation will help protect 239 people from malaria.")
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
   expect(email).toMatch(/<td[^>]*>Your Summer Party contribution<\/td>\s*<td[^>]*>£10<\/td>/)
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£110<\/td>/)
@@ -61,7 +61,7 @@ test("renders email correctly for payments with no contribution or match funding
 
   // then we have expected data filled in
   expect(email).toContain("Dear Greg,")
-  expect(email).toContain("Your donation will help protect 121 people from malaria.")
+  expect(email).toContain("Your donation will help protect 119 people from malaria.")
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
   expect(email).not.toContain("Your Summer Party contribution")
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£100<\/td>/)
@@ -98,7 +98,7 @@ test("renders email correctly for payments with inferred match funding", () => {
 
   // then we have expected data filled in
   expect(email).toContain("Dear Greg,")
-  expect(email).toContain("Your donation will help protect 364 people from malaria.")
+  expect(email).toContain("Your donation will help protect 359 people from malaria.")
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
   expect(email).not.toContain("Your Summer Party contribution")
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£100<\/td>/)
@@ -156,7 +156,7 @@ test.each([
   // then we have expected data filled in
   expect(email).toContain("Dear Greg,")
   if (currency === "gbp") {
-    expect(email).toContain("Your donation will help protect 65 people from malaria.")
+    expect(email).toContain("Your donation will help protect 64 people from malaria.")
     expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£9<\/td>/)
     expect(email).toMatch(/<td[^>]*>Your Summer Party contribution<\/td>\s*<td[^>]*>£10<\/td>/)
     expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£19<\/td>/)

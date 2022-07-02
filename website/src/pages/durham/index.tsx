@@ -46,8 +46,8 @@ const IndexPage = () => (
           statistics={{
             years: 1 + 1,
             students: 122 + 108,
-            raised: 30714 + 13373,
-            protected: 37867 + convert.moneyToPeopleProtected("gbp", 1337350),
+            raised: 30714 + 13430,
+            protected: 37867 + convert.moneyToPeopleProtected("gbp", 1334075),
           }}
         />
       </Section>

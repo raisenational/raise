@@ -41,10 +41,10 @@ const IndexPage = () => (
           title="Raise Demo"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our national impact below."
           statistics={{
-            years: 4,
-            students: 1366,
-            raised: 284581,
-            protected: 340013,
+            years: 5,
+            students: 2099,
+            raised: 382739,
+            protected: 455285,
           }}
         />
         <Button variant="outline" className="mt-4 mb-12" href="/demo/donate"> Donate </Button>
