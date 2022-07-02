@@ -116,15 +116,14 @@ const DonationsSummaryView: React.FC<{ fundraiserId: string, fundraiser?: Fundra
 
   const downloadForAMF = downloadFn(
     donations.data
-      ?.filter((d) => d.donationCounted).map((d) => ({
-        Email: d.donorEmail,
+      ?.filter((d) => d.donationCounted && d.charity === "AMF").map((d) => ({
         "First Name": d.donorName.split(" ")[0],
         "Last Name": d.donorName.split(" ").filter((_, i) => i > 0).join(" "),
         // NB: this does not include match funding
         Amount: format.amountShort(fundraiser?.currency, d.donationAmount),
-        "Gift Aid": d.giftAid,
-        Emailable: d.emailConsentInformational,
-        Company: "",
+        Email: d.donorEmail,
+        Chapter: fundraiser?.internalName,
+        "Gift Aid": d.giftAid ? "Yes" : "No",
         "Address 1": d.addressLine1,
         "Address 2": d.addressLine2,
         "Address 3": d.addressLine3,
@@ -132,7 +131,9 @@ const DonationsSummaryView: React.FC<{ fundraiserId: string, fundraiser?: Fundra
         County: "",
         Postcode: d.addressPostcode,
         Country: d.addressCountry,
-        Chapter: fundraiser?.publicName,
+        "Date of Donation": new Date(d.createdAt * 1000).toISOString(),
+        "Consent: Update on nets funded by donation": d.emailConsentInformational ? "Yes" : "No",
+        "Consent: General updates from AMF": "No",
       })),
     `${fundraiser?.publicName}_amf_export`,
   )
