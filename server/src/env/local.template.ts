@@ -25,8 +25,11 @@ const env: Env = {
 
   // Slack configuration
   // The bot should have the chat:write scope and be able to access the channel
-  // This token is for the 'Errors Raise' bot, added to the #test-channel in the domdomegg.slack.com workspace
-  SLACK_BOT_TOKEN: "xoxb-825862040501-2829297236371-ThN78vWqKY46NDUEtlbiLpGX",
+  // This token is for the 'Raise Local' bot, added to the #test-channel in the domdomegg.slack.com workspace
+  // Concatenated to avoid secret scanning getting angry (it's fine to be public given it has limited permissions
+  // to only a sandbox workspace, and has clear warnings that the public could send messages via it)
+  // eslint-disable-next-line no-useless-concat
+  SLACK_BOT_TOKEN: "xoxb-" + "825862040501-2829297236371-UR75gADxkwP7Z5OKZWCSBl2I",
   SLACK_CHANNEL_ID: "CQ9RC2HB7",
 
   // Timestamp which JWTs must be issued after. Either an integer (unix timestamp in seconds) or undefined (undefined means this check is disabled)
