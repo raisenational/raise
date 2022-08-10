@@ -21,6 +21,7 @@ const PrivacyPage = () => (
         { text: "Oxford", href: "/oxford/" },
         { text: "Sheffield", href: "/sheffield/" },
         { text: "Warwick", href: "/warwick/" },
+        { text: "Edinburgh", href: "/edinburgh/" },
         { text: "Alumni", href: "/alumni/" },
       ]}
       right={[
@@ -30,8 +31,11 @@ const PrivacyPage = () => (
     <Section className="text-left">
       <SectionTitle>Raise Privacy Policy</SectionTitle>
 
-      <p className="font-black font-raise-header mt-8">Who we are and how to contact us</p>
-      <p>We are Raise, and are the data controller for your personal data. You can contact us via email at raisenational@gmail.com.</p>
+      <p className="font-black font-raise-header mt-8">Who we are</p>
+      <p>We are Raise, also known as May Week Alternative (MWA), a non-profit umbrella organisation that supports Raise chapters (local Raise groups). We are a data controller.</p>
+
+      <p className="font-black font-raise-header mt-8">How to contact us</p>
+      <p>You can contact us via email at raisenational@gmail.com.</p>
 
       <p className="font-black font-raise-header mt-8 mb-2">Why we process your personal data</p>
       <Table
@@ -65,11 +69,9 @@ const PrivacyPage = () => (
           legalBasis: "Our legal obligations",
         }, {
           purpose: "Carrying out obligations arising from contracts with you.",
-          legalBasis: "The contract we have with you",
+          legalBasis: "Any contracts we have with you",
         }, {
-          purpose: `Sending you marketing communications such as emails or social media messages.
-
-          Managing society alumni relations and fundraising.
+          purpose: `Sending you direct marketing communications such as emails or social media messages.
 
           Creating and publishing marketing materials for publicity purposes relating to the movement, such as posting a photo of you at the summer party on Instagram.`,
           legalBasis: "Your consent (which you may withdraw by contacting us)",
@@ -98,7 +100,7 @@ const PrivacyPage = () => (
       />
 
       <p className="font-black font-raise-header mt-8 mb-2">Your rights</p>
-      <p>As a data subject, you have several data protection rights which you can exercise by contacting us:</p>
+      <p>As a data subject, you have several data protection rights:</p>
       <ul className="list-disc ml-12 my-2">
         <li>Access to personal data - you can ask us for a copy of data we hold about you</li>
         <li>Rectification of personal data - you can ask us to correct data we hold about you</li>
@@ -106,7 +108,7 @@ const PrivacyPage = () => (
         <li>Restriction of processing of personal data - you can ask us to stop processing data we hold about you</li>
         <li>Lodging a complaint with the Commissioner - if you are unhappy with how we have handled your data or with the response received from us, you can lodge a complaint with the ICO at Wycliffe House, Water Lane, Wilmslow, SK9 5AF.</li>
       </ul>
-      <p>These rights are not absolute and may be limited in some cases. For a full explanation of your rights as a data subject visit the ICO website or contact us.</p>
+      <p>These rights are not absolute and may be limited in some cases. To exercise your data protection rights, or for more information, contact us.</p>
     </Section>
 
     <Footer />
