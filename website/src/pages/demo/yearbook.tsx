@@ -41,47 +41,50 @@ const IndexPage = () => (
 
     <Section>
       <SectionTitle>Members</SectionTitle>
-      {[
-        {
-          name: "Karla Baker, Geography @ Kitty College",
-          quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ultrices vitae auctor eu augue ut lectus. Consectetur adipiscing elit duis tristique sollicitudin nibh sit. Ornare lectus sit amet est placerat in. Rhoncus mattis rhoncus urna neque. Suspendisse potenti nullam ac tortor vitae purus faucibus. Urna et pharetra pharetra massa massa ultricies.",
-          img: "https://placekitten.com/160/160?image=1",
-        },
-        {
-          name: "Alice Schirmer, Maths @ Meow College",
-          quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          img: "https://placekitten.com/160/160?image=2",
-        },
-        {
-          name: "Dan Bibeau, History @ Furball College",
-          quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          img: "https://placekitten.com/160/160?image=3",
-        },
-        {
-          name: "Anonymous, Student @ Mew College",
-          quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          img: "https://placekitten.com/160/160?image=4",
-        },
-        {
-          name: "Fernando Acevedo, Computer Science @ Cat College",
-          img: "https://placekitten.com/160/160?image=5",
-        },
-        {
-          name: "Hui Ying Peng, Anthropology @ Paw College",
-          quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        },
-        {
-          name: "Saskia Luijsterburg, Biology @ Catty College",
-          quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ultrices vitae auctor eu augue ut lectus. Consectetur adipiscing elit duis tristique sollicitudin nibh sit. Ornare lectus sit amet est placerat in.",
-        },
-        {
-          name: "Michal Zajíček, Chemistry @ Purring College",
-        },
-      ].map((m, i) => (
-        <Quote by={m.name} headshotSrc={m.img} imagePlacement={i % 2 === 0 ? "left" : "right"} className="mt-20">
-          {m.quote}
-        </Quote>
-      ))}
+      {/* TODO: reconsider grid? */}
+      <div className="grid grid-cols-2 gap-4">
+        {[
+          {
+            name: "Karla Baker, Geography @ Kitty College",
+            quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ultrices vitae auctor eu augue ut lectus. Consectetur adipiscing elit duis tristique sollicitudin nibh sit. Ornare lectus sit amet est placerat in. Rhoncus mattis rhoncus urna neque. Suspendisse potenti nullam ac tortor vitae purus faucibus. Urna et pharetra pharetra massa massa ultricies.",
+            img: "https://placekitten.com/160/160?image=1",
+          },
+          {
+            name: "Alice Schirmer, Maths @ Meow College",
+            quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            img: "https://placekitten.com/160/160?image=2",
+          },
+          {
+            name: "Dan Bibeau, History @ Furball College",
+            quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            img: "https://placekitten.com/160/160?image=3",
+          },
+          {
+            name: "Anonymous, Student @ Mew College",
+            quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            img: "https://placekitten.com/160/160?image=4",
+          },
+          {
+            name: "Fernando Acevedo, Computer Science @ Cat College",
+            img: "https://placekitten.com/160/160?image=5",
+          },
+          {
+            name: "Hui Ying Peng, Anthropology @ Paw College",
+            quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          },
+          {
+            name: "Saskia Luijsterburg, Biology @ Catty College",
+            quote: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ultrices vitae auctor eu augue ut lectus. Consectetur adipiscing elit duis tristique sollicitudin nibh sit. Ornare lectus sit amet est placerat in.",
+          },
+          {
+            name: "Michal Zajíček, Chemistry @ Purring College",
+          },
+        ].map((m, i) => (
+          <Quote by={m.name} headshotSrc={m.img} imagePlacement={i % 4 <= 1 ? "left" : "right"} className="mt-8 p-8 py-12 bg-raise-red rounded-lg">
+            {m.quote}
+          </Quote>
+        ))}
+      </div>
     </Section>
 
     <Section id="faq">
