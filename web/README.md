@@ -33,10 +33,10 @@ The super rough setup guide is:
 - install [Node.js](https://nodejs.org/en/download/)
 - clone the monorepo and open it with VS Code
 - run `npm install` and `npm run build` in the `shared` directory
-- run `npm install` in the `website` directory
+- run `npm install` in the `web` directory
 
 Once that's set up, to start up the website:
-- Run `npm start` in the `website` directory
+- Run `npm start` in the `web` directory
 - Open the address displayed in the terminal in a browser
 
 Alternatively, you should be able to just open this repository [with Gitpod](https://gitpod.io/#https://github.com/raisenational/raise) by logging in with GitHub and this will do the steps above for you.
@@ -55,4 +55,4 @@ The pages themselves are stored in the `pages` folder, which correspond to paths
 
 The `env` folder holds configuration for deploying the site to different environments, most relevant to donations platform stuff.
 
-There's some horrible scripts in `package.json` to build the MWA website. We copy everything to a `website-mwa` folder, replace `src` with `src/cambridge` and copy the built output back.
+There's some horrible scripts in `package.json` to build the MWA website. We copy everything to a `web-mwa` folder, replace `src` with `src/cambridge` and copy the built output back.

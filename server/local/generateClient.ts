@@ -104,7 +104,7 @@ export const makeClient = (a: AxiosInstance = axios) => <
   });
 }`
 
-  const outputDir = join(__dirname, "../../website/src/helpers/generated-api-client")
+  const outputDir = join(__dirname, "../../web/src/helpers/generated-api-client")
 
   writeFileSync(
     join(outputDir, "index.ts"),
