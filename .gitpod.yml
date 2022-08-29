@@ -6,7 +6,7 @@ tasks:
       npm install
       npm run build
       gp sync-done shared
-      cd ../website
+      cd ../web
       npm install
     command: |
       [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]] && git checkout -b "$GITPOD_WORKSPACE_ID/$(date +%s)"

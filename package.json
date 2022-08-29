@@ -3,10 +3,10 @@
   "workspaces": [
     "shared",
     "server",
-    "website"
+    "web"
   ],
   "scripts": {
     "postinstall": "npm run postinstall --if-present --workspaces",
-    "start": "npm run start --workspace=server & npm run start --workspace=website"
+    "start": "npm run start --workspace=server & npm run start --workspace=web"
   }
 }
