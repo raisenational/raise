@@ -4,7 +4,6 @@ import Helmet from "react-helmet"
 import Page from "../../components/Page"
 import Section, { SectionTitle } from "../../components/Section"
 import Navigation from "../../components/Navigation"
-import Table from "../../components/Table"
 import Footer from "../../components/Footer"
 
 const PrivacyPage = () => (
