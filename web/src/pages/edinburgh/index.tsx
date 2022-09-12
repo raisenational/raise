@@ -1,7 +1,6 @@
 import * as React from "react"
 import Helmet from "react-helmet"
 
-import { convert } from "@raise/shared"
 import Page from "../../components/Page"
 import Section, { SectionTitle } from "../../components/Section"
 import Navigation from "../../components/Navigation"
@@ -13,8 +12,6 @@ import ContactForm from "../../components/ContactForm"
 import SocialIcon from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
 
-import instagram from "../../images/instagram.png"
-import facebook from "../../images/facebook.svg"
 import email from "../../images/email.svg"
 import { Doubled, MoneyBox, Party } from "../../images/Icons"
 import Footer from "../../components/Footer"
