@@ -12,7 +12,6 @@ import PhilosophyV2 from "../../components/PhilosophyV2"
 import ContactForm from "../../components/ContactForm"
 import SocialIcon from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
-import Button from "../../components/Button"
 
 import instagram from "../../images/instagram.png"
 import facebook from "../../images/facebook.svg"
