@@ -16,20 +16,21 @@ import email from "../images/email.svg"
 const IndexPage = () => (
   <Page>
     <Helmet>
-      <title>Raise</title>
-      <meta property="og:title" content="Raise" />
+      <title>Raise: A charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving</title>
+      <meta property="og:title" content="Raise: A charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving" />
     </Helmet>
     <Cover>
       <Navigation
         left={[
+          { text: "Alumni", href: "/alumni/" },
+          { text: "Bristol", href: "/bristol/" },
           { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
           { text: "Durham", href: "/durham/" },
+          { text: "Edinburgh", href: "/edinburgh/" },
           { text: "Glasgow", href: "/glasgow/" },
           { text: "Oxford", href: "/oxford/" },
           { text: "Sheffield", href: "/sheffield/" },
           { text: "Warwick", href: "/warwick/" },
-          { text: "Edinburgh", href: "/edinburgh/" },
-          { text: "Alumni", href: "/alumni/" },
         ]}
         right={[
         ]}
