@@ -18,7 +18,7 @@ const IndexPage = () => (
   <Page>
     <Helmet>
       <title>Raise: Taking Raise Forwards</title>
-      <meta property="og:title" content="Raise" />
+      <meta property="og:title" content="Raise: Taking Raise Forwards" />
     </Helmet>
     <Navigation
       left={[
