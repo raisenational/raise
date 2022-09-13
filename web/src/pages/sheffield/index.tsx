@@ -12,7 +12,6 @@ import PhilosophyV2 from "../../components/PhilosophyV2"
 import ContactForm from "../../components/ContactForm"
 import SocialIcon from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
-import Button from "../../components/Button"
 
 import instagram from "../../images/instagram.png"
 import facebook from "../../images/facebook.svg"
@@ -37,7 +36,6 @@ const IndexPage = () => (
         ]}
         right={[
           // { text: "Become a Rep", href: "https://docs.google.com/forms/d/e/1FAIpQLSfbeRgBxMW86fnw_qxZBZ8Glzm7qa5-FwjACjYw3F0NgBEIiw/viewform" },
-          { text: "Donate", href: "/sheffield/donate" },
         ]}
       />
       <Section className="px-8">
@@ -51,7 +49,6 @@ const IndexPage = () => (
             protected: convert.moneyToPeopleProtected("gbp", 489175),
           }}
         />
-        <Button variant="outline" size="large" className="mt-4 mb-12" href="/sheffield/donate">Donate</Button>
       </Section>
       <CTADown
         text="How it works"
@@ -137,7 +134,6 @@ const IndexPage = () => (
           <p>Naturally, we are aware that the COVID-19 pandemic may affect the ways in which we can come together over the course of this year, and we are keeping a close eye on the local and national guidance at every stage. However, even if we are not able to come together as an entire community, this will not stop us from marking the end of the year in true Raise style. Whether in smaller groups or all together, we aim to create a meaningful and enjoyable format to bring the community together and celebrate our collective impact under these different circumstances.</p>
         </FAQ>
       </FAQs>
-      <Button variant="outline" className="mt-4" href="/sheffield/donate">Donate</Button>
     </Section>
 
     <PhilosophyV2 />
