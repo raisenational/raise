@@ -32,7 +32,7 @@ const IndexPage = () => (
           { text: "Contact", href: "#contact" },
         ]}
         right={[
-          // { text: "Get Involved", href: "https://example.com" },
+          { text: "Get Involved", href: "https://forms.gle/aqf3ZJghoN25ZyuW6" },
         ]}
       />
       <Section className="px-8">
