@@ -44,10 +44,10 @@ const IndexPage = () => (
           title="Raise Oxford"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
           statistics={{
-            years: 3 + 1,
-            students: 177 + 95,
-            raised: 30962 + 17004,
-            protected: 37739 + convert.moneyToPeopleProtected("gbp", 1700381),
+            years: 2,
+            students: 82 + 95,
+            raised: 13958 + 17004,
+            protected: convert.moneyToPeopleProtected("gbp", 1375872 + 1700381),
           }}
         />
       </Section>
