@@ -40,7 +40,7 @@ const IndexPage = () => (
           { text: "Partner", href: "partner/" },
         ]}
         right={[
-          { text: "Join the Team!", href: "https://docs.google.com/forms/d/e/1FAIpQLSe_TtXDea6aW_0mSac0AOIenEGQbSNMWVbPS8efGcR95dmOOA/viewform?usp=sf_link" },
+          { text: "Get Involved!", href: "https://forms.gle/f5eu3d2fifRWSsqs5" },
         ]}
       />
       <Section className="px-8">
