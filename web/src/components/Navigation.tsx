@@ -86,4 +86,23 @@ const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) 
   )
 }
 
+export const TopNavigation: React.FC = () => (
+  <Navigation
+    left={[
+      { text: "Alumni", href: "/alumni/" },
+      { text: "Bristol", href: "/bristol/" },
+      { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
+      { text: "Durham", href: "/durham/" },
+      { text: "Edinburgh", href: "/edinburgh/" },
+      { text: "Glasgow", href: "/glasgow/" },
+      { text: "Oxford", href: "/oxford/" },
+      { text: "Sheffield", href: "/sheffield/" },
+      { text: "Warwick", href: "/warwick/" },
+      { text: "About", href: "/about/" },
+    ]}
+    right={[
+    ]}
+  />
+)
+
 export default Navigation

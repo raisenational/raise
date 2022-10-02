@@ -3,7 +3,7 @@ import Helmet from "react-helmet"
 
 import Page from "../components/Page"
 import Section, { SectionTitle } from "../components/Section"
-import Navigation from "../components/Navigation"
+import { TopNavigation } from "../components/Navigation"
 import Table from "../components/Table"
 import Footer from "../components/Footer"
 
@@ -13,20 +13,7 @@ const PrivacyPage = () => (
       <title>Raise: Privacy Policy</title>
       <meta property="og:title" content="Raise: Privacy Policy" />
     </Helmet>
-    <Navigation
-      left={[
-        { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
-        { text: "Durham", href: "/durham/" },
-        { text: "Glasgow", href: "/glasgow/" },
-        { text: "Oxford", href: "/oxford/" },
-        { text: "Sheffield", href: "/sheffield/" },
-        { text: "Warwick", href: "/warwick/" },
-        { text: "Edinburgh", href: "/edinburgh/" },
-        { text: "Alumni", href: "/alumni/" },
-      ]}
-      right={[
-      ]}
-    />
+    <TopNavigation />
 
     <Section className="text-left">
       <SectionTitle>Raise Privacy Policy</SectionTitle>
