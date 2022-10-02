@@ -3,7 +3,7 @@ import Helmet from "react-helmet"
 
 import Page from "../components/Page"
 import Section, { SectionTitle } from "../components/Section"
-import Navigation from "../components/Navigation"
+import { TopNavigation } from "../components/Navigation"
 import Cover, { CTADown } from "../components/Cover"
 import IntroStats from "../components/IntroStats"
 import PhilosophyV2 from "../components/PhilosophyV2"
@@ -20,21 +20,7 @@ const IndexPage = () => (
       <meta property="og:title" content="Raise: A charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving" />
     </Helmet>
     <Cover>
-      <Navigation
-        left={[
-          { text: "Alumni", href: "/alumni/" },
-          { text: "Bristol", href: "/bristol/" },
-          { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
-          { text: "Durham", href: "/durham/" },
-          { text: "Edinburgh", href: "/edinburgh/" },
-          { text: "Glasgow", href: "/glasgow/" },
-          { text: "Oxford", href: "/oxford/" },
-          { text: "Sheffield", href: "/sheffield/" },
-          { text: "Warwick", href: "/warwick/" },
-        ]}
-        right={[
-        ]}
-      />
+      <TopNavigation />
       <Section className="px-8 my-16">
         <IntroStats
           title="Raise: A Celebration of Giving"

@@ -3,7 +3,7 @@ import Helmet from "react-helmet"
 
 import Page from "../components/Page"
 import Section, { SectionTitle } from "../components/Section"
-import Navigation from "../components/Navigation"
+import { TopNavigation } from "../components/Navigation"
 import Footer from "../components/Footer"
 import Quote from "../components/Quote"
 
@@ -73,38 +73,23 @@ const AboutPage = () => (
       <title>Raise: About Us</title>
       <meta property="og:title" content="Raise: About Us" />
     </Helmet>
-    <Navigation
-      left={[
-        { text: "Alumni", href: "/alumni/" },
-        { text: "Bristol", href: "/bristol/" },
-        { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
-        { text: "Durham", href: "/durham/" },
-        { text: "Edinburgh", href: "/edinburgh/" },
-        { text: "Glasgow", href: "/glasgow/" },
-        { text: "Oxford", href: "/oxford/" },
-        { text: "Sheffield", href: "/sheffield/" },
-        { text: "Warwick", href: "/warwick/" },
-        { text: "About", href: "/about/" },
-      ]}
-      right={[
-      ]}
-    />
+    <TopNavigation />
 
     <Section className="text-left">
       <SectionTitle>About Us</SectionTitle>
 
       <div className="space-y-4">
-        <p>Raise educates people about the effectiveness of charities, aiming to encourage effective and deliberate giving. It’s run by unpaid volunteers and does not make a profit.</p>
-        <p>We call each local Raise group (e.g. a university society like Raise Oxford) a chapter. Each chapter is run by a team of volunteers, usually students, recruited annually.</p>
-        <p>These chapters are supported by a central, national team. The national team recruits, mentors, and coordinates the chapters, sets the strategic direction for what Raise does, and provides support services like the website or common graphics assets.</p>
-        <p>The national team is supported by an advisory board, which is used as a resource when considering changing strategic direction, or for implementing independent units of work like producing the Raise blog.</p>
+        <p>Raise educates students about charitable giving, aiming to encourage effective and deliberate giving. It’s run by unpaid volunteers and does not make a profit.</p>
+        <p>We call each local Raise group a chapter. These tend to be based at universities, where they may be societies. Each chapter is run by a team of student volunteers, recruited annually.</p>
+        <p>These chapters are supported by a central, national team. The national team recruits, mentors, and coordinates the chapters, sets the strategic direction for what Raise does, and provides support services like the website.</p>
+        <p>The national team is supported by an advisory board, a group of current and former students who have been closely involved with Raise in the past. They provide strategic support and work on exciting new projects such as the Raise blog.</p>
       </div>
 
       <p className="font-black font-raise-header mt-8 mb-2">Chapter Teams</p>
       <p>Find out more about our chapter teams on their respective pages.</p>
 
       <p className="font-black font-raise-header mt-8 mb-2">National Team</p>
-      <p>There's {NATIONAL_TEAM.length} of us on the national team, working to support chapters as best we can:</p>
+      <p>There's {NATIONAL_TEAM.length} of us on the national team. We're students and recent grads who volunteer to support chapters as best we can:</p>
       {NATIONAL_TEAM.map((m, i) => (
         <Quote key={m.id} by={`${m.name}, ${m.role}`} headshotSrc={m.img} imagePlacement={i % 4 <= 1 ? "left" : "right"} className="mt-4 p-8 bg-raise-red rounded-lg min-h-[10rem] whitespace-pre-line">
           {m.bio}
