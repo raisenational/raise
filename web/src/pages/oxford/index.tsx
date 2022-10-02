@@ -36,7 +36,7 @@ const IndexPage = () => (
           { text: "Partner", href: "/oxford/partner/" },
         ]}
         right={[
-          { text: "Apply to our committee", href: "https://forms.gle/2ummdUS4v2pf1EHJ7" },
+          { text: "Become a rep", href: "https://forms.gle/f22GkSokt38hSfd48" },
         ]}
       />
       <Section className="px-8">
@@ -86,15 +86,11 @@ const IndexPage = () => (
     <Section id="faq">
       <SectionTitle>More Info</SectionTitle>
       <FAQs>
-        <FAQ title="Sounds great, where do I sign up?">
-          <p>Our donations period is closed for 2022. We have just opened applications for our 2022/23 committee! <a href="https://forms.gle/Q628hYRY2Pc6ccVh6">Click here </a>to find out more about what roles we have available. <a href="https://forms.gle/Q628hYRY2Pc6ccVh6">Apply today</a> because applications close on Sunday the 15th of May.</p>
-        </FAQ>
-
         <FAQ title="How can I get involved?">
           <p>We're so pleased you're interested in Raise, and look forward to celebrating with you! Here are a few ways you can help grow the movement:</p>
-          <p><b>Raise Reps:</b> Reps are a central part of Raise’s community and are crucial to spreading the Raise message! Keep an eye on our social media for udpates about rep recruitment for next academic year. See below for more details on what a Raise rep does.</p>
+          <p><b>Raise Reps:</b> Reps are ambassadors for Raise, and a central part of Raise’s community, helping to share our philosophy and what we do with the Oxford community. <a href="https://forms.gle/f22GkSokt38hSfd48">Click here</a> to find out more about the rep role and to sign up.</p>
           <p><b>Spread the word:</b> Letting your friends know about Raise is one of the most valuable things you can do - aside from the huge impact of their donations, celebrating is more fun when we do it together! Why not show them our website, share our posts on social media, and invite friends to follow our <a href="https://www.facebook.com/raiseoxford">Facebook</a> and <a href="https://www.instagram.com/raiseoxford/">Instagram</a> pages themselves?</p>
-          <p><b>Committee:</b> If you really want to shape the future of Raise, you could apply to join our committee, which coordinates everything we do, from events and partnerships to fundraising and publicity. Applications are currently open, and close on Sunday the 15th of May!<a href="https://forms.gle/Q628hYRY2Pc6ccVh6"> Click here </a>to find out more about what roles we have available. <a href="https://forms.gle/Q628hYRY2Pc6ccVh6">Apply today</a> if you're interested in applying to be part of our 2022/23 committee.</p>
+          <p><b>Committee:</b> If you really want to shape the future of Raise, you could apply to join our committee, which coordinates everything we do, from events and partnerships to fundraising and publicity. Applications are now closed for our 2022/23 committee, but look out for applications reopening in Trinity 2023!</p>
           <p><b>Sponsorship:</b> The support of our generous partners is invaluable for helping us to put on our summer celebration at the end of each year. If you know anyone who may be interested in supporting Raise and allowing us to grow even more, please do <a href="./#contact">get in touch</a>.</p>
         </FAQ>
 
@@ -104,7 +100,7 @@ const IndexPage = () => (
           <p><b>Social Media:</b> Engage regularly with Raise’s posts, invite friends to follow the page, and share things at key moments. Share the Raise philosophy on any groups you are in to try and get as many people involved as possible!</p>
           <p><b>Your own ideas!:</b> We love it when reps suggest and implement their own ideas for spreading the word and engaging new students. Equally, if there’s anything at all we could be doing better, there’s nobody better to point it out!</p>
           <p>Or you could be a <b>Lead Rep</b>, who takes responsibility for publicity within college. This will involve sharing posts and messages to college, putting up posters and potentially hosting your own outreach events.</p>
-          <p><a href="https://docs.google.com/forms/d/e/1FAIpQLScOi4hakjLmWM8-_39sX7zfqIuJuTuStnsvb5DooGuBNyRwZA/viewform">Sign up</a> to be a rep.</p>
+          <p><a href="https://forms.gle/f22GkSokt38hSfd48">Sign up</a> to be a rep.</p>
         </FAQ>
 
         <FAQ title="£150 is a lot of money - what if I can't donate that?">
