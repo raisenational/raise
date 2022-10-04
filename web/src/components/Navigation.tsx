@@ -99,7 +99,7 @@ export const TopNavigation: React.FC = () => (
       { text: "Sheffield", href: "/sheffield/" },
       { text: "Warwick", href: "/warwick/" },
       { text: "Alumni", href: "/alumni/" },
-      { text: "People", href: "/people/" },
+      { text: "Team", href: "/team/" },
     ]}
     right={[
     ]}
