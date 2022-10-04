@@ -89,7 +89,7 @@ const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) 
 export const TopNavigation: React.FC = () => (
   <Navigation
     left={[
-      { text: "Alumni", href: "/alumni/" },
+      { text: "Home", href: "/" },
       { text: "Bristol", href: "/bristol/" },
       { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
       { text: "Durham", href: "/durham/" },
@@ -98,7 +98,8 @@ export const TopNavigation: React.FC = () => (
       { text: "Oxford", href: "/oxford/" },
       { text: "Sheffield", href: "/sheffield/" },
       { text: "Warwick", href: "/warwick/" },
-      { text: "About", href: "/about/" },
+      { text: "Alumni", href: "/alumni/" },
+      { text: "People", href: "/people/" },
     ]}
     right={[
     ]}
