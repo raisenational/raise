@@ -143,8 +143,8 @@ export const useManualReq = <
 >(
     route: Route,
     ...argArr: [
-    ...[options?: UseReqOptions & { manual: true }]
-  ]
+      ...[options?: UseReqOptions & { manual: true }]
+    ]
   ): UseManualReqResult<Route, RequestData, Params, Result, ErrorResult> => useReqCore(route, { options: { ...argArr[0], manual: true } })
 
 export const useReq = <
@@ -156,10 +156,10 @@ export const useReq = <
 >(
     route: Route,
     ...argArr: [
-    ...Params extends null ? [] : [params: Params],
-    ...RequestData extends null ? [] : [data: RequestData],
-    ...[options?: UseReqOptions]
-  ]
+      ...Params extends null ? [] : [params: Params],
+      ...RequestData extends null ? [] : [data: RequestData],
+      ...[options?: UseReqOptions]
+    ]
   ): UseReqResult<Route, RequestData, Params, Result, ErrorResult> => useReqCore(route, convertArgsToObj(routes[route], argArr))
 
 const useReqCore = <
