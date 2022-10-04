@@ -105,7 +105,7 @@ type UseReqCoreResult<
     ...Params extends null ? [] : [params: Params],
     ...RequestData extends null ? [] : [data: RequestData],
   ]
-  > = [
+> = [
     ResponseValues<Result, RequestData, ErrorResult>,
     (...args: RefetchArgs) => Promise<AxiosResponse<Result>>
   ]
@@ -140,7 +140,7 @@ export const useManualReq = <
   Params extends Routes[Route]["params"],
   Result extends Routes[Route]["response"],
   ErrorResult = unknown,
-  >(
+>(
     route: Route,
     ...argArr: [
       ...[options?: UseReqOptions & { manual: true }]
@@ -153,7 +153,7 @@ export const useReq = <
   Params extends Routes[Route]["params"],
   Result extends Routes[Route]["response"],
   ErrorResult = unknown,
-  >(
+>(
     route: Route,
     ...argArr: [
       ...Params extends null ? [] : [params: Params],
@@ -168,11 +168,11 @@ const useReqCore = <
   Params extends Routes[Route]["params"],
   Result extends Routes[Route]["response"],
   ErrorResult = unknown,
-  >(route: Route, args: {
-    params?: Params extends null ? Record<string, never> : Params,
-    data?: RequestData extends null ? undefined : RequestData,
-    options: UseReqOptions,
-  }): UseReqCoreResult<Route, RequestData, Params, Result, ErrorResult> => {
+>(route: Route, args: {
+  params?: Params extends null ? Record<string, never> : Params,
+  data?: RequestData extends null ? undefined : RequestData,
+  options: UseReqOptions,
+}): UseReqCoreResult<Route, RequestData, Params, Result, ErrorResult> => {
   // Hack for Gatsby SSR so that dynamic components appear to be loading
   if (typeof window === "undefined") {
     return [{
@@ -185,7 +185,7 @@ const useReqCore = <
   const config: AxiosRequestConfig<RequestData> = {
     method: routes[route].method,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    url: routes[route].makePath(args.params as any),
+    url: args.params ? routes[route].makePath(args.params as any) : undefined,
     data: args.data,
     ...(auth?.token ? {
       headers: {
@@ -210,8 +210,8 @@ const useReqCore = <
       ...config,
       ...(overrideArgs ? {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        url: routes[route].makePath(args.params as any),
-        data: args.data,
+        url: routes[route].makePath(overrideArgs.params as any),
+        data: overrideArgs.data,
       } : undefined),
       ...(bypassCache ? {
         cache: {
