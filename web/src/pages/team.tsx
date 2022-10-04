@@ -67,16 +67,16 @@ const NATIONAL_TEAM = [
   },
 ]
 
-const AboutPage = () => (
+const TeamPage = () => (
   <Page>
     <Helmet>
-      <title>Raise: About Us</title>
-      <meta property="og:title" content="Raise: About Us" />
+      <title>Raise: The Team</title>
+      <meta property="og:title" content="Raise: The Team" />
     </Helmet>
     <TopNavigation />
 
     <Section className="text-left">
-      <SectionTitle>About Us</SectionTitle>
+      <SectionTitle>The Team</SectionTitle>
 
       <div className="space-y-4">
         <p>Raise educates students about charitable giving, aiming to encourage effective and deliberate giving. It’s run by unpaid volunteers and does not make a profit.</p>
@@ -105,4 +105,4 @@ const AboutPage = () => (
   </Page>
 )
 
-export default AboutPage
+export default TeamPage
