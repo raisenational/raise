@@ -35,7 +35,7 @@ const IndexPage = () => (
           { text: "Contact", href: "#contact" },
         ]}
         right={[
-          { text: "Apply for Committee!", href: "https://forms.gle/WAS3Dpq8L59J2mvN6" },
+          { text: "Become a Rep!", href: "https://forms.office.com/Pages/ResponsePage.aspx?id=i9hQcmhLKUW-RNWaLYpvlIGtrPRODqJElDPybbbkp9RUNEJHNEJBNDBWTExUUFVJTjg1MzE3UzI3VC4u" },
           // { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSfeK5cMn8ZWlRtFh5ZJHexjTiS0DVvfpL9E93Logd3CPLMK9A/viewform" },
         ]}
       />
