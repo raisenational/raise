@@ -3,7 +3,7 @@ import { auditContext } from "./auditContext"
 import { insertAudit } from "./db"
 import { sendMessageWithLogsLink } from "./slack"
 
-const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) => {
+const mainMiddyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) => {
   const err = (request.error instanceof Error ? request.error : {}) as { statusCode?: number, details?: unknown } & Error
 
   if (err.statusCode === 401 || err.statusCode === 403) {
@@ -49,6 +49,22 @@ const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) 
     headers: {
       "Content-Type": "application/json",
     },
+  }
+}
+
+const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) => {
+  try {
+    return mainMiddyErrorHandler(request)
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("Fatal error: error handler threw error", err)
+    request.response = {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Internal error handling error" }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
   }
 }
 
