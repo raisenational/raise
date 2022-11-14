@@ -24,7 +24,7 @@ jobs:
     timeout-minutes: 10
     strategy:
       matrix:
-        node-version: [14]
+        node-version: [16]
 
     steps:
       - name: Checkout ${{ github.sha }}

@@ -43,9 +43,9 @@ beforeEach(async () => {
     .mockImplementationOnce(async (command) => {
       // The first time, we lazy initiate the clients and create the tables
       dynamoDBClient = new DynamoDBClient({
-        region: "localhost",
+        region: `test-env-${Math.random()}`,
         endpoint: "http://localhost:8005",
-        credentials: { accessKeyId: `DEFAULT_ACCESS_KEY${Math.random()}`, secretAccessKey: "DEFAULT_SECRET" },
+        credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" },
       })
       internalDbClient = DynamoDBDocumentClient.from(dynamoDBClient, {
         marshallOptions: {
