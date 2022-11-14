@@ -2,6 +2,7 @@ import { DynamoDBClient, CreateTableCommand } from "@aws-sdk/client-dynamodb"
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb"
 import { auditContext } from "../src/helpers/auditContext"
 import { dbClient } from "../src/helpers/db"
+import { unsupressConsole } from "./testHelpers"
 
 // Retrieve the table CloudFormation resources from the __DYNAMODB_TABLES environment variable
 const DYNAMODB_TABLES = JSON.parse(process.env.__DYNAMODB_TABLES!)
@@ -42,8 +43,12 @@ beforeEach(async () => {
   dbClient.send = jest.fn()
     .mockImplementationOnce(async (command) => {
       // The first time, we lazy initiate the clients and create the tables
+      const region = `test-env-${Math.random()}`
+      // TODO: remove debugging line
+      unsupressConsole()
+      console.log(region)
       dynamoDBClient = new DynamoDBClient({
-        region: `test-env-${Math.random()}`,
+        region,
         endpoint: "http://localhost:8005",
         credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" },
       })
