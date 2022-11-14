@@ -3,7 +3,7 @@ import { auditContext } from "./auditContext"
 import { insertAudit } from "./db"
 import { sendMessageWithLogsLink } from "./slack"
 
-const mainMiddyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) => {
+const mainMiddyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request): Promise<void> => {
   const err = (request.error instanceof Error ? request.error : {}) as { statusCode?: number, details?: unknown } & Error
 
   if (err.statusCode === 401 || err.statusCode === 403) {
@@ -52,7 +52,8 @@ const mainMiddyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (reque
   }
 }
 
-const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request) => {
+// eslint-disable-next-line consistent-return
+const middyErrorHandler: middy.MiddlewareFn<unknown, unknown> = async (request): Promise<void> => {
   try {
     return mainMiddyErrorHandler(request)
   } catch (err) {
