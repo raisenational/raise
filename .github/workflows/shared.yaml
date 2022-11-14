@@ -9,10 +9,14 @@ on:
     paths:
       - ".github/workflows/shared.yaml"
       - "shared/**"
+      - "package.json"
+      - "package-lock.json"
   pull_request:
     paths:
       - ".github/workflows/shared.yaml"
       - "shared/**"
+      - "package.json"
+      - "package-lock.json"
 
 jobs:
   build:
