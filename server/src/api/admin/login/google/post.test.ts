@@ -9,7 +9,7 @@ const googleTokenPayload = {
   email_verified: true,
   sub: "12345",
   email: "test@joinraise.org",
-  aud: env.GOOGLE_CLIENT_ID, // verified by the real library
+  aud: env.GOOGLE_LOGIN_CLIENT_ID, // verified by the real library
   iat: 1609459200,
   exp: 2524608000, // verified by the real library
 }
@@ -40,7 +40,7 @@ test("get working access token for valid Google token", async () => {
   expect(verifyIdToken).toHaveBeenCalledTimes(1)
   expect(verifyIdToken).toHaveBeenCalledWith({
     idToken: "idTokenValue",
-    audience: env.GOOGLE_CLIENT_ID,
+    audience: env.GOOGLE_LOGIN_CLIENT_ID,
   })
   expect(response.expiresAt).toBeGreaterThan(new Date().getTime() / 1000)
   expect((await call(getFundraisers, { auth: response.accessToken, rawResponse: true })(null)).statusCode).toBe(200)
@@ -66,7 +66,7 @@ test.each([
   expect(verifyIdToken).toHaveBeenCalledTimes(1)
   expect(verifyIdToken).toHaveBeenCalledWith({
     idToken: "idTokenValue",
-    audience: env.GOOGLE_CLIENT_ID,
+    audience: env.GOOGLE_LOGIN_CLIENT_ID,
   })
 
   expect(response.statusCode).toBe(status)
@@ -84,7 +84,7 @@ test("rejects invalid Google token", async () => {
   expect(verifyIdToken).toHaveBeenCalledTimes(1)
   expect(verifyIdToken).toHaveBeenCalledWith({
     idToken: "idTokenValue",
-    audience: env.GOOGLE_CLIENT_ID,
+    audience: env.GOOGLE_LOGIN_CLIENT_ID,
   })
 
   expect(response.statusCode).toBe(401)
