@@ -43,12 +43,10 @@ beforeEach(async () => {
   dbClient.send = jest.fn()
     .mockImplementationOnce(async (command) => {
       // The first time, we lazy initiate the clients and create the tables
-      const region = `test-env-${Math.random()}`
-      // TODO: remove debugging line
-      unsupressConsole()
-      console.log(region)
       dynamoDBClient = new DynamoDBClient({
-        region,
+        // Using a different region for each test environment means we get a
+        // different database (because the sharedDb flag is not set)
+        region: `test-env-${Math.random()}`,
         endpoint: "http://localhost:8005",
         credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" },
       })
