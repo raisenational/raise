@@ -9,7 +9,7 @@ interface Props {
   className?: string,
 }
 
-const Modal: React.FC<Props> = ({
+const Modal: React.FC<React.PropsWithChildren<Props>> = ({
   open, onClose, children, className,
 }) => (
   <DialogOverlay

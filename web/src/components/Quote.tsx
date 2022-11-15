@@ -1,7 +1,7 @@
 import * as React from "react"
 import classNames from "classnames"
 
-const Quote: React.FC<{ className?: string, by: string, headshotSrc?: string, imagePlacement?: "left" | "right" }> = ({
+const Quote: React.FC<React.PropsWithChildren<{ className?: string, by: string, headshotSrc?: string, imagePlacement?: "left" | "right" }>> = ({
   children, className, by, headshotSrc, imagePlacement = "right", ...props
 }) => (
   <div className={classNames("flex", className)} {...props}>

@@ -24,7 +24,7 @@ const Philosophy: React.FC = () => (
   </div>
 )
 
-const Point: React.FC<{ className?: string, icon: React.FC<{ width?: number, height?: number }> }> = ({ className, icon: Icon, children }) => (
+const Point: React.FC<React.PropsWithChildren<{ className?: string, icon: React.FC<{ width?: number, height?: number }> }>> = ({ className, icon: Icon, children }) => (
   <div className={classNames("flex mt-4 p-4 rounded shadow-raise", className)}>
     <div><Icon width={60} height={60} /></div>
     <p className="ml-8">

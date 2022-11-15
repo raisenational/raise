@@ -25,15 +25,15 @@ interface Props<I> {
   onSave?: (data: UnpackNestedValue<Partial<I>>) => void | Promise<void>,
 }
 
-// I (the item type) should not have a loading prop, but there doesn't seem like a nice TS way to do this
-const PropertyEditor = <I,>({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const PropertyEditor = <I extends Record<string, any>,>({
   definition, item, onClick, onSave,
 }: Props<I>) => {
   const [editingProperty, setEditingProperty] = React.useState<keyof I | undefined>()
 
   // Loading and error states
   if (!item || ("loading" in item && item.loading)) return <div className="overflow-x-auto bg-black bg-opacity-20 rounded p-4"><span className="animate-pulse">Loading...</span></div>
-  if ("loading" in item && item.error) return <Alert variant="error">{item.error}</Alert>
+  if ("loading" in item && item.error && item.error instanceof Error) return <Alert variant="error">{item.error}</Alert>
   if ("loading" in item && item.data === undefined) return <Alert variant="error">Data not found</Alert> // NB: A common cause of this is trying to find a new item you just created without refreshing the data (try useAxios.clearCache()).
 
   // Normalized properties
@@ -78,8 +78,8 @@ const PropertyEditor = <I,>({
         definition={tableDefinition}
         items={Object.entries(definition).map(([k, v]) => ({
           property: k as keyof I,
-          label: v.label ?? k,
-          value: v.formatter ? v.formatter(nItem[k as keyof I], nItem) : (nItem[k as keyof I] ?? "—"),
+          label: v?.label ?? k,
+          value: v?.formatter ? v.formatter(nItem[k], nItem) : (nItem[k] ?? "—"),
         }))}
         itemRenderer={(i) => (
           <tr key={String(i.property)} className={classNames("hover:bg-black hover:bg-opacity-20", { "cursor-pointer": definition[i.property]?.inputType !== undefined })} onClick={definition[i.property]?.inputType === undefined ? undefined : (e) => tableOnClick(i, e)}>

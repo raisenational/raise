@@ -4,7 +4,7 @@ import classNames from "classnames"
 import { withAssetPrefix, useStaticQuery, graphql } from "gatsby"
 import env from "../env/env"
 
-const Page: React.FC<{ className?: string }> = ({ children, className }) => {
+const Page: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ children, className }) => {
   // See gatsby-config.js
   const { site } = useStaticQuery(graphql`query { site { siteMetadata { version, cloudflareWebAnalyticsToken } } }`)
 

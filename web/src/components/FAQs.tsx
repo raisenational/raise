@@ -8,13 +8,13 @@ interface FaqProps {
   className?: string,
 }
 
-const FAQs: React.FC = ({ children }) => (
+const FAQs: React.FC<React.PropsWithChildren> = ({ children }) => (
   <Accordion className="bg-white rounded text-left text-gray-500" collapsible>
     {children}
   </Accordion>
 )
 
-export const FAQ: React.FC<FaqProps> = ({ className, title, children }) => (
+export const FAQ: React.FC<React.PropsWithChildren<FaqProps>> = ({ className, title, children }) => (
   <AccordionItem className={classNames(className, "FAQ hover:text-black")}>
     <AccordionButton className="p-4 text-left w-full flex">
       <ChevronRightIcon className="transition-transform w-7 h-7 align-text-top flex-shrink-0" />

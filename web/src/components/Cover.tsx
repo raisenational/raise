@@ -2,7 +2,7 @@ import * as React from "react"
 import { ChevronDownIcon } from "@heroicons/react/outline"
 import classNames from "classnames"
 
-const Cover: React.FC<{ className?: string, heightClassName?: string }> = ({ className, heightClassName = "min-h-screen", children }) => (
+const Cover: React.FC<React.PropsWithChildren<{ className?: string, heightClassName?: string }>> = ({ className, heightClassName = "min-h-screen", children }) => (
   <section className={classNames("flex flex-col content-center justify-between", className, heightClassName)}>
     {children}
   </section>
