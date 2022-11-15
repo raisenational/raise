@@ -4,8 +4,9 @@ import classNames from "classnames"
 import { withAssetPrefix, useStaticQuery, graphql } from "gatsby"
 import env from "../env/env"
 
-const Page: React.FC<{ className?: string }> = ({ children, className }) => {
-  const { site } = useStaticQuery(graphql`query { site { siteMetadata { version } } }`)
+const Page: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ children, className }) => {
+  // See gatsby-config.js
+  const { site } = useStaticQuery(graphql`query { site { siteMetadata { version, cloudflareWebAnalyticsToken } } }`)
 
   return (
     <>
@@ -23,6 +24,7 @@ const Page: React.FC<{ className?: string }> = ({ children, className }) => {
         <meta property="og:image" content={withAssetPrefix("/shared/images/raise-link-icon.png")} />
         <meta property="og:description" content="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving." />
         <meta property="raise-version" content={site.siteMetadata.version} />
+        {site.siteMetadata.cloudflareWebAnalyticsToken && <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={`{"token": "${site.siteMetadata.cloudflareWebAnalyticsToken}"}`} />}
       </Helmet>
       <div className={classNames("bg-raise-blue min-h-screen text-white font-raise-content text-2xl font-normal text-center overflow-auto", className)}>
         {children}

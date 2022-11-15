@@ -162,7 +162,7 @@ const IndexPage = () => (
   </Page>
 )
 
-const Point: React.FC<{ className?: string, icon: React.FC<{ width?: number, height?: number }> }> = ({ className, icon: Icon, children }) => (
+const Point: React.FC<React.PropsWithChildren<{ className?: string, icon: React.FC<{ width?: number, height?: number }> }>> = ({ className, icon: Icon, children }) => (
   <div className={classNames("sm:flex mt-4 p-6 rounded shadow-raise text-left", className)}>
     <div className="mb-2 sm:mb-0 text-center sm:mr-6"><Icon width={60} height={60} /></div>
     <p>
@@ -171,7 +171,7 @@ const Point: React.FC<{ className?: string, icon: React.FC<{ width?: number, hei
   </div>
 )
 
-const InlinePoint: React.FC<{ className?: string, icon: React.FC<{ width?: number, height?: number }> }> = ({ className, icon: Icon, children }) => (
+const InlinePoint: React.FC<React.PropsWithChildren<{ className?: string, icon: React.FC<{ width?: number, height?: number }> }>> = ({ className, icon: Icon, children }) => (
   <div className={classNames("sm:flex my-8 items-center", className)}>
     <div className="mb-2 sm:mb-0 text-center sm:mr-4"><Icon width={60} height={60} /></div>
     <p>

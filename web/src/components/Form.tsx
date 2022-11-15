@@ -7,6 +7,7 @@ import classNames from "classnames"
 import * as React from "react"
 import {
   Controller,
+  FieldValues,
   FormProvider,
   Path, SubmitHandler, UnpackNestedValue, useForm, useFormContext, useWatch,
 } from "react-hook-form"
@@ -259,7 +260,7 @@ export interface FormProps<T> {
   onSubmit: (item: UnpackNestedValue<T>) => void | Promise<void>,
 }
 
-export const Form = <T,>({
+export const Form = <T extends FieldValues>({
   title, warning, definition, initialValues, showCurrent = true, onSubmit,
 }: FormProps<T>) => {
   const [error, setError] = React.useState<Error | undefined>()

@@ -19,7 +19,8 @@ interface Props<I> {
   className?: string,
 }
 
-const Table = <I,>({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Table = <I extends Record<string, any>,>({
   definition, items, primaryKey, onClick, emptyMessage = "There are no entries", itemRenderer, className,
 }: Props<I>) => {
   // Normalized properties

@@ -2,6 +2,7 @@ import { DynamoDBClient, CreateTableCommand } from "@aws-sdk/client-dynamodb"
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb"
 import { auditContext } from "../src/helpers/auditContext"
 import { dbClient } from "../src/helpers/db"
+import { unsupressConsole } from "./testHelpers"
 
 // Retrieve the table CloudFormation resources from the __DYNAMODB_TABLES environment variable
 const DYNAMODB_TABLES = JSON.parse(process.env.__DYNAMODB_TABLES!)
@@ -43,9 +44,11 @@ beforeEach(async () => {
     .mockImplementationOnce(async (command) => {
       // The first time, we lazy initiate the clients and create the tables
       dynamoDBClient = new DynamoDBClient({
-        region: "localhost",
+        // Using a different region for each test environment means we get a
+        // different database (because the sharedDb flag is not set)
+        region: `test-env-${Math.random()}`,
         endpoint: "http://localhost:8005",
-        credentials: { accessKeyId: `DEFAULT_ACCESS_KEY${Math.random()}`, secretAccessKey: "DEFAULT_SECRET" },
+        credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" },
       })
       internalDbClient = DynamoDBDocumentClient.from(dynamoDBClient, {
         marshallOptions: {
