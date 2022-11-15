@@ -12,7 +12,7 @@ export const main = middyfy($GoogleLoginRequest, $LoginResponse, false, async (e
   const client = new OAuth2Client()
   const tokenPayload = (await client.verifyIdToken({
     idToken: event.body.idToken,
-    audience: env.GOOGLE_CLIENT_ID,
+    audience: env.GOOGLE_LOGIN_CLIENT_ID,
   }).catch(() => { throw new createHttpError.Unauthorized("idToken: not valid") })).getPayload()
 
   if (!tokenPayload) throw new createHttpError.Unauthorized("idToken: missing payload")

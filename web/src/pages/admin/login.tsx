@@ -36,7 +36,7 @@ const GoogleLoginForm = ({ setError }: { setError: (err: React.ReactNode | Error
   const [_, setAuth] = useAuthState()
   const axios = useRawAxios()
   const googleLogin = useGoogleLogin({
-    clientId: env.GOOGLE_CLIENT_ID,
+    clientId: env.GOOGLE_LOGIN_CLIENT_ID,
     scope: requiredScopes.join(" "),
     onScriptLoadFailure: () => {
       setError("Failed to load Google Login script")

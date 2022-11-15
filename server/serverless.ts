@@ -130,7 +130,7 @@ const serverlessConfiguration: AWS = {
   ],
   provider: {
     name: "aws",
-    runtime: "nodejs14.x",
+    runtime: "nodejs16.x",
     region: "eu-west-1",
     stage: env.STAGE,
     apiGateway: {

@@ -47,7 +47,7 @@ const PrivacyPage = () => (
 
           Calculating aggregated statistics for publication, such as total amount of money raised.
 
-          Improving the quality of services we deliver and the effectiveness of our operations.
+          Improving and measuring the quality of services we deliver and the effectiveness of our operations, including through web analytics.
 
           Recruiting Raise presidents, committee members, reps, other volunteers and attracting and managing sponsors.`,
           legalBasis: "Our legitimate interest in order to manage membership, committees, events, fundraising, communications, publicity and enabling the initiative to run effectively and efficiently",

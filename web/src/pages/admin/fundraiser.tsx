@@ -25,7 +25,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId: string }> =
   return (
     <Section>
       <SectionTitle>{fundraiser.data?.internalName || "Fundraiser"}</SectionTitle>
-      <PropertyEditor
+      <PropertyEditor<Fundraiser>
         definition={{
           internalName: { label: "Internal name", inputType: "text" },
           publicName: { label: "Public name", inputType: "text" },
