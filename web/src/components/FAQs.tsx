@@ -8,7 +8,7 @@ interface FaqProps {
   className?: string,
 }
 
-const FAQs: React.FC<React.PropsWithChildren> = ({ children }) => (
+const FAQs: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <Accordion className="bg-white rounded text-left text-gray-500" collapsible>
     {children}
   </Accordion>
