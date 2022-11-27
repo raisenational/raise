@@ -36,7 +36,7 @@ const IndexPage = () => (
           { text: "Partner", href: "/oxford/partner/" },
         ]}
         right={[
-          { text: "Become a rep", href: "https://forms.gle/f22GkSokt38hSfd48" },
+          { text: "Become a Rep!", href: "https://forms.gle/f22GkSokt38hSfd48" },
         ]}
       />
       <Section className="px-8">
