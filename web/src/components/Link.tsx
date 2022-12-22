@@ -39,7 +39,7 @@ const Link: React.FC<Props> = ({
   }
 
   return (
-    <a href={href} target={target} rel="noreferrer" onClick={onClick} onKeyPress={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") { onClick(e); e.preventDefault() } } : undefined} tabIndex={0} className={classNames("cursor-pointer", className)} {...anchorProps}>
+    <a href={href} target={target} rel="noreferrer" onClick={onClick} onKeyDown={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") { onClick(e); e.preventDefault() } } : undefined} tabIndex={0} className={classNames("cursor-pointer", className)} {...anchorProps}>
       {children}
     </a>
   )
