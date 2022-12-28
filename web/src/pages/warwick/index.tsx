@@ -8,7 +8,7 @@ import Navigation from "../../components/Navigation"
 import Cover, { CTADown } from "../../components/Cover"
 import IntroStats from "../../components/IntroStats"
 import FAQs, { FAQ } from "../../components/FAQs"
-import PhilosophyV2 from "../../components/PhilosophyV2"
+import Philosophy from "../../components/Philosophy"
 import ContactForm from "../../components/ContactForm"
 import SocialIcon from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
@@ -136,7 +136,7 @@ const IndexPage = () => (
       </FAQs>
     </Section>
 
-    <PhilosophyV2 />
+    <Philosophy />
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>

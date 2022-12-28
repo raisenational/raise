@@ -6,7 +6,7 @@ import Section, { SectionTitle } from "../components/Section"
 import { TopNavigation } from "../components/Navigation"
 import Cover, { CTADown } from "../components/Cover"
 import IntroStats from "../components/IntroStats"
-import PhilosophyV2 from "../components/PhilosophyV2"
+import Philosophy from "../components/Philosophy"
 import Footer from "../components/Footer"
 import { SocialIconV2 } from "../components/SocialIcon"
 
@@ -38,7 +38,7 @@ const IndexPage = () => (
       />
     </Cover>
 
-    <PhilosophyV2 />
+    <Philosophy />
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
