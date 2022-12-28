@@ -8,14 +8,11 @@ import Navigation from "../../components/Navigation"
 import Cover, { CTADown } from "../../components/Cover"
 import IntroStats from "../../components/IntroStats"
 import FAQs, { FAQ } from "../../components/FAQs"
-import PhilosophyV2 from "../../components/Philosophy"
-import ContactForm from "../../components/ContactForm"
-import SocialIcon from "../../components/SocialIcon"
+import Philosophy from "../../components/Philosophy"
+import { SocialIconV2 } from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
 import Button from "../../components/Button"
 
-import facebook from "../../images/facebook.svg"
-import email from "../../images/email.svg"
 import { MoneyBox, Party } from "../../images/Icons"
 import Footer from "../../components/Footer"
 import Link from "../../components/Link"
@@ -106,15 +103,14 @@ const IndexPage = () => (
       <Button variant="outline" className="mt-4" href="https://www.facebook.com/groups/966154864287768">Join Facebook group</Button>
     </Section>
 
-    <PhilosophyV2 />
+    <Philosophy />
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
-      <div className="flex justify-center gap-8">
-        <SocialIcon icon={facebook} alt="Facebook" href="https://www.facebook.com/groups/966154864287768" />
-        <SocialIcon icon={email} alt="Email" href="mailto:raisenational@gmail.com" />
+      <div className="inline-block text-left">
+        <SocialIconV2 type="email" id="raisealumni@gmail.com" />
+        <SocialIconV2 type="facebook" id="groups/966154864287768" linkTextOverride="Raise/MWA Alumni!" />
       </div>
-      <ContactForm className="mt-8" action="https://formspree.io/f/mnqlrnvq" />
     </Section>
 
     <Footer />

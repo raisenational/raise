@@ -8,12 +8,12 @@ import Navigation from "../../components/Navigation"
 import Cover, { CTADown } from "../../components/Cover"
 import IntroStats from "../../components/IntroStats"
 import FAQs, { FAQ } from "../../components/FAQs"
-import PhilosophyV2 from "../../components/Philosophy"
+import Philosophy from "../../components/Philosophy"
 import ContactForm from "../../components/ContactForm"
 import SocialIcon from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
 
-import instagram from "../../images/instagram.png"
+import instagram from "../../images/instagram.svg"
 import facebook from "../../images/facebook.svg"
 import email from "../../images/email.svg"
 import { Doubled, MoneyBox, Party } from "../../images/Icons"
@@ -136,7 +136,7 @@ const IndexPage = () => (
       </FAQs>
     </Section>
 
-    <PhilosophyV2 />
+    <Philosophy />
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
