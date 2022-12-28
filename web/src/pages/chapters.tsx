@@ -190,7 +190,7 @@ const ChapterBrowser = () => {
           }
         }}
         {...formMethods.register("chapterFilter")}
-        suffix={navigator.geolocation ? locationButton : undefined}
+        suffix={typeof window !== "undefined" && window.navigator?.geolocation ? locationButton : undefined}
         error={locationError}
       />
 
