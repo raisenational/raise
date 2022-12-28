@@ -202,7 +202,7 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
   )
 }
 
-const Tabs: React.FC<{ tabs: Record<string, React.ReactElement> }> = ({ tabs }) => {
+const Tabs: React.FC<{ tabs: Record<string, React.ReactChild> }> = ({ tabs }) => {
   const keys = Object.keys(tabs)
   const [open, setOpen] = React.useState<keyof typeof tabs>(keys[0])
 
