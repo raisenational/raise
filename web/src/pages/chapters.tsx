@@ -1,8 +1,10 @@
 import * as React from "react"
 import Helmet from "react-helmet"
+import haversineDistance from "haversine-distance"
 import { navigate } from "gatsby"
 import { useForm } from "react-hook-form"
 
+import { LocationMarkerIcon } from "@heroicons/react/outline"
 import Page from "../components/Page"
 import Section, { SectionTitle } from "../components/Section"
 import { TopNavigation } from "../components/Navigation"
@@ -136,12 +138,41 @@ const ChaptersPage = () => (
 )
 
 const ChapterBrowser = () => {
+  const [location, setLocation] = React.useState<LatLong | undefined>(undefined)
+  const [locationError, setLocationError] = React.useState<string | undefined>(undefined)
+  const locationButton = (
+    <button
+      type="button"
+      className="text-gray-700"
+      onClick={() => {
+        setLocationError(undefined)
+        setLocation(undefined)
+        navigator.geolocation.getCurrentPosition(
+          ({ coords: { latitude, longitude } }) => {
+            setLocation({ latitude, longitude })
+          },
+          (e) => {
+            setLocationError(e.message)
+          },
+        )
+      }}
+    >
+      <LocationMarkerIcon className="w-6 h-6 mb-1.5" /> Use my location
+    </button>
+  )
+
   const formMethods = useForm<{ chapterFilter: string }>({
     defaultValues: { chapterFilter: "" },
   })
 
   const chapterFilterValue = formMethods.watch("chapterFilter").trim().toLowerCase()
-  const filteredEntries = CHAPTERS.filter((e) => chapterFilterValue.length === 0 || e.name.toLowerCase().includes(chapterFilterValue))
+  const filteredEntries = CHAPTERS
+    .filter((c) => chapterFilterValue.length === 0 || c.name.toLowerCase().includes(chapterFilterValue))
+    .map((c) => ({
+      ...c,
+      distance: location ? haversineDistance(location, c.location) / 1000 : undefined,
+    }))
+    .sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0))
 
   return (
     <>
@@ -159,15 +190,15 @@ const ChapterBrowser = () => {
           }
         }}
         {...formMethods.register("chapterFilter")}
+        suffix={navigator.geolocation ? locationButton : undefined}
+        error={locationError}
       />
 
       <ul className="mt-4 space-y-2">
         {filteredEntries.map((m) => (
           <li key={m.id}>
             <Button href={m.href} variant="red" skew={false} className="block">
-              {m.name}
-              {/* todo: get ip location */}
-              {/* ({(haversineDistance({ latitude: 51.5167, longitude: -0.0928 }, m.location) / 1000).toFixed(0)}km) */}
+              {m.name}{m.distance !== undefined && ` (${m.distance?.toFixed(0)}km)`}
             </Button>
           </li>
         ))}

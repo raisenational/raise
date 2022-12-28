@@ -87,8 +87,8 @@ export type LabelledInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 } | {
   type: "date" | "datetime-local" | "email" | "number" | "password" | "tel" | "text" | "url",
   options?: never,
-  prefix?: string,
-  suffix?: string,
+  prefix?: React.ReactElement,
+  suffix?: React.ReactElement,
 })
 
 export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputProps>(({

@@ -21,7 +21,7 @@ const IndexPage = () => (
     </Helmet>
     <Cover>
       <TopNavigation />
-      <Section className="px-8 my-16">
+      <Section className="px-8 my-8">
         <IntroStats
           title="Raise: A Celebration of Giving"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our chapter websites to learn more about what we do."
@@ -33,7 +33,7 @@ const IndexPage = () => (
           }}
         />
 
-        <iframe className="w-full max-w-2xl mx-auto mt-12 rounded shadow-raise" title="YouTube: Raise: A Celebration of Giving" width="672" height="378" src="https://www.youtube-nocookie.com/embed/6bEloAzIV2c?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+        <iframe className="w-full max-w-2xl mx-auto my-8 rounded shadow-raise" title="YouTube: Raise: A Celebration of Giving" width="672" height="378" src="https://www.youtube-nocookie.com/embed/6bEloAzIV2c?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
       </Section>
       <CTADown
         text="Our philosophy"
