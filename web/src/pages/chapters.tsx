@@ -198,7 +198,7 @@ const ChapterBrowser = () => {
         {filteredEntries.map((m) => (
           <li key={m.id}>
             <Button href={m.href} variant="red" skew={false} className="block">
-              {m.name}{m.distance !== undefined && ` (${m.distance?.toFixed(0)}km)`}
+              {m.name}{m.distance !== undefined && ` (${m.distance?.toFixed(0)}\xa0km)`}
             </Button>
           </li>
         ))}
