@@ -7,11 +7,8 @@ import { TopNavigation } from "../components/Navigation"
 import Cover, { CTADown } from "../components/Cover"
 import IntroStats from "../components/IntroStats"
 import PhilosophyV2 from "../components/PhilosophyV2"
-import ContactForm from "../components/ContactForm"
 import Footer from "../components/Footer"
-import SocialIcon from "../components/SocialIcon"
-
-import email from "../images/email.svg"
+import { SocialIconV2 } from "../components/SocialIcon"
 
 const IndexPage = () => (
   <Page>
@@ -45,10 +42,9 @@ const IndexPage = () => (
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
-      <div className="flex justify-center gap-8">
-        <SocialIcon icon={email} alt="Email" href="mailto:raisenational@gmail.com" />
+      <div className="inline-block text-left">
+        <SocialIconV2 type="email" id="raisenational@gmail.com" />
       </div>
-      <ContactForm className="mt-8" action="https://formspree.io/f/mnqlrnvq" />
     </Section>
 
     <Footer />

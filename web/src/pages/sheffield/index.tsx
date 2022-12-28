@@ -13,7 +13,7 @@ import ContactForm from "../../components/ContactForm"
 import SocialIcon from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
 
-import instagram from "../../images/instagram.png"
+import instagram from "../../images/instagram.svg"
 import facebook from "../../images/facebook.svg"
 import email from "../../images/email.svg"
 import { Doubled, MoneyBox, Party } from "../../images/Icons"

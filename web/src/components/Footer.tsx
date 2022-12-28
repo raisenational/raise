@@ -3,7 +3,7 @@ import * as React from "react"
 import Link from "./Link"
 
 const Footer: React.FC = () => (
-  <footer className="mt-4 py-4 text-xl">
+  <footer className="mt-8 py-4 text-xl">
     <Link href={withAssetPrefix("/privacy/")}>Privacy policy</Link>
   </footer>
 )
