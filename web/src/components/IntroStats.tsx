@@ -95,11 +95,11 @@ const IntroStats: React.FC<Props> = ({ title, tagline, statistics }) => {
   return (
     <div ref={ref}>
       <Logo className="mb-8 w-24" />
-      <h1 className="text-5xl sm:text-7xl font-raise-header font-black">{title}</h1>
-      <p className="text-2xl sm:text-3xl">{tagline}</p>
-      <div className="grid grid-cols-2 sm:flex sm:-skew-x-15 shadow-raise mt-8 rounded overflow-hidden font-light">
+      <h1 className="text-5xl lg:text-7xl font-raise-header font-black">{title}</h1>
+      <p className="text-2xl lg:text-3xl">{tagline}</p>
+      <div className="grid grid-cols-2 md:flex md:-skew-x-15 shadow-raise mt-8 rounded overflow-hidden font-light">
         <Statistic value={statistics.years} description={statistics.years !== 1 ? "years" : "year"} className="bg-raise-purple" numberClassName="sm:w-10" />
-        <Statistic value={statistics.students.toLocaleString()} description="students" className="bg-raise-red" numberClassName="sm:w-20" />
+        <Statistic value={statistics.students.toLocaleString()} description="students" className="bg-raise-red" numberClassName="sm:w-24" />
         <Statistic value={`£${statistics.raised.toLocaleString()}`} description="raised" className="bg-raise-orange" numberClassName="sm:w-44" />
         <Statistic value={statistics.protected.toLocaleString()} description="people protected" className="bg-raise-yellow text-black" numberClassName="sm:w-44" />
       </div>
@@ -110,9 +110,9 @@ const IntroStats: React.FC<Props> = ({ title, tagline, statistics }) => {
 const Statistic: React.FC<{ value: string | number, description: string, className?: string, numberClassName?: string }> = ({
   value, description, className, numberClassName,
 }) => (
-  <div className={classNames("flex-auto items-center p-2 sm:py-3 md:p-5 text-center", className)}>
-    <div className="sm:skew-x-15">
-      <p className={classNames("text-3xl sm:text-5xl stat-animate mx-auto", numberClassName)}>{value}</p>
+  <div className={classNames("flex-auto items-center p-2 md:py-3 text-center", className)}>
+    <div className="md:skew-x-15">
+      <p className={classNames("text-3xl md:text-5xl stat-animate mx-auto", numberClassName)}>{value}</p>
       <p className="text-xl">{description}</p>
     </div>
   </div>

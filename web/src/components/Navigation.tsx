@@ -90,18 +90,12 @@ export const TopNavigation: React.FC = () => (
   <Navigation
     left={[
       { text: "Home", href: "/" },
-      { text: "Bristol", href: "/bristol/" },
-      { text: "Cambridge", href: "https://www.mayweekalternative.org.uk/" },
-      { text: "Durham", href: "/durham/" },
-      { text: "Edinburgh", href: "/edinburgh/" },
-      { text: "Glasgow", href: "/glasgow/" },
-      { text: "Oxford", href: "/oxford/" },
-      { text: "Sheffield", href: "/sheffield/" },
-      { text: "Warwick", href: "/warwick/" },
+      { text: "Our Chapters", href: "/chapters/" },
       { text: "Alumni", href: "/alumni/" },
       { text: "Team", href: "/team/" },
     ]}
     right={[
+      { text: "Find your chapter", href: "/chapters/" },
     ]}
   />
 )

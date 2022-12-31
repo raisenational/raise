@@ -27,7 +27,7 @@ const NATIONAL_TEAM = [
     id: "01GCT0D1WWXDEV52E19DWBZ665",
     name: "Adam Jones",
     role: "Technology and Governance",
-    bio: "Adam's responsible and accountable for technology at Raise. He makes sure people have the right tools available to get things done efficiently, securely and to a high standard. This also makes him responsible for information security, data protection and compliance with regulations such as GDPR and PECR. He built the majority of the website and our open-source donations platform, and where necessary helps out in other places, for example handling Charity Commission queries, supporting our successful application to the Effective Altruism Infrastructure Fund and facilitating meetings with the Raise Advisory Board.\n\nIn his day job, he works as a software engineer helping people make better data-driven decisions. Outside work, he enjoys cycling around London, contributing to open-source projects and playing board games.",
+    bio: "Adam's responsible and accountable for technology at Raise. He makes sure people have the right tools available to get things done efficiently, securely and to a high standard. He built the majority of the website and our open-source donations platform, and where necessary helps out in other places, for example handling Charity Commission queries, supporting our successful application to the Effective Altruism Infrastructure Fund and facilitating meetings with the Raise Advisory Board.\n\nIn his day job, he works as a software engineer helping people make better data-driven decisions. Outside work, he enjoys cycling around London, contributing to open-source projects and playing board games.",
     img: adamJones,
   },
   {
