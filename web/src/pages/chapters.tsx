@@ -127,7 +127,7 @@ const ChaptersPage = () => (
 
       <p className="font-black font-raise-header mt-8 mb-2" id="starting-a-chapter">Founding a new chapter</p>
       <div className="space-y-4">
-        <p>We love to hear from potential founders that are interested in starting a local Raise group. Even if you're not sure, bias towards contacting us and we can figure it out from there!</p>
+        <p>We love to hear from potential founders that are interested in starting a local Raise group. Even if you're not sure, please contact us and we can figure it out from there!</p>
         <p>Our national team will be happy to help you get set up. We'll provide a complete written manual with everything you need to know to set up a successful chapter, and can arrange regular mentorship sessions to support you as a founder.</p>
         <p>To get started, email us at <Link href="mailto:raisenational@gmail.com?body=Hey%2C%0D%0A%0D%0AI%20was%20reading%20your%20chapters%20page%20and%20was%20interested%20in%20founding%20a%20Raise%20chapter%20for%20%3Clocation%3E.%0D%0A%0D%0AHow%20can%20I%20get%20started%3F">raisenational@gmail.com</Link></p>
       </div>
