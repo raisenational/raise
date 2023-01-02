@@ -7,9 +7,12 @@ export const groups = [
   "National",
   "NationalTech",
 
+  "Bristol",
   "Cambridge",
   "Durham",
+  "Edinburgh",
   "Glasgow",
+  "Leeds",
   "Oxford",
   "Sheffield",
   "Warwick",
