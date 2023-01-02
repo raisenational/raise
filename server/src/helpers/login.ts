@@ -1,4 +1,3 @@
-import createHttpError from "http-errors"
 import jwt from "jsonwebtoken"
 import env from "../env/env"
 import { LoginResponse } from "../schemas"
@@ -11,9 +10,6 @@ export const login = async (email: string): Promise<LoginResponse> => {
   const expiresAt = now + 3600 // 1 hour
 
   const groups = getGroups(email)
-  if (groups === undefined) {
-    throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`)
-  }
 
   await insertAudit({
     object: email,
