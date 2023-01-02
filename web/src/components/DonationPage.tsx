@@ -51,6 +51,7 @@ const DonationPage: React.FC<Props> = ({ title, fundraiserIds, aboutUsOverride }
       <Helmet>
         <title>{fundraiser.data?.publicName ?? title}: Donate</title>
         <meta property="og:title" content={`${fundraiser.data?.publicName ?? title}: Donate`} />
+        <meta name="robots" content="noindex" />
       </Helmet>
 
       <Navigation

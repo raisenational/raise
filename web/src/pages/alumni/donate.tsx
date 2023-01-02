@@ -1,21 +1,13 @@
 import * as React from "react"
-import Helmet from "react-helmet"
 import DonationPage from "../../components/DonationPage"
 import Link from "../../components/Link"
 import { MoneyBox, Party } from "../../images/Icons"
+import config from "./_config"
 
 const Page = () => (
   <>
-    <Helmet>
-      <meta name="robots" content="noindex" />
-    </Helmet>
     <DonationPage
-      fundraiserIds={{
-        local: "01FGNSHH6X6X878ZNBZKY44JQA", // Raise Demo
-        dev: "01FWF9B23419S5JFVV9A9XQG8E",
-        prod: "01FVSAXB8YTDVPSGVGRTN61TQJ",
-      }}
-      title="Raise Alumni"
+      {...config}
       aboutUsOverride={(
         <div>
           <p>Raise is a charitable movement encouraging people to adopt a positive approach towards deliberate, effective giving.</p>

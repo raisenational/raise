@@ -21,3 +21,8 @@ export interface Env {
   /** API token to configure Cloudflare Web Analytics for the May Week Alternative site */
   CLOUDFLARE_WEB_ANALYTICS_TOKEN_MWA: string | undefined,
 }
+
+export interface ChapterConfig {
+  title: string,
+  fundraiserIds: Record<Env["STAGE"], string>,
+}
