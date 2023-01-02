@@ -3,9 +3,9 @@ import { CakeIcon, HeartIcon } from "@heroicons/react/outline"
 import confetti from "canvas-confetti"
 import AOS from "aos"
 import "aos/dist/aos.css"
-import rahulShah from "../images/rahul-shah.jpg"
-import claraTuffrey from "../images/clara-tuffrey.jpg"
-import susanneKarbe from "../images/susanne-karbe.jpg"
+import chloeShieh from "../images/chloe-shieh.jpg"
+import elenaCaspall from "../images/elena-caspall.jpg"
+import jakeMendel from "../images/jake-mendel.jpg"
 import sp1 from "../images/summer-party-1.jpg"
 import sp2 from "../images/summer-party-2.jpg"
 import sp3 from "../images/summer-party-3.jpg"
@@ -107,13 +107,13 @@ const Philosophy: React.FC<PhilosophyProps> = ({ brand = "Raise" }) => {
             <h2 className="mt-20 mb-4 text-2xl text-center sm:text-4xl font-raise-header font-black" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">How does {brand} work?</h2>
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">We invite students to join us and celebrate the end of the academic year by making a personally significant donation to charity - an amount that will <span className="font-bold">make you think about what and why you are giving</span>.</p>
 
-            <Quote className="my-12" by="Clara Tuffrey, Donor" headshotSrc={claraTuffrey} imagePlacement="right" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
+            <Quote className="my-12" by="Chloe Shieh, Donor" headshotSrc={chloeShieh} imagePlacement="right" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
               It took me a long time to decide to join {brand} - I'd never given that much before - but when I finally donated, I saw our incredible impact and it really made donating an amazing positive experience.
             </Quote>
 
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">Then, at the end of the academic year, we come together as a community for our Summer Party. It's a time when we can reflect on and celebrate the impact of our donations, while enjoying the end of the year with a wonderful group of people.</p>
 
-            <Quote className="my-12" by="Rahul Shah, Donor" headshotSrc={rahulShah} imagePlacement="left" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
+            <Quote className="my-12" by="Elena Caspall, Donor" headshotSrc={elenaCaspall} imagePlacement="left" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
               It was at the Summer Party that I really appreciated just how powerful the idea of giving positively and deliberately can be. Everyone was having a great time, energised by the collective knowledge that together we'd done something incredible.
             </Quote>
 
@@ -139,7 +139,7 @@ const Philosophy: React.FC<PhilosophyProps> = ({ brand = "Raise" }) => {
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">Our hope is that through making a <span className="font-bold">personally significant donation</span> and then coming together to celebrate that, you'll be able to see the <span className="font-bold">huge impact</span> giving effectively can have and come to feel as positive about it as we do.</p>
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">Ultimately, <span className="font-bold">we want to change the culture around giving to charity</span>. We want giving to be something that is actively embraced and enjoyed, and a meaningful part of all of our lives.</p>
 
-            <Quote className="my-12" by="Susanne Karbe, Donor" headshotSrc={susanneKarbe} imagePlacement="right" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
+            <Quote className="my-12" by="Jake Mendel, Donor" headshotSrc={jakeMendel} imagePlacement="right" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
               {brand} really changed the way I approach giving. It's made me want to make deliberate giving a permanent part of my life even now I've graduated so, after joining {brand}, I decided to donate 10% of my income to effective charities every year.
               <br /><br />
               I never really used to think about giving to charity, but I loved joining {brand} and I now can't wait to donate again in the future.
