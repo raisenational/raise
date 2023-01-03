@@ -18,6 +18,7 @@ jest.mock("../src/helpers/email", () => ({
 // Shared DynamoDB clients for all tests
 // Connects to a DynamoDB local instance set up by serverless-dynamodb-local
 const dynamoDBClient = new DynamoDBClient({
+  region: "test",
   endpoint: "http://localhost:8005",
   credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" },
 })
