@@ -1,3 +1,4 @@
+import createHttpError from "http-errors"
 import { call } from "../../../../../local/testHelpers"
 import { main } from "./post"
 import { main as getFundraisers } from "../../fundraisers/get"
@@ -5,7 +6,10 @@ import * as db from "../../../../helpers/db"
 import env from "../../../../env/env"
 
 jest.mock("../../../../helpers/groups", () => ({
-  getGroups: jest.fn().mockImplementation((email) => (email === "test@joinraise.org" ? [] : undefined)),
+  getGroups: jest.fn().mockImplementation((email) => {
+    if (email === "test@joinraise.org") return []
+    throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`)
+  }),
 }))
 
 test("get working access token for allowlisted email", async () => {

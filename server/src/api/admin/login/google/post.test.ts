@@ -1,3 +1,4 @@
+import createHttpError from "http-errors"
 import { call } from "../../../../../local/testHelpers"
 import env from "../../../../env/env"
 import { main } from "./post"
@@ -24,7 +25,10 @@ jest.mock("google-auth-library", () => ({
 }))
 
 jest.mock("../../../../helpers/groups", () => ({
-  getGroups: jest.fn().mockImplementation((email) => (email === "test@joinraise.org" ? [] : undefined)),
+  getGroups: jest.fn().mockImplementation((email) => {
+    if (email === "test@joinraise.org") return []
+    throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`)
+  }),
 }))
 
 test("get working access token for valid Google token", async () => {
