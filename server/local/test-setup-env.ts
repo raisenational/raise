@@ -1,5 +1,5 @@
 import { DynamoDBClient, CreateTableCommand } from "@aws-sdk/client-dynamodb"
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb"
+import { DynamoDBDocumentClient, TransactWriteCommand } from "@aws-sdk/lib-dynamodb"
 import { auditContext } from "../src/helpers/auditContext"
 import { dbClient } from "../src/helpers/db"
 
@@ -14,6 +14,22 @@ jest.mock("../src/helpers/slack", () => ({
 jest.mock("../src/helpers/email", () => ({
   sendEmail: jest.fn().mockResolvedValue(undefined),
 }))
+
+// Shared DynamoDB clients for all tests
+// Connects to a DynamoDB local instance set up by serverless-dynamodb-local
+const dynamoDBClient = new DynamoDBClient({
+  endpoint: "http://localhost:8005",
+  credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" },
+})
+const dynamoDBDocumentClient = DynamoDBDocumentClient.from(dynamoDBClient, {
+  marshallOptions: {
+    convertEmptyValues: false,
+    removeUndefinedValues: false,
+  },
+  unmarshallOptions: {
+    wrapNumbers: false,
+  },
+})
 
 beforeEach(async () => {
   // Mock audit context (you can override this by setting auditContext.value)
@@ -34,37 +50,31 @@ beforeEach(async () => {
   jest.spyOn(console, "info").mockImplementation()
   jest.spyOn(console, "log").mockImplementation()
 
-  // Variables to be lazy initialized
-  let dynamoDBClient: DynamoDBClient
-  let internalDbClient: DynamoDBDocumentClient
+  // Set up database
+  // We create a prefix to prepend to all tables in this test environment for isolation
+  // We create the tables lazily, so only on the first database interaction are they initialised
+  const envPrefix = `test-env-${Math.random()}`
   let ready = false
 
   dbClient.send = jest.fn()
     .mockImplementationOnce(async (command) => {
-      // The first time, we lazy initiate the clients and create the tables
-      dynamoDBClient = new DynamoDBClient({
-        // Using a different region for each test environment means we get a
-        // different database (because the sharedDb flag is not set)
-        region: `test-env-${Math.random()}`,
-        endpoint: "http://localhost:8005",
-        credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" },
-      })
-      internalDbClient = DynamoDBDocumentClient.from(dynamoDBClient, {
-        marshallOptions: {
-          convertEmptyValues: false,
-          removeUndefinedValues: false,
-        },
-        unmarshallOptions: {
-          wrapNumbers: false,
-        },
-      })
-      await Promise.all(DYNAMODB_TABLES.map((table: any) => dynamoDBClient.send(new CreateTableCommand(table))))
+      // The first time, we lazy initiate the tables
+      await Promise.all(DYNAMODB_TABLES.map((table: any) => {
+        return dynamoDBDocumentClient.send(new CreateTableCommand({
+          ...table,
+          TableName: `${envPrefix}-${table.TableName}`
+        }))
+      }))
       ready = true
 
-      // Call ourself, so we use the mockImplementation below
+      // Call ourself to use the mockImplementation below
+      // to execute the command originally requested
       return dbClient.send(command)
     })
     .mockImplementation(async (command) => {
+      // If we have two calls to the database in quick succession, we might start
+      // running this code without having initialised the tables above. Here we busy-wait
+      // until our database tables are all set up before continuing.
       if (!ready) {
         await new Promise<void>((resolve) => {
           const timeout = setInterval(() => {
@@ -75,6 +85,17 @@ beforeEach(async () => {
           }, 50)
         })
       }
-      return internalDbClient.send(command)
+
+      // Proxy commands to use the tables for this test environment
+      if (command instanceof TransactWriteCommand) {
+        command.input.TransactItems?.forEach(i => Object.values(i).forEach(v => {
+          v.TableName = `${envPrefix}-${v.TableName}`
+        }))
+      } else {
+        command.input.TableName = `${envPrefix}-${command.input.TableName}`
+      }
+
+      // Actually execute the command
+      return dynamoDBDocumentClient.send(command)
     })
 })
