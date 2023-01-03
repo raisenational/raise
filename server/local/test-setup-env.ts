@@ -2,7 +2,6 @@ import { DynamoDBClient, CreateTableCommand } from "@aws-sdk/client-dynamodb"
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb"
 import { auditContext } from "../src/helpers/auditContext"
 import { dbClient } from "../src/helpers/db"
-import { unsupressConsole } from "./testHelpers"
 
 // Retrieve the table CloudFormation resources from the __DYNAMODB_TABLES environment variable
 const DYNAMODB_TABLES = JSON.parse(process.env.__DYNAMODB_TABLES!)
