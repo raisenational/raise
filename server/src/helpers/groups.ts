@@ -169,6 +169,16 @@ const USER_MAP: Record<Env["STAGE"], Record<string, UserGroupDefinition>> = {
       groups: [g.Cambridge],
       passedTrainingAt: new Date("2023-01-02T22:30:41Z"),
     },
+    "813530c6cc110b5fc97534e53cfa6c2c9f2f92b2": {
+      _comment: "Benjamin Smith",
+      groups: [g.Bristol],
+      passedTrainingAt: new Date("2023-01-04T20:19:30Z"),
+    },
+    "ddb53eb9576f2ccc93b191240d0d37570fc37ec0": {
+      _comment: "Louis Danker",
+      groups: [g.Edinburgh],
+      passedTrainingAt: new Date("2023-01-05T02:38:22Z"),
+    },
   },
 }
 
