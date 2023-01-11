@@ -1,7 +1,8 @@
 import * as React from "react"
+import email from "../images/email.svg"
 import facebook from "../images/facebook.svg"
 import instagram from "../images/instagram.svg"
-import email from "../images/email.svg"
+import twitter from "../images/twitter.svg"
 
 interface Props {
   icon: string,
@@ -16,7 +17,7 @@ const SocialIcon: React.FC<Props> = ({ icon, alt, href }) => (
 )
 
 interface PropsV2 {
-  type: "email" | "facebook" | "instagram",
+  type: "email" | "facebook" | "instagram" | "twitter",
   /** Email address or username */
   id: string,
 
@@ -39,12 +40,14 @@ const toIconImage: Record<PropsV2["type"], string> = {
   email,
   facebook,
   instagram,
+  twitter,
 }
 
 const toHref: Record<PropsV2["type"], (id: string) => string> = {
   email: (address: string) => `mailto:${address}`,
   facebook: (username: string) => `https://www.facebook.com/${username}`,
   instagram: (username: string) => `https://www.instagram.com/${username}`,
+  twitter: (username: string) => `https://www.twitter.com/${username}`,
 }
 
 export default SocialIcon
