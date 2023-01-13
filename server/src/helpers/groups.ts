@@ -152,7 +152,7 @@ const USER_MAP: Record<Env["STAGE"], Record<string, UserGroupDefinition>> = {
     "0361cc51f2c7f88fee8249b70da9c723bb7ee51d": {
       _comment: "Oviya Anand",
       groups: [g.Oxford],
-      passedTrainingAt: new Date("2022-02-03T19:47:17Z"),
+      passedTrainingAt: new Date("2023-01-11T18:48:04Z"),
     },
     "127da419c96f6dfcfa2d32e71e1a9c2581b781ef": {
       _comment: "Shahamath Hussain",
@@ -178,6 +178,16 @@ const USER_MAP: Record<Env["STAGE"], Record<string, UserGroupDefinition>> = {
       _comment: "Louis Danker",
       groups: [g.Edinburgh],
       passedTrainingAt: new Date("2023-01-05T02:38:22Z"),
+    },
+    "c37fe3b794694aef0f38d0643db69e3ee9a73cd3": {
+      _comment: "Georgina Elder",
+      groups: [g.Leeds],
+      passedTrainingAt: new Date("2023-01-12T16:33:12Z"),
+    },
+    "d867262cd2448e33c7c0b6ae5513402c918b56d2": {
+      _comment: "Abi Ngwang",
+      groups: [g.Leeds],
+      passedTrainingAt: new Date("2023-01-12T16:33:44Z"),
     },
   },
 }
