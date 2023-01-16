@@ -295,16 +295,8 @@ const IndexPage = () => (
       <SectionTitle>Get in Touch</SectionTitle>
       <div className="inline-block text-left">
         <SocialIconV2 type="email" id="raisewarwick@gmail.com" />
-        <SocialIconV2
-          type="instagram"
-          id="raisewarwick"
-          linkTextOverride="Raise Warwick!"
-        />
-        <SocialIconV2
-          type="facebook"
-          id="raisewarwick"
-          linkTextOverride="Raise Warwick!"
-        />
+        <SocialIconV2 type="instagram" id="raisewarwick" />
+        <SocialIconV2 type="facebook" id="raisewarwick" />
       </div>
     </Section>
 
