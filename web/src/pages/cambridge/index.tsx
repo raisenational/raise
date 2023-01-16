@@ -338,16 +338,8 @@ const IndexPage = () => (
       <SectionTitle>Get in Touch</SectionTitle>
       <div className="inline-block text-left">
         <SocialIconV2 type="email" id="mayweekalternative@gmail.com" />
-        <SocialIconV2
-          type="facebook"
-          id="mayweekalternative"
-          linkTextOverride="Raise MWA!"
-        />
-        <SocialIconV2
-          type="instagram"
-          id="mayweekalternative"
-          linkTextOverride="Raise MWA!"
-        />
+        <SocialIconV2 type="facebook" id="mayweekalternative" />
+        <SocialIconV2 type="instagram" id="mayweekalternative" />
       </div>
     </Section>
 
