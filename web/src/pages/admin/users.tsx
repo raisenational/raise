@@ -66,7 +66,7 @@ const UsersPage: React.FC<RouteComponentProps> = () => {
             groups: { label: "Groups", formatter: (ids?: string[]) => ids?.map((id) => groupMap[id]).join(", ") || "(none)" },
           }}
           // eslint-disable-next-line no-nested-ternary
-          items={asResponseValues(users.data?.sort((a, b) => (b.name === a.name ? 0 : (b.name > a.name ? 1 : -1))), users)}
+          items={asResponseValues(users.data?.sort((a, b) => (a.name === b.name ? 0 : (a.name > b.name ? 1 : -1))), users)}
           onClick={(user) => navigate(`/admin/users/${user.id}/`)}
         />
       </Section>
