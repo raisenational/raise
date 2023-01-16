@@ -1,7 +1,7 @@
 import * as React from "react"
 import { RouteComponentProps } from "@gatsbyjs/reach-router"
 import { ExternalLinkIcon, ReceiptRefundIcon } from "@heroicons/react/outline"
-import { format, g } from "@raise/shared"
+import { fixedGroups, format } from "@raise/shared"
 import { asResponseValues, useReq, useRawReq } from "../../helpers/networking"
 import Section, { SectionTitle } from "../../components/Section"
 import PropertyEditor from "../../components/PropertyEditor"
@@ -25,9 +25,9 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId: string, donati
 
   return (
     <Section>
-      <div className="flex mt-12">
+      <div className="flex">
         <SectionTitle className="flex-1">{donation.data?.donorName ? `Payment from ${donation.data?.donorName}` : "Payment"}</SectionTitle>
-        <RequireGroup group={g.National}>
+        <RequireGroup group={fixedGroups.National}>
           {payment.data?.method === "card" && payment.data.reference && <Button href={`https://dashboard.stripe.com/payments/${payment.data?.reference}`} target="_blank"><ExternalLinkIcon className="h-6 mb-1" /> View on Stripe</Button>}
         </RequireGroup>
         {(payment.data?.status === "paid" && (payment.data.donationAmount + payment.data.contributionAmount + (payment.data.matchFundingAmount ?? 0)) > 0) && <Button onClick={() => setRefundModalOpen(true)}><ReceiptRefundIcon className="h-6 mb-1" /> Mark refunded</Button>}

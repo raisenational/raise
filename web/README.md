@@ -32,12 +32,10 @@ If you're going to be making a number of edits you'll likely find it easier to w
 The super rough setup guide is:
 - install [Node.js](https://nodejs.org/en/download/)
 - clone the monorepo and open it with VS Code
-- run `npm install` and `npm run build` in the `shared` directory
-- run `npm install` in the `web` directory
+- run `npm install` at the top level
 
-Once that's set up, to start up the website:
-- Run `npm start` in the `web` directory
-- Open the address displayed in the terminal in a browser
+Once that's set up, to start up the website or server:
+- Run `npm start` in the `web` or `server` directory
 
 Alternatively, you should be able to just open this repository [with Gitpod](https://gitpod.io/#https://github.com/raisenational/raise) by logging in with GitHub and this will do the steps above for you.
 

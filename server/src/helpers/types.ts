@@ -1,12 +1,11 @@
 import type {
   APIGatewayProxyEventV2, APIGatewayProxyResult, Handler as AWSHandler, Context,
 } from "aws-lambda"
-import type { Group } from "@raise/shared"
-import type { JSONSchema } from "../schemas"
+import type { JSONSchema, Ulid } from "../schemas"
 
 export interface AuthTokenPayload {
   subject: string,
-  groups: Group[],
+  groups: Ulid[],
   iat: number,
   exp: number,
 }

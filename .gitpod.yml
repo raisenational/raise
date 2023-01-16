@@ -2,20 +2,15 @@ tasks:
   - init: |
       echo -e '#!/usr/bin/env bash\ngit push --force -u origin HEAD' > .git/hooks/post-commit
       chmod +x .git/hooks/post-commit
-      cd shared
       npm install
-      npm run build
-      gp sync-done shared
-      cd ../web
-      npm install
+      gp sync-done install
     command: |
       [[ $(git rev-parse --abbrev-ref HEAD) == "master" ]] && git checkout -b "$GITPOD_WORKSPACE_ID/$(date +%s)"
       gp open src/pages/index.tsx
       npm start
   - init: |
       cd server
-      gp sync-await shared
-      npm install
+      gp sync-await install
     command: |
       gp open src/api/admin/fundraisers/get.ts
       npm start
