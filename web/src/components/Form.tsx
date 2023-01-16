@@ -211,7 +211,7 @@ const Select: React.FC<({ type: "select", value?: string, onChange: (s: string) 
           "bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50": props.error,
         })}
         >
-          <span className={classNames("block truncate", { "text-gray-400": selected.length === 0 })}>{(selected.length > 0 && (selected.map((v) => options[v]).join(", "))) || "(none selected)"}</span>
+          <span className={classNames("block truncate", { "text-gray-400": selected.length === 0 })}>{(selected.length > 0 && (selected.map((v) => options[v]).join(", "))) || "(none)"}</span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
             <ChevronDownIcon
               className="w-5 h-5 text-gray-400"

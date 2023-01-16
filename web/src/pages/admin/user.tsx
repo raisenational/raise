@@ -9,6 +9,7 @@ import { User } from "../../helpers/generated-api-client"
 const UserPage: React.FC<RouteComponentProps & { userId: string }> = ({ userId }) => {
   const [users, refetchUsers] = useReq("get /admin/users")
   const [groups] = useReq("get /admin/groups")
+  const groupMap = groups.data ? Object.fromEntries(groups.data.map((group) => [group.id, group.name])) : {}
   const req = useRawReq()
 
   const user = asResponseValues(users.data?.find((u) => u.id === userId), users)
@@ -22,7 +23,9 @@ const UserPage: React.FC<RouteComponentProps & { userId: string }> = ({ userId }
         definition={{
           name: { label: "Name", inputType: "text" },
           email: { label: "Email", inputType: "text" },
-          groups: { label: "Groups", inputType: "multiselect", selectOptions: (groups.data ?? []).map((g) => g.name) },
+          groups: {
+            label: "Groups", formatter: (ids?: string[]) => ids?.map((id) => groupMap[id]).join(", ") || "(none)", inputType: "multiselect", selectOptions: groupMap,
+          },
           securityTrainingCompletedAt: { label: "Security training completed at", formatter: format.timestamp, inputType: "datetime-local" },
         }}
         item={user}
