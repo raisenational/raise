@@ -17,4 +17,5 @@
   "git.enableSmartCommit": true,
   "redhat.telemetry.enabled": false,
   "css.format.enable": false,
+  "eslint.format.enable": true,
 }

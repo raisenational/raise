@@ -6,7 +6,7 @@ import Section, { SectionTitle } from "../../components/Section"
 import Navigation from "../../components/Navigation"
 import FAQs, { FAQ } from "../../components/FAQs"
 import Philosophy from "../../components/Philosophy"
-import ContactForm from "../../components/ContactForm"
+import { SocialIconV2 } from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
 import Footer from "../../components/Footer"
 import Button from "../../components/Button"
@@ -32,9 +32,7 @@ const IndexPage = () => (
           { text: "Our Philosophy", href: "/demo/#our-philosophy" },
           { text: "Contact", href: "/demo/#contact" },
         ]}
-        right={[
-          { text: "Donate", href: "/demo/donate" },
-        ]}
+        right={[{ text: "Donate", href: "/demo/donate" }]}
       />
       <Section className="px-8">
         <IntroStats
@@ -47,12 +45,12 @@ const IndexPage = () => (
             protected: 455285,
           }}
         />
-        <Button variant="outline" className="mt-4 mb-12" href="/demo/donate"> Donate </Button>
+        <Button variant="outline" className="mt-4 mb-12" href="/demo/donate">
+          {" "}
+          Donate{" "}
+        </Button>
       </Section>
-      <CTADown
-        text="How it works"
-        href="#how-it-works"
-      />
+      <CTADown text="How it works" href="#how-it-works" />
     </Cover>
 
     <Section id="how-it-works">
@@ -78,29 +76,53 @@ const IndexPage = () => (
         />
       </div>
 
-      <iframe className="w-full max-w-2xl mx-auto mt-12 rounded shadow-raise" title="YouTube: Raise: A Celebration of Giving" width="672" height="378" src="https://www.youtube-nocookie.com/embed/6bEloAzIV2c?rel=0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+      <iframe
+        className="w-full max-w-2xl mx-auto mt-12 rounded shadow-raise"
+        title="YouTube: Raise: A Celebration of Giving"
+        width="672"
+        height="378"
+        src="https://www.youtube-nocookie.com/embed/6bEloAzIV2c?rel=0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
     </Section>
 
     <Section id="faq">
       <SectionTitle>More Info</SectionTitle>
       <FAQs>
         <FAQ title="Sounds great, where do I sign up?">
-          <p>Awesome! This isn't a real chapter, but you can view our real ones <a href="/">here</a>!</p>
+          <p>
+            Awesome! This isn't a real chapter, but you can view our real ones{" "}
+            <a href="/">here</a>!
+          </p>
         </FAQ>
 
         <FAQ title="How can I get involved?">
-          <p>We're so pleased you're interested in Raise, and look forward to celebrating with you!</p>
-          <p>If you're interested in helping out, <a href="/demo/#contact">get in touch</a>.</p>
+          <p>
+            We're so pleased you're interested in Raise, and look forward to
+            celebrating with you!
+          </p>
+          <p>
+            If you're interested in helping out,{" "}
+            <a href="/demo/#contact">get in touch</a>.
+          </p>
         </FAQ>
       </FAQs>
-      <Button variant="outline" size="large" className="mt-4" href="/demo/donate">Donate</Button>
+      <Button
+        variant="outline"
+        size="large"
+        className="mt-4"
+        href="/demo/donate"
+      >
+        Donate
+      </Button>
     </Section>
 
     <Philosophy />
 
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
-      <ContactForm className="mt-8" action="https://formspree.io/f/mnqlrnvq" />
+      <SocialIconV2 type="email" id="raisenational@gmail.com" />
     </Section>
 
     <Footer />
