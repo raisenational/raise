@@ -255,7 +255,7 @@ export interface FormProps<T> {
   title?: string,
   warning?: string,
   definition: { [K in keyof UnpackNestedValue<T>]: PropertyDefinition<UnpackNestedValue<T>, UnpackNestedValue<T>[K]> },
-  initialValues: UnpackNestedValue<T>,
+  initialValues?: UnpackNestedValue<T>,
   showCurrent?: boolean,
   onSubmit: (item: UnpackNestedValue<T>) => void | Promise<void>,
 }
@@ -264,7 +264,7 @@ export const Form = <T extends FieldValues>({
   title, warning, definition, initialValues, showCurrent = true, onSubmit,
 }: FormProps<T>) => {
   const [error, setError] = React.useState<Error | undefined>()
-  const formMethods = useForm<T>({ defaultValues: mapToInput(initialValues, definition) })
+  const formMethods = useForm<T>({ defaultValues: initialValues ? mapToInput(initialValues, definition) : undefined })
   const {
     register, handleSubmit, control, formState: { isSubmitting },
   } = formMethods

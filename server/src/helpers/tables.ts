@@ -4,6 +4,8 @@ import {
   $Fundraiser, Fundraiser,
   $Payment, Payment,
   $AuditLog, AuditLog,
+  $Group, Group,
+  $User, User,
 } from "../schemas"
 import env from "../env/env"
 
@@ -55,9 +57,27 @@ export const auditLogTable: Table<"object", "id", AuditLog> = {
   schema: $AuditLog,
 }
 
+export const groupTable: Table<"id", "id", Group> = {
+  name: `raise-server-${env.STAGE}-group`,
+  entityName: "group",
+  partitionKey: "id",
+  primaryKey: "id",
+  schema: $Group,
+}
+
+export const userTable: Table<"id", "id", User> = {
+  name: `raise-server-${env.STAGE}-user`,
+  entityName: "user",
+  partitionKey: "id",
+  primaryKey: "id",
+  schema: $User,
+}
+
 export const tables = {
   fundraiser: fundraiserTable,
   donation: donationTable,
   payment: paymentTable,
   auditLog: auditLogTable,
+  group: groupTable,
+  user: userTable,
 }

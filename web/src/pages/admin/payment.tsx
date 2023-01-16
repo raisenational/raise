@@ -25,7 +25,7 @@ const PaymentPage: React.FC<RouteComponentProps & { fundraiserId: string, donati
 
   return (
     <Section>
-      <div className="flex mt-12">
+      <div className="flex">
         <SectionTitle className="flex-1">{donation.data?.donorName ? `Payment from ${donation.data?.donorName}` : "Payment"}</SectionTitle>
         <RequireGroup group={g.National}>
           {payment.data?.method === "card" && payment.data.reference && <Button href={`https://dashboard.stripe.com/payments/${payment.data?.reference}`} target="_blank"><ExternalLinkIcon className="h-6 mb-1" /> View on Stripe</Button>}

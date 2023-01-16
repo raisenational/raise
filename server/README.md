@@ -56,6 +56,24 @@ See the other sections in this README for more details on where you might want t
 Tips:
 - If you break the server in a weird way, sometimes DynamoDB will keep running in the background. This usually results in the error `Exception in thread "main" java.io.IOException: Failed to bind to 0.0.0.0/0.0.0.0:8004`. To stop it use the command `killall java` (NB: this will also kill any other java processes on your system which may or may not be fine depending on what you've got going on)
 
+#### ➕ Adding an entity
+
+To add a new [entity](https://en.wikipedia.org/wiki/Entity%E2%80%93relationship_model):
+
+1. Define its schema, and request schemas, in `src/schemas/jsonSchema.ts`
+2. Create a database table for it in `src/helpers/tables.ts`
+3. Create endpoints, probably like:
+  ```
+  src
+    api
+      admin
+        entity
+          {entity_id}
+            patch.ts
+          get.ts
+          post.ts
+  ```
+
 ## 📁 File structure
 
 (in rough order of what is more likely to be useful to you)
@@ -82,8 +100,9 @@ Tips:
 - fundraiser: A top-level object that represents an individual donations push. Generally corresponds to a chapter in a specific year e.g. 'Raise Demo 2021'. Has zero or more donations.
 - donation: A donation by a specific donor, e.g. 'Donation from John Doe'. Associated with a fundraiser. Has zero or more payments.
 - payment: A payment in relation to a specific donation e.g. 'John Doe's 3rd weekly recurring payment of £9'. Associated with a donation.
-- admin: Anyone or anything that can be issued a JWT, including members of the national team, local teams and the scheduler
-- user: Anyone or anything that interacts with the Raise server, including admins and members of the public
+- admin: Anyone or anything that can be issued a JWT, including members of the national team, local teams and the scheduler.
+- user: A human admin.
+- group: A collection of zero or more users. These are generally 'National', 'NationalTech' (technical members of the national team with elevated permissions) and all the combinations of 'Raise [Chapter] [Year]'.
 
 ## 🧅 Request handling
 
@@ -144,7 +163,7 @@ In general:
 
 ### ✅ Checks
 
-To ensure data integrity, API operations must conduct checks to ensure what users are requesting is sensible.
+API endpoints must conduct checks to ensure executing requests maintains data integrity.
 
 Any code changes to the server must be peer-reviewed to ensure the code is correct and free of security defects. Additionally, we use unit tests to ensure our code does what we expect/want it to.
 
@@ -170,7 +189,7 @@ Scheduled events are triggered by AWS CloudWatch.
 
 We manage permissions between the different AWS services with AWS IAM (e.g. to allow the Lambda functions to talk to the DynamoDB database).
 
-We use the Serverless framework to manage all this infrastructure, which users AWS CloudFormation under the hood. We define the configuration for the framework (and therefore the AWS resources we want) in `serverless.ts`.
+We use the Serverless framework to manage all this infrastructure, which uses AWS CloudFormation under the hood. We define the configuration for the framework (and therefore the AWS resources we want) in `serverless.ts`.
 
 Serverless also comes with plugins that help us:
 - `serverless-webpack`: Allows us to use webpack to bundle up our code in the way AWS Lambda expects before running or deploying it

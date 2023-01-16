@@ -16,6 +16,9 @@ import Section from "../../components/Section"
 import DonationPage from "./donation"
 import PaymentPage from "./payment"
 import AuditPage from "./audit"
+import UsersPage from "./users"
+import UserPage from "./user"
+import GroupPage from "./group"
 
 const IndexPage = () => (
   <Page className="pb-8">
@@ -65,6 +68,7 @@ const IndexLayout = () => {
             { text: "Fundraisers", href: "/admin/" },
             { text: "Tasks", href: "/admin/tasks" },
             { text: "Audit", href: "/admin/audit" },
+            { text: "Users", href: "/admin/users" },
             { text: "Profile", href: "/admin/profile" },
           ]}
           right={[
@@ -86,6 +90,9 @@ const IndexLayout = () => {
             <PaymentPage fundraiserId="" donationId="" paymentId="" path="/:fundraiserId/:donationId/:paymentId" />
             <TasksPage path="/tasks" />
             <AuditPage path="/audit" />
+            <UsersPage path="/users" />
+            <UserPage userId="" path="/users/:userId" />
+            <GroupPage groupId="" path="/groups/:groupId" />
             <ProfilePage path="/profile" />
             <NotFoundPage default />
           </>

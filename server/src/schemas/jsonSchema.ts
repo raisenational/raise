@@ -447,3 +447,66 @@ export const $Task: JSONSchema<S.Task> = {
 }
 
 export const $Tasks: JSONSchema<S.Task[]> = { type: "array", items: $Task }
+
+export const $GroupCreation: JSONSchema<S.GroupCreation> = {
+  type: "object",
+  properties: {
+    name: { type: "string" },
+  },
+  additionalProperties: false,
+  required: ["name"],
+}
+
+export const $GroupEdits: JSONSchema<S.GroupEdits> = {
+  type: "object",
+  properties: {
+    ...$GroupCreation.properties,
+  },
+  minProperties: 1,
+  additionalProperties: false,
+}
+
+export const $Group: JSONSchema<S.Group> = {
+  type: "object",
+  properties: {
+    ...$GroupCreation.properties,
+    id: $Ulid,
+  },
+  required: ["id", "name"],
+  additionalProperties: false,
+}
+
+export const $Groups: JSONSchema<S.Group[]> = { type: "array", items: $Group }
+
+export const $UserCreation: JSONSchema<S.UserCreation> = {
+  type: "object",
+  properties: {
+    name: { type: "string" },
+    email: { type: "string" },
+    groups: { type: "array", items: $Ulid },
+    securityTrainingCompletedAt: { type: "integer" },
+  },
+  additionalProperties: false,
+  required: ["name", "email", "groups", "securityTrainingCompletedAt"],
+}
+
+export const $UserEdits: JSONSchema<S.UserEdits> = {
+  type: "object",
+  properties: {
+    ...$UserCreation.properties,
+  },
+  minProperties: 1,
+  additionalProperties: false,
+}
+
+export const $User: JSONSchema<S.User> = {
+  type: "object",
+  properties: {
+    ...$UserCreation.properties,
+    id: $Ulid,
+  },
+  required: ["id", "name", "email", "groups", "securityTrainingCompletedAt"],
+  additionalProperties: false,
+}
+
+export const $Users: JSONSchema<S.User[]> = { type: "array", items: $User }

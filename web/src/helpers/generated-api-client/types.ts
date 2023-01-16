@@ -442,3 +442,51 @@ export type Tasks = {
   id: string;
   name: string;
 }[];
+
+export interface GroupCreation {
+  name: string;
+}
+
+export interface GroupEdits {
+  name?: string;
+}
+
+export interface Group {
+  name: string;
+  id: string;
+}
+
+export type Groups = {
+  name: string;
+  id: string;
+}[];
+
+export interface UserCreation {
+  name: string;
+  email: string;
+  groups: string[];
+  securityTrainingCompletedAt: number;
+}
+
+export interface UserEdits {
+  name?: string;
+  email?: string;
+  groups?: string[];
+  securityTrainingCompletedAt?: number;
+}
+
+export interface User {
+  name: string;
+  email: string;
+  groups: string[];
+  securityTrainingCompletedAt: number;
+  id: string;
+}
+
+export type Users = {
+  name: string;
+  email: string;
+  groups: string[];
+  securityTrainingCompletedAt: number;
+  id: string;
+}[];

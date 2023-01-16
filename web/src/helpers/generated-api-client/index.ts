@@ -88,6 +88,23 @@ export type Routes = {
       "fundraiserId": string,
     },
   },
+  "get /admin/groups": {
+    request: null,
+    response: S.Groups,
+    params: null,
+  },
+  "post /admin/groups": {
+    request: S.GroupCreation,
+    response: S.Ulid,
+    params: null,
+  },
+  "patch /admin/groups/{groupId}": {
+    request: S.GroupEdits,
+    response: null,
+    params: {
+      "groupId": string,
+    },
+  },
   "get /admin/login": {
     request: null,
     response: S.Profile,
@@ -113,6 +130,23 @@ export type Routes = {
     response: null,
     params: {
       "taskId": string,
+    },
+  },
+  "get /admin/users": {
+    request: null,
+    response: S.Users,
+    params: null,
+  },
+  "post /admin/users": {
+    request: S.UserCreation,
+    response: S.Ulid,
+    params: null,
+  },
+  "patch /admin/users/{userId}": {
+    request: S.UserEdits,
+    response: null,
+    params: {
+      "userId": string,
     },
   },
   "post /public/fundraisers/{fundraiserId}/donation": {
@@ -270,6 +304,31 @@ export const routes = {
     hasResponse: false,
     hasParams: true,
   },
+  "get /admin/groups": {
+    method: "get",
+    makePath: ({ }: {}) => `/admin/groups`,
+    hasRequest: false,
+    hasResponse: true,
+    hasParams: false,
+  },
+  "post /admin/groups": {
+    method: "post",
+    makePath: ({ }: {}) => `/admin/groups`,
+    hasRequest: true,
+    hasResponse: true,
+    hasParams: false,
+  },
+  "patch /admin/groups/{groupId}": {
+    method: "patch",
+    makePath: ({
+      groupId,
+    }: {
+      groupId: string,
+    }) => `/admin/groups/${groupId}`,
+    hasRequest: true,
+    hasResponse: false,
+    hasParams: true,
+  },
   "get /admin/login": {
     method: "get",
     makePath: ({ }: {}) => `/admin/login`,
@@ -306,6 +365,31 @@ export const routes = {
       taskId: string,
     }) => `/admin/tasks/${taskId}`,
     hasRequest: false,
+    hasResponse: false,
+    hasParams: true,
+  },
+  "get /admin/users": {
+    method: "get",
+    makePath: ({ }: {}) => `/admin/users`,
+    hasRequest: false,
+    hasResponse: true,
+    hasParams: false,
+  },
+  "post /admin/users": {
+    method: "post",
+    makePath: ({ }: {}) => `/admin/users`,
+    hasRequest: true,
+    hasResponse: true,
+    hasParams: false,
+  },
+  "patch /admin/users/{userId}": {
+    method: "patch",
+    makePath: ({
+      userId,
+    }: {
+      userId: string,
+    }) => `/admin/users/${userId}`,
+    hasRequest: true,
     hasResponse: false,
     hasParams: true,
   },
