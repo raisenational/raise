@@ -40,7 +40,7 @@ const UsersPage: React.FC<RouteComponentProps> = () => {
               name: { label: "Name", inputType: "text" },
               email: { label: "Email", inputType: "text" },
               groups: {
-                label: "Groups", formatter: (ids?: string[]) => ids?.map((id) => groupMap[id]).join(", ") || "(none selected)", inputType: "multiselect", selectOptions: groupMap,
+                label: "Groups", formatter: (ids?: string[]) => ids?.map((id) => groupMap[id]).join(", ") || "(none)", inputType: "multiselect", selectOptions: groupMap,
               },
               securityTrainingCompletedAt: { label: "Security training completed at", formatter: format.timestamp, inputType: "datetime-local" },
             }}
@@ -63,7 +63,7 @@ const UsersPage: React.FC<RouteComponentProps> = () => {
           definition={{
             name: { label: "Name", className: "whitespace-nowrap" },
             email: { label: "Email", className: "whitespace-nowrap" },
-            groups: { label: "Groups" },
+            groups: { label: "Groups", formatter: (ids?: string[]) => ids?.map((id) => groupMap[id]).join(", ") || "(none)" },
           }}
           // eslint-disable-next-line no-nested-ternary
           items={asResponseValues(users.data?.sort((a, b) => (b.name === a.name ? 0 : (b.name > a.name ? 1 : -1))), users)}

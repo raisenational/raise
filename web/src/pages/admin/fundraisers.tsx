@@ -45,7 +45,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             currency: { label: "Currency", inputType: "select", selectOptions: ["gbp", "usd"] },
             goal: { label: "Goal", formatter: (v?: number) => format.amount("gbp", v), inputType: "amount" },
             groupsWithAccess: {
-              label: "Groups with access", formatter: (ids?: string[]) => ids?.map((id) => groupMap[id]).join(", ") || "(none selected)", inputType: "multiselect", selectOptions: groupMap,
+              label: "Groups with access", formatter: (ids?: string[]) => ids?.map((id) => groupMap[id]).join(", ") || "(none)", inputType: "multiselect", selectOptions: groupMap,
             },
             suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
             suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
