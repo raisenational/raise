@@ -8,13 +8,10 @@ import Cover, { CTADown } from "../../components/Cover"
 import IntroStats from "../../components/IntroStats"
 import FAQs, { FAQ } from "../../components/FAQs"
 import Philosophy from "../../components/Philosophy"
-import ContactForm from "../../components/ContactForm"
-import SocialIcon, { SocialIconV2 } from "../../components/SocialIcon"
+import { SocialIconV2 } from "../../components/SocialIcon"
 import Panel from "../../components/Panel"
-
-import email from "../../images/email.svg"
-import { Doubled, MoneyBox, Party } from "../../images/Icons"
 import Footer from "../../components/Footer"
+import { Doubled, MoneyBox, Party } from "../../images/Icons"
 
 const IndexPage = () => (
   <Page>
