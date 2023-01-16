@@ -62,6 +62,7 @@ const IndexLayout = () => {
 
   return (
     <>
+      <Alert variant="warning">Maintenance scheduled for 16th Jan 22:00-23:59 UK time. You may not be able to login during this time.</Alert>
       {auth && (
         <Navigation
           left={[
