@@ -3,7 +3,7 @@ import { RouteComponentProps } from "@gatsbyjs/reach-router"
 import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
 import {
-  convert, format, g, groups,
+  convert, fixedGroups, format,
 } from "@raise/shared"
 import {
   asResponseValues, useAuthState, useReq, useRawAxios,
@@ -19,6 +19,8 @@ import { Fundraiser, FundraiserEdits } from "../../helpers/generated-api-client"
 
 const FundraisersPage: React.FC<RouteComponentProps> = () => {
   const [fundraisers, refetchFundraisers] = useReq("get /admin/fundraisers")
+  const [groups] = useReq("get /admin/groups")
+  const groupMap = groups.data ? Object.fromEntries(groups.data.map((g) => [g.id, g.name])) : {}
   const [newFundraiserModalOpen, setNewFundraiserModalOpen] = React.useState(false)
   const axios = useRawAxios()
   const [auth] = useAuthState()
@@ -27,7 +29,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
     <Section>
       <div className="flex">
         <SectionTitle className="flex-1">Fundraisers</SectionTitle>
-        <RequireGroup group={g.National}>
+        <RequireGroup group={fixedGroups.National}>
           <Button onClick={() => setNewFundraiserModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New <span className="hidden lg:inline">fundraiser</span></Button>
         </RequireGroup>
       </div>
@@ -43,7 +45,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             currency: { label: "Currency", inputType: "select", selectOptions: ["gbp", "usd"] },
             goal: { label: "Goal", formatter: (v?: number) => format.amount("gbp", v), inputType: "amount" },
             groupsWithAccess: {
-              label: "Groups with access", formatter: format.json, inputType: "multiselect", selectOptions: groups,
+              label: "Groups with access", formatter: (ids?: string[]) => ids?.map((id) => groupMap[id]).join(", ") || "(none selected)", inputType: "multiselect", selectOptions: groupMap,
             },
             suggestedDonationAmountOneOff: { label: "Suggested one off donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },
             suggestedDonationAmountWeekly: { label: "Suggested weekly donation amount", formatter: (v?: number | null) => format.amount("gbp", v), inputType: "amount" },

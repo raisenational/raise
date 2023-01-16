@@ -1,6 +1,6 @@
 import * as React from "react"
 import { RouteComponentProps } from "@gatsbyjs/reach-router"
-import { format, g } from "@raise/shared"
+import { fixedGroups, format } from "@raise/shared"
 import { FormProvider, useForm } from "react-hook-form"
 import jsonexport from "jsonexport/dist"
 import { DownloadIcon } from "@heroicons/react/outline"
@@ -56,7 +56,7 @@ const AuditPage: React.FC<RouteComponentProps> = () => {
 
   return (
     <Section>
-      <RequireGroup group={g.National} otherwise={<Alert variant="error">You don't have permission to access this page</Alert>}>
+      <RequireGroup group={fixedGroups.National} otherwise={<Alert variant="error">You don't have permission to access this page</Alert>}>
         <div className="flex">
           <SectionTitle className="flex-1">Audit Logs</SectionTitle>
           <Button onClick={downloadAsCSV}><DownloadIcon className="h-6 mb-1" /> CSV</Button>

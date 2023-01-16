@@ -47,15 +47,17 @@ export const toInput = <T,>(raw: T, inputType: InputType<T>): string | string[] 
   return String(raw)
 }
 
-export const fromInput = <T,>(raw: string | boolean, inputType: InputType<T>, selectOptions: T extends string[] ? string[] : undefined): T => {
+export const fromInput = <T,>(raw: string | boolean, inputType: InputType<T>, selectOptions: T extends string[] ? (string[] | { [key: string]: string }) : undefined): T => {
   if (inputType === "hidden") return raw === "" ? undefined : JSON.parse(raw as string)
   if (inputType === "text" || inputType === "tel" || inputType === "email") return (raw === "" ? null : raw) as unknown as T
   if (inputType === "checkbox" || typeof raw === "boolean") return raw as unknown as T // NB: typeof raw === "boolean" if-and-only-if inputType === "checkbox"
   if (inputType === "number") return ifNaN(parseInt(raw, 10), null) as unknown as T
   if (inputType === "date" || inputType === "datetime-local") return ifNaN((new Date(raw).getTime()) / 1000, null) as unknown as T
   if (inputType === "amount") return ifNaN(Math.round(parseFloat(raw) * 100), null) as unknown as T
-  if (inputType === "select" && selectOptions) return (selectOptions.includes(raw) ? raw : null) as unknown as T // NB: selectOptions !== undefined if typeof raw === "select"
-  if (inputType === "multiselect" && selectOptions) return raw as unknown as T // NB: selectOptions !== undefined if typeof raw === "multiselect"
+  // eslint-disable-next-line no-nested-ternary
+  if (inputType === "select" && selectOptions) return (Array.isArray(selectOptions) ? (selectOptions.includes(raw) ? raw : null) : (selectOptions[raw] ? raw : null)) as unknown as T // NB: selectOptions !== undefined if typeof raw === "select"
+  // eslint-disable-next-line no-nested-ternary
+  if (inputType === "multiselect" && selectOptions) return (raw as unknown as string[]).filter((r) => (Array.isArray(selectOptions) ? (selectOptions.includes(r) ? r : null) : (selectOptions[r] ? r : null))) as unknown as T // NB: selectOptions !== undefined if typeof raw === "multiselect"
 
   return raw as unknown as T
 }
@@ -248,7 +250,7 @@ type PropertyDefinition<I, V> = {
   warning?: string,
 } & (
     | { inputType: Exclude<InputType<V>, "select" | "multiselect"> }
-    | { inputType: InputType<V> & ("select" | "multiselect"), selectOptions: readonly string[] }
+    | { inputType: InputType<V> & ("select" | "multiselect"), selectOptions: readonly string[] | { [key: string]: string } }
   )
 
 export interface FormProps<T> {

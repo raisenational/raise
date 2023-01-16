@@ -24,8 +24,7 @@ module.exports = {
       url: "https://" + env.CUSTOM_RAISE_DOMAIN + "/",
     },
     version: getVersion(),
-    // TODO: This is a bit ugly. Really we'd like to keep this as undefined but then Gatsby complains
-    // Given we're looking at migrating to NextJS, this will likely need to be rewritten soon anyway
+    // Really this should be `?? undefined` but then Gatsby complains
     cloudflareWebAnalyticsToken: env.CLOUDFLARE_WEB_ANALYTICS_TOKEN_RAISE ?? "",
   },
   plugins: [
