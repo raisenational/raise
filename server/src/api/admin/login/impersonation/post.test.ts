@@ -1,30 +1,21 @@
 import createHttpError from "http-errors"
 import { call } from "../../../../../local/testHelpers"
 import { main } from "./post"
-import { main as getFundraisers } from "../../fundraisers/get"
-import * as db from "../../../../helpers/db"
 import env from "../../../../env/env"
 
-jest.mock("../../../../helpers/groups", () => ({
-  getGroups: jest.fn().mockImplementation((email) => {
-    if (email === "test@joinraise.org") return []
+jest.mock("../../../../helpers/login", () => ({
+  login: jest.fn().mockImplementation((email) => {
+    if (email === "test@joinraise.org") return { accessToken: "mock", expiresAt: 0, groups: [] }
     throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`)
   }),
 }))
 
 test("get working access token for allowlisted email", async () => {
-  jest.spyOn(db, "insertAudit")
-
   const response = await call(main, { auth: false })({
     email: "test@joinraise.org",
   })
 
-  expect(response.expiresAt).toBeGreaterThan(new Date().getTime() / 1000)
-  expect((await call(getFundraisers, { auth: response.accessToken, rawResponse: true })(null)).statusCode).toBe(200)
-  expect(db.insertAudit).toHaveBeenCalledWith({
-    object: "test@joinraise.org",
-    action: "login",
-  })
+  expect(response.accessToken).toEqual("mock")
 })
 
 test.each([

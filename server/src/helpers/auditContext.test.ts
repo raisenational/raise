@@ -1,4 +1,5 @@
 import middy from "@middy/core"
+import { fixedGroups } from "@raise/shared"
 import {
   auditContext,
   middyAuditContextManagerAfter,
@@ -65,7 +66,7 @@ test("before sets up the auditContext with an authed-event", () => {
       auth: {
         payload: {
           subject: "ajones@joinraise.org",
-          groups: ["National"],
+          groups: [fixedGroups.National],
           iat: Math.floor(new Date().getTime() / 1000),
           exp: Math.floor(new Date().getTime() / 1000) + 1000,
         },

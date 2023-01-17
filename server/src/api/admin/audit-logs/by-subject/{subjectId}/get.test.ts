@@ -1,5 +1,5 @@
 import { ulid } from "ulid"
-import { g } from "@raise/shared"
+import { fixedGroups } from "@raise/shared"
 import { insert } from "../../../../../helpers/db"
 import { auditLogTable } from "../../../../../helpers/tables"
 import { call, makeAuditLog } from "../../../../../../local/testHelpers"
@@ -26,5 +26,5 @@ test("rejects non-national team", async () => {
 
   // we are rejected
   expect(response.statusCode).toBe(403)
-  expect(response.body).toContain(`[${g.National}]`)
+  expect(response.body).toContain(`[${fixedGroups.National}]`)
 })

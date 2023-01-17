@@ -3,7 +3,7 @@ import type {
 } from "aws-lambda"
 import jwt from "jsonwebtoken"
 import { ulid } from "ulid"
-import { g } from "@raise/shared"
+import { fixedGroups } from "@raise/shared"
 import { AuthTokenPayload } from "../src/helpers/types"
 import env from "../src/env/env"
 import MockDate from 'mockdate';
@@ -21,12 +21,14 @@ interface CallOptions {
   rawBody?: boolean,
 }
 
+export const testGroupId = "01GPYGNDBDHY9685YHRKWT6VE7";
+
 export const call = (handler: Handler<APIGatewayProxyEventV2, APIGatewayProxyResult>, options: CallOptions = {}) => async (body: any): Promise<any> => {
   const now = Math.floor(new Date().getTime() / 1000)
   const token = typeof options.auth === "string" ? options.auth : jwt.sign(
     {
       subject: "tests",
-      groups: [g.National, g.Test],
+      groups: [fixedGroups.National, testGroupId],
       iat: now,
       exp: now + 60, // 1 minute
       ...options.auth
@@ -91,7 +93,7 @@ export const makeFundraiser = <Override extends Partial<Fundraiser>>(override?: 
   matchFundingPerDonationLimit: null,
   matchFundingRemaining: null,
   minimumDonationAmount: null,
-  groupsWithAccess: ["Test"],
+  groupsWithAccess: [testGroupId],
   suggestedDonationAmountOneOff: Math.ceil(Math.random() * 4) * 50_00,
   suggestedDonationAmountWeekly: Math.ceil(Math.random() * 4) * 5_00,
   suggestedContributionAmount: 10_00,

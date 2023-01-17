@@ -2,7 +2,7 @@ import * as React from "react"
 import { RouteComponentProps } from "@gatsbyjs/reach-router"
 import { navigate } from "gatsby"
 import { PlusSmIcon } from "@heroicons/react/outline"
-import { fixedGroups, format, g } from "@raise/shared"
+import { fixedGroups, format } from "@raise/shared"
 import {
   asResponseValues, useReq, useRawReq,
 } from "../../helpers/networking"
@@ -18,7 +18,7 @@ import {
 
 const UsersPage: React.FC<RouteComponentProps> = () => {
   const [users, refetchUsers] = useReq("get /admin/users")
-  const [groups] = useReq("get /admin/groups")
+  const [groups, refetchGroups] = useReq("get /admin/groups")
   const groupMap = groups.data ? Object.fromEntries(groups.data.map((group) => [group.id, group.name])) : {}
   const [newUserModalOpen, setNewUserModalOpen] = React.useState(false)
   const [newGroupModalOpen, setNewGroupModalOpen] = React.useState(false)
@@ -29,7 +29,7 @@ const UsersPage: React.FC<RouteComponentProps> = () => {
       <Section>
         <div className="flex">
           <SectionTitle className="flex-1">Users</SectionTitle>
-          <RequireGroup group={[g.National, fixedGroups.National]}>
+          <RequireGroup group={fixedGroups.National}>
             <Button onClick={() => setNewUserModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New <span className="hidden lg:inline">user</span></Button>
           </RequireGroup>
         </div>
@@ -73,7 +73,7 @@ const UsersPage: React.FC<RouteComponentProps> = () => {
       <Section>
         <div className="flex">
           <SectionTitle className="flex-1">Groups</SectionTitle>
-          <RequireGroup group={[g.National, fixedGroups.National]}>
+          <RequireGroup group={fixedGroups.National}>
             <Button onClick={() => setNewGroupModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New <span className="hidden lg:inline">group</span></Button>
           </RequireGroup>
         </div>
@@ -89,7 +89,7 @@ const UsersPage: React.FC<RouteComponentProps> = () => {
             showCurrent={false}
             onSubmit={async (data) => {
               const groupId = (await req("post /admin/groups", data)).data
-              await refetchUsers()
+              await refetchGroups()
               navigate(`/admin/groups/${groupId}/`)
             }}
           />

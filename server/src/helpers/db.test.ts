@@ -445,6 +445,12 @@ describe.each([
   })
 })
 
+test("assertHasGroup handles multiple arguments", () => {
+  expect(() => assertHasGroup({ auth: { payload: { groups: ["A"] } } }, "A", "B")).not.toThrow()
+  expect(() => assertHasGroup({ auth: { payload: { groups: ["B"] } } }, "A", "B")).not.toThrow()
+  expect(() => assertHasGroup({ auth: { payload: { groups: ["C"] } } }, "A", "B")).toThrow()
+})
+
 describe.each([
   ["not", ["National"], "a", ["a"]],
   ["not", ["National", "Test"], "a", ["a"]],
