@@ -73,7 +73,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId: string }> =
         }}
       />
 
-      <RequireGroup group={fundraiser.data?.groupsWithAccess}>
+      <RequireGroup group={[...(fundraiser.data?.groupsWithAccess ?? []), fixedGroups.National]}>
         <DonationsSummaryView fundraiserId={fundraiserId} fundraiser={fundraiser.data} />
       </RequireGroup>
     </Section>
