@@ -18,7 +18,7 @@ import {
 
 const UsersPage: React.FC<RouteComponentProps> = () => {
   const [users, refetchUsers] = useReq("get /admin/users")
-  const [groups] = useReq("get /admin/groups")
+  const [groups, refetchGroups] = useReq("get /admin/groups")
   const groupMap = groups.data ? Object.fromEntries(groups.data.map((group) => [group.id, group.name])) : {}
   const [newUserModalOpen, setNewUserModalOpen] = React.useState(false)
   const [newGroupModalOpen, setNewGroupModalOpen] = React.useState(false)
@@ -89,7 +89,7 @@ const UsersPage: React.FC<RouteComponentProps> = () => {
             showCurrent={false}
             onSubmit={async (data) => {
               const groupId = (await req("post /admin/groups", data)).data
-              await refetchUsers()
+              await refetchGroups()
               navigate(`/admin/groups/${groupId}/`)
             }}
           />
