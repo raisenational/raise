@@ -29,7 +29,7 @@ const UsersPage: React.FC<RouteComponentProps> = () => {
       <Section>
         <div className="flex">
           <SectionTitle className="flex-1">Users</SectionTitle>
-          <RequireGroup group={[g.National, fixedGroups.National]}>
+          <RequireGroup group={fixedGroups.National}>
             <Button onClick={() => setNewUserModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New <span className="hidden lg:inline">user</span></Button>
           </RequireGroup>
         </div>
@@ -73,7 +73,7 @@ const UsersPage: React.FC<RouteComponentProps> = () => {
       <Section>
         <div className="flex">
           <SectionTitle className="flex-1">Groups</SectionTitle>
-          <RequireGroup group={[g.National, fixedGroups.National]}>
+          <RequireGroup group={fixedGroups.National}>
             <Button onClick={() => setNewGroupModalOpen(true)}><PlusSmIcon className="h-6 mb-1" /> New <span className="hidden lg:inline">group</span></Button>
           </RequireGroup>
         </div>

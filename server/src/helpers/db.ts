@@ -93,7 +93,7 @@ const normalizeGroup = (groupDefinition: string | string[] | { groupsWithAccess:
   return groupDefinition.groupsWithAccess
 }
 
-export const normalizeGroups = (...groupDefinitions: (string | string[] | { groupsWithAccess: string[] })[]): string[] => [...new Set(...groupDefinitions.map(normalizeGroup))]
+export const normalizeGroups = (...groupDefinitions: (string | string[] | { groupsWithAccess: string[] })[]): string[] => [...new Set(groupDefinitions.map(normalizeGroup).flat())]
 
 const overlap = (a: string[], b: string[]): boolean => a.some((v) => b.includes(v))
 

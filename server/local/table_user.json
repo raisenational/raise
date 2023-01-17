@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Raise National",
+    "groups": [
+      "01GPY6D06N6EHEE0RGRNZJ60K7",
+      "01GPY6D06NTBC0674WHR7H60YT"
+    ],
+    "securityTrainingCompletedAt": 253370764800,
+    "id": "01GPYGE0KV35HWSEVWVJMAKJR8",
+    "email": "raisenational@gmail.com"
+  },
+  {
+    "name": "Raise Demo",
+    "groups": [
+      "01GPYGDJ19Z43X6S7YMK8AVSAH"
+    ],
+    "securityTrainingCompletedAt": 253370764800,
+    "id": "01GPYGEB469EDD6WKP8G299YVZ",
+    "email": "raisedemo@gmail.com"
+  },
+  {
+    "name": "Raise Expired Security Training",
+    "groups": [
+      "01GPY6D06N6EHEE0RGRNZJ60K7"
+    ],
+    "securityTrainingCompletedAt": 1577836800,
+    "id": "01GPYGF0X5WQ28S22M2ZAK0MYD",
+    "email": "raiseexpiredsecuritytraining@gmail.com"
+  }
+]

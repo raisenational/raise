@@ -1,5 +1,5 @@
 import createHttpError from "http-errors"
-import { g } from "@raise/shared"
+import { fixedGroups } from "@raise/shared"
 import { middyfy } from "../../../../../../../../helpers/wrapper"
 import {
   assertHasGroup, get, inTransaction, plusT, update, updateT,
@@ -14,7 +14,7 @@ import {
 } from "../../../../../../../../schemas"
 
 export const main = middyfy($PaymentPropertyEdits, null, true, async (event) => {
-  assertHasGroup(event, g.National)
+  assertHasGroup(event, fixedGroups.National)
 
   const { fundraiserId, donationId, paymentId } = event.pathParameters
 
@@ -25,7 +25,7 @@ export const main = middyfy($PaymentPropertyEdits, null, true, async (event) => 
     get(donationTable, { fundraiserId, id: donationId }),
     get(paymentTable, { donationId, id: paymentId }),
   ])
-  assertHasGroup(event, fundraiser, g.National)
+  assertHasGroup(event, fundraiser, fixedGroups.National)
 
   // these are important for security as otherwise the payment might not really sit
   // under the fundraiser an admin has access to according to assertHasGroup

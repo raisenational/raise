@@ -1,7 +1,5 @@
 import { ulid } from "ulid"
-import {
-  calcMatchFunding, g,
-} from "@raise/shared"
+import { calcMatchFunding, fixedGroups } from "@raise/shared"
 import createHttpError from "http-errors"
 import { middyfy } from "../../../../../../../helpers/wrapper"
 import {
@@ -11,8 +9,8 @@ import { fundraiserTable, donationTable, paymentTable } from "../../../../../../
 import { $PaymentCreation, $Ulid } from "../../../../../../../schemas"
 
 export const main = middyfy($PaymentCreation, $Ulid, true, async (event) => {
-  assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }), g.National)
-  if (event.body.method === "card") assertHasGroup(event, g.National)
+  assertHasGroup(event, await get(fundraiserTable, { id: event.pathParameters.fundraiserId }), fixedGroups.National)
+  if (event.body.method === "card") assertHasGroup(event, fixedGroups.National)
 
   const paymentId = ulid()
   const { fundraiserId, donationId } = event.pathParameters

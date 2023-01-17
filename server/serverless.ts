@@ -109,6 +109,12 @@ const serverlessConfiguration: AWS = {
           }, {
             table: tables.auditLog.name,
             sources: ["./local/table_auditLog.json"],
+          }, {
+            table: tables.group.name,
+            sources: ["./local/table_group.json"],
+          }, {
+            table: tables.user.name,
+            sources: ["./local/table_user.json"],
           }],
         },
       },

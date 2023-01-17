@@ -2,8 +2,6 @@ import createHttpError from "http-errors"
 import { call } from "../../../../../local/testHelpers"
 import env from "../../../../env/env"
 import { main } from "./post"
-import { main as getFundraisers } from "../../fundraisers/get"
-import * as db from "../../../../helpers/db"
 
 const googleTokenPayload = {
   iss: "accounts.google.com", // verified by the real library
@@ -24,16 +22,14 @@ jest.mock("google-auth-library", () => ({
   })),
 }))
 
-jest.mock("../../../../helpers/groups", () => ({
-  getGroups: jest.fn().mockImplementation((email) => {
-    if (email === "test@joinraise.org") return []
+jest.mock("../../../../helpers/login", () => ({
+  login: jest.fn().mockImplementation((email) => {
+    if (email === "test@joinraise.org") return { accessToken: "mock", expiresAt: 0, groups: [] }
     throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`)
   }),
 }))
 
 test("get working access token for valid Google token", async () => {
-  jest.spyOn(db, "insertAudit")
-
   getPayload.mockReturnValue(googleTokenPayload)
 
   const response = await call(main, { auth: false })({
@@ -46,12 +42,8 @@ test("get working access token for valid Google token", async () => {
     idToken: "idTokenValue",
     audience: env.GOOGLE_LOGIN_CLIENT_ID,
   })
-  expect(response.expiresAt).toBeGreaterThan(new Date().getTime() / 1000)
-  expect((await call(getFundraisers, { auth: response.accessToken, rawResponse: true })(null)).statusCode).toBe(200)
-  expect(db.insertAudit).toHaveBeenCalledWith({
-    object: "test@joinraise.org",
-    action: "login",
-  })
+
+  expect(response.accessToken).toEqual("mock")
 })
 
 test.each([
