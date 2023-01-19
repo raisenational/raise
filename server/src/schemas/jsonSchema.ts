@@ -39,9 +39,8 @@ export const $GoogleLoginRequest: JSONSchema<S.GoogleLoginRequest> = {
   type: "object",
   properties: {
     idToken: { type: "string" },
-    accessToken: { type: "string" },
   },
-  required: ["idToken", "accessToken"],
+  required: ["idToken"],
   additionalProperties: false,
 }
 

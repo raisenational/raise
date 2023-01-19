@@ -6,7 +6,7 @@ import Page from "../../components/Page"
 import FundraisersPage from "./fundraisers"
 import ProfilePage from "./profile"
 import TasksPage from "./tasks"
-import Login from "./login"
+import Login, { OauthCallbackPage } from "./login"
 import NotFoundPage from "../404"
 import Navigation from "../../components/Navigation"
 import FundraiserPage from "./fundraiser"
@@ -82,6 +82,8 @@ const IndexLayout = () => {
         </Section>
       )}
       <Router basepath="/admin" className="text-left">
+        <OauthCallbackPage path="/oauth-callback" />
+
         {auth && (
           <>
             <FundraisersPage path="/" />

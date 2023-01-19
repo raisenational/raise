@@ -1,10 +1,13 @@
 import * as React from "react"
 import { RouteComponentProps } from "@gatsbyjs/reach-router"
-import { useGoogleLogin, GoogleLoginResponse } from "react-google-login"
+// We are using oidc-client rather than oidc-client-ts because it supports
+// the implicit flow, which is currently needed for Google authentication
+// https://github.com/authts/oidc-client-ts/issues/152
+import { UserManager, UserManagerSettings } from "oidc-client"
 import Section, { SectionTitle } from "../../components/Section"
 import Alert from "../../components/Alert"
 import Logo from "../../components/Logo"
-import { useAuthState, useRawAxios } from "../../helpers/networking"
+import { useAuthState, useRawAxios, useRawReq } from "../../helpers/networking"
 import env from "../../env/env"
 import Button from "../../components/Button"
 import { LoginResponse } from "../../helpers/generated-api-client"
@@ -54,58 +57,46 @@ const googleRequiredScopes = [
   "https://www.googleapis.com/auth/userinfo.profile",
 ]
 
+const userManagerSettings: UserManagerSettings = {
+  authority: "https://accounts.google.com",
+  client_id: env.GOOGLE_LOGIN_CLIENT_ID,
+  redirect_uri: "http://localhost:8000/admin/oauth-callback",
+  scope: googleRequiredScopes.join(" "),
+  response_type: "id_token",
+}
+
 const GoogleLoginForm: React.FC<LoginFormProps> = ({ setError, setLoading }) => {
   const [_, setAuthState] = useAuthState()
-  const axios = useRawAxios()
-  const googleLogin = useGoogleLogin({
-    clientId: env.GOOGLE_LOGIN_CLIENT_ID,
-    scope: googleRequiredScopes.join(" "),
-    onScriptLoadFailure: () => {
-      setError("Failed to load Google login script")
-    },
-    onRequest: () => {
-      setError(undefined)
-      setLoading("Waiting on Google login...")
-    },
-    onSuccess: async (_res) => {
-      // We can remove this override once the TypeScript definitions are improved:
-      // https://github.com/anthonyjgrove/react-google-login/pull/482
-      const res = _res as GoogleLoginResponse
+  const req = useRawReq()
 
-      const grantedScopes = res.tokenObj.scope.split(" ")
-      const missingScopes = googleRequiredScopes.filter((s) => !grantedScopes.includes(s))
-      if (missingScopes.length > 0) {
-        setError(`Missing scopes: ${JSON.stringify(missingScopes)}`)
-      } else {
+  return (
+    <Button
+      onClick={async () => {
+        setLoading("Waiting on Google login...")
         try {
+          const user = await new UserManager(userManagerSettings).signinPopup()
           setLoading(true)
-          const loginResponse = await axios.post<LoginResponse>("/admin/login/google", { idToken: res.tokenId, accessToken: res.accessToken })
+
+          const missingScopes = googleRequiredScopes.filter((s) => !user.scopes.includes(s))
+          if (missingScopes.length > 0) {
+            throw new Error(`Missing scopes: ${JSON.stringify(missingScopes)}`)
+          }
+
+          const loginResponse = await req(
+            "post /admin/login/google",
+            { idToken: user.id_token },
+          )
+
           setAuthState({
             token: loginResponse.data.accessToken,
             expiresAt: loginResponse.data.expiresAt,
             groups: loginResponse.data.groups,
           })
         } catch (err) {
-          // eslint-disable-next-line no-console
-          console.error(err)
-          setError(err instanceof Error ? err : String(err))
-          setLoading(false)
+          setError(err)
         }
-      }
-    },
-    onFailure: (err) => {
-      // eslint-disable-next-line no-console
-      console.error(err)
-      const errorMessage = [err.message, err.error, err.details].filter((s) => s).join(": ")
-      setError(errorMessage.length > 0 ? errorMessage : String(err))
-      setLoading(false)
-    },
-  })
-
-  return (
-    <Button
-      onClick={googleLogin.signIn}
-      disabled={!googleLogin.loaded}
+        setLoading(false)
+      }}
     >
       Google Login
     </Button>
@@ -146,6 +137,25 @@ const ImpersonationLoginForm: React.FC<LoginFormProps> = ({ setError, setLoading
     >
       Impersonation Login
     </Button>
+  )
+}
+
+export const OauthCallbackPage: React.FC<RouteComponentProps> = () => {
+  const [error, setError] = React.useState<undefined | React.ReactNode | Error>()
+
+  React.useEffect(() => {
+    try {
+      new UserManager(userManagerSettings).signinCallback()
+    } catch (err) {
+      setError(err)
+    }
+  }, [])
+
+  return (
+    <Section className="mt-8 text-center">
+      {error && <Alert variant="error">{error}</Alert>}
+      {!error && <h1>Logging you in...</h1>}
+    </Section>
   )
 }
 
