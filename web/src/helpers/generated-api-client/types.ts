@@ -21,7 +21,6 @@ export interface LoginResponse {
 
 export interface GoogleLoginRequest {
   idToken: string;
-  accessToken: string;
 }
 
 export interface ImpersonationLoginRequest {
