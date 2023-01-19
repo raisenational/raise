@@ -34,7 +34,6 @@ test("get working access token for valid Google token", async () => {
 
   const response = await call(main, { auth: false })({
     idToken: "idTokenValue",
-    accessToken: "accessTokenValue",
   })
 
   expect(verifyIdToken).toHaveBeenCalledTimes(1)
@@ -56,7 +55,6 @@ test.each([
 
   const response = await call(main, { rawResponse: true, auth: false })({
     idToken: "idTokenValue",
-    accessToken: "accessTokenValue",
   })
 
   expect(verifyIdToken).toHaveBeenCalledTimes(1)
@@ -74,7 +72,6 @@ test("rejects invalid Google token", async () => {
 
   const response = await call(main, { rawResponse: true, auth: false })({
     idToken: "idTokenValue",
-    accessToken: "accessTokenValue",
   })
 
   expect(verifyIdToken).toHaveBeenCalledTimes(1)
@@ -94,7 +91,6 @@ test("rejects when Google login disabled", async () => {
 
   const response = await call(main, { rawResponse: true, auth: false })({
     idToken: "idTokenValue",
-    accessToken: "accessTokenValue",
   })
 
   expect(verifyIdToken).not.toHaveBeenCalled()

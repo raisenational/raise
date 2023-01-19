@@ -3,7 +3,7 @@ import { RouteComponentProps } from "@gatsbyjs/reach-router"
 // We are using oidc-client rather than oidc-client-ts because it supports
 // the implicit flow, which is currently needed for Google authentication
 // https://github.com/authts/oidc-client-ts/issues/152
-import { UserManager } from "oidc-client"
+import { UserManager, UserManagerSettings } from "oidc-client"
 import Section, { SectionTitle } from "../../components/Section"
 import Alert from "../../components/Alert"
 import Logo from "../../components/Logo"
@@ -57,13 +57,13 @@ const googleRequiredScopes = [
   "https://www.googleapis.com/auth/userinfo.profile",
 ]
 
-const userManager = new UserManager({
+const userManagerSettings: UserManagerSettings = {
   authority: "https://accounts.google.com",
   client_id: env.GOOGLE_LOGIN_CLIENT_ID,
   redirect_uri: "http://localhost:8000/admin/oauth-callback",
   scope: googleRequiredScopes.join(" "),
   response_type: "id_token",
-})
+}
 
 const GoogleLoginForm: React.FC<LoginFormProps> = ({ setError, setLoading }) => {
   const [_, setAuthState] = useAuthState()
@@ -74,7 +74,7 @@ const GoogleLoginForm: React.FC<LoginFormProps> = ({ setError, setLoading }) => 
       onClick={async () => {
         setLoading("Waiting on Google login...")
         try {
-          const user = await userManager.signinPopup()
+          const user = await new UserManager(userManagerSettings).signinPopup()
           setLoading(true)
 
           const missingScopes = googleRequiredScopes.filter((s) => !user.scopes.includes(s))
@@ -145,7 +145,7 @@ export const OauthCallbackPage: React.FC<RouteComponentProps> = () => {
 
   React.useEffect(() => {
     try {
-      userManager.signinCallback()
+      new UserManager(userManagerSettings).signinCallback()
     } catch (err) {
       setError(err)
     }
