@@ -13,8 +13,9 @@ test("Cannot edit totalRaised as National", async () => {
   const response = await call(main, { auth: { groups: [fixedGroups.National] }, pathParameters: { fundraiserId: fundraiser.id }, rawResponse: true })({ totalRaised: 1000 })
 
   // we get back a forbidden error response
-  expect(response.body).toContain(`[${fixedGroups.NationalTech}]`)
+  expect(response.body).toContain(`[NationalTech (${fixedGroups.NationalTech})]`)
 })
+
 test("Can edit totalRaised as NationalTech", async () => {
   // given a fundraiser in the db
   const fundraiser = makeFundraiser({ groupsWithAccess: [fixedGroups.NationalTech], totalRaised: 0 })

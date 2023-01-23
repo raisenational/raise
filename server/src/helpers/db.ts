@@ -9,6 +9,7 @@ import createHttpError from "http-errors"
 import type { NativeAttributeValue } from "@aws-sdk/util-dynamodb"
 import type { JSONSchema7 } from "json-schema"
 import { ulid } from "ulid"
+import { fixedGroups } from "@raise/shared"
 import { JSONSchema, AuditLog } from "../schemas"
 import { auditLogTable, DBAttributeValue, Table } from "./tables"
 import { auditContext } from "./auditContext"
@@ -100,17 +101,27 @@ const overlap = (a: string[], b: string[]): boolean => a.some((v) => b.includes(
 export const assertHasGroup = (event: { auth: { payload: { groups: string[] } } }, ...groupDefinitions: (string | string[] | { groupsWithAccess: string[] })[]): void => {
   const groups = normalizeGroups(...groupDefinitions)
   if (!overlap(event.auth.payload.groups, groups)) {
-    throw new createHttpError.Forbidden(`This action requires you to be in one of the groups [${groups.join(", ")}], but you are in [${event.auth.payload.groups.join(", ")}]`)
+    throw new createHttpError.Forbidden(`To do this ${formatGroupError(groups, event.auth.payload.groups)}`)
   }
 }
 
-export const assertHasGroupForProperties = <B>(event: { auth: { payload: { groups: string[] } }, body: B }, properties: (keyof B)[], ...groupDefinitions: (string | string[] | { groupsWithAccess: string[] })[]): void => {
+export const assertHasGroupForProperties = <B extends object>(event: { auth: { payload: { groups: string[] } }, body: B }, properties: (keyof B)[], ...groupDefinitions: (string | string[] | { groupsWithAccess: string[] })[]): void => {
   const groups = normalizeGroups(...groupDefinitions)
   if (!overlap(event.auth.payload.groups, groups)) {
     properties.forEach((p) => {
-      if (p in event.body) throw new createHttpError.Forbidden(`To edit ${String(p)} you need to be in one of the groups [${groups.join(", ")}], but you are in ${event.auth.payload.groups}`)
+      if (p in event.body) throw new createHttpError.Forbidden(`To edit ${String(p)} ${formatGroupError(groups, event.auth.payload.groups)}`)
     })
   }
+}
+
+const formatGroupError = (required: string[], has: string[]) => {
+  const fixedGroupsInverted = Object.fromEntries(Object.entries(fixedGroups).map(([name, id]) => [id, name]))
+  const withFixedGroupsNames = (id: string): string => {
+    const name: string | undefined = fixedGroupsInverted[id]
+    return name ? `${name} (${id})` : id
+  }
+
+  return `you need to be in one of the groups [${required.map(withFixedGroupsNames).join(", ")}], but you are in [${has.map(withFixedGroupsNames).join(", ")}]`
 }
 
 export const checkPrevious = <I extends { [key: string]: NativeAttributeValue }>(item: I): [Partial<I>, string, { [key: string]: NativeAttributeValue }, { [key: string]: NativeAttributeValue }] => {
