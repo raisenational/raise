@@ -60,7 +60,7 @@ const googleRequiredScopes = [
 const userManagerSettings: UserManagerSettings = {
   authority: "https://accounts.google.com",
   client_id: env.GOOGLE_LOGIN_CLIENT_ID,
-  redirect_uri: "http://localhost:8000/admin/oauth-callback",
+  redirect_uri: `${(typeof window !== "undefined") ? window.location.origin : ""}/admin/oauth-callback`,
   scope: googleRequiredScopes.join(" "),
   response_type: "id_token",
 }
