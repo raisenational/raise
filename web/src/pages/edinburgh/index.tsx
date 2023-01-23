@@ -14,6 +14,7 @@ import Panel from "../../components/Panel"
 
 import { Doubled, MoneyBox, Party } from "../../images/Icons"
 import Footer from "../../components/Footer"
+import Button from "../../components/Button"
 
 // NB: this only updates this page
 // To update the donation page, use the admin portal
@@ -35,10 +36,7 @@ const IndexPage = () => (
           { text: "Contact", href: "#contact" },
         ]}
         right={[
-          {
-            text: "Get Involved",
-            href: "https://docs.google.com/forms/d/e/1FAIpQLSfTckJoVhb397uFG2l54fiyDzuLyGQxgdylnNfc_J9TOP8kXg/viewform",
-          },
+          { text: "Donate", href: "donate/" },
         ]}
       />
       <Section className="px-8">
@@ -52,6 +50,7 @@ const IndexPage = () => (
             protected: 455285,
           }}
         />
+        <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
       </Section>
       <CTADown text="How it works" href="#how-it-works" />
     </Cover>
