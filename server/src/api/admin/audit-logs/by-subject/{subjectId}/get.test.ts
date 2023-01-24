@@ -26,5 +26,5 @@ test("rejects non-national team", async () => {
 
   // we are rejected
   expect(response.statusCode).toBe(403)
-  expect(response.body).toContain(`[${fixedGroups.National}]`)
+  expect(response.body).toContain(`[National (${fixedGroups.National})]`)
 })
