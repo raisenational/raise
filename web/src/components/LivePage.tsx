@@ -55,8 +55,8 @@ const LivePage: React.FC<Props> = ({ title, fundraiserIds }) => {
     const t = setTimeout(() => {
       clearInterval(i)
       // eslint-disable-next-line no-alert
-      alert("This page has stopped updating as it's been over 24 hours since you opened it, and we want to avoid unnecessary load on SoGive. Please refresh this page if you want to continue seeing live data.")
-    }, 86400_000) // 24 hours
+      alert("This page has stopped updating as it's been over 8 hours since you opened it, and we want to avoid unnecessary load on our platform. Please refresh this page if you want to continue seeing live data.")
+    }, 28800_000) // 8 hours
 
     return () => {
       clearTimeout(t)
