@@ -74,6 +74,15 @@ const CHAPTERS: Chapter[] = [
     },
   },
   {
+    id: "01GPG5JFNQR1YWJQK6W89ABDFN",
+    name: "Leeds",
+    href: "/leeds/",
+    location: {
+      latitude: 53.8067,
+      longitude: -1.5550,
+    },
+  },
+  {
     id: "01GMXD8C9TADQ6AVPWDNKBAT60",
     name: "Oxford",
     href: "/oxford/",
@@ -98,15 +107,6 @@ const CHAPTERS: Chapter[] = [
     location: {
       latitude: 52.3793,
       longitude: -1.5615,
-    },
-  },
-  {
-    id: "01GPG5JFNQR1YWJQK6W89ABDFN",
-    name: "Leeds",
-    href: "/leeds/",
-    location: {
-      latitude: 53.8067,
-      longitude: -1.5550,
     },
   },
 ]
