@@ -31,7 +31,7 @@ const IndexPage = () => (
           { text: "Contact", href: "#contact" },
         ]}
         right={[
-          { text: "Get Involved", href: "https://forms.gle/aqf3ZJghoN25ZyuW6" },
+          { text: "Donate", href: "https://www.joinraise.org/bristol/donate/" },
         ]}
       />
       <Section className="px-8">
@@ -98,7 +98,7 @@ const IndexPage = () => (
             join our committee which coordinates everything we do, from events
             and partnerships to fundraising and publicity. Applications for the
             next academic year are open{" "}
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfTckJoVhb397uFG2l54fiyDzuLyGQxgdylnNfc_J9TOP8kXg/viewform">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdP30Lz-06GZqLKUBqzpIA0fKC2WzV1PnaMCteO5pq5EiCGuQ/viewform?usp=sf_link">
               here
             </a>
             , and we're always interested in hearing from people who want to get
