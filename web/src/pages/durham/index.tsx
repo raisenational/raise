@@ -7,6 +7,7 @@ import Section, { SectionTitle } from "../../components/Section"
 import Navigation from "../../components/Navigation"
 import Cover, { CTADown } from "../../components/Cover"
 import IntroStats from "../../components/IntroStats"
+import Button from "../../components/Button"
 import FAQs, { FAQ } from "../../components/FAQs"
 import Philosophy from "../../components/Philosophy"
 import { SocialIconV2 } from "../../components/SocialIcon"
@@ -50,6 +51,7 @@ const IndexPage = () => (
             protected: 37867 + convert.moneyToPeopleProtected("gbp", 1334075),
           }}
         />
+        <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
       </Section>
       <CTADown text="How it works" href="#how-it-works" />
     </Cover>
