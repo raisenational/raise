@@ -34,8 +34,8 @@ const IndexPage = () => (
         ]}
         right={[
           {
-            text: "Become a Rep!",
-            href: "https://forms.gle/f22GkSokt38hSfd48",
+            text: "Donate now!",
+            href: "https://www.joinraise.org/oxford/donate/",
           },
         ]}
       />
