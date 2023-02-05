@@ -43,8 +43,8 @@ const IndexPage = () => (
         ]}
         right={[
           {
-            text: "Get Involved!",
-            href: "https://forms.gle/f5eu3d2fifRWSsqs5",
+            text: "Donate",
+            href: "donate/",
           },
         ]}
       />
