@@ -7,7 +7,7 @@ import Navigation from "../../components/Navigation"
 import Footer from "../../components/Footer"
 
 const PrivacyPage = () => (
-  <Page MWA>
+  <Page brand="MWA">
     <Helmet>
       <title>May Week Alternative: Privacy Policy</title>
       <meta property="og:title" content="May Week Alternative: Privacy Policy" />

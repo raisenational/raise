@@ -1,6 +1,5 @@
 import * as React from "react"
 import Helmet from "react-helmet"
-import { withAssetPrefix } from "gatsby"
 
 import Page from "../../components/Page"
 import Section, { SectionNoPadding, SectionTitle } from "../../components/Section"
@@ -19,7 +18,7 @@ import Footer from "../../components/Footer"
 import Quote from "../../components/Quote"
 
 const PartnerPage = () => (
-  <Page MWA>
+  <Page brand="MWA">
     <Helmet>
       <title>May Week Alternative: Partner with us</title>
       <meta property="og:title" content="May Week Alternative: Partner with us" />

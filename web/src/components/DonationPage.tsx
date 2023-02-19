@@ -25,7 +25,7 @@ import { LabelledInput } from "./Form"
 import Alert from "./Alert"
 import { parseMoney } from "../helpers/parse"
 import env from "../env/env"
-import { Env } from "../helpers/types"
+import { Env, Brand } from "../helpers/types"
 import Page from "./Page"
 import Navigation from "./Navigation"
 import Footer from "./Footer"
@@ -39,15 +39,18 @@ interface Props {
   title: string,
   fundraiserIds: Record<Env["STAGE"], string>,
   aboutUsOverride?: JSX.Element,
+  brand?: Brand,
 }
 
-const DonationPage: React.FC<Props> = ({ title, fundraiserIds, aboutUsOverride }) => {
+const DonationPage: React.FC<Props> = ({
+  title, fundraiserIds, aboutUsOverride, brand,
+}) => {
   const fundraiserId = fundraiserIds[env.STAGE]
   const [fundraiser, refetchFundraiser] = useReq("get /public/fundraisers/{fundraiserId}", { fundraiserId })
   const [modalOpen, setModalOpen] = React.useState(false)
 
   return (
-    <Page MWA={title === "MWA"}>
+    <Page brand={brand}>
       <Helmet>
         <title>{fundraiser.data?.publicName ?? title}: Donate</title>
         <meta property="og:title" content={`${fundraiser.data?.publicName ?? title}: Donate`} />

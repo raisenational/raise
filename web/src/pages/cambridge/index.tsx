@@ -18,7 +18,7 @@ import Footer from "../../components/Footer"
 import Button from "../../components/Button"
 
 const IndexPage = () => (
-  <Page MWA>
+  <Page brand="MWA">
     <Helmet>
       <title>May Week Alternative</title>
       <meta property="og:title" content="May Week Alternative" />

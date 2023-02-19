@@ -8,7 +8,7 @@ import Logo from "../../components/Logo"
 import Button from "../../components/Button"
 
 const NotFoundPage: React.FC<RouteComponentProps> = () => (
-  <Page>
+  <Page brand="MWA">
     <Helmet>
       <meta name="robots" content="noindex" />
       <title>MWA: Page not found</title>
