@@ -18,18 +18,10 @@ import Footer from "../../components/Footer"
 import Button from "../../components/Button"
 
 const IndexPage = () => (
-  <Page>
+  <Page MWA>
     <Helmet>
       <title>May Week Alternative</title>
       <meta property="og:title" content="May Week Alternative" />
-      <meta
-        property="og:image"
-        content={withAssetPrefix("/shared/images/mwa-link-icon.png")}
-      />
-      <meta
-        property="og:description"
-        content="MWA is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
-      />
     </Helmet>
     <Cover>
       <Navigation

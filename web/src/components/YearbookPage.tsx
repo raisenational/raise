@@ -759,7 +759,7 @@ const YearbookPage: React.FC<{ brand: string }> = ({ brand }) => {
   const filteredEntries = ALL_ENTRIES.filter((e) => (chapterFilterValue === "All chapters" || e.chapter === chapterFilterValue) && (yearFilterValue === "All years" || e.year.toString() === yearFilterValue))
 
   return (
-    <Page>
+    <Page MWA={brand === "MWA"}>
       <Helmet>
         <meta name="robots" content="noindex" />
         <title>{brand}: Yearbook</title>

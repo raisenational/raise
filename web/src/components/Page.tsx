@@ -4,7 +4,7 @@ import classNames from "classnames"
 import { withAssetPrefix, useStaticQuery, graphql } from "gatsby"
 import env from "../env/env"
 
-const Page: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ children, className }) => {
+const Page: React.FC<React.PropsWithChildren<{ className?: string, MWA?: boolean }>> = ({ children, className, MWA }) => {
   // See gatsby-config.js
   const { site } = useStaticQuery(graphql`query { site { siteMetadata { version, cloudflareWebAnalyticsToken } } }`)
 
@@ -21,8 +21,8 @@ const Page: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ child
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="msapplication-config" content={withAssetPrefix("/shared/favicon/browserconfig.xml")} />
         <meta name="theme-color" content="#ffffff" />
-        <meta property="og:image" content={withAssetPrefix("/shared/images/raise-link-icon.png")} />
-        <meta property="og:description" content="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving." />
+        <meta property="og:image" content={MWA ? withAssetPrefix("/shared/images/mwa-link-icon.png") : withAssetPrefix("/shared/images/raise-link-icon.png")} />
+        <meta property="og:description" content={MWA ? "MWA is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving." : "Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."} />
         <meta property="raise-version" content={site.siteMetadata.version} />
         {site.siteMetadata.cloudflareWebAnalyticsToken && <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={`{"token": "${site.siteMetadata.cloudflareWebAnalyticsToken}"}`} />}
       </Helmet>

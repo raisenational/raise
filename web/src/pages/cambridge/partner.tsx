@@ -19,12 +19,10 @@ import Footer from "../../components/Footer"
 import Quote from "../../components/Quote"
 
 const PartnerPage = () => (
-  <Page>
+  <Page MWA>
     <Helmet>
       <title>May Week Alternative: Partner with us</title>
       <meta property="og:title" content="May Week Alternative: Partner with us" />
-      <meta property="og:image" content={withAssetPrefix("/shared/images/mwa-link-icon.png")} />
-      <meta property="og:description" content="MWA is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving." />
     </Helmet>
     <Cover>
       <Navigation

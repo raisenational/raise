@@ -65,7 +65,7 @@ const LivePage: React.FC<Props> = ({ title, fundraiserIds }) => {
   })
 
   return (
-    <Page>
+    <Page MWA={title === "MWA"}>
       <Helmet>
         <title>{fundraiser.data?.publicName ?? title}: Live</title>
         <meta property="og:title" content={`${fundraiser.data?.publicName ?? title}: Live`} />

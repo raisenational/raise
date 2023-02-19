@@ -47,7 +47,7 @@ const DonationPage: React.FC<Props> = ({ title, fundraiserIds, aboutUsOverride }
   const [modalOpen, setModalOpen] = React.useState(false)
 
   return (
-    <Page>
+    <Page MWA={title === "MWA"}>
       <Helmet>
         <title>{fundraiser.data?.publicName ?? title}: Donate</title>
         <meta property="og:title" content={`${fundraiser.data?.publicName ?? title}: Donate`} />
