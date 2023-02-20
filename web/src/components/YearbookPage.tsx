@@ -748,7 +748,7 @@ const ALL_ENTRIES = [
 const CHAPTERS = new Set([...ALL_ENTRIES.map((e) => e.chapter)])
 const YEARS = new Set([...ALL_ENTRIES.map((e) => e.year.toString())])
 
-const YearbookPage: React.FC<{ brand?: Brand }> = ({ brand = "Raise" }) => {
+const YearbookPage: React.FC<{ brand?: Brand }> = ({ brand }) => {
   const formMethods = useForm<{ chapterFilter: string, yearFilter: string }>({
     defaultValues: {
       chapterFilter: "All chapters",

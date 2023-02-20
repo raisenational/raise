@@ -15,7 +15,7 @@ interface Props {
   brand?: Brand,
 }
 
-const LivePage: React.FC<Props> = ({ title, fundraiserIds, brand = "Raise" }) => {
+const LivePage: React.FC<Props> = ({ title, fundraiserIds, brand }) => {
   const fundraiserId = fundraiserIds[env.STAGE]
   const [fundraiser, refetchFundraiser] = useReq("get /public/fundraisers/{fundraiserId}", { fundraiserId })
 

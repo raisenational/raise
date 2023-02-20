@@ -16,9 +16,10 @@ import oliLane from "../../images/oli-lane.png"
 import Button from "../../components/Button"
 import Footer from "../../components/Footer"
 import Quote from "../../components/Quote"
+import config from "./_config"
 
 const PartnerPage = () => (
-  <Page brand="MWA">
+  <Page brand={config.brand}>
     <Helmet>
       <title>May Week Alternative: Partner with us</title>
       <meta property="og:title" content="May Week Alternative: Partner with us" />

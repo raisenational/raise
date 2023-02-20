@@ -5,9 +5,10 @@ import Page from "../../components/Page"
 import Section, { SectionTitle } from "../../components/Section"
 import Navigation from "../../components/Navigation"
 import Footer from "../../components/Footer"
+import config from "./_config"
 
 const PrivacyPage = () => (
-  <Page brand="MWA">
+  <Page brand={config.brand}>
     <Helmet>
       <title>May Week Alternative: Privacy Policy</title>
       <meta property="og:title" content="May Week Alternative: Privacy Policy" />

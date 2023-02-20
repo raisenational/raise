@@ -16,9 +16,10 @@ import Panel from "../../components/Panel"
 import { Doubled, MoneyBox, Party } from "../../images/Icons"
 import Footer from "../../components/Footer"
 import Button from "../../components/Button"
+import config from "./_config"
 
 const IndexPage = () => (
-  <Page brand="MWA">
+  <Page brand={config.brand}>
     <Helmet>
       <title>May Week Alternative</title>
       <meta property="og:title" content="May Week Alternative" />
