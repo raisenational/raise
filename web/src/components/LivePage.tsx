@@ -7,14 +7,15 @@ import Page from "./Page"
 import { useReq } from "../helpers/networking"
 import Alert from "./Alert"
 import env from "../env/env"
-import { Env } from "../helpers/types"
+import { Env, Brand } from "../helpers/types"
 
 interface Props {
   title: string,
   fundraiserIds: Record<Env["STAGE"], string>,
+  brand?: Brand,
 }
 
-const LivePage: React.FC<Props> = ({ title, fundraiserIds }) => {
+const LivePage: React.FC<Props> = ({ title, fundraiserIds, brand }) => {
   const fundraiserId = fundraiserIds[env.STAGE]
   const [fundraiser, refetchFundraiser] = useReq("get /public/fundraisers/{fundraiserId}", { fundraiserId })
 
@@ -65,7 +66,7 @@ const LivePage: React.FC<Props> = ({ title, fundraiserIds }) => {
   })
 
   return (
-    <Page>
+    <Page brand={brand}>
       <Helmet>
         <title>{fundraiser.data?.publicName ?? title}: Live</title>
         <meta property="og:title" content={`${fundraiser.data?.publicName ?? title}: Live`} />

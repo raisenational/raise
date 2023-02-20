@@ -1,6 +1,5 @@
 import * as React from "react"
 import Helmet from "react-helmet"
-import { withAssetPrefix } from "gatsby"
 
 import Page from "../../components/Page"
 import Section, { SectionNoPadding, SectionTitle } from "../../components/Section"
@@ -17,14 +16,13 @@ import oliLane from "../../images/oli-lane.png"
 import Button from "../../components/Button"
 import Footer from "../../components/Footer"
 import Quote from "../../components/Quote"
+import config from "./_config"
 
 const PartnerPage = () => (
-  <Page>
+  <Page brand={config.brand}>
     <Helmet>
       <title>May Week Alternative: Partner with us</title>
       <meta property="og:title" content="May Week Alternative: Partner with us" />
-      <meta property="og:image" content={withAssetPrefix("/shared/images/mwa-link-icon.png")} />
-      <meta property="og:description" content="MWA is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving." />
     </Helmet>
     <Cover>
       <Navigation

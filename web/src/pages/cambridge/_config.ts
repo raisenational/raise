@@ -7,6 +7,7 @@ const config: ChapterConfig = {
     prod: "01GNSQNM24KGDDATPXQNXFSBMD",
   },
   title: "MWA",
+  brand: "MWA",
 }
 
 export default config
