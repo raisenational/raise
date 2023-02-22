@@ -12,6 +12,8 @@ import env from '../../env/env';
 import Button from '../../components/Button';
 import { LoginResponse } from '../../helpers/generated-api-client';
 import Spinner from '../../components/Spinner';
+import Link from '../../components/Link';
+import { helpLink } from './helpLink';
 
 const Login: React.FC<RouteComponentProps> = () => (
   <Section className="mt-8 text-center">
@@ -20,6 +22,9 @@ const Login: React.FC<RouteComponentProps> = () => (
       <SectionTitle>Admin Login</SectionTitle>
       <LoadingBoxContent />
     </div>
+    <footer className="mt-4 py-4 text-xl">
+      <Link href={helpLink}>Help</Link>
+    </footer>
   </Section>
 );
 
