@@ -5,6 +5,7 @@ import {
 } from '@heroicons/react/outline';
 import jsonexport from 'jsonexport/dist';
 import { fixedGroups, format } from '@raise/shared';
+import { useState } from 'react';
 import { asResponseValues, useReq, useRawAxios } from '../../helpers/networking';
 import Section, { SectionTitle } from '../../components/Section';
 import Table from '../../components/Table';
@@ -15,7 +16,6 @@ import Button from '../../components/Button';
 import { RequireGroup } from '../../helpers/security';
 import Link from '../../components/Link';
 import { DonationEdits, Fundraiser } from '../../helpers/generated-api-client';
-import { useState } from 'react';
 
 const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId: string }> = ({ fundraiserId }) => {
   const [fundraisers, refetchFundraisers] = useReq('get /admin/fundraisers');

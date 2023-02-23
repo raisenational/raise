@@ -1,5 +1,6 @@
 import { CheckCircleIcon, ExclamationCircleIcon, ExclamationIcon } from '@heroicons/react/outline';
 import classNames from 'classnames';
+// eslint-disable-next-line no-restricted-imports
 import axios from 'axios';
 
 interface Props {

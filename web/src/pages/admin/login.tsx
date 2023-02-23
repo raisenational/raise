@@ -3,6 +3,7 @@ import { RouteComponentProps } from '@gatsbyjs/reach-router';
 // the implicit flow, which is currently needed for Google authentication
 // https://github.com/authts/oidc-client-ts/issues/152
 import { UserManager, UserManagerSettings } from 'oidc-client';
+import { useEffect, useState } from 'react';
 import Section, { SectionTitle } from '../../components/Section';
 import Alert from '../../components/Alert';
 import Logo from '../../components/Logo';
@@ -11,7 +12,6 @@ import env from '../../env/env';
 import Button from '../../components/Button';
 import { LoginResponse } from '../../helpers/generated-api-client';
 import Spinner from '../../components/Spinner';
-import { useEffect, useState } from 'react';
 
 const Login: React.FC<RouteComponentProps> = () => (
   <Section className="mt-8 text-center">
@@ -66,7 +66,7 @@ const userManagerSettings: UserManagerSettings = {
 };
 
 const GoogleLoginForm: React.FC<LoginFormProps> = ({ setError, setLoading }) => {
-  const [_, setAuthState] = useAuthState();
+  const [, setAuthState] = useAuthState();
   const req = useRawReq();
 
   return (
@@ -104,7 +104,7 @@ const GoogleLoginForm: React.FC<LoginFormProps> = ({ setError, setLoading }) => 
 };
 
 const ImpersonationLoginForm: React.FC<LoginFormProps> = ({ setError, setLoading }) => {
-  const [_, setAuthState] = useAuthState();
+  const [, setAuthState] = useAuthState();
   const axios = useRawAxios();
 
   return (

@@ -18,5 +18,7 @@ module.exports = {
         ],
       },
     ],
+    'import/prefer-default-export': ['off'],
+    '@typescript-eslint/comma-dangle': ['off'],
   },
 };

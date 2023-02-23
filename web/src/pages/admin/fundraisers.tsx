@@ -4,6 +4,7 @@ import { PlusSmIcon } from '@heroicons/react/outline';
 import {
   convert, fixedGroups, format,
 } from '@raise/shared';
+import { useState } from 'react';
 import {
   asResponseValues, useAuthState, useReq, useRawAxios,
 } from '../../helpers/networking';
@@ -15,7 +16,6 @@ import { Form } from '../../components/Form';
 import PropertyEditor from '../../components/PropertyEditor';
 import { RequireGroup } from '../../helpers/security';
 import { Fundraiser, FundraiserEdits } from '../../helpers/generated-api-client';
-import { useState } from 'react';
 
 const FundraisersPage: React.FC<RouteComponentProps> = () => {
   const [fundraisers, refetchFundraisers] = useReq('get /admin/fundraisers');

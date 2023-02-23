@@ -14,13 +14,13 @@ interface Props<I> {
   primaryKey?: keyof I,
   onClick?: (item: I, event: React.MouseEvent) => void,
   emptyMessage?: string,
-  itemRenderer?: (item: I, index: number) => JSX.Element,
+  renderItem?: (item: I, index: number) => JSX.Element,
   className?: string,
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Table = <I extends Record<string, any>>({
-  definition, items, primaryKey, onClick, emptyMessage = 'There are no entries', itemRenderer, className,
+  definition, items, primaryKey, onClick, emptyMessage = 'There are no entries', renderItem, className,
 }: Props<I>) => {
   // Normalized properties
   const nItems = ((items === undefined || Array.isArray(items)) ? items : items.data) ?? [];
@@ -43,7 +43,7 @@ const Table = <I extends Record<string, any>>({
           </tr>
         </thead>
         <tbody>
-          {nItems.map(itemRenderer || ((item, rowIndex) => (
+          {nItems.map(renderItem || ((item, rowIndex) => (
             <tr key={nPrimaryKey ? String(item[nPrimaryKey]) : rowIndex} className={classNames('hover:bg-black hover:bg-opacity-20', { 'cursor-pointer': onClick !== undefined })} onClick={onClick === undefined ? undefined : (e) => onClick(item, e)}>
               {Object.entries(definition).map(([k, v], cellIndex, arr) => (
                 <td key={k} className={classNames('p-2', { 'pl-4': cellIndex === 0, 'pr-4': cellIndex === arr.length - 1 }, v.className)}>{v.formatter ? v.formatter(item[k as keyof I], item) : (item[k as keyof I] ?? '—')}</td>

@@ -4,6 +4,7 @@ import { navigate } from 'gatsby';
 import { useForm } from 'react-hook-form';
 
 import { LocationMarkerIcon } from '@heroicons/react/outline';
+import { useState } from 'react';
 import Page from '../components/Page';
 import Section, { SectionTitle } from '../components/Section';
 import { TopNavigation } from '../components/Navigation';
@@ -13,7 +14,6 @@ import sp1 from '../images/summer-party-1.jpg';
 import sp2 from '../images/summer-party-2.jpg';
 import Button from '../components/Button';
 import { LabelledInput } from '../components/Form';
-import { useState } from 'react';
 
 interface LatLong {
   latitude: number,

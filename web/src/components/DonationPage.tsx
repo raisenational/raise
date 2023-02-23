@@ -14,6 +14,9 @@ import classNames from 'classnames';
 import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
 import { UserIcon } from '@heroicons/react/solid';
 import { moneyToPeopleProtected } from '@raise/shared/dist/convert';
+import {
+  useEffect, useLayoutEffect, useRef, useState,
+} from 'react';
 import Button from './Button';
 import DonationCard from './DonationCard';
 import { animateStatsIn } from './IntroStats';
@@ -33,7 +36,6 @@ import Tooltip from './Tooltip';
 import { Doubled, MoneyBox, Party } from '../images/Icons';
 import Logo from './Logo';
 import { PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse } from '../helpers/generated-api-client';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 interface Props {
   title: string,
@@ -334,27 +336,28 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
       return;
     }
 
+    const showConfetti = () => {
+      confetti({
+        particleCount: 40,
+        angle: 50,
+        spread: 70,
+        origin: { x: -0.1, y: 1 },
+        startVelocity: 0.087 * window.innerHeight,
+        gravity: 1.5,
+        ticks: 250,
+      });
+      confetti({
+        particleCount: 40,
+        angle: 130,
+        spread: 70,
+        origin: { x: 1.1, y: 1 },
+        startVelocity: 0.087 * window.innerHeight,
+        gravity: 1.5,
+        ticks: 250,
+      });
+    };
     for (let i = 0; i < 5; i++) {
-      setTimeout(() => {
-        confetti({
-          particleCount: 40,
-          angle: 50,
-          spread: 70,
-          origin: { x: -0.1, y: 1 },
-          startVelocity: 0.087 * window.innerHeight,
-          gravity: 1.5,
-          ticks: 250,
-        });
-        confetti({
-          particleCount: 40,
-          angle: 130,
-          spread: 70,
-          origin: { x: 1.1, y: 1 },
-          startVelocity: 0.087 * window.innerHeight,
-          gravity: 1.5,
-          ticks: 250,
-        });
-      }, i * 50);
+      setTimeout(() => showConfetti, i * 50);
     }
   };
   if (new Date().getTime() / 1000 >= fundraiser.activeFrom) {
@@ -829,7 +832,6 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
 
   return (
     <>
-      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
       <p>
         Amount due:
         {format.amountShort(piResponse.currency, piResponse.amount)}
@@ -847,6 +849,7 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
         {format.date(piResponse.futurePayments[piResponse.futurePayments.length - 1].at)}
         .
         {' '}
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <Link onClick={() => setShowDetails(!showDetails)}>
           {showDetails ? 'Hide' : 'View'}
           {' '}

@@ -2,6 +2,7 @@ import { RouteComponentProps } from '@gatsbyjs/reach-router';
 import { navigate } from 'gatsby';
 import { PlusSmIcon } from '@heroicons/react/outline';
 import { format } from '@raise/shared';
+import { useState } from 'react';
 import { asResponseValues, useReq, useRawAxios } from '../../helpers/networking';
 import Section, { SectionTitle } from '../../components/Section';
 import Table from '../../components/Table';
@@ -11,7 +12,6 @@ import Modal from '../../components/Modal';
 import { Form } from '../../components/Form';
 import DonationCard from '../../components/DonationCard';
 import { PaymentCreation } from '../../helpers/generated-api-client';
-import { useState } from 'react';
 
 const DonationPage: React.FC<RouteComponentProps & { fundraiserId: string, donationId: string }> = ({ fundraiserId, donationId }) => {
   const [fundraisers] = useReq('get /admin/fundraisers');

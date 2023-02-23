@@ -177,7 +177,7 @@ const useReqCore = <
   if (typeof window === 'undefined') {
     return [{
       loading: true,
-    }, (..._a) => Promise.reject()];
+    }, () => Promise.reject()];
   }
 
   const [auth] = useAuthState();

@@ -2,6 +2,7 @@ import { CakeIcon, HeartIcon } from '@heroicons/react/outline';
 import confetti from 'canvas-confetti';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useEffect } from 'react';
 import chloeShieh from '../images/chloe-shieh.jpg';
 import elenaCaspall from '../images/elena-caspall.jpg';
 import jakeMendel from '../images/jake-mendel.jpg';
@@ -11,7 +12,6 @@ import sp3 from '../images/summer-party-3.jpg';
 import Section, { SectionTitle } from './Section';
 import Quote from './Quote';
 import Link from './Link';
-import { useEffect } from 'react';
 
 const launchConfetti = () => {
   // Use simpler confetti for mobile to reduce lag
@@ -29,27 +29,28 @@ const launchConfetti = () => {
     return;
   }
 
+  const showConfetti = () => {
+    confetti({
+      particleCount: 40,
+      angle: 50,
+      spread: 70,
+      origin: { x: -0.1, y: 1 },
+      startVelocity: 0.087 * window.innerHeight,
+      gravity: 1.5,
+      ticks: 250,
+    });
+    confetti({
+      particleCount: 40,
+      angle: 130,
+      spread: 70,
+      origin: { x: 1.1, y: 1 },
+      startVelocity: 0.087 * window.innerHeight,
+      gravity: 1.5,
+      ticks: 250,
+    });
+  };
   for (let i = 0; i < 5; i++) {
-    setTimeout(() => {
-      confetti({
-        particleCount: 40,
-        angle: 50,
-        spread: 70,
-        origin: { x: -0.1, y: 1 },
-        startVelocity: 0.087 * window.innerHeight,
-        gravity: 1.5,
-        ticks: 250,
-      });
-      confetti({
-        particleCount: 40,
-        angle: 130,
-        spread: 70,
-        origin: { x: 1.1, y: 1 },
-        startVelocity: 0.087 * window.innerHeight,
-        gravity: 1.5,
-        ticks: 250,
-      });
-    }, i * 50);
+    setTimeout(showConfetti, i * 50);
   }
 };
 

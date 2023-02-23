@@ -1,6 +1,7 @@
 import { RouteComponentProps } from '@gatsbyjs/reach-router';
 import { ExternalLinkIcon, ReceiptRefundIcon } from '@heroicons/react/outline';
 import { fixedGroups, format } from '@raise/shared';
+import { useState } from 'react';
 import { asResponseValues, useReq, useRawReq } from '../../helpers/networking';
 import Section, { SectionTitle } from '../../components/Section';
 import PropertyEditor from '../../components/PropertyEditor';
@@ -9,7 +10,6 @@ import Modal from '../../components/Modal';
 import { Form } from '../../components/Form';
 import { RequireGroup } from '../../helpers/security';
 import { PaymentCreation, PaymentPropertyEdits } from '../../helpers/generated-api-client';
-import { useState } from 'react';
 
 const PaymentPage: React.FC<RouteComponentProps & { fundraiserId: string, donationId: string, paymentId: string }> = ({ fundraiserId, donationId, paymentId }) => {
   const [fundraisers] = useReq('get /admin/fundraisers');

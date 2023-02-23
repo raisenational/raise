@@ -1,4 +1,5 @@
 import { RouteComponentProps } from '@gatsbyjs/reach-router';
+import { useState } from 'react';
 import { useReq } from '../../helpers/networking';
 import Section, { SectionTitle } from '../../components/Section';
 import Table from '../../components/Table';
@@ -6,7 +7,6 @@ import Modal from '../../components/Modal';
 import Button from '../../components/Button';
 import Alert from '../../components/Alert';
 import { Task } from '../../helpers/generated-api-client';
-import { useState } from 'react';
 
 const TasksPage: React.FC<RouteComponentProps> = () => {
   const [selected, setSelected] = useState<Task | undefined>();

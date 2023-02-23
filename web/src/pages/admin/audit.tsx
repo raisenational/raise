@@ -4,6 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import jsonexport from 'jsonexport/dist';
 import { DownloadIcon } from '@heroicons/react/outline';
 import { AxiosError } from 'axios';
+import { useState } from 'react';
 import { useRawReq } from '../../helpers/networking';
 import Section, { SectionTitle } from '../../components/Section';
 import Table from '../../components/Table';
@@ -12,7 +13,6 @@ import Button from '../../components/Button';
 import { RequireGroup } from '../../helpers/security';
 import Alert from '../../components/Alert';
 import { AuditLog } from '../../helpers/generated-api-client';
-import { useState } from 'react';
 
 const AuditPage: React.FC<RouteComponentProps> = () => {
   const req = useRawReq();

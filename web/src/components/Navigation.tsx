@@ -1,14 +1,14 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
 import classNames from 'classnames';
+import { useState } from 'react';
 import { SectionNoPadding } from './Section';
 import Button from './Button';
 import Link from './Link';
-import { useState } from 'react';
 
-interface Link { text: string, href?: string, onClick?: React.MouseEventHandler }
+interface LinkDefinition { text: string, href?: string, onClick?: React.MouseEventHandler }
 
-const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) => {
+const Navigation: React.FC<{ left: LinkDefinition[], right: LinkDefinition[] }> = ({ left, right }) => {
   const [open, setOpen] = useState(false);
 
   return (

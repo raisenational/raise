@@ -1,12 +1,10 @@
-import { UnpackNestedValue } from 'react-hook-form';
 import classNames from 'classnames';
-
+import { useState } from 'react';
 import Alert from './Alert';
 import Table from './Table';
 import Modal from './Modal';
 import { Form, FormProps, InputType } from './Form';
 import { ResponseValues } from '../helpers/networking';
-import { useState } from 'react';
 
 type PropertyDefinition<I, V> = {
   label?: string,
@@ -58,8 +56,7 @@ const PropertyEditor = <I extends Record<string, any>>({
               [editingProperty]: {
                 ...definition[editingProperty],
                 formatter: definition[editingProperty]?.formatter
-                  // @ts-ignore
-                  ? (i) => definition[editingProperty].formatter(i, nItem)
+                  ? (i: I[string]) => definition[editingProperty]?.formatter?.(i, nItem)
                   : undefined,
               },
             } as unknown as FormProps<Partial<I>>['definition']}
@@ -81,7 +78,7 @@ const PropertyEditor = <I extends Record<string, any>>({
           label: v?.label ?? k,
           value: v?.formatter ? v.formatter(nItem[k], nItem) : (nItem[k] ?? '—'),
         }))}
-        itemRenderer={(i) => (
+        renderItem={(i) => (
           <tr key={String(i.property)} className={classNames('hover:bg-black hover:bg-opacity-20', { 'cursor-pointer': definition[i.property]?.inputType !== undefined })} onClick={definition[i.property]?.inputType === undefined ? undefined : (e) => tableOnClick(i, e)}>
             {Object.keys(tableDefinition).map((k, cellIndex, arr) => (
               <td key={k} className={classNames('p-2 word-wrap', { 'pl-4 lg:min-w-[24rem]': cellIndex === 0, 'pr-4': cellIndex === arr.length - 1 })}>{(i[k as keyof typeof tableDefinition] ?? '—')}</td>

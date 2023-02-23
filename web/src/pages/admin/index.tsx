@@ -1,6 +1,7 @@
 import Helmet from 'react-helmet';
 import { Router } from '@gatsbyjs/reach-router';
 
+import { useEffect, useState } from 'react';
 import Page from '../../components/Page';
 import FundraisersPage from './fundraisers';
 import ProfilePage from './profile';
@@ -18,7 +19,6 @@ import AuditPage from './audit';
 import UsersPage from './users';
 import UserPage from './user';
 import GroupPage from './group';
-import { useEffect, useState } from 'react';
 
 const IndexPage = () => (
   <Page className="pb-8">

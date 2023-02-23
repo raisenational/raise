@@ -1,6 +1,4 @@
 import Helmet from 'react-helmet';
-import { withAssetPrefix } from 'gatsby';
-
 import { convert } from '@raise/shared';
 import Page from '../../components/Page';
 import Section, { SectionTitle } from '../../components/Section';

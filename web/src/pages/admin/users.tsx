@@ -2,6 +2,7 @@ import { RouteComponentProps } from '@gatsbyjs/reach-router';
 import { navigate } from 'gatsby';
 import { PlusSmIcon } from '@heroicons/react/outline';
 import { fixedGroups, format } from '@raise/shared';
+import { useState } from 'react';
 import {
   asResponseValues, useReq, useRawReq,
 } from '../../helpers/networking';
@@ -14,7 +15,6 @@ import { RequireGroup } from '../../helpers/security';
 import {
   GroupCreation, UserCreation,
 } from '../../helpers/generated-api-client';
-import { useState } from 'react';
 
 const UsersPage: React.FC<RouteComponentProps> = () => {
   const [users, refetchUsers] = useReq('get /admin/users');

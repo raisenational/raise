@@ -1,19 +1,19 @@
 /* eslint-disable react/destructuring-assignment */
 import {
   ListboxInput, ListboxButton, ListboxPopover, ListboxList, ListboxOption,
-} from '@reach/listbox'
-import { CheckIcon, ChevronDownIcon } from '@heroicons/react/outline'
-import classNames from 'classnames'
+} from '@reach/listbox';
+import { CheckIcon, ChevronDownIcon } from '@heroicons/react/outline';
+import classNames from 'classnames';
 import {
   Controller,
   FieldValues,
   FormProvider,
-  Path, SubmitHandler, UnpackNestedValue, useForm, useFormContext, useWatch,
-} from 'react-hook-form'
-import Alert from './Alert'
-import Button from './Button'
-import { SectionTitle } from './Section'
-import React, { useState } from 'react'
+  Path, SubmitHandler, useForm, useFormContext, useWatch,
+} from 'react-hook-form';
+import React, { useState } from 'react';
+import Alert from './Alert';
+import Button from './Button';
+import { SectionTitle } from './Section';
 
 // TODO: Replace this mess (the whole file) with more maintainable and type-safe code
 
@@ -39,7 +39,7 @@ const ifNaN = <T,>(n: number, otherwise: T): number | T => (Number.isNaN(n) ? ot
 
 export const toInput = <T,>(raw: T, inputType: InputType<T>): string | string[] | boolean => {
   if (raw !== undefined && inputType === 'hidden') return JSON.stringify(raw);
-  if (raw === undefined || raw === null) return ''
+  if (raw === undefined || raw === null) return '';
   if (inputType === 'amount') return (raw as unknown as number / 100).toFixed(2);
   if (inputType === 'date' || inputType === 'datetime-local') return new Date((raw as unknown as number * 1000) - (new Date(raw as unknown as number * 1000).getTimezoneOffset() * 60000)).toISOString().slice(0, 19);
   if (inputType === 'checkbox') return raw as unknown as boolean;
@@ -71,8 +71,10 @@ const objMap = <T extends { [K in keyof T]: V }, U, V>(obj: T, mapper: (k: keyof
   return newObj;
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const mapToInput = <T,>(item: T, definition: FormProps<T>['definition']): T & DeepPartial<T> => objMap(item, (k, v) => toInput(v, definition[k].inputType));
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const mapFromInput = <T,>(item: T, definition: FormProps<T>['definition']): T => objMap(item, (k, v) => fromInput(v, definition[k].inputType, definition[k].selectOptions));
 
@@ -106,6 +108,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
       return (
         <div className={className}>
           {label && <label htmlFor={id} className={classNames('text-gray-700 font-bold block pb-1')}>{label}</label>}
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
           {/* @ts-ignore */}
           <Select type={type} value={value} onChange={(v) => { setValue(v); if (rest.onChange) rest.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>); }} error={error} options={options} />
           {error && <span className="text-raise-red">{error}</span>}
@@ -120,6 +123,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
         render={({ field }) => (
           <div className={className}>
             {label && <label htmlFor={id} className={classNames('text-gray-700 font-bold block pb-1')}>{label}</label>}
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
             {/* @ts-ignore */}
             <Select type={type} value={field.value} onChange={(v) => field.onChange({ target: { value: v } } as React.ChangeEvent<HTMLInputElement>)} error={error} options={options} />
             {error && <span className="text-raise-red">{error}</span>}
@@ -148,7 +152,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
             'bg-red-200': error,
           })}
           >
-{prefix}
+            {prefix}
           </span>
         )}
         <input
@@ -170,7 +174,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
             'bg-red-200': error,
           })}
           >
-{suffix}
+            {suffix}
           </span>
         )}
       </div>
@@ -309,13 +313,18 @@ export const Form = <T extends FieldValues>({
               {v.warning && <Alert variant="warning" className="mb-4">{v.warning}</Alert>}
               {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
               <LabelledInput label={v.label ?? String(k)} id={String(k)} type={nInputType as any} options={(v as any).selectOptions} {...register(k)} />
-              {showCurrent && <p className="word-wrap">
-Current value:{v.formatter ? v.formatter(initialValues[k], initialValues) : (initialValues[k] ?? '—')}</p>}
+              {showCurrent && (
               <p className="word-wrap">
-{showCurrent ? "New value" : "Value"}:
-{' '}
-{v.formatter ? v.formatter(newValues[k], newValues) : (newValues[k] ?? "—")}
-</p>
+                Current value:
+                {v.formatter ? v.formatter(initialValues[k], initialValues) : (initialValues[k] ?? '—')}
+              </p>
+              )}
+              <p className="word-wrap">
+                {showCurrent ? 'New value' : 'Value'}
+                :
+                {' '}
+                {v.formatter ? v.formatter(newValues[k], newValues) : (newValues[k] ?? '—')}
+              </p>
             </div>
           );
         })}

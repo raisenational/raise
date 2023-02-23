@@ -2,12 +2,12 @@ import Helmet from 'react-helmet';
 import confetti from 'canvas-confetti';
 
 import { convert, format } from '@raise/shared';
+import { useEffect } from 'react';
 import Page from './Page';
 import { useReq } from '../helpers/networking';
 import Alert from './Alert';
 import env from '../env/env';
 import { Env, Brand } from '../helpers/types';
-import { useEffect } from 'react';
 
 interface Props {
   title: string,
