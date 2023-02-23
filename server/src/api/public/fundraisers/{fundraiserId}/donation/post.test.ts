@@ -5,16 +5,20 @@ import { donationTable, fundraiserTable, paymentTable } from "../../../../../hel
 import { PublicDonationRequest } from "../../../../../schemas"
 import { main } from "./post"
 
-const paymentIntentCreate = jest.fn().mockResolvedValue({
-  id: "pi_123456",
-  client_secret: "pi_123456_secret_abcdef",
-})
+const paymentIntentCreate = jest.fn()
 
-jest.mock("stripe", () => jest.fn().mockImplementation(() => ({
+jest.mock("stripe", () => jest.fn().mockReturnValue({
   paymentIntents: {
     get create() { return paymentIntentCreate },
   },
-})))
+}))
+
+beforeEach(() => {
+  paymentIntentCreate.mockResolvedValue({
+    id: "pi_123456",
+    client_secret: "pi_123456_secret_abcdef",
+  })
+})
 
 test.each([
   ["gbp"], ["usd"],

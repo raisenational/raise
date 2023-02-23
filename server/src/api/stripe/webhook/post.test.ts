@@ -1,4 +1,3 @@
-import Stripe from "stripe"
 import { ulid } from "ulid"
 import {
   call, makeFundraiser, makeDonation, makePayment, delayDb,
@@ -23,15 +22,6 @@ jest.mock("stripe", () => jest.fn().mockReturnValue({
 }))
 
 beforeEach(() => {
-  (Stripe as unknown as jest.Mock).mockReturnValue({
-    webhooks: {
-      constructEvent: webhookConstructEvent,
-    },
-    customers: {
-      create: customersCreate,
-    },
-  })
-
   customersCreate.mockResolvedValue({ id: "cus_abcdef" })
 })
 

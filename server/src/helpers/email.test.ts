@@ -1,3 +1,4 @@
+import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2"
 import { sendEmail } from "./email"
 
 jest.unmock("./email")
@@ -5,8 +6,12 @@ jest.unmock("./email")
 const send = jest.fn()
 jest.mock("@aws-sdk/client-sesv2", () => ({
   SESv2Client: jest.fn().mockImplementation(() => ({ get send() { return send } })),
-  SendEmailCommand: jest.fn().mockImplementation((input) => ({ _input: input })),
+  SendEmailCommand: jest.fn(),
 }))
+
+beforeEach(() => {
+  (SendEmailCommand as unknown as jest.Mock).mockImplementation((input) => ({ _input: input }))
+})
 
 test("sendEmail calls SES correctly", async () => {
   // given no calls to the send endpoint

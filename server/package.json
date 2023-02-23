@@ -83,7 +83,6 @@
       "!src/env/*.ts",
       "src/env/env.ts"
     ],
-    "clearMocks": true,
     "restoreMocks": true
   }
 }
