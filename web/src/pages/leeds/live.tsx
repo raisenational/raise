@@ -1,7 +1,6 @@
-import * as React from "react"
-import LivePage from "../../components/LivePage"
-import config from "./_config"
+import LivePage from '../../components/LivePage';
+import config from './_config';
 
 export default () => (
   <LivePage {...config} />
-)
+);

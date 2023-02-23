@@ -1,5 +1,3 @@
-import * as React from "react"
-
 const Tooltip: React.FC<{
   label: React.ReactNode,
   children: React.ReactNode,
@@ -8,6 +6,6 @@ const Tooltip: React.FC<{
     {children}
     <span className="tooltip">{label}</span>
   </span>
-)
+);
 
-export default Tooltip
+export default Tooltip;

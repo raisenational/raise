@@ -1,19 +1,18 @@
-import * as React from "react"
-import Helmet from "react-helmet"
+import Helmet from 'react-helmet';
 
-import Page from "../../components/Page"
-import Section, { SectionNoPadding, SectionTitle } from "../../components/Section"
-import Navigation from "../../components/Navigation"
-import Cover from "../../components/Cover"
-import ContactForm from "../../components/ContactForm"
-import SocialIcon from "../../components/SocialIcon"
-import Panel from "../../components/Panel"
+import Page from '../../components/Page';
+import Section, { SectionNoPadding, SectionTitle } from '../../components/Section';
+import Navigation from '../../components/Navigation';
+import Cover from '../../components/Cover';
+import ContactForm from '../../components/ContactForm';
+import SocialIcon from '../../components/SocialIcon';
+import Panel from '../../components/Panel';
 
-import instagram from "../../images/instagram.svg"
-import facebook from "../../images/facebook.svg"
-import email from "../../images/email.svg"
-import Button from "../../components/Button"
-import Footer from "../../components/Footer"
+import instagram from '../../images/instagram.svg';
+import facebook from '../../images/facebook.svg';
+import email from '../../images/email.svg';
+import Button from '../../components/Button';
+import Footer from '../../components/Footer';
 
 const PartnerPage = () => (
   <Page>
@@ -24,15 +23,15 @@ const PartnerPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Home", href: "/oxford/" },
-          { text: "How It Works", href: "/oxford/#how-it-works" },
-          { text: "FAQs", href: "/oxford/#faq" },
-          { text: "Our Philosophy", href: "/oxford/#our-philosophy" },
-          { text: "Contact", href: "/oxford/#contact" },
-          { text: "Partner", href: "/oxford/partner/" },
+          { text: 'Home', href: '/oxford/' },
+          { text: 'How It Works', href: '/oxford/#how-it-works' },
+          { text: 'FAQs', href: '/oxford/#faq' },
+          { text: 'Our Philosophy', href: '/oxford/#our-philosophy' },
+          { text: 'Contact', href: '/oxford/#contact' },
+          { text: 'Partner', href: '/oxford/partner/' },
         ]}
         right={[
-          { text: "Join: Donate Here", href: "https://app.sogive.org/#fundraiser/raiseoxford.Qf5OnaFn.702c64" },
+          { text: 'Join: Donate Here', href: 'https://app.sogive.org/#fundraiser/raiseoxford.Qf5OnaFn.702c64' },
         ]}
       />
       <SectionNoPadding className="px-8">
@@ -52,7 +51,14 @@ const PartnerPage = () => (
       <div className="grid gap-5 md:grid-cols-3 md:gap-8 mt-8">
         <Panel
           title="Get in touch"
-          text={<>If you want to support the growth of Raise, please don't hesitate to get in touch! Whether you're a JCR president who has a great idea for reaching out to your students, or a Senior Tutor wanting to encourage social responsibility, we'd love you to join us in changing the way students think about charity. Contact us at <a href="mailto:raiseoxford@gmail.com" className="text-blue-300">raiseoxford@gmail.com</a> or via the form below and we'd love to meet with you to discuss how we can work together.</>}
+          text={(
+            <>
+              If you want to support the growth of Raise, please don't hesitate to get in touch! Whether you're a JCR president who has a great idea for reaching out to your students, or a Senior Tutor wanting to encourage social responsibility, we'd love you to join us in changing the way students think about charity. Contact us at
+              <a href="mailto:raiseoxford@gmail.com" className="text-blue-300">raiseoxford@gmail.com</a>
+              {' '}
+              or via the form below and we'd love to meet with you to discuss how we can work together.
+            </>
+)}
           className="bg-raise-purple"
         />
         <Panel
@@ -97,6 +103,6 @@ const PartnerPage = () => (
 
     <Footer />
   </Page>
-)
+);
 
-export default PartnerPage
+export default PartnerPage;

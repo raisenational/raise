@@ -1,7 +1,7 @@
-export type Brand = "MWA" | "Raise"
+export type Brand = 'MWA' | 'Raise';
 
 export interface Env {
-  STAGE: "local" | "dev" | "prod",
+  STAGE: 'local' | 'dev' | 'prod',
 
   CUSTOM_RAISE_DOMAIN: string,
   CUSTOM_MWA_DOMAIN: string,
@@ -26,6 +26,6 @@ export interface Env {
 
 export interface ChapterConfig {
   title: string,
-  fundraiserIds: Record<Env["STAGE"], string>,
+  fundraiserIds: Record<Env['STAGE'], string>,
   brand?: Brand,
 }
