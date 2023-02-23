@@ -10,6 +10,7 @@ const getVersion = () => {
     .replace("T", ".")}.${hash.trim()}`
 }
 
+/** @type {import('gatsby').GatsbyConfig} */
 module.exports = {
   // Always use the main site as the canonical one and where to get assets
   // This helps keep things consistent, and allows us hosting subfolders (as we do for Cambridge)
@@ -38,4 +39,5 @@ module.exports = {
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-postcss",
   ],
+  trailingSlash: 'always',
 }

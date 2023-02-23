@@ -38,12 +38,11 @@ import { PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse } 
 interface Props {
   title: string,
   fundraiserIds: Record<Env["STAGE"], string>,
-  aboutUsOverride?: JSX.Element,
   brand?: Brand,
 }
 
 const DonationPage: React.FC<Props> = ({
-  title, fundraiserIds, aboutUsOverride, brand,
+  title, fundraiserIds, brand,
 }) => {
   const fundraiserId = fundraiserIds[env.STAGE]
   const [fundraiser, refetchFundraiser] = useReq("get /public/fundraisers/{fundraiserId}", { fundraiserId })
@@ -76,7 +75,6 @@ const DonationPage: React.FC<Props> = ({
               title={fundraiser.data?.publicName ?? title}
               fundraiser={fundraiser}
               openModal={() => setModalOpen(true)}
-              aboutUsOverride={aboutUsOverride}
             />
             <Modal open={modalOpen} onClose={() => setModalOpen(false)} className="max-w-2xl">
               {fundraiser.data && <DonationForm fundraiser={fundraiser.data} setModalOpen={setModalOpen} refetchFundraiser={refetchFundraiser} />}
@@ -94,11 +92,10 @@ interface IntroFundraiserProps {
   title: string,
   fundraiser: ResponseValues<PublicFundraiser, unknown, unknown>,
   openModal: () => void,
-  aboutUsOverride?: JSX.Element,
 }
 
 const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
-  title, fundraiser, openModal, aboutUsOverride,
+  title, fundraiser, openModal,
 }) => {
   const ref = React.useRef<HTMLDivElement>(null)
   const [hasAnimated, setHasAnimated] = React.useState(false)
@@ -171,12 +168,12 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
               </div>
             )
           ),
-          "About Us": aboutUsOverride || (
+          "About Us": (
             <div>
-              <p>{fundraiser.data?.publicName ?? title} is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.</p>
+              <p>{fundraiser.data?.publicName ?? title} is a charitable movement encouraging people to adopt a positive approach towards deliberate, effective giving.</p>
               <div className="flex my-6 items-center">
                 <MoneyBox className="h-16 mr-4" />
-                <p className="flex-1">We invite students to donate an amount significant to them to the Against Malaria Foundation.</p>
+                <p className="flex-1">We invite people to donate an amount significant to them to charity.</p>
               </div>
               <div className="flex my-6 items-center">
                 <Doubled className="h-16 mr-4" />
