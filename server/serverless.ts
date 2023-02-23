@@ -177,7 +177,7 @@ const serverlessConfiguration: AWS = {
   },
   functions: {
     apiRouter: {
-      handler: "src/api/router.main",
+      handler: "src/api/_router.main",
       events: getFunctionPaths().map(getFunctionEvent),
     },
     schedulerCollectPaymentsRun: {
