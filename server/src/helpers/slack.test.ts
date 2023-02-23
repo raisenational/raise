@@ -3,8 +3,12 @@ import env from "../env/env"
 import { auditContext } from "./auditContext"
 import { sendMessage, sendMessageWithLogsLink } from "./slack"
 
-jest.mock("axios", () => jest.fn().mockResolvedValue({ data: { ok: true } }))
+jest.mock("axios", jest.fn)
 jest.unmock("./slack")
+
+beforeEach(() => {
+  (axios as unknown as jest.Mock).mockResolvedValue({ data: { ok: true } })
+})
 
 test("sendMessage calls Slack API correctly", async () => {
   await sendMessage("This message was sent from slack.test.ts.")
