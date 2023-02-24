@@ -136,7 +136,7 @@ const serverlessConfiguration: AWS = {
   ],
   provider: {
     name: "aws",
-    runtime: "nodejs16.x",
+    runtime: "nodejs18.x",
     region: "eu-west-1",
     stage: env.STAGE,
     apiGateway: {
@@ -177,7 +177,7 @@ const serverlessConfiguration: AWS = {
   },
   functions: {
     apiRouter: {
-      handler: "src/api/router.main",
+      handler: "src/api/_router.main",
       events: getFunctionPaths().map(getFunctionEvent),
     },
     schedulerCollectPaymentsRun: {

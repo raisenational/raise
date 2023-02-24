@@ -1,21 +1,20 @@
-import * as React from "react"
-import Helmet from "react-helmet"
+import Helmet from 'react-helmet';
 
-import { UserGroupIcon } from "@heroicons/react/outline"
-import Page from "../../components/Page"
-import Section, { SectionTitle } from "../../components/Section"
-import Navigation from "../../components/Navigation"
-import Cover, { CTADown } from "../../components/Cover"
-import IntroStats from "../../components/IntroStats"
-import FAQs, { FAQ } from "../../components/FAQs"
-import Philosophy from "../../components/Philosophy"
-import { SocialIconV2 } from "../../components/SocialIcon"
-import Panel from "../../components/Panel"
-import Button from "../../components/Button"
+import { UserGroupIcon } from '@heroicons/react/outline';
+import Page from '../../components/Page';
+import Section, { SectionTitle } from '../../components/Section';
+import Navigation from '../../components/Navigation';
+import Cover, { CTADown } from '../../components/Cover';
+import IntroStats from '../../components/IntroStats';
+import FAQs, { FAQ } from '../../components/FAQs';
+import Philosophy from '../../components/Philosophy';
+import { SocialIconV2 } from '../../components/SocialIcon';
+import Panel from '../../components/Panel';
+import Button from '../../components/Button';
 
-import { MoneyBox, Party } from "../../images/Icons"
-import Footer from "../../components/Footer"
-import Link from "../../components/Link"
+import { MoneyBox, Party } from '../../images/Icons';
+import Footer from '../../components/Footer';
+import Link from '../../components/Link';
 
 const IndexPage = () => (
   <Page>
@@ -26,14 +25,14 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Home", href: "." },
-          { text: "How It Works", href: "#how-it-works" },
-          { text: "FAQs", href: "#faq" },
-          { text: "Our Philosophy", href: "#our-philosophy" },
-          { text: "Contact", href: "#contact" },
+          { text: 'Home', href: '.' },
+          { text: 'How It Works', href: '#how-it-works' },
+          { text: 'FAQs', href: '#faq' },
+          { text: 'Our Philosophy', href: '#our-philosophy' },
+          { text: 'Contact', href: '#contact' },
         ]}
         right={[
-          { text: "Join Facebook group", href: "https://www.facebook.com/groups/966154864287768" },
+          { text: 'Join Facebook group', href: 'https://www.facebook.com/groups/966154864287768' },
         ]}
       />
       <Section className="px-8">
@@ -88,15 +87,43 @@ const IndexPage = () => (
       <FAQs>
         <FAQ title="How can I get involved?">
           <p>First off, we're so glad you had good experiences with Raise that you want to stay involved with the Raise community. We'd love your support, and to stay in touch whether or not you do any of the following.</p>
-          <p><b>Facebook group:</b> To foster a two-way dialogue, you're invited to join our <Link href="https://www.facebook.com/groups/966154864287768">Facebook group</Link>. This is probably the first place to see what we're up to and how things are going.</p>
-          <p><b>Advisory board:</b> We'd love alumni to get involved in steering the direction of Raise or picking up more self-contained projects. To do this, we've set up an advisory board of trusted Raise members who meet on a (semi-) regular basis to discuss what's going on with Raise. Get in touch if this sounds interesting to you!</p>
-          <p><b>Helping us grow:</b> Are you able to help us by sponsoring Raise's efforts (whether through in-kind or direct donations), or know someone who can? Do you have some free time to improve how we run our operations, or mentor new chapters? Whatever it is, we'd love to hear from you!</p>
+          <p>
+            <b>Facebook group:</b>
+            {' '}
+            To foster a two-way dialogue, you're invited to join our
+            {' '}
+            <Link href="https://www.facebook.com/groups/966154864287768">Facebook group</Link>
+            . This is probably the first place to see what we're up to and how things are going.
+          </p>
+          <p>
+            <b>Advisory board:</b>
+            {' '}
+            We'd love alumni to get involved in steering the direction of Raise or picking up more self-contained projects. To do this, we've set up an advisory board of trusted Raise members who meet on a (semi-) regular basis to discuss what's going on with Raise. Get in touch if this sounds interesting to you!
+          </p>
+          <p>
+            <b>Helping us grow:</b>
+            {' '}
+            Are you able to help us by sponsoring Raise's efforts (whether through in-kind or direct donations), or know someone who can? Do you have some free time to improve how we run our operations, or mentor new chapters? Whatever it is, we'd love to hear from you!
+          </p>
         </FAQ>
 
         <FAQ title="For the donations push, can I donate to a different charity?">
           <p>At Raise, we think very carefully about which charity to recommend (see below), particularly given how much money you're donating. However, we recognise that you might want to join us in celebrating through giving to a different charity. This is absolutely fine, but please get in touch with us beforehand so that we are aware.</p>
-          <p>To make our decision to recommend the Against Malaria Foundation (AMF), we have taken the advice of independent charity evaluators <a href="https://www.givewell.org/charities/top-charities">GiveWell</a> and <a href="https://www.givingwhatwecan.org">Giving What We Can</a>, which both rank AMF as one of the most effective charities in the world.</p>
-          <p>Tragically, malaria causes 400,000 preventable deaths every year, disproportionately affecting young children and pregnant women, and has a knock-on effect on the local economy. AMF works with local partners to provide life-saving bed-nets which protect people as they sleep. To find out more about their work, see <a href="https://www.againstmalaria.com/">AMF's website</a>. The specific net distributions for which we have funded nets can be seen on <a href="https://www.againstmalaria.com/FundraiserGroup.aspx?FundraiserID=8339">Raise's dedicated AMF page</a>.</p>
+          <p>
+            To make our decision to recommend the Against Malaria Foundation (AMF), we have taken the advice of independent charity evaluators
+            <a href="https://www.givewell.org/charities/top-charities">GiveWell</a>
+            {' '}
+            and
+            <a href="https://www.givingwhatwecan.org">Giving What We Can</a>
+            , which both rank AMF as one of the most effective charities in the world.
+          </p>
+          <p>
+            Tragically, malaria causes 400,000 preventable deaths every year, disproportionately affecting young children and pregnant women, and has a knock-on effect on the local economy. AMF works with local partners to provide life-saving bed-nets which protect people as they sleep. To find out more about their work, see
+            <a href="https://www.againstmalaria.com/">AMF's website</a>
+            . The specific net distributions for which we have funded nets can be seen on
+            <a href="https://www.againstmalaria.com/FundraiserGroup.aspx?FundraiserID=8339">Raise's dedicated AMF page</a>
+            .
+          </p>
           <p>Because AMF's intervention is so effective at preventing malaria, each donation can have a huge impact. In fact, the money we raised nationally in 2020 was enough to protect over 120,000 people!</p>
         </FAQ>
       </FAQs>
@@ -115,6 +142,6 @@ const IndexPage = () => (
 
     <Footer />
   </Page>
-)
+);
 
-export default IndexPage
+export default IndexPage;

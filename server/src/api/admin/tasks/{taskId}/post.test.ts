@@ -7,34 +7,38 @@ jest.mock("../../../../tasks", () => [
   {
     id: "01FQWY151AJ6TJJBT44MM2HNZ8",
     name: "A task",
-    run: jest.fn(),
+    run: () => undefined,
   },
   {
     id: "01FQWYD5FGVS4F9Q9JZ5Y3D0PD",
     name: "With return value",
-    run: jest.fn().mockImplementation(() => 1),
+    run: () => 1,
   },
   {
     id: "01FQWY1BPYFF3KS7BY8B4NJJSC",
     name: "That errors with non-HTTP error",
-    run: jest.fn().mockImplementation(() => { throw new Error("explodey") }),
+    run: () => { throw new Error("explodey") },
   },
   {
     id: "01FQWYPF19KMGXZHAWHWQ8FV3N",
     name: "That errors with a HTTP error",
-    run: jest.fn().mockImplementation(() => { throw new createHttpError.Conflict("Something was wrong") }),
+    run: () => { throw new createHttpError.Conflict("Something was wrong") },
   },
   {
     id: "01FQWYBWR1TH7RN4XW66XKC80X",
     name: "Happy async task",
-    run: jest.fn().mockImplementation(async () => { /* noop */ }),
+    run: async () => { /* noop */ },
   },
   {
     id: "01FQWYC0C57HMA4XZNG094J664",
     name: "Sad async task",
-    run: jest.fn().mockImplementation(async () => { throw new Error("explodey") }),
+    run: async () => { throw new Error("explodey") },
   },
 ])
+
+beforeEach(() => {
+  tasks.forEach((t) => jest.spyOn(t, "run"))
+})
 
 test("can run a task", async () => {
   // when we call the endpoint

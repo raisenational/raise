@@ -1,6 +1,4 @@
-import * as React from "react"
-
-export const Party: React.FC<React.ComponentProps<"svg">> = (props) => (
+export const Party: React.FC<React.ComponentProps<'svg'>> = (props) => (
   <svg
     viewBox="0 0 264.583 264.583"
     strokeLinecap="round"
@@ -28,9 +26,9 @@ export const Party: React.FC<React.ComponentProps<"svg">> = (props) => (
       strokeWidth="35"
     />
   </svg>
-)
+);
 
-export const Doubled: React.FC<React.ComponentProps<"svg">> = (props) => (
+export const Doubled: React.FC<React.ComponentProps<'svg'>> = (props) => (
   <svg viewBox="0 0 264.583 264.583" fill="none" stroke="currentColor" strokeLinejoin="round" {...props}>
     <path
       d="m88.917 184.678-25.705 25.705 27.363 27.28-13.598 13.019-27.032-27.032-27.198 27.197L9.148 237.83l27.447-27.446-25.788-25.871 13.433-13.019 25.622 25.623 25.456-25.457z"
@@ -43,9 +41,9 @@ export const Doubled: React.FC<React.ComponentProps<"svg">> = (props) => (
       transform="translate(-3.496 -7.055)"
     />
   </svg>
-)
+);
 
-export const Tripled: React.FC<React.ComponentProps<"svg">> = (props) => (
+export const Tripled: React.FC<React.ComponentProps<'svg'>> = (props) => (
   <svg viewBox="0 0 264.583 264.583" fill="none" stroke="currentColor" strokeLinejoin="round" {...props}>
     <path
       d="m85.42 177.623-25.704 25.705 27.363 27.28-13.599 13.019-27.031-27.032-27.198 27.198-13.599-13.019L33.1 203.328 7.31 177.458l13.433-13.02 25.622 25.623 25.456-25.456Z"
@@ -56,9 +54,9 @@ export const Tripled: React.FC<React.ComponentProps<"svg">> = (props) => (
       strokeWidth="10"
     />
   </svg>
-)
+);
 
-export const MoneyBox: React.FC<React.ComponentProps<"svg">> = (props) => (
+export const MoneyBox: React.FC<React.ComponentProps<'svg'>> = (props) => (
   <svg
     strokeLinejoin="round"
     strokeLinecap="round"
@@ -79,4 +77,4 @@ export const MoneyBox: React.FC<React.ComponentProps<"svg">> = (props) => (
     />
     <circle cx="131.582" cy="51.053" r="44.415" strokeWidth="10" />
   </svg>
-)
+);

@@ -10,16 +10,20 @@ import { StripeWebhookRequest } from "../../../schemas"
 import { main } from "./post"
 
 const webhookConstructEvent = jest.fn()
-const customersCreate = jest.fn().mockResolvedValue({ id: "cus_abcdef" })
+const customersCreate = jest.fn()
 
-jest.mock("stripe", () => jest.fn().mockImplementation(() => ({
+jest.mock("stripe", () => jest.fn().mockReturnValue({
   webhooks: {
     get constructEvent() { return webhookConstructEvent },
   },
   customers: {
     get create() { return customersCreate },
   },
-})))
+}))
+
+beforeEach(() => {
+  customersCreate.mockResolvedValue({ id: "cus_abcdef" })
+})
 
 describe("signature validation", () => {
   test("rejects request missing stripe signature", async () => {

@@ -1,20 +1,19 @@
-import * as React from "react"
-import Helmet from "react-helmet"
+import Helmet from 'react-helmet';
 
-import { convert } from "@raise/shared"
-import Page from "../../components/Page"
-import Section, { SectionTitle } from "../../components/Section"
-import Navigation from "../../components/Navigation"
-import Cover, { CTADown } from "../../components/Cover"
-import IntroStats from "../../components/IntroStats"
-import FAQs, { FAQ } from "../../components/FAQs"
-import Philosophy from "../../components/Philosophy"
-import { SocialIconV2 } from "../../components/SocialIcon"
+import { convert } from '@raise/shared';
+import Page from '../../components/Page';
+import Section, { SectionTitle } from '../../components/Section';
+import Navigation from '../../components/Navigation';
+import Cover, { CTADown } from '../../components/Cover';
+import IntroStats from '../../components/IntroStats';
+import FAQs, { FAQ } from '../../components/FAQs';
+import Philosophy from '../../components/Philosophy';
+import { SocialIconV2 } from '../../components/SocialIcon';
 
-import Panel from "../../components/Panel"
+import Panel from '../../components/Panel';
 
-import { Doubled, MoneyBox, Party } from "../../images/Icons"
-import Footer from "../../components/Footer"
+import { Doubled, MoneyBox, Party } from '../../images/Icons';
+import Footer from '../../components/Footer';
 
 const IndexPage = () => (
   <Page>
@@ -25,17 +24,17 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Home", href: "/oxford/" },
-          { text: "How It Works", href: "/oxford/#how-it-works" },
-          { text: "FAQs", href: "/oxford/#faq" },
-          { text: "Our Philosophy", href: "/oxford/#our-philosophy" },
-          { text: "Contact", href: "/oxford/#contact" },
-          { text: "Partner", href: "/oxford/partner/" },
+          { text: 'Home', href: '/oxford/' },
+          { text: 'How It Works', href: '/oxford/#how-it-works' },
+          { text: 'FAQs', href: '/oxford/#faq' },
+          { text: 'Our Philosophy', href: '/oxford/#our-philosophy' },
+          { text: 'Contact', href: '/oxford/#contact' },
+          { text: 'Partner', href: '/oxford/partner/' },
         ]}
         right={[
           {
-            text: "Donate now!",
-            href: "https://www.joinraise.org/oxford/donate/",
+            text: 'Donate now!',
+            href: 'https://www.joinraise.org/oxford/donate/',
           },
         ]}
       />
@@ -47,7 +46,7 @@ const IndexPage = () => (
             years: 2,
             students: 82 + 95,
             raised: 13958 + 17004,
-            protected: convert.moneyToPeopleProtected("gbp", 1375872 + 1700381),
+            protected: convert.moneyToPeopleProtected('gbp', 1375872 + 1700381),
           }}
         />
       </Section>
@@ -98,35 +97,54 @@ const IndexPage = () => (
             movement:
           </p>
           <p>
-            <b>Raise Reps:</b> Reps are ambassadors for Raise, and a central
+            <b>Raise Reps:</b>
+            {' '}
+            Reps are ambassadors for Raise, and a central
             part of Raise’s community, helping to share our philosophy and what
-            we do with the Oxford community.{" "}
-            <a href="https://forms.gle/f22GkSokt38hSfd48">Click here</a> to find
+            we do with the Oxford community.
+            {' '}
+            <a href="https://forms.gle/f22GkSokt38hSfd48">Click here</a>
+            {' '}
+            to find
             out more about the rep role and to sign up.
           </p>
           <p>
-            <b>Spread the word:</b> Letting your friends know about Raise is one
+            <b>Spread the word:</b>
+            {' '}
+            Letting your friends know about Raise is one
             of the most valuable things you can do - aside from the huge impact
             of their donations, celebrating is more fun when we do it together!
             Why not show them our website, share our posts on social media, and
-            invite friends to follow our{" "}
-            <a href="https://www.facebook.com/raiseoxford">Facebook</a> and{" "}
-            <a href="https://www.instagram.com/raiseoxford/">Instagram</a> pages
+            invite friends to follow our
+            {' '}
+            <a href="https://www.facebook.com/raiseoxford">Facebook</a>
+            {' '}
+            and
+            {' '}
+            <a href="https://www.instagram.com/raiseoxford/">Instagram</a>
+            {' '}
+            pages
             themselves?
           </p>
           <p>
-            <b>Committee:</b> If you really want to shape the future of Raise,
+            <b>Committee:</b>
+            {' '}
+            If you really want to shape the future of Raise,
             you could apply to join our committee, which coordinates everything
             we do, from events and partnerships to fundraising and publicity.
             Applications are now closed for our 2022/23 committee, but look out
             for applications reopening in Trinity 2023!
           </p>
           <p>
-            <b>Sponsorship:</b> The support of our generous partners is
+            <b>Sponsorship:</b>
+            {' '}
+            The support of our generous partners is
             invaluable for helping us to put on our summer celebration at the
             end of each year. If you know anyone who may be interested in
-            supporting Raise and allowing us to grow even more, please do{" "}
-            <a href="./#contact">get in touch</a>.
+            supporting Raise and allowing us to grow even more, please do
+            {' '}
+            <a href="./#contact">get in touch</a>
+            .
           </p>
         </FAQ>
 
@@ -138,31 +156,42 @@ const IndexPage = () => (
             this. You might spread our message through:
           </p>
           <p>
-            <b>Conversations:</b> The most important part of the role! Talk
+            <b>Conversations:</b>
+            {' '}
+            The most important part of the role! Talk
             about Raise with others in your college, departments, and social
             groups - the ask is significant and requires some thought, so this
             is how most people come to join.
           </p>
           <p>
-            <b>Social Media:</b> Engage regularly with Raise’s posts, invite
+            <b>Social Media:</b>
+            {' '}
+            Engage regularly with Raise’s posts, invite
             friends to follow the page, and share things at key moments. Share
             the Raise philosophy on any groups you are in to try and get as many
             people involved as possible!
           </p>
           <p>
-            <b>Your own ideas!:</b> We love it when reps suggest and implement
+            <b>Your own ideas!:</b>
+            {' '}
+            We love it when reps suggest and implement
             their own ideas for spreading the word and engaging new students.
             Equally, if there’s anything at all we could be doing better,
             there’s nobody better to point it out!
           </p>
           <p>
-            Or you could be a <b>Lead Rep</b>, who takes responsibility for
+            Or you could be a
+            {' '}
+            <b>Lead Rep</b>
+            , who takes responsibility for
             publicity within college. This will involve sharing posts and
             messages to college, putting up posters and potentially hosting your
             own outreach events.
           </p>
           <p>
-            <a href="https://forms.gle/f22GkSokt38hSfd48">Sign up</a> to be a
+            <a href="https://forms.gle/f22GkSokt38hSfd48">Sign up</a>
+            {' '}
+            to be a
             rep.
           </p>
         </FAQ>
@@ -178,8 +207,11 @@ const IndexPage = () => (
             As such, whilst we recommend £150, you are welcome to join Raise by
             making a donation of a size which is significant to you and allows
             you to put charity at the heart of your end-of-year celebrations. It
-            is central to our philosophy (see{" "}
-            <a href="./#our-philosophy">here</a> for more) that students
+            is central to our philosophy (see
+            {' '}
+            <a href="./#our-philosophy">here</a>
+            {' '}
+            for more) that students
             actively engage with their decision to celebrate through giving, but
             we recognise that the donation that enables this will not be the
             same for everyone.
@@ -204,7 +236,9 @@ const IndexPage = () => (
             recommend this figure:
           </p>
           <p>
-            <b>Encouraging considered giving:</b> Raise is all about changing
+            <b>Encouraging considered giving:</b>
+            {' '}
+            Raise is all about changing
             the way students think about charity, and we can only achieve this
             if students engage consciously with the act of donating. By inviting
             students to give an amount that’s personally significant to them, we
@@ -215,13 +249,17 @@ const IndexPage = () => (
             donor.
           </p>
           <p>
-            <b>Impact:</b> Crucially, the recommended amount, coupled with
+            <b>Impact:</b>
+            {' '}
+            Crucially, the recommended amount, coupled with
             matched funding, allows us to have an exceptionally large impact for
             a student charity initiative; your £150 donation, when doubled, can
             help protect over 350 people from malaria.
           </p>
           <p>
-            <b>Ball Symbolism:</b> The £150 figure is representative of the cost
+            <b>Ball Symbolism:</b>
+            {' '}
+            The £150 figure is representative of the cost
             of many ball tickets - this is symbolic of our belief that charity
             can be embraced as an integral part of Trinity celebrations, on a
             par with balls.
@@ -258,11 +296,15 @@ const IndexPage = () => (
             At Raise, we think very carefully about which charity to recommend.
             When students are making such significant donations, we want to make
             sure the money is doing as much good as it possibly can. To make our
-            decision, we have taken the advice of independent charity evaluators{" "}
+            decision, we have taken the advice of independent charity evaluators
+            {' '}
             <a href="https://www.givewell.org/charities/top-charities">
               GiveWell
-            </a>{" "}
-            and <a href="https://www.givingwhatwecan.org">Giving What We Can</a>
+            </a>
+            {' '}
+            and
+            {' '}
+            <a href="https://www.givingwhatwecan.org">Giving What We Can</a>
             , which both rank AMF as one of the most effective charities in the
             world.
           </p>
@@ -271,10 +313,13 @@ const IndexPage = () => (
             disproportionately affecting young children and pregnant women, and
             has a knock-on effect on the local economy. AMF works with local
             partners to provide life-saving bed-nets which protect people as
-            they sleep. To find out more about their work, see{" "}
-            <a href="https://www.againstmalaria.com/">AMF's website</a>. The
+            they sleep. To find out more about their work, see
+            {' '}
+            <a href="https://www.againstmalaria.com/">AMF's website</a>
+            . The
             specific net distributions for which we have funded nets can be seen
-            on{" "}
+            on
+            {' '}
             <a href="https://www.againstmalaria.com/FundraiserGroup.aspx?FundraiserID=8339">
               Raise's dedicated AMF page
             </a>
@@ -361,6 +406,6 @@ const IndexPage = () => (
 
     <Footer />
   </Page>
-)
+);
 
-export default IndexPage
+export default IndexPage;

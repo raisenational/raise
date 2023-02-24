@@ -1,23 +1,23 @@
-import * as React from "react"
-import { Disclosure, DisclosureButton, DisclosurePanel } from "@reach/disclosure"
-import { MenuIcon, XIcon } from "@heroicons/react/outline"
-import classNames from "classnames"
-import { SectionNoPadding } from "./Section"
-import Button from "./Button"
-import Link from "./Link"
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
+import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import classNames from 'classnames';
+import { useState } from 'react';
+import { SectionNoPadding } from './Section';
+import Button from './Button';
+import Link from './Link';
 
-interface Link { text: string, href?: string, onClick?: React.MouseEventHandler }
+interface LinkDefinition { text: string, href?: string, onClick?: React.MouseEventHandler }
 
-const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) => {
-  const [open, setOpen] = React.useState(false)
+const Navigation: React.FC<{ left: LinkDefinition[], right: LinkDefinition[] }> = ({ left, right }) => {
+  const [open, setOpen] = useState(false);
 
   return (
-    <nav className={classNames("text-3xl md:text-xl lg:text-2xl md:bg-transparent", { "bg-raise-purple": open })}>
+    <nav className={classNames('text-3xl md:text-xl lg:text-2xl md:bg-transparent', { 'bg-raise-purple': open })}>
       <Disclosure open={open} onChange={() => setOpen(!open)}>
         <SectionNoPadding>
           {/* Mobile nav: menu button */}
           <div className="text-left pt-4 md:hidden">
-            <DisclosureButton className="p-2 rounded outline-none focus:ring-2 focus:ring-white" aria-label={open ? "Close main menu" : "Open main menu"}>
+            <DisclosureButton className="p-2 rounded outline-none focus:ring-2 focus:ring-white" aria-label={open ? 'Close main menu' : 'Open main menu'}>
               {open ? (
                 <XIcon className="block h-8 w-8" />
               ) : (
@@ -62,7 +62,7 @@ const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) 
                       key={item.text}
                       href={item.href}
                       onClick={item.onClick}
-                      className={classNames("hover:text-gray-100 transform transition-all duration-250 scale-100 hover:scale-105 p-2", { "pl-0": i === 0 })}
+                      className={classNames('hover:text-gray-100 transform transition-all duration-250 scale-100 hover:scale-105 p-2', { 'pl-0': i === 0 })}
                     >
                       {item.text}
                     </Link>
@@ -83,21 +83,21 @@ const Navigation: React.FC<{ left: Link[], right: Link[] }> = ({ left, right }) 
         </SectionNoPadding>
       </Disclosure>
     </nav>
-  )
-}
+  );
+};
 
 export const TopNavigation: React.FC = () => (
   <Navigation
     left={[
-      { text: "Home", href: "/" },
-      { text: "Our Chapters", href: "/chapters/" },
-      { text: "Alumni", href: "/alumni/" },
-      { text: "Team", href: "/team/" },
+      { text: 'Home', href: '/' },
+      { text: 'Our Chapters', href: '/chapters/' },
+      { text: 'Alumni', href: '/alumni/' },
+      { text: 'Team', href: '/team/' },
     ]}
     right={[
-      { text: "Find your chapter", href: "/chapters/" },
+      { text: 'Find your chapter', href: '/chapters/' },
     ]}
   />
-)
+);
 
-export default Navigation
+export default Navigation;

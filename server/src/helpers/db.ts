@@ -23,7 +23,7 @@ const requestHandler = new NodeHttpHandler({
 const dynamoDBClient = env.STAGE === "local"
   ? new DynamoDBClient({
     region: "localhost",
-    endpoint: "http://localhost:8004",
+    endpoint: "http://0.0.0.0:8004",
     credentials: { accessKeyId: "DEFAULT_ACCESS_KEY", secretAccessKey: "DEFAULT_SECRET" },
     requestHandler,
   })

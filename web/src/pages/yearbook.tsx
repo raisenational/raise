@@ -1,4 +1,3 @@
-import * as React from "react"
-import YearbookPage from "../components/YearbookPage"
+import YearbookPage from '../components/YearbookPage';
 
-export default () => <YearbookPage brand="Raise" />
+export default () => <YearbookPage brand="Raise" />;

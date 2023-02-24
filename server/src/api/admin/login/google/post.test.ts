@@ -1,6 +1,8 @@
+import { OAuth2Client } from "google-auth-library"
 import createHttpError from "http-errors"
 import { call } from "../../../../../local/testHelpers"
 import env from "../../../../env/env"
+import { login } from "../../../../helpers/login"
 import { main } from "./post"
 
 const googleTokenPayload = {
@@ -14,20 +16,26 @@ const googleTokenPayload = {
 }
 
 const getPayload = jest.fn()
-const verifyIdToken = jest.fn().mockResolvedValue({ getPayload })
+const verifyIdToken = jest.fn()
 
 jest.mock("google-auth-library", () => ({
-  OAuth2Client: jest.fn().mockImplementation(() => ({
-    verifyIdToken,
-  })),
+  OAuth2Client: jest.fn(),
 }))
 
 jest.mock("../../../../helpers/login", () => ({
-  login: jest.fn().mockImplementation((email) => {
+  login: jest.fn(),
+}))
+
+beforeEach(() => {
+  (login as unknown as jest.Mock).mockImplementation((email) => {
     if (email === "test@joinraise.org") return { accessToken: "mock", expiresAt: 0, groups: [] }
     throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`)
-  }),
-}))
+  });
+  (OAuth2Client as unknown as jest.Mock).mockImplementation(() => ({
+    verifyIdToken,
+  }))
+  verifyIdToken.mockResolvedValue({ getPayload })
+})
 
 test("get working access token for valid Google token", async () => {
   getPayload.mockReturnValue(googleTokenPayload)

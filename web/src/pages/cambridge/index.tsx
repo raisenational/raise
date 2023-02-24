@@ -1,22 +1,19 @@
-import * as React from "react"
-import Helmet from "react-helmet"
-import { withAssetPrefix } from "gatsby"
+import Helmet from 'react-helmet';
+import { convert } from '@raise/shared';
+import Page from '../../components/Page';
+import Section, { SectionTitle } from '../../components/Section';
+import Navigation from '../../components/Navigation';
+import Cover, { CTADown } from '../../components/Cover';
+import IntroStats from '../../components/IntroStats';
+import FAQs, { FAQ } from '../../components/FAQs';
+import Philosophy from '../../components/Philosophy';
+import { SocialIconV2 } from '../../components/SocialIcon';
+import Panel from '../../components/Panel';
 
-import { convert } from "@raise/shared"
-import Page from "../../components/Page"
-import Section, { SectionTitle } from "../../components/Section"
-import Navigation from "../../components/Navigation"
-import Cover, { CTADown } from "../../components/Cover"
-import IntroStats from "../../components/IntroStats"
-import FAQs, { FAQ } from "../../components/FAQs"
-import Philosophy from "../../components/Philosophy"
-import { SocialIconV2 } from "../../components/SocialIcon"
-import Panel from "../../components/Panel"
-
-import { Doubled, MoneyBox, Party } from "../../images/Icons"
-import Footer from "../../components/Footer"
-import Button from "../../components/Button"
-import config from "./_config"
+import { Doubled, MoneyBox, Party } from '../../images/Icons';
+import Footer from '../../components/Footer';
+import Button from '../../components/Button';
+import config from './_config';
 
 const IndexPage = () => (
   <Page brand={config.brand}>
@@ -27,17 +24,17 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Home", href: "." },
-          { text: "How It Works", href: "#how-it-works" },
-          { text: "FAQs", href: "#faq" },
-          { text: "Our Philosophy", href: "#our-philosophy" },
-          { text: "Contact", href: "#contact" },
-          { text: "Partner", href: "partner/" },
+          { text: 'Home', href: '.' },
+          { text: 'How It Works', href: '#how-it-works' },
+          { text: 'FAQs', href: '#faq' },
+          { text: 'Our Philosophy', href: '#our-philosophy' },
+          { text: 'Contact', href: '#contact' },
+          { text: 'Partner', href: 'partner/' },
         ]}
         right={[
           {
-            text: "Donate",
-            href: "donate/",
+            text: 'Donate',
+            href: 'donate/',
           },
         ]}
       />
@@ -49,7 +46,7 @@ const IndexPage = () => (
             years: 4 + 1,
             students: 1089 + 385,
             raised: 228296 + 52735,
-            protected: 269737 + convert.moneyToPeopleProtected("gbp", 5273585),
+            protected: 269737 + convert.moneyToPeopleProtected('gbp', 5273585),
           }}
         />
         <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
@@ -108,41 +105,63 @@ const IndexPage = () => (
             movement:
           </p>
           <p>
-            <b>Spread the word:</b> Letting your friends know about MWA is one
+            <b>Spread the word:</b>
+            {' '}
+            Letting your friends know about MWA is one
             of the most valuable things you can do - aside from the huge impact
             of their donations, celebrating is more fun when we do it together!
             Why not show them our website, share our posts on social media, and
-            invite friends to follow our{" "}
-            <a href="https://www.facebook.com/mayweekalternative">Facebook</a>{" "}
-            and{" "}
-            <a href="https://www.instagram.com/mayweekalternative">Instagram</a>{" "}
+            invite friends to follow our
+            {' '}
+            <a href="https://www.facebook.com/mayweekalternative">Facebook</a>
+            {' '}
+            and
+            {' '}
+            <a href="https://www.instagram.com/mayweekalternative">Instagram</a>
+            {' '}
             pages themselves?
           </p>
           <p>
-            <b>Committee:</b> If you really want to shape the future of MWA, you
+            <b>Committee:</b>
+            {' '}
+            If you really want to shape the future of MWA, you
             could apply to join our committee, which coordinates everything we
             do, from events and partnerships to fundraising and publicity.
             Applications for the next academic year will open in the spring, but
             we're always interested in hearing from people who want to get
-            involved - register your interest{" "}
-            <a href="https://forms.gle/f5eu3d2fifRWSsqs5">here</a>!
+            involved - register your interest
+            {' '}
+            <a href="https://forms.gle/f5eu3d2fifRWSsqs5">here</a>
+            !
           </p>
           <p>
-            <b>MWA Reps:</b> Becoming an MWA rep is a low-commitment and
+            <b>MWA Reps:</b>
+            {' '}
+            Becoming an MWA rep is a low-commitment and
             flexible role for people who want to spread the message in their
             college, society or social group. Applications for next academic
             year will open in May Week, but we're always interested in hearing
-            from people who want to get involved - register your interest{" "}
-            <a href="https://forms.gle/f5eu3d2fifRWSsqs5">here</a>!
+            from people who want to get involved - register your interest
+            {' '}
+            <a href="https://forms.gle/f5eu3d2fifRWSsqs5">here</a>
+            !
           </p>
           <p>
-            <b>Sponsorship:</b> In order to put on our Summer Party at the end
+            <b>Sponsorship:</b>
+            {' '}
+            In order to put on our Summer Party at the end
             of each year, we rely entirely on the support of our generous
             partners, including Cambridge colleges, businesses and individuals.
             If you know anyone who may be interested in supporting MWA and
-            allowing us to grow even more, please do{" "}
-            <a href="#contact">get in touch</a> or visit our{" "}
-            <a href="./partner/">Partner page</a> for more info.
+            allowing us to grow even more, please do
+            {' '}
+            <a href="#contact">get in touch</a>
+            {' '}
+            or visit our
+            {' '}
+            <a href="./partner/">Partner page</a>
+            {' '}
+            for more info.
           </p>
         </FAQ>
 
@@ -157,7 +176,10 @@ const IndexPage = () => (
             As such, whilst we recommend £150, you are welcome to join MWA by
             making a donation of a size which is significant to you and allows
             you to put charity at the heart of your May Week celebrations. It is
-            central to our philosophy (see <a href="#our-philosophy">here</a>{" "}
+            central to our philosophy (see
+            {' '}
+            <a href="#our-philosophy">here</a>
+            {' '}
             for more) that students actively engage with their decision to
             celebrate May Week through giving, but we recognise that the
             donation that enables this will not be the same for everyone.
@@ -182,7 +204,9 @@ const IndexPage = () => (
             recommend this figure:
           </p>
           <p>
-            <b>Encouraging considered giving:</b> MWA is all about changing the
+            <b>Encouraging considered giving:</b>
+            {' '}
+            MWA is all about changing the
             way students think about charity, and we can only achieve this if
             students engage consciously with the act of donating. By inviting
             students to give an amount that’s personally significant to them, we
@@ -193,13 +217,17 @@ const IndexPage = () => (
             donor.
           </p>
           <p>
-            <b>Impact:</b> Crucially, the recommended amount, coupled with
+            <b>Impact:</b>
+            {' '}
+            Crucially, the recommended amount, coupled with
             matched funding, allows us to have an exceptionally large impact for
             a student charity initiative your £150 donation, when doubled, can
             help protect over 350 people from malaria.
           </p>
           <p>
-            <b>May Week Symbolism:</b> The £150 figure is representative of the
+            <b>May Week Symbolism:</b>
+            {' '}
+            The £150 figure is representative of the
             cost of some May Ball tickets - this is symbolic of our belief that
             charity can be embraced as an integral part of May Week, on a par
             with May Balls.
@@ -236,11 +264,15 @@ const IndexPage = () => (
             At MWA, we think very carefully about which charity to recommend.
             When students are making such significant donations, we want to make
             sure the money is doing as much good as it possibly can. To make our
-            decision, we have taken the advice of independent charity evaluators{" "}
+            decision, we have taken the advice of independent charity evaluators
+            {' '}
             <a href="https://www.givewell.org/charities/top-charities">
               GiveWell
-            </a>{" "}
-            and <a href="https://www.givingwhatwecan.org">Giving What We Can</a>
+            </a>
+            {' '}
+            and
+            {' '}
+            <a href="https://www.givingwhatwecan.org">Giving What We Can</a>
             , which both rank AMF as one of the most effective charities in the
             world.
           </p>
@@ -249,10 +281,13 @@ const IndexPage = () => (
             disproportionately affecting young children and pregnant women, and
             has a knock-on effect on the local economy. AMF works with local
             partners to provide life-saving bed-nets which protect people as
-            they sleep. To find out more about their work, see{" "}
-            <a href="https://www.againstmalaria.com/">AMF's website</a>. The
+            they sleep. To find out more about their work, see
+            {' '}
+            <a href="https://www.againstmalaria.com/">AMF's website</a>
+            . The
             specific net distributions for which we have funded nets can be seen
-            on{" "}
+            on
+            {' '}
             <a href="https://www.againstmalaria.com/FundraiserGroup.aspx?FundraiserID=8339">
               MWA's dedicated AMF page
             </a>
@@ -339,6 +374,6 @@ const IndexPage = () => (
 
     <Footer />
   </Page>
-)
+);
 
-export default IndexPage
+export default IndexPage;

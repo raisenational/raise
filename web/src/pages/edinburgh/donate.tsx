@@ -1,9 +1,8 @@
-import * as React from "react"
-import DonationPage from "../../components/DonationPage"
-import config from "./_config"
+import DonationPage from '../../components/DonationPage';
+import config from './_config';
 
 const Page = () => (
   <DonationPage {...config} />
-)
+);
 
-export default Page
+export default Page;

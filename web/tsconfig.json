@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "esnext",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "lib": [
       "dom",
       "es2015",
@@ -15,7 +15,8 @@
     "skipLibCheck": true,
   },
   "include": [
-    "src/**/*",
+    "**/*.ts",
+    "**/*.tsx",
     "serverless.ts"
   ]
 }

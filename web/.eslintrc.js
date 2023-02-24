@@ -1,99 +1,24 @@
 module.exports = {
-  "parser": "@typescript-eslint/parser",
-  "extends": [
-    "eslint-config-blvd/react"
+  extends: [
+    'eslint-config-domdomegg',
   ],
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "project": "./tsconfig.json",
-    "tsconfigRootDir": __dirname,
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
-  "rules": {
-    "max-len": "off",
-    "object-curly-newline": "warn",
-    "quotes": [
-      "warn",
-      "double"
-    ],
-    "no-plusplus": [
-      "warn",
+  rules: {
+    'no-restricted-imports': [
+      'error',
       {
-        "allowForLoopAfterthoughts": true
-      }
-    ],
-    "semi": [
-      "warn",
-      "never"
-    ],
-    "comma-dangle": [
-      "warn",
-      "always-multiline"
-    ],
-    "no-restricted-imports": [
-      "error",
-      {
-        "paths": [
+        paths: [
           {
-            "name": "axios",
-            "importNames": [
-              "default",
-              "axios"
+            name: 'axios',
+            importNames: [
+              'default',
+              'axios',
             ],
-            "message": "Use src/components/networking.ts instead"
+            message: 'Use src/components/networking.ts instead',
           },
-        ]
-      }
+        ],
+      },
     ],
-    "import/prefer-default-export": "off",
-    "comma-spacing": "off",
-    "@typescript-eslint/comma-spacing": "error",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
-    "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/member-delimiter-style": [
-      "warn",
-      {
-        "multiline": {
-          "delimiter": "comma",
-          "requireLast": true
-        },
-        "singleline": {
-          "delimiter": "comma",
-          "requireLast": false
-        }
-      }
-    ],
-    "react/jsx-one-expression-per-line": "off",
-    "react/require-default-props": "off",
-    "react/jsx-props-no-spreading": "off", // for react-hook-form
-    "react/jsx-indent": "warn",
-    "react/no-unescaped-entities": [
-      "error",
-      {
-        "forbid": [
-          {
-            "char": ">",
-            "alternatives": [
-              "&gt;"
-            ]
-          },
-          {
-            "char": "}",
-            "alternatives": [
-              "&#125;"
-            ]
-          }
-        ]
-      }
-    ]
-  }
-}
+    'import/prefer-default-export': ['off'],
+    '@typescript-eslint/comma-dangle': ['off'],
+  },
+};

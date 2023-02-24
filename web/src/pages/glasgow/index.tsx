@@ -1,20 +1,19 @@
-import * as React from "react"
-import Helmet from "react-helmet"
+import Helmet from 'react-helmet';
 
-import { convert } from "@raise/shared"
-import Page from "../../components/Page"
-import Section, { SectionTitle } from "../../components/Section"
-import Navigation from "../../components/Navigation"
-import Cover, { CTADown } from "../../components/Cover"
-import IntroStats from "../../components/IntroStats"
-import FAQs, { FAQ } from "../../components/FAQs"
-import Philosophy from "../../components/Philosophy"
-import { SocialIconV2 } from "../../components/SocialIcon"
+import { convert } from '@raise/shared';
+import Page from '../../components/Page';
+import Section, { SectionTitle } from '../../components/Section';
+import Navigation from '../../components/Navigation';
+import Cover, { CTADown } from '../../components/Cover';
+import IntroStats from '../../components/IntroStats';
+import FAQs, { FAQ } from '../../components/FAQs';
+import Philosophy from '../../components/Philosophy';
+import { SocialIconV2 } from '../../components/SocialIcon';
 
-import Panel from "../../components/Panel"
+import Panel from '../../components/Panel';
 
-import { Doubled, MoneyBox, Party } from "../../images/Icons"
-import Footer from "../../components/Footer"
+import { Doubled, MoneyBox, Party } from '../../images/Icons';
+import Footer from '../../components/Footer';
 
 const IndexPage = () => (
   <Page>
@@ -25,11 +24,11 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Home", href: "/glasgow/" },
-          { text: "How It Works", href: "/glasgow/#how-it-works" },
-          { text: "FAQs", href: "/glasgow/#faq" },
-          { text: "Our Philosophy", href: "/glasgow/#our-philosophy" },
-          { text: "Contact", href: "/glasgow/#contact" },
+          { text: 'Home', href: '/glasgow/' },
+          { text: 'How It Works', href: '/glasgow/#how-it-works' },
+          { text: 'FAQs', href: '/glasgow/#faq' },
+          { text: 'Our Philosophy', href: '/glasgow/#our-philosophy' },
+          { text: 'Contact', href: '/glasgow/#contact' },
         ]}
         right={[]}
       />
@@ -41,7 +40,7 @@ const IndexPage = () => (
             years: 1 + 1,
             students: 90 + 58,
             raised: 9733 + 6294,
-            protected: 12170 + convert.moneyToPeopleProtected("gbp", 629437),
+            protected: 12170 + convert.moneyToPeopleProtected('gbp', 629437),
           }}
         />
       </Section>
@@ -88,8 +87,11 @@ const IndexPage = () => (
         <FAQ title="Sounds great, where do I sign up?">
           <p>
             Awesome! We're not yet open for committee applications, but you can
-            follow us on{" "}
-            <a href="https://www.facebook.com/raiseglasgow">Facebook</a> to keep
+            follow us on
+            {' '}
+            <a href="https://www.facebook.com/raiseglasgow">Facebook</a>
+            {' '}
+            to keep
             up to date with the latest opportunities.
           </p>
         </FAQ>
@@ -101,29 +103,44 @@ const IndexPage = () => (
             movement:
           </p>
           <p>
-            <b>Spread the word:</b> Letting your friends know about Raise is one
+            <b>Spread the word:</b>
+            {' '}
+            Letting your friends know about Raise is one
             of the most valuable things you can do - aside from the huge impact
             of their donations, celebrating is more fun when we do it together!
             Why not show them our website, share our posts on social media, and
-            invite friends to follow our{" "}
-            <a href="https://www.facebook.com/raiseglasgow">Facebook</a> and{" "}
-            <a href="https://www.instagram.com/raiseglasgow/">Instagram</a>{" "}
+            invite friends to follow our
+            {' '}
+            <a href="https://www.facebook.com/raiseglasgow">Facebook</a>
+            {' '}
+            and
+            {' '}
+            <a href="https://www.instagram.com/raiseglasgow/">Instagram</a>
+            {' '}
             pages themselves?
           </p>
           <p>
-            <b>Committee:</b> If you really want to shape the future of Raise,
+            <b>Committee:</b>
+            {' '}
+            If you really want to shape the future of Raise,
             you could apply to join our committee, which coordinates everything
             we do, from events and partnerships to fundraising and publicity.
-            Applications for the next academic year are open{" "}
-            <a href="https://forms.gle/Eo4w7mfhr35bmm5F6">here</a>, but we're
+            Applications for the next academic year are open
+            {' '}
+            <a href="https://forms.gle/Eo4w7mfhr35bmm5F6">here</a>
+            , but we're
             always interested in hearing from people who want to get involved!
           </p>
           <p>
-            <b>Sponsorship:</b> The support of our generous partners is
+            <b>Sponsorship:</b>
+            {' '}
+            The support of our generous partners is
             invaluable for helping us to put on our summer celebration at the
             end of each year. If you know anyone who may be interested in
-            supporting Raise and allowing us to grow even more, please do{" "}
-            <a href="./#contact">get in touch</a>.
+            supporting Raise and allowing us to grow even more, please do
+            {' '}
+            <a href="./#contact">get in touch</a>
+            .
           </p>
         </FAQ>
 
@@ -138,8 +155,11 @@ const IndexPage = () => (
             As such, whilst we recommend £75, you are welcome to join Raise by
             making a donation of a size which is significant to you and allows
             you to put charity at the heart of your end-of-year celebrations. It
-            is central to our philosophy (see{" "}
-            <a href="./#our-philosophy">here</a> for more) that students
+            is central to our philosophy (see
+            {' '}
+            <a href="./#our-philosophy">here</a>
+            {' '}
+            for more) that students
             actively engage with their decision to celebrate through giving, but
             we recognise that the donation that enables this will not be the
             same for everyone.
@@ -164,7 +184,9 @@ const IndexPage = () => (
             recommend this figure:
           </p>
           <p>
-            <b>Encouraging considered giving:</b> Raise is all about changing
+            <b>Encouraging considered giving:</b>
+            {' '}
+            Raise is all about changing
             the way students think about charity, and we can only achieve this
             if students engage consciously with the act of donating. By inviting
             students to give an amount that’s personally significant to them, we
@@ -175,7 +197,9 @@ const IndexPage = () => (
             donor.
           </p>
           <p>
-            <b>Impact:</b> Crucially, the recommended amount, coupled with
+            <b>Impact:</b>
+            {' '}
+            Crucially, the recommended amount, coupled with
             matched funding, allows us to have an exceptionally large impact for
             a student charity initiative; your £75 donation, when doubled, can
             help protect over 170 people from malaria.
@@ -202,11 +226,15 @@ const IndexPage = () => (
             At Raise, we think very carefully about which charity to recommend.
             When students are making such significant donations, we want to make
             sure the money is doing as much good as it possibly can. To make our
-            decision, we have taken the advice of independent charity evaluators{" "}
+            decision, we have taken the advice of independent charity evaluators
+            {' '}
             <a href="https://www.givewell.org/charities/top-charities">
               GiveWell
-            </a>{" "}
-            and <a href="https://www.givingwhatwecan.org">Giving What We Can</a>
+            </a>
+            {' '}
+            and
+            {' '}
+            <a href="https://www.givingwhatwecan.org">Giving What We Can</a>
             , which both rank AMF as one of the most effective charities in the
             world.
           </p>
@@ -215,10 +243,13 @@ const IndexPage = () => (
             disproportionately affecting young children and pregnant women, and
             has a knock-on effect on the local economy. AMF works with local
             partners to provide life-saving bed-nets which protect people as
-            they sleep. To find out more about their work, see{" "}
-            <a href="https://www.againstmalaria.com/">AMF's website</a>. The
+            they sleep. To find out more about their work, see
+            {' '}
+            <a href="https://www.againstmalaria.com/">AMF's website</a>
+            . The
             specific net distributions for which we have funded nets can be seen
-            on{" "}
+            on
+            {' '}
             <a href="https://www.againstmalaria.com/FundraiserGroup.aspx?FundraiserID=8339">
               Raise's dedicated AMF page
             </a>
@@ -299,6 +330,6 @@ const IndexPage = () => (
 
     <Footer />
   </Page>
-)
+);
 
-export default IndexPage
+export default IndexPage;

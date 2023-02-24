@@ -1,19 +1,18 @@
-import * as React from "react"
-import Helmet from "react-helmet"
+import Helmet from 'react-helmet';
 
-import Page from "../../components/Page"
-import Section, { SectionTitle } from "../../components/Section"
-import Navigation from "../../components/Navigation"
-import FAQs, { FAQ } from "../../components/FAQs"
-import Philosophy from "../../components/Philosophy"
-import { SocialIconV2 } from "../../components/SocialIcon"
-import Panel from "../../components/Panel"
-import Footer from "../../components/Footer"
-import Button from "../../components/Button"
+import Page from '../../components/Page';
+import Section, { SectionTitle } from '../../components/Section';
+import Navigation from '../../components/Navigation';
+import FAQs, { FAQ } from '../../components/FAQs';
+import Philosophy from '../../components/Philosophy';
+import { SocialIconV2 } from '../../components/SocialIcon';
+import Panel from '../../components/Panel';
+import Footer from '../../components/Footer';
+import Button from '../../components/Button';
 
-import { Doubled, MoneyBox, Party } from "../../images/Icons"
-import IntroStats from "../../components/IntroStats"
-import Cover, { CTADown } from "../../components/Cover"
+import { Doubled, MoneyBox, Party } from '../../images/Icons';
+import IntroStats from '../../components/IntroStats';
+import Cover, { CTADown } from '../../components/Cover';
 
 const IndexPage = () => (
   <Page>
@@ -26,13 +25,13 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: "Home", href: "/demo/" },
-          { text: "How It Works", href: "/demo/#how-it-works" },
-          { text: "FAQs", href: "/demo/#faq" },
-          { text: "Our Philosophy", href: "/demo/#our-philosophy" },
-          { text: "Contact", href: "/demo/#contact" },
+          { text: 'Home', href: '/demo/' },
+          { text: 'How It Works', href: '/demo/#how-it-works' },
+          { text: 'FAQs', href: '/demo/#faq' },
+          { text: 'Our Philosophy', href: '/demo/#our-philosophy' },
+          { text: 'Contact', href: '/demo/#contact' },
         ]}
-        right={[{ text: "Donate", href: "/demo/donate" }]}
+        right={[{ text: 'Donate', href: '/demo/donate' }]}
       />
       <Section className="px-8">
         <IntroStats
@@ -46,8 +45,9 @@ const IndexPage = () => (
           }}
         />
         <Button variant="outline" className="mt-4 mb-12" href="/demo/donate">
-          {" "}
-          Donate{" "}
+          {' '}
+          Donate
+          {' '}
         </Button>
       </Section>
       <CTADown text="How it works" href="#how-it-works" />
@@ -92,8 +92,10 @@ const IndexPage = () => (
       <FAQs>
         <FAQ title="Sounds great, where do I sign up?">
           <p>
-            Awesome! This isn't a real chapter, but you can view our real ones{" "}
-            <a href="/">here</a>!
+            Awesome! This isn't a real chapter, but you can view our real ones
+            {' '}
+            <a href="/">here</a>
+            !
           </p>
         </FAQ>
 
@@ -103,8 +105,10 @@ const IndexPage = () => (
             celebrating with you!
           </p>
           <p>
-            If you're interested in helping out,{" "}
-            <a href="/demo/#contact">get in touch</a>.
+            If you're interested in helping out,
+            {' '}
+            <a href="/demo/#contact">get in touch</a>
+            .
           </p>
         </FAQ>
       </FAQs>
@@ -127,6 +131,6 @@ const IndexPage = () => (
 
     <Footer />
   </Page>
-)
+);
 
-export default IndexPage
+export default IndexPage;
