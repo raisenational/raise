@@ -31,7 +31,7 @@ const IndexPage = () => (
           { text: 'Contact', href: '#contact' },
         ]}
         right={[
-          { text: 'Donate', href: 'https://www.joinraise.org/bristol/donate/' },
+          { text: 'Donate', href: 'donate/' },
         ]}
       />
       <Section className="px-8">
