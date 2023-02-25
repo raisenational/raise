@@ -216,6 +216,7 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
               </div>
               <p>
                 For more about our philosophy of celebrating deliberate, effective giving, see our
+                {' '}
                 <Link href="/">homepage</Link>
                 .
               </p>
@@ -226,17 +227,22 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
               {/* TODO: host this image ourselves */}
               <img alt="" src="https://upload.wikimedia.org/wikipedia/en/6/6b/Against_Malaria_Foundation.svg" height={160} width={95} className="hidden sm:block mr-6" />
               <div className="flex-1">
-                <p className="mb-2">Our recommended charity is the Against Malaria Foundation, which distributes long-lasting insecticide-treated nets for protection against malaria in developing countries. </p>
+                <p className="mb-2">Our recommended charity is the Against Malaria Foundation, which distributes long-lasting insecticide-treated nets for protection against malaria in developing countries.</p>
                 <p className="mb-2">
                   Every year, malaria kills about 400,000 people, with a further 200 million falling ill; this burden of disease falls disproportionately on young children and pregnant women. The most effective means of preventing malaria is sleeping under a mosquito net, specifically a long-lasting insecticide treated net (LLIN). AMF works with local partners in a number of countries, predominantly in sub-Saharan Africa, to distribute these nets which protect people as they sleep. For more information about the work they do,
+                  {' '}
                   <a href="https://www.againstmalaria.com/" target="_blank" rel="noreferrer">see here</a>
                   .
                   {' '}
                 </p>
                 <p>
-                  We recommend AMF particularly because they are also independently rated as one of the most cost-effective charities in the world, by organisations such as GiveWell. For a thorough evaluation of the work that they do, check out
+                  When you're making such significant donation, we want to make sure the money is doing as much good as it possibly can. To make our decision, we have taken the advice of independent charity evaluators GiveWell and Giving What We Can, which both rank AMF as one of the most effective charities in the world. We recommend AMF particularly because they are also independently rated as one of the most cost-effective charities in the world, by organisations such as GiveWell. For a thorough evaluation of the work that they do, check out
+                  {' '}
                   <a href="https://www.givewell.org/charities/amf" target="_blank" rel="noreferrer">GiveWell's report on AMF</a>
                   .
+                </p>
+                <p>
+                  If you'd like celebrate giving to a different charity that you've thought carefully about, do get in touch! We can add you to the donor wall, and keep you updated with information about plans for the Summer Party.
                 </p>
               </div>
             </div>
@@ -527,6 +533,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
       {fundraiser.matchFundingRate !== 0 && fundraiser.matchFundingPerDonationLimit !== null && fundraiser.matchFundingRemaining !== 0 && (
       <p className="mt-1">
         All donations will be matched up to
+        {' '}
         {format.amountShort(fundraiser.currency, fundraiser.matchFundingPerDonationLimit)}
         {' '}
         per donor.
@@ -538,8 +545,10 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
         label={(
           <span>
             Add 25%
+            {' '}
             <span className="hidden md:inline">to my donation </span>
             through
+            {' '}
             <Tooltip label={(<p>To claim Gift Aid, you must be a UK taxpayer and pay more Income Tax or Capital Gains Tax this tax year than the amount of Gift Aid claimed on all your donations.</p>)}>
               <span className="">
                 Gift Aid
@@ -547,7 +556,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
               </span>
             </Tooltip>
           </span>
-)}
+        )}
         type="checkbox"
         {...register('giftAid')}
       />
@@ -569,9 +578,10 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
         <>
           <p>
             Amazing! Your donation
-            {matchFundingAmount !== null && matchFundingAmount > 0 ? ' plus match funding' : ''}
             {' '}
+            {matchFundingAmount !== null && matchFundingAmount > 0 ? 'plus match funding ' : ''}
             will help protect
+            {' '}
             {peopleProtected}
             {' '}
             people from malaria through AMF. We think that's something worth celebrating!
@@ -600,6 +610,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
       <SectionTitle>Celebrate</SectionTitle>
       <p>
         At the end of this year, we'll invite everyone who's joined
+        {' '}
         {fundraiser.publicName}
         {' '}
         to our Summer Party to celebrate our collective impact. We'd love to send you an invitation!
@@ -810,12 +821,14 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
       return (
         <p>
           Amount due:
+          {' '}
           {format.amountShort(piResponse.currency, piResponse.amount)}
           {' '}
           (
           {format.amountShort(piResponse.currency, parseMoney(watches.donationAmount))}
           {' '}
           donation +
+          {' '}
           {format.amountShort(piResponse.currency, contributionAmount)}
           {' '}
           contribution)
@@ -825,6 +838,7 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
     return (
       <p>
         Amount due:
+        {' '}
         {format.amountShort(piResponse.currency, piResponse.amount)}
       </p>
     );
@@ -834,6 +848,7 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
     <>
       <p>
         Amount due:
+        {' '}
         {format.amountShort(piResponse.currency, piResponse.amount)}
         {contributionAmount > 0 ? ` (${format.amountShort(piResponse.currency, parseMoney(watches.donationAmount))} donation + ${format.amountShort(piResponse.currency, contributionAmount)} contribution)` : ''}
         {' '}
@@ -1031,6 +1046,7 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
       <SectionTitle>Thank you!</SectionTitle>
       <p>
         Your donation will protect
+        {' '}
         {peopleProtected}
         {' '}
         people from malaria!
