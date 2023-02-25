@@ -30,7 +30,7 @@ test("renders email correctly with one payment", () => {
   expect(email).toMatch(/<td[^>]*>Your donation to AMF<\/td>\s*<td[^>]*>£100<\/td>/)
   expect(email).toMatch(/<td[^>]*>Your Summer Party contribution<\/td>\s*<td[^>]*>£10<\/td>/)
   expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>£110<\/td>/)
-  expect(email).not.toContain("You also set up future donations to AMF:")
+  expect(email).not.toContain("You also set up future donations:")
   expect(email).toContain(fundraiser.id)
   expect(email).toContain(donation.id)
   expect(email).toContain(payments[0].id)
@@ -166,7 +166,7 @@ test.each([
     expect(email).toMatch(/<td[^>]*>Your Summer Party contribution<\/td>\s*<td[^>]*>\$10<\/td>/)
     expect(email).toMatch(/<td[^>]*>Total paid<\/td>\s*<td[^>]*>\$19<\/td>/)
   }
-  expect(email).toContain("You also set up future donations to AMF:")
+  expect(email).toContain("You also set up future donations:")
   if (currency === "gbp") {
     expect(email).toMatch(/<td[^>]*>19\/12\/2021<\/td>\s*<td[^>]*>£9<\/td>/)
     expect(email).toMatch(/<td[^>]*>26\/12\/2021<\/td>\s*<td[^>]*>£9<\/td>/)
