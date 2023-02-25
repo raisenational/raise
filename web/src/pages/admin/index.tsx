@@ -1,6 +1,5 @@
 import Helmet from 'react-helmet';
 import { Router } from '@gatsbyjs/reach-router';
-
 import { useEffect, useState } from 'react';
 import Page from '../../components/Page';
 import FundraisersPage from './fundraisers';
@@ -19,6 +18,7 @@ import AuditPage from './audit';
 import UsersPage from './users';
 import UserPage from './user';
 import GroupPage from './group';
+import { helpLink } from './_helpLink';
 
 const IndexPage = () => (
   <Page className="pb-8">
@@ -70,6 +70,7 @@ const IndexLayout = () => {
             { text: 'Audit', href: '/admin/audit' },
             { text: 'Users', href: '/admin/users' },
             { text: 'Profile', href: '/admin/profile' },
+            { text: 'Help', href: helpLink },
           ]}
           right={[
             { text: 'Logout', onClick: () => setAuth() },

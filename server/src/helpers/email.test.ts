@@ -1,4 +1,4 @@
-import { SendEmailCommand, SESv2Client } from "@aws-sdk/client-sesv2"
+import { SendEmailCommand } from "@aws-sdk/client-sesv2"
 import { sendEmail } from "./email"
 
 jest.unmock("./email")
