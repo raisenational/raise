@@ -65,12 +65,12 @@ const IndexLayout = () => {
       {auth && (
         <Navigation
           left={[
-            { text: "Fundraisers", href: "/admin/" },
-            { text: "Tasks", href: "/admin/tasks" },
-            { text: "Audit", href: "/admin/audit" },
-            { text: "Users", href: "/admin/users" },
-            { text: "Profile", href: "/admin/profile" },
-            { text: "Help", href: helpLink },
+            { text: 'Fundraisers', href: '/admin/' },
+            { text: 'Tasks', href: '/admin/tasks' },
+            { text: 'Audit', href: '/admin/audit' },
+            { text: 'Users', href: '/admin/users' },
+            { text: 'Profile', href: '/admin/profile' },
+            { text: 'Help', href: helpLink },
           ]}
           right={[
             { text: 'Logout', onClick: () => setAuth() },
