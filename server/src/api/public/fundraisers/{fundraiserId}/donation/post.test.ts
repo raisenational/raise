@@ -237,6 +237,20 @@ test.each([
   await expectNoDonationInserted()
 })
 
+test("can donate to a custom charity", async () => {
+  const charity = "Clear Air Task Force"
+  const fundraiser = await insert(fundraiserTable, makeFundraiser())
+  const donationRequest = makeDonationRequest({ charity })
+
+  await call(main, { pathParameters: { fundraiserId: fundraiser.id } })(donationRequest)
+
+  const donations = await scan(donationTable)
+  expect(donations).toMatchObject([{
+    fundraiserId: fundraiser.id,
+    charity,
+  }])
+})
+
 const makeDonationRequest = (override?: Partial<PublicDonationRequest>): PublicDonationRequest => ({
   donationAmount: Math.ceil(Math.random() * 4) * 50_00,
   recurrenceFrequency: null,
@@ -255,6 +269,7 @@ const makeDonationRequest = (override?: Partial<PublicDonationRequest>): PublicD
   namePublic: Math.random() < 0.5,
   donationAmountPublic: Math.random() < 0.5,
   comment: "Doing good and feeling good!",
+  charity: "AMF",
   ...override,
 })
 

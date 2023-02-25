@@ -229,7 +229,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                 <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:20px;line-height:1.5;text-align:left;color:#000000;">
                                 Dear ${donation.donorName.split(" ")[0]},<br /><br />
                                 Thank you so much for donating through ${fundraiser.publicName} this year and joining our community celebrating positive, deliberate giving!<br /><br />
-                                Your donation will help protect ${peopleProtected} people from malaria. We think that impact is something worth celebrating, and we look forward to seeing you at ${fundraiser.eventLink ? `<a href="${fundraiser.eventLink}">our Summer Party</a>` : "our Summer Party"}.<br /><br />
+                                ${donation.charity === "AMF" ? `Your donation will help protect ${peopleProtected} people from malaria.` : `Your donation to ${donation.charity} will do a lot of good.`} We think that impact is something worth celebrating, and we look forward to seeing you at ${fundraiser.eventLink ? `<a href="${fundraiser.eventLink}">our Summer Party</a>` : "our Summer Party"}.<br /><br />
                                 In the meantime, if you are keen to get more involved in our movement, check out our website for ways you can help or ${fundraiser.moreInvolvedLink ? `<a href="${fundraiser.moreInvolvedLink}" target="_blank">get in touch with us</a>` : "get in touch with us"}. Alternatively, you can follow us on social media to keep up to date during our donations period. Plus, celebrating giving is more fun with friends, so why not encourage them to join too?<br /><br />
                                 We're looking forward to celebrating our collective impact with you soon!<br /><br />
                                 Best wishes,<br />
@@ -273,7 +273,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                               <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
                                 <table cellpadding="0" cellspacing="0" width="100%" border="0" style="color:#ffffff;font-family:'Helvetica', 'Arial', sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
                                   ${payments[0].donationAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif">
-                                    <td style="padding: 2px 0;font-size:18px">Your donation to AMF</td>
+                                    <td style="padding: 2px 0;font-size:18px">Your donation to ${donation.charity}</td>
                                     <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount)}</td>
                                   </tr>` : ""}
                                   ${payments[0].contributionAmount > 0 ? `<tr style="font-family:'Helvetica', 'Arial', sans-serif">
@@ -295,7 +295,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                             ${payments.length > 1 ? `<tr>
                               <td align="left" style="font-size:0px;padding:32px 8px 5px 8px;word-break:break-word;">
                                 <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;line-height:1.5;text-align:left;color:#ffffff;">
-                                  You also set up future donations to AMF:</div>
+                                  You also set up future donations:</div>
                               </td>
                             </tr>
                             <tr>

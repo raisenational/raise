@@ -373,6 +373,7 @@ export interface PublicFundraiser {
 }
 
 export interface PublicDonationRequest {
+  charity?: string;
   donationAmount: number;
   recurrenceFrequency: ("WEEKLY" | "MONTHLY") | null;
   contributionAmount: number;

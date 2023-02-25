@@ -92,8 +92,9 @@ export const main = middyfy($PublicDonationRequest, $PublicPaymentIntentResponse
     // If this is a recurring donation, these will be filled in later once Stripe confirms the first payment. Otherwise, they will not be filled in
     stripeCustomerId: null,
     stripePaymentMethodId: null,
+    // Support client-provided charities for Raise Alumni 2023 pilot
     // Donations to other charities should be manually added
-    charity: "AMF",
+    charity: event.body.charity ?? "AMF",
     overallPublic: event.body.overallPublic,
     namePublic: event.body.namePublic,
     donationAmountPublic: event.body.donationAmountPublic,

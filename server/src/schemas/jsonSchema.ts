@@ -337,6 +337,7 @@ export const $PublicFundraiser: JSONSchema<S.PublicFundraiser> = {
 export const $PublicDonationRequest: JSONSchema<S.PublicDonationRequest> = {
   type: "object",
   properties: {
+    charity: { type: "string" },
     donationAmount: { type: "number", minimum: 0 },
     recurrenceFrequency: { oneOf: [{ enum: ["WEEKLY", "MONTHLY"] }, { type: "null" }] },
     contributionAmount: { type: "integer", minimum: 0 },

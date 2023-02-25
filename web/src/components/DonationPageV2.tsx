@@ -6,14 +6,12 @@ import {
   Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements,
 } from '@stripe/react-stripe-js';
 import {
-  format, convert, calcMatchFunding, calcPaymentSchedule,
+  format, calcMatchFunding, calcPaymentSchedule,
 } from '@raise/shared';
 import Helmet from 'react-helmet';
 import confetti from 'canvas-confetti';
 import classNames from 'classnames';
 import { QuestionMarkCircleIcon } from '@heroicons/react/outline';
-import { UserIcon } from '@heroicons/react/solid';
-import { moneyToPeopleProtected } from '@raise/shared/dist/convert';
 import {
   useEffect, useLayoutEffect, useRef, useState,
 } from 'react';
@@ -37,14 +35,25 @@ import { Doubled, MoneyBox, Party } from '../images/Icons';
 import Logo from './Logo';
 import { PublicDonationRequest, PublicFundraiser, PublicPaymentIntentResponse } from '../helpers/generated-api-client';
 
+interface CharityDefinition {
+  name: string,
+  description: JSX.Element,
+  link: string
+}
+
 interface Props {
   title: string,
   fundraiserIds: Record<Env['STAGE'], string>,
   brand?: Brand,
+  charities: CharityDefinition[]
 }
 
-const DonationPage: React.FC<Props> = ({
-  title, fundraiserIds, brand,
+/**
+ * Donation page alternative, that we're piloting for Raise Alumni in 2023
+ * Supports suggesting multiple effective charities
+ */
+const DonationPageV2: React.FC<Props> = ({
+  title, fundraiserIds, brand, charities
 }) => {
   const fundraiserId = fundraiserIds[env.STAGE];
   const [fundraiser, refetchFundraiser] = useReq('get /public/fundraisers/{fundraiserId}', { fundraiserId });
@@ -81,11 +90,12 @@ const DonationPage: React.FC<Props> = ({
             </noscript>
             <IntroFundraiser
               title={fundraiser.data?.publicName ?? title}
+              charities={charities}
               fundraiser={fundraiser}
               openModal={() => setModalOpen(true)}
             />
             <Modal open={modalOpen} onClose={() => setModalOpen(false)} className="max-w-2xl">
-              {fundraiser.data && <DonationForm fundraiser={fundraiser.data} setModalOpen={setModalOpen} refetchFundraiser={refetchFundraiser} />}
+              {fundraiser.data && <DonationForm charities={charities} fundraiser={fundraiser.data} refetchFundraiser={refetchFundraiser} />}
             </Modal>
           </>
         )}
@@ -98,12 +108,13 @@ const DonationPage: React.FC<Props> = ({
 
 interface IntroFundraiserProps {
   title: string,
+  charities: CharityDefinition[],
   fundraiser: ResponseValues<PublicFundraiser, unknown, unknown>,
   openModal: () => void,
 }
 
 const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
-  title, fundraiser, openModal,
+  title, charities, fundraiser, openModal,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -145,24 +156,13 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
           <p className="font-bold">
             {fundraiser.data?.donationsCount}
             {' '}
-            student
-            {fundraiser.data?.donationsCount === 1 ? ' has' : 's have'}
+            {fundraiser.data?.donationsCount === 1 ? 'person has' : 'people have'}
             {' '}
             already raised
             {' '}
             {format.amountShort(fundraiser.data?.currency, fundraiser.data?.totalRaised)}
             {fundraiser.data ? ` of a ${format.amountShort(fundraiser.data?.currency, fundraiser.data?.goal)} target` : ''}
           </p>
-        </div>
-        <div className="inline-block mt-4 md:mt-0 md:w-64 md:mx-2">
-          <div className="bg-raise-purple p-1 -skew-x-15 rounded shadow-raise">
-            <p className="skew-x-15 md:text-4xl p-1">
-              {fundraiser.data ? moneyToPeopleProtected(fundraiser.data.currency, fundraiser.data.totalRaised) : '—'}
-              {' '}
-              people
-            </p>
-          </div>
-          <p className="font-bold">protected from malaria</p>
         </div>
       </div>
 
@@ -225,29 +225,29 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
               </p>
             </div>
           ),
-          'About AMF': (
-            <div className="flex">
-              {/* TODO: host this image ourselves */}
-              <img alt="" src="https://upload.wikimedia.org/wikipedia/en/6/6b/Against_Malaria_Foundation.svg" height={160} width={95} className="hidden sm:block mr-6" />
-              <div className="flex-1">
-                <p className="mb-2">Our recommended charity is the Against Malaria Foundation, which distributes long-lasting insecticide-treated nets for protection against malaria in developing countries.</p>
-                <p className="mb-2">
-                  Every year, malaria kills about 400,000 people, with a further 200 million falling ill; this burden of disease falls disproportionately on young children and pregnant women. The most effective means of preventing malaria is sleeping under a mosquito net, specifically a long-lasting insecticide treated net (LLIN). AMF works with local partners in a number of countries, predominantly in sub-Saharan Africa, to distribute these nets which protect people as they sleep. For more information about the work they do,
-                  {' '}
-                  <a href="https://www.againstmalaria.com/" target="_blank" rel="noreferrer">see here</a>
-                  .
-                  {' '}
-                </p>
-                <p>
-                  When you're making such significant donation, we want to make sure the money is doing as much good as it possibly can. To make our decision, we have taken the advice of independent charity evaluators GiveWell and Giving What We Can, which both rank AMF as one of the most effective charities in the world. We recommend AMF particularly because they are also independently rated as one of the most cost-effective charities in the world, by organisations such as GiveWell. For a thorough evaluation of the work that they do, check out
-                  {' '}
-                  <a href="https://www.givewell.org/charities/amf" target="_blank" rel="noreferrer">GiveWell's report on AMF</a>
-                  .
-                </p>
-                <p>
-                  If you'd like celebrate giving to a different charity that you've thought carefully about, do get in touch! We can add you to the donor wall, and keep you updated with information about plans for the Summer Party.
-                </p>
-              </div>
+          'The charities': (
+            <div className="space-y-8">
+              <p>This year, we're recommending a number of organisations that you can donate to directly through us:</p>
+              {charities.map((charity) => (
+                <div className="space-y-2">
+                  {charity.description}
+                  <p className="text-base">
+                    <Link href={charity.link}>
+                      Learn more on the
+                      {' '}
+                      {charity.name}
+                      {' '}
+                      website
+                    </Link>
+                  </p>
+                </div>
+              ))}
+              <p>As always with Raise, you can still get involved by making a personally significant donation to any charity that means something to you. Let us know if you do, and we'll add it to the donor wall plus add match funding.</p>
+              <p>
+                <span className="font-bold">Note:</span>
+                {' '}
+                Due to existing agreements with our matchers, match funding will go to the Against Malaria Foundation.
+              </p>
             </div>
           ),
         }}
@@ -276,6 +276,7 @@ const Tabs: React.FC<{ tabs: Record<string, React.ReactChild> }> = ({ tabs }) =>
 const stripePromise = loadStripe(env.STRIPE_PUBLISHABLE_KEY);
 
 interface DonationFormResponses {
+  charity: string,
   donationAmount: string,
   recurrenceFrequency: 'ONE_OFF' | 'WEEKLY' | 'MONTHLY',
   contributionAmount: string,
@@ -293,7 +294,13 @@ interface DonationFormResponses {
   comment: string,
 }
 
-const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: boolean) => void, refetchFundraiser: () => void }> = ({ fundraiser, refetchFundraiser }) => {
+export interface DonationFormProps {
+  fundraiser: PublicFundraiser,
+  charities: CharityDefinition[]
+  refetchFundraiser: () => void
+}
+
+const DonationForm: React.FC<DonationFormProps> = ({ fundraiser, charities, refetchFundraiser }) => {
   const formMethods = useForm<DonationFormResponses>({
     mode: 'onTouched',
     defaultValues: {
@@ -320,7 +327,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
   const [piResponse, setPiResponse] = useState<PublicPaymentIntentResponse>();
 
   const onPaymentSuccess = () => {
-    setPage(4);
+    setPage(5);
 
     // It'll take a few seconds for the payment webhook to reach the server and register the donation
     // So we can see our new donation, try after 1 second. As a backup we also try after 15 seconds
@@ -370,17 +377,25 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
     }
   };
   if (new Date().getTime() / 1000 >= fundraiser.activeFrom) {
+    const donationFormPageProps: DonationFormPageProps = {
+      charities,
+      formMethods,
+      fundraiser,
+      watches,
+    };
+
     return (
       <FormProvider {...formMethods}>
         <div className="mb-4 text-base sm:text-lg">
-          {page === 0 && <DonationFormDonate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-          {page === 1 && <DonationFormCelebrate formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-          {page === 2 && <DonationFormDisplay formMethods={formMethods} fundraiser={fundraiser} watches={watches} />}
-          {page === 3 && <DonationFormPayment formMethods={formMethods} fundraiser={fundraiser} watches={watches} setPayButton={setPayButton} setPiResponse={setPiResponse} onPaymentSuccess={onPaymentSuccess} />}
-          {page === 4 && piResponse && <DonationFormComplete formMethods={formMethods} fundraiser={fundraiser} watches={watches} piResponse={piResponse} />}
+          {page === 0 && <DonationFormChoose {...donationFormPageProps} />}
+          {page === 1 && <DonationFormDonate {...donationFormPageProps} />}
+          {page === 2 && <DonationFormCelebrate {...donationFormPageProps} />}
+          {page === 3 && <DonationFormDisplay {...donationFormPageProps} />}
+          {page === 4 && <DonationFormPayment {...donationFormPageProps} setPayButton={setPayButton} setPiResponse={setPiResponse} onPaymentSuccess={onPaymentSuccess} />}
+          {page === 5 && piResponse && <DonationFormComplete {...donationFormPageProps} />}
         </div>
         <div className="float-right">
-          {page !== 0 && page !== 4 && (
+          {page !== 0 && page !== 5 && (
             <Button
               variant="gray"
               onClick={() => {
@@ -392,7 +407,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
               Back
             </Button>
           )}
-          {page !== 3 && page !== 4 && (
+          {page !== 4 && page !== 5 && (
             <Button
               variant="blue"
               onClick={async () => {
@@ -406,7 +421,7 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
               Next
             </Button>
           )}
-          {page === 3 && payButton}
+          {page === 4 && payButton}
         </div>
         <div className="clear-both" />
       </FormProvider>
@@ -430,6 +445,53 @@ const DonationForm: React.FC<{ fundraiser: PublicFundraiser, setModalOpen: (x: b
   );
 };
 
+interface DonationFormPageProps {
+  formMethods: UseFormReturn<DonationFormResponses>,
+  watches: DonationFormResponses,
+  fundraiser: PublicFundraiser,
+  charities: CharityDefinition[],
+}
+
+const DonationFormChoose: React.FC<DonationFormPageProps> = ({
+  formMethods: {
+    setValue, trigger, register, formState: { errors }
+  },
+  watches,
+  charities,
+}) => {
+  useEffect(() => {
+    register('charity', {
+      validate: (c) => {
+        if (!c) return 'Please select a charity.';
+        return true;
+      }
+    });
+  }, [register]);
+
+  return (
+    <div className="space-y-4">
+      <SectionTitle>Choose</SectionTitle>
+      <p>
+        We think it's important that people to adopt a positive approach towards deliberate, effective giving. Part of this is considering the impact we can have through giving to charity.
+      </p>
+      <p>We believe all of these are excellent organisations, however if you'd like to support another charity contact us at raisealumni@gmail.com.</p>
+      <p>I want to support...</p>
+      <div className="flex flex-col gap-4">
+        {charities.map((charity) => {
+          const selected = watches.charity === charity.name;
+          return (
+            <Button variant={selected ? 'purple' : 'gray'} onClick={() => { setValue('charity', charity.name); trigger('charity'); }} skew={false} className={classNames('py-2 px-3 text-left justify-center items-center ml-0')}>
+              <h3 className="text-2xl font-bold">{charity.name}</h3>
+              {charity.description}
+            </Button>
+          );
+        })}
+      </div>
+      {errors.charity && <p className="text-raise-red">{errors.charity.message}</p>}
+    </div>
+  );
+};
+
 const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser }> = ({
   formMethods: {
     setValue, register, formState: { errors, touchedFields }, trigger, getValues,
@@ -442,13 +504,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
   const shouldShowLowAmountWarning = donationAmount !== null && ((watches.recurrenceFrequency === 'ONE_OFF' && donationAmount <= 15_00) || (watches.recurrenceFrequency === 'WEEKLY' && donationAmount < 2_00));
   const schedule = donationAmount === null ? null : calcPaymentSchedule(donationAmount, 0, watches.recurrenceFrequency === 'ONE_OFF' ? null : watches.recurrenceFrequency, fundraiser.recurringDonationsTo);
   const totalDonationAmount = schedule === null ? null : schedule.now.donationAmount + schedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0);
-  const matchFundingAmount = totalDonationAmount === null ? null : calcMatchFunding({
-    donationAmount: totalDonationAmount,
-    matchFundingRate: fundraiser.matchFundingRate,
-    matchFundingRemaining: fundraiser.matchFundingRemaining,
-    matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
-  });
-  const peopleProtected = totalDonationAmount === null || matchFundingAmount === null ? null : convert.moneyToPeopleProtected(fundraiser.currency, totalDonationAmount * (watches.giftAid ? 1.25 : 1) + matchFundingAmount);
+
   return (
     <>
       <SectionTitle>Donate</SectionTitle>
@@ -535,11 +591,11 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
 
       {fundraiser.matchFundingRate !== 0 && fundraiser.matchFundingPerDonationLimit !== null && fundraiser.matchFundingRemaining !== 0 && (
       <p className="mt-1">
-        All donations will be matched up to
+        Donations are matched up to
         {' '}
         {format.amountShort(fundraiser.currency, fundraiser.matchFundingPerDonationLimit)}
         {' '}
-        per donor.
+        per donor. The matching goes to AMF.
       </p>
       )}
 
@@ -559,7 +615,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
               </span>
             </Tooltip>
           </span>
-        )}
+)}
         type="checkbox"
         {...register('giftAid')}
       />
@@ -576,22 +632,6 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
           .
         </p>
       )}
-
-      {peopleProtected ? (
-        <>
-          <p>
-            Amazing! Your donation
-            {' '}
-            {matchFundingAmount !== null && matchFundingAmount > 0 ? 'plus match funding ' : ''}
-            will help protect
-            {' '}
-            {peopleProtected}
-            {' '}
-            people from malaria through AMF. We think that's something worth celebrating!
-          </p>
-          <ImpactRepresentation peopleProtected={peopleProtected} />
-        </>
-      ) : null}
     </>
   );
 };
@@ -616,7 +656,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
         {' '}
         {fundraiser.publicName}
         {' '}
-        to our Summer Party to celebrate our collective impact. We'd love to send you an invitation!
+        to our event to celebrate our collective impact. We'd love to send you an invitation!
       </p>
 
       <LabelledInput className="mt-2" id="donorName" label="Name" type="text" autoComplete="name" error={errors.donorName?.message} {...register('donorName', { validate: (s) => (s ? true : 'We need your name to send you an invite, and to identify your donation if you contact us.') })} />
@@ -645,7 +685,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
       {fundraiser.suggestedContributionAmount !== null && (
         <>
           <h3 className="text-2xl mt-8">Contribution</h3>
-          <p className="mt-1">As 100% of your donation goes to charity, we suggest an optional contribution to cover the costs of the Summer Party (which are generously subsidised by our sponsors). Everyone is welcome to join, whether or not they make this contribution.</p>
+          <p className="mt-1">As 100% of your donation goes to charity, we suggest an optional contribution to cover the costs of the event (which are generously subsidised by our sponsors). Everyone is welcome to join, whether or not they make this contribution.</p>
 
           <div className="mt-2 grid grid-cols-2 gap-4">
             <Button variant={contributionAmount > 0 ? 'purple' : 'gray'} onClick={() => { setValue('contributionAmount', format.amountShort(fundraiser.currency, fundraiser.suggestedContributionAmount ?? 10_00, false)); trigger('contributionAmount'); }} skew={false} className={classNames('p-2 text-center  flex justify-center items-center', { 'text-gray-200': contributionAmount <= 0 })}>
@@ -737,6 +777,7 @@ const DonationFormPayment: React.FC<{ formMethods: UseFormReturn<DonationFormRes
     } catch { /* noop */ }
 
     const data: PublicDonationRequest = {
+      charity: watches.charity,
       donationAmount: parseMoney(watches.donationAmount),
       recurrenceFrequency: watches.recurrenceFrequency !== 'ONE_OFF' ? watches.recurrenceFrequency : null,
       contributionAmount,
@@ -824,14 +865,12 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
       return (
         <p>
           Amount due:
-          {' '}
           {format.amountShort(piResponse.currency, piResponse.amount)}
           {' '}
           (
           {format.amountShort(piResponse.currency, parseMoney(watches.donationAmount))}
           {' '}
           donation +
-          {' '}
           {format.amountShort(piResponse.currency, contributionAmount)}
           {' '}
           contribution)
@@ -841,7 +880,6 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
     return (
       <p>
         Amount due:
-        {' '}
         {format.amountShort(piResponse.currency, piResponse.amount)}
       </p>
     );
@@ -851,7 +889,6 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
     <>
       <p>
         Amount due:
-        {' '}
         {format.amountShort(piResponse.currency, piResponse.amount)}
         {contributionAmount > 0 ? ` (${format.amountShort(piResponse.currency, parseMoney(watches.donationAmount))} donation + ${format.amountShort(piResponse.currency, contributionAmount)} contribution)` : ''}
         {' '}
@@ -1031,44 +1068,31 @@ const DonationFormPaymentInner: React.FC<{ formMethods: UseFormReturn<DonationFo
   );
 };
 
-// (for consistency of form page props)
-// eslint-disable-next-line react/no-unused-prop-types
-const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormResponses>, watches: DonationFormResponses, fundraiser: PublicFundraiser, piResponse: PublicPaymentIntentResponse }> = ({
-  watches, fundraiser, piResponse,
+const DonationFormComplete: React.FC<DonationFormPageProps> = ({
+  fundraiser, watches
 }) => {
-  const matchFundingAmount = calcMatchFunding({
-    donationAmount: piResponse.totalDonationAmount,
-    matchFundingRate: fundraiser.matchFundingRate,
-    matchFundingRemaining: fundraiser.matchFundingRemaining,
-    matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit,
-  });
-  const peopleProtected = convert.moneyToPeopleProtected(piResponse.currency, piResponse.totalDonationAmount * (watches.giftAid ? 1.25 : 1) + matchFundingAmount);
-
   return (
     <>
       <SectionTitle>Thank you!</SectionTitle>
-      <p>
-        Your donation will protect
+      <p className="my-2">
+        You've done an amazing amount of good donating to
         {' '}
-        {peopleProtected}
-        {' '}
-        people from malaria!
+        {watches.charity}
+        . We can't wait to celebrate that impact with you!
       </p>
-      <ImpactRepresentation peopleProtected={peopleProtected} />
-      <p className="my-2">That's amazing! We can't wait to celebrate that impact with you at our Summer Party!</p>
 
       {fundraiser.eventLink && (
         <>
-          <p className="mt-4">To stay updated about our Summer Party, RSVP to our event. Plus, why not invite your friends to join you in celebrating giving this year?</p>
+          <p className="mt-4">To stay updated about our celebration, RSVP to our event. Plus, why not invite your friends to join you in celebrating giving this year?</p>
 
           <div className="mt-4 grid grid-cols-2 gap-4">
             <Button variant="red" target="_blank" href={fundraiser.eventLink} skew={false} className="p-2 text-center flex justify-center items-center">RSVP to our event</Button>
             {fundraiser.moreInvolvedLink && (
-            <Button variant="red" target="_blank" href={fundraiser.moreInvolvedLink} skew={false} className="p-2 text-center ml-0 flex justify-center items-center">
-              Get more involved in
-              {' '}
-              {fundraiser.publicName}
-            </Button>
+              <Button variant="red" target="_blank" href={fundraiser.moreInvolvedLink} skew={false} className="p-2 text-center ml-0 flex justify-center items-center">
+                Get more involved in
+                {' '}
+                {fundraiser.publicName}
+              </Button>
             )}
           </div>
         </>
@@ -1077,22 +1101,4 @@ const DonationFormComplete: React.FC<{ formMethods: UseFormReturn<DonationFormRe
   );
 };
 
-const ImpactRepresentation: React.FC<{ peopleProtected: number }> = ({ peopleProtected }) => (
-  peopleProtected > 600
-    ? <p className="my-1">That's so many that we can't display them all here!</p>
-    : (
-      <p className={classNames('my-1', {
-        'text-xs': peopleProtected >= 500,
-        'text-sm': peopleProtected < 500,
-        'text-base': peopleProtected < 400,
-        'text-lg': peopleProtected < 300,
-        'text-2xl': peopleProtected < 200,
-        'text-3xl': peopleProtected < 100,
-      })}
-      >
-        {new Array(peopleProtected).fill(0).map(() => <UserIcon height="1em" width="1em" />)}
-      </p>
-    )
-);
-
-export default DonationPage;
+export default DonationPageV2;

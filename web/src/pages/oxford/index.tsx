@@ -132,8 +132,7 @@ const IndexPage = () => (
             If you really want to shape the future of Raise,
             you could apply to join our committee, which coordinates everything
             we do, from events and partnerships to fundraising and publicity.
-            Applications are now closed for our 2022/23 committee, but look out
-            for applications reopening in Trinity 2023!
+            Applications are now closed, but will reopen in Trinity 2023!
           </p>
           <p>
             <b>Sponsorship:</b>
