@@ -13,6 +13,7 @@ import Panel from '../../components/Panel';
 
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
 import Footer from '../../components/Footer';
+import Button from '../../components/Button';
 
 const IndexPage = () => (
   <Page>
@@ -23,15 +24,15 @@ const IndexPage = () => (
     <Cover>
       <Navigation
         left={[
-          { text: 'Home', href: '/sheffield/' },
-          { text: 'How It Works', href: '/sheffield/#how-it-works' },
-          { text: 'FAQs', href: '/sheffield/#faq' },
-          { text: 'Our Philosophy', href: '/sheffield/#our-philosophy' },
-          { text: 'Contact', href: '/sheffield/#contact' },
+          { text: 'Home', href: '.' },
+          { text: 'How It Works', href: '#how-it-works' },
+          { text: 'FAQs', href: '#faq' },
+          { text: 'Our Philosophy', href: '#our-philosophy' },
+          { text: 'Contact', href: '#contact' },
         ]}
         right={
           [
-            // { text: "Become a Rep", href: "https://docs.google.com/forms/d/e/1FAIpQLSfbeRgBxMW86fnw_qxZBZ8Glzm7qa5-FwjACjYw3F0NgBEIiw/viewform" },
+            { text: 'Donate', href: 'donate/' },
           ]
         }
       />
@@ -46,6 +47,7 @@ const IndexPage = () => (
             protected: convert.moneyToPeopleProtected('gbp', 489175),
           }}
         />
+        <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
       </Section>
       <CTADown text="How it works" href="#how-it-works" />
     </Cover>
