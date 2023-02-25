@@ -18,7 +18,7 @@ import AuditPage from './audit';
 import UsersPage from './users';
 import UserPage from './user';
 import GroupPage from './group';
-import { helpLink } from './helpLink';
+import { helpLink } from './_helpLink';
 
 const IndexPage = () => (
   <Page className="pb-8">

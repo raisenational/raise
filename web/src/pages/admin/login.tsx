@@ -13,7 +13,7 @@ import Button from '../../components/Button';
 import { LoginResponse } from '../../helpers/generated-api-client';
 import Spinner from '../../components/Spinner';
 import Link from '../../components/Link';
-import { helpLink } from './helpLink';
+import { helpLink } from './_helpLink';
 
 const Login: React.FC<RouteComponentProps> = () => (
   <Section className="mt-8 text-center">
