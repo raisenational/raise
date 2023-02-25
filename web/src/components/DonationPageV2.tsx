@@ -871,6 +871,7 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
           {format.amountShort(piResponse.currency, parseMoney(watches.donationAmount))}
           {' '}
           donation +
+          {' '}
           {format.amountShort(piResponse.currency, contributionAmount)}
           {' '}
           contribution)
