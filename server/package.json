@@ -29,7 +29,7 @@
     "@middy/core": "^2.5.3",
     "@middy/http-json-body-parser": "^2.5.3",
     "@middy/validator": "^2.5.3",
-    "@raise/shared": "file:../shared",
+    "@raise/shared": "*",
     "ajv": "^8.6.3",
     "axios": "^0.24.0",
     "google-auth-library": "^7.10.0",
