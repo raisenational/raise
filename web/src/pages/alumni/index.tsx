@@ -74,7 +74,7 @@ const IndexPage = () => (
         <Panel
           image={<UserGroupIcon className="h-16 mb-4" />}
           title="Connect"
-          text="We'll bring the Raise alumni community together through both virtual and in-person events, continuing with our ultimate goal of encouraging a positive approach towards deliberate, effective giving."
+          text="We'll bring the Raise alumni community together through both virtual and in-person events, continuing with our ultimate goal of making charity something that is actively embraced and enjoyed, and a meaningful part of all of our lives."
           className="bg-raise-yellow text-black"
         />
       </div>
@@ -103,28 +103,42 @@ const IndexPage = () => (
           <p>
             <b>Helping us grow:</b>
             {' '}
-            Are you able to help us by sponsoring Raise's efforts (whether through in-kind or direct donations), or know someone who can? Do you have some free time to improve how we run our operations, or mentor new chapters? Whatever it is, we'd love to hear from you!
+            Are you able to help us by sponsoring Raise's efforts (whether through in-kind or direct donations), or know someone who can? Do you have some free time to improve how we run our operations, or mentor new chapters? Whatever it is,
+            {' '}
+            <Link href="#contact">we'd love to hear from you</Link>
+            !
+          </p>
+        </FAQ>
+
+        <FAQ title="How did you choose your charity recommendations?">
+          <p>
+            To decide which charities to recommend, we reviewed the research of independent charity evaluators
+            {' '}
+            <Link href="https://www.givewell.org/charities/top-charities">GiveWell</Link>
+            ,
+            {' '}
+            <Link href="https://www.givingwhatwecan.org">Giving What We Can</Link>
+            , and
+            {' '}
+            <Link href="https://founderspledge.com/">Founders Pledge</Link>
+            , as well as explored other literature discussing effective charities.
+          </p>
+          <p>
+            We've also considered feedback from donors from previous years, as well as considered which charities best fit with our philosophy of positive, deliberate, and effective giving.
+          </p>
+          <p>
+            We've intentionally tried to support a wide range of cause areas, so that you can find one that you connect with. However, you're also welcome to donate to another charity (see below).
           </p>
         </FAQ>
 
         <FAQ title="For the donations push, can I donate to a different charity?">
-          <p>At Raise, we think very carefully about which charity to recommend (see below), particularly given how much money you're donating. However, we recognise that you might want to join us in celebrating through giving to a different charity. This is absolutely fine, but please get in touch with us beforehand so that we are aware.</p>
           <p>
-            To make our decision to recommend the Against Malaria Foundation (AMF), we have taken the advice of independent charity evaluators
-            <a href="https://www.givewell.org/charities/top-charities">GiveWell</a>
+            At Raise, we think very carefully about which charities to recommend, particularly given how much money you're donating. However, we recognise that you might want to join us in celebrating through giving to a different charity. This is absolutely fine, but please
             {' '}
-            and
-            <a href="https://www.givingwhatwecan.org">Giving What We Can</a>
-            , which both rank AMF as one of the most effective charities in the world.
+            <Link href="#contact">get in touch</Link>
+            {' '}
+            with us beforehand so that we are aware.
           </p>
-          <p>
-            Tragically, malaria causes 400,000 preventable deaths every year, disproportionately affecting young children and pregnant women, and has a knock-on effect on the local economy. AMF works with local partners to provide life-saving bed-nets which protect people as they sleep. To find out more about their work, see
-            <a href="https://www.againstmalaria.com/">AMF's website</a>
-            . The specific net distributions for which we have funded nets can be seen on
-            <a href="https://www.againstmalaria.com/FundraiserGroup.aspx?FundraiserID=8339">Raise's dedicated AMF page</a>
-            .
-          </p>
-          <p>Because AMF's intervention is so effective at preventing malaria, each donation can have a huge impact. In fact, the money we raised nationally in 2020 was enough to protect over 120,000 people!</p>
         </FAQ>
       </FAQs>
       <Button variant="outline" className="mt-4" href="https://www.facebook.com/groups/966154864287768">Join Facebook group</Button>
