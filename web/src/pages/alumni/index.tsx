@@ -32,7 +32,7 @@ const IndexPage = () => (
           { text: 'Contact', href: '#contact' },
         ]}
         right={[
-          { text: 'Join Facebook group', href: 'https://www.facebook.com/groups/966154864287768' },
+          { text: 'Donate', href: 'donate/' },
         ]}
       />
       <Section className="px-8">
@@ -46,8 +46,9 @@ const IndexPage = () => (
             protected: 455285,
           }}
         />
-        <div className="mb-12">
-          <Button variant="outline" size="large" className="mt-4" href="https://www.facebook.com/groups/966154864287768">Join Facebook group</Button>
+        <div className="mt-4 mb-12 flex flex-wrap gap-2 justify-center">
+          <Button variant="outline" size="large" href="donate/">Donate</Button>
+          <Button variant="outline" size="large" href="https://www.facebook.com/groups/966154864287768">Join Facebook group</Button>
         </div>
       </Section>
       <CTADown
