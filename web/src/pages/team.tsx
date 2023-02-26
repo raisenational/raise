@@ -90,6 +90,7 @@ const TeamPage = () => (
       <p className="font-black font-raise-header mt-8 mb-2">National Team</p>
       <p>
         There's
+        {' '}
         {NATIONAL_TEAM.length}
         {' '}
         of us on the national team. We're students and recent grads who volunteer to support chapters as best we can:
