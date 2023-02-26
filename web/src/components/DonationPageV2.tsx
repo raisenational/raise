@@ -678,7 +678,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
             },
           })}
         />
-        <LabelledInput id="emailConsentInformational" label="Have AMF send me one email on where my donation goes" type="checkbox" {...register('emailConsentInformational')} />
+        <LabelledInput id="emailConsentInformational" label={watches.charity === 'AMF' ? 'Have AMF send me one email on where my donation goes' : `Share my email with ${watches.charity}`} type="checkbox" {...register('emailConsentInformational')} />
         <LabelledInput id="emailConsentMarketing" label={`Send me updates about ${fundraiser.publicName}`} type="checkbox" {...register('emailConsentMarketing')} />
       </div>
 

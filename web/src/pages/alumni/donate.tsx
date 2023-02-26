@@ -63,7 +63,7 @@ const Page = () => (
         link: 'https://raisingvoices.org/'
       },
       {
-        name: 'Strong Minds',
+        name: 'StrongMinds',
         description: (
           <p>
             StrongMinds provides free depression treatment to low-income women and adolescents in sub-Saharan Africa.
