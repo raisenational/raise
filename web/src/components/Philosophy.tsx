@@ -140,7 +140,7 @@ const Philosophy: React.FC<PhilosophyProps> = ({ brand = 'Raise' }) => {
               - I'd never given that much before - but when I finally donated, I saw our incredible impact and it really made donating an amazing positive experience.
             </Quote>
 
-            <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">Then, at the end of the academic year, we come together as a community for our Summer Party. It's a time when we can reflect on and celebrate the our impact, while enjoying the end of the year with a wonderful group of people.</p>
+            <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">Then, at the end of the academic year, we come together as a community for our Summer Party. It's a time when we can reflect on and celebrate our impact, while enjoying the end of the year with a wonderful group of people.</p>
 
             <Quote className="my-12" by="Elena Caspall, Donor" headshotSrc={elenaCaspall} imagePlacement="left" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
               It was at the Summer Party that I really appreciated just how powerful the idea of giving positively and deliberately can be. Everyone was having a great time, energised by the collective knowledge that together we'd done something incredible.

@@ -7,18 +7,18 @@ const Page = () => (
     {...config}
     charities={[
       {
-        name: 'GiveDirectly',
+        name: 'AMF',
         description: (
           <p>
-            GiveDirectly sends money directly to the world's poorest households, allowing people living in poverty to choose for themselves how best to improve their lives.
+            The Against Malaria Foundation funds and distributes long-lasting insecticidal nets, which protect people from malaria.
             {' '}
             <span className="italic">
-              The proportion of funds GiveDirectly has delivered directly to recipients is approximately 83%.
-              <Link className="ml-1 relative -top-1 text-sm underline text-inherit" target="_blank" href="https://www.givewell.org/charities/give-directly/November-2020-version">Source: GiveWell</Link>
+              Purchasing and distributing a net costs about £4, and prevents one to two cases of malaria.
+              <Link className="ml-1 relative -top-1 text-sm underline text-inherit" target="_blank" href="https://www.givewell.org/charities/amf">Source: GiveWell</Link>
             </span>
           </p>
         ),
-        link: 'https://www.givedirectly.org/'
+        link: 'https://www.againstmalaria.com/'
       },
       {
         name: 'Clear Air Task Force',
@@ -35,18 +35,18 @@ const Page = () => (
         link: 'https://www.catf.us/'
       },
       {
-        name: 'Strong Minds',
+        name: 'GiveDirectly',
         description: (
           <p>
-            StrongMinds provides free depression treatment to low-income women and adolescents in sub-Saharan Africa.
+            GiveDirectly sends money directly to the world's poorest households, allowing people living in poverty to choose for themselves how best to improve their lives.
             {' '}
             <span className="italic">
-              StrongMinds likely prevent the equivalent of one year of severe major depressive disorder for a woman at a cost of $248.
-              <Link className="ml-1 relative -top-1 text-sm underline text-inherit" target="_blank" href="https://founderspledge.com/stories/mental-health-report-summary">Source: Founders Pledge</Link>
+              The proportion of funds GiveDirectly has delivered directly to recipients is approximately 83%.
+              <Link className="ml-1 relative -top-1 text-sm underline text-inherit" target="_blank" href="https://www.givewell.org/charities/give-directly/November-2020-version">Source: GiveWell</Link>
             </span>
           </p>
         ),
-        link: 'https://strongminds.org/'
+        link: 'https://www.givedirectly.org/'
       },
       {
         name: 'Raising Voices',
@@ -63,18 +63,18 @@ const Page = () => (
         link: 'https://raisingvoices.org/'
       },
       {
-        name: 'AMF',
+        name: 'Strong Minds',
         description: (
           <p>
-            The Against Malaria Foundation funds and distributes long-lasting insecticidal nets, which protect people from malaria.
+            StrongMinds provides free depression treatment to low-income women and adolescents in sub-Saharan Africa.
             {' '}
             <span className="italic">
-              Purchasing and distributing a net costs about £4, and prevents one to two cases of malaria.
-              <Link className="ml-1 relative -top-1 text-sm underline text-inherit" target="_blank" href="https://www.givewell.org/charities/amf">Source: GiveWell</Link>
+              StrongMinds likely prevent the equivalent of one year of severe major depressive disorder for a woman at a cost of $248.
+              <Link className="ml-1 relative -top-1 text-sm underline text-inherit" target="_blank" href="https://founderspledge.com/stories/mental-health-report-summary">Source: Founders Pledge</Link>
             </span>
           </p>
         ),
-        link: 'https://www.againstmalaria.com/'
+        link: 'https://strongminds.org/'
       },
     ]}
   />
