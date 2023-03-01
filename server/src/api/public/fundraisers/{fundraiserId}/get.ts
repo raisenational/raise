@@ -1,13 +1,13 @@
-import { middyfy } from "../../../../helpers/wrapper"
-import { donationTable, fundraiserTable } from "../../../../helpers/tables"
-import { query, get } from "../../../../helpers/db"
-import { $PublicFundraiser } from "../../../../schemas"
+import { middyfy } from '../../../../helpers/wrapper';
+import { donationTable, fundraiserTable } from '../../../../helpers/tables';
+import { query, get } from '../../../../helpers/db';
+import { $PublicFundraiser } from '../../../../schemas';
 
 export const main = middyfy(null, $PublicFundraiser, false, async (event) => {
   const [fundraiser, donations] = await Promise.all([
     get(fundraiserTable, { id: event.pathParameters.fundraiserId }),
     query(donationTable, { fundraiserId: event.pathParameters.fundraiserId }),
-  ])
+  ]);
 
   return {
     id: fundraiser.id,
@@ -40,5 +40,5 @@ export const main = middyfy(null, $PublicFundraiser, false, async (event) => {
       recurringAmount: d.donationAmountPublic ? d.recurringAmount : undefined,
       recurrenceFrequency: d.donationAmountPublic ? d.recurrenceFrequency : undefined,
     })),
-  }
-})
+  };
+});
