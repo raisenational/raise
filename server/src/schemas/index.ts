@@ -1,2 +1,2 @@
-export * from "./typescript"
-export * from "./jsonSchema"
+export * from './typescript';
+export * from './jsonSchema';

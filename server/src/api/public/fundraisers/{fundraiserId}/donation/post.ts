@@ -1,70 +1,70 @@
-import createHttpError from "http-errors"
-import { ulid } from "ulid"
-import Stripe from "stripe"
-import { format, calcPaymentSchedule } from "@raise/shared"
-import { middyfy } from "../../../../../helpers/wrapper"
-import { get, insert } from "../../../../../helpers/db"
-import { donationTable, fundraiserTable, paymentTable } from "../../../../../helpers/tables"
-import env from "../../../../../env/env"
-import { $PublicDonationRequest, $PublicPaymentIntentResponse } from "../../../../../schemas"
+import createHttpError from 'http-errors';
+import { ulid } from 'ulid';
+import Stripe from 'stripe';
+import { format, calcPaymentSchedule } from '@raise/shared';
+import { middyfy } from '../../../../../helpers/wrapper';
+import { get, insert } from '../../../../../helpers/db';
+import { donationTable, fundraiserTable, paymentTable } from '../../../../../helpers/tables';
+import env from '../../../../../env/env';
+import { $PublicDonationRequest, $PublicPaymentIntentResponse } from '../../../../../schemas';
 
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: "2020-08-27", typescript: true, timeout: 30_000 })
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, { apiVersion: '2020-08-27', typescript: true, timeout: 30_000 });
 
 export const main = middyfy($PublicDonationRequest, $PublicPaymentIntentResponse, false, async (event) => {
-  const now = Math.floor(new Date().getTime() / 1000)
-  const fundraiser = await get(fundraiserTable, { id: event.pathParameters.fundraiserId })
+  const now = Math.floor(new Date().getTime() / 1000);
+  const fundraiser = await get(fundraiserTable, { id: event.pathParameters.fundraiserId });
 
   // Validate the fundraiser has started
   // NB: we intentionally do not validate the activeTo deadline as we prefer to be flexible on when donations can come in
   if (fundraiser.activeFrom > now) {
-    throw new createHttpError.BadRequest("This fundraiser has not started and is not taking donations yet")
+    throw new createHttpError.BadRequest('This fundraiser has not started and is not taking donations yet');
   }
 
   // Validate the fundraiser is not paused
   if (fundraiser.paused) {
-    throw new createHttpError.BadRequest("This fundraiser has temporarily paused taking donations")
+    throw new createHttpError.BadRequest('This fundraiser has temporarily paused taking donations');
   }
 
   // Validate gift-aid requirements
   if (event.body.giftAid) {
-    if (!event.body.addressLine1) throw new createHttpError.BadRequest("Gift-aided donation must provide address line 1")
-    if (!event.body.addressPostcode) throw new createHttpError.BadRequest("Gift-aided donation must provide address postcode")
-    if (!event.body.addressCountry) throw new createHttpError.BadRequest("Gift-aided donation must provide address country")
+    if (!event.body.addressLine1) throw new createHttpError.BadRequest('Gift-aided donation must provide address line 1');
+    if (!event.body.addressPostcode) throw new createHttpError.BadRequest('Gift-aided donation must provide address postcode');
+    if (!event.body.addressCountry) throw new createHttpError.BadRequest('Gift-aided donation must provide address country');
   }
 
-  const paymentSchedule = calcPaymentSchedule(event.body.donationAmount, event.body.contributionAmount, event.body.recurrenceFrequency, fundraiser.recurringDonationsTo)
+  const paymentSchedule = calcPaymentSchedule(event.body.donationAmount, event.body.contributionAmount, event.body.recurrenceFrequency, fundraiser.recurringDonationsTo);
 
   // Validate payment amounts are greater than a global minimum (https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts)
   if (paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount < 1_00) {
-    throw new createHttpError.BadRequest(`Payment amount must be greater than ${format.amountShort(fundraiser.currency, 1_00)} to avoid excessive card transaction fees`)
+    throw new createHttpError.BadRequest(`Payment amount must be greater than ${format.amountShort(fundraiser.currency, 1_00)} to avoid excessive card transaction fees`);
   }
   if (paymentSchedule.future.some((p) => p.donationAmount + p.contributionAmount < 1_00)) {
-    throw new createHttpError.BadRequest(`Future payments must be greater than ${format.amountShort(fundraiser.currency, 1_00)} to avoid excessive card transaction fees`)
+    throw new createHttpError.BadRequest(`Future payments must be greater than ${format.amountShort(fundraiser.currency, 1_00)} to avoid excessive card transaction fees`);
   }
 
   // Validate donationAmount is greater than minimum, accounting for recurring donations
-  const totalDonationAmount = paymentSchedule.now.donationAmount + paymentSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0)
+  const totalDonationAmount = paymentSchedule.now.donationAmount + paymentSchedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0);
   if (fundraiser.minimumDonationAmount !== null && totalDonationAmount < fundraiser.minimumDonationAmount) {
-    throw new createHttpError.BadRequest(`Donation amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}`)
+    throw new createHttpError.BadRequest(`Donation amount must be greater than ${format.amountShort(fundraiser.currency, fundraiser.minimumDonationAmount)}`);
   }
 
-  const donationId = ulid()
-  const paymentId = ulid()
+  const donationId = ulid();
+  const paymentId = ulid();
 
   // Get stripe payment intent (attach metadata for fundraiserId, donationId, paymentId and contribution/donation amount)
   const paymentIntent = await stripe.paymentIntents.create({
     amount: paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount,
     currency: fundraiser.currency,
-    payment_method_types: ["card"],
+    payment_method_types: ['card'],
     metadata: {
       fundraiserId: event.pathParameters.fundraiserId,
       donationId,
       paymentId,
     },
-    setup_future_usage: event.body.recurrenceFrequency ? "off_session" : undefined,
-  })
-  const stripeClientSecret = paymentIntent.client_secret
-  if (!stripeClientSecret) throw new Error("Failed to create Stripe client secret")
+    setup_future_usage: event.body.recurrenceFrequency ? 'off_session' : undefined,
+  });
+  const stripeClientSecret = paymentIntent.client_secret;
+  if (!stripeClientSecret) throw new Error('Failed to create Stripe client secret');
 
   // Insert the donation
   await insert(donationTable, {
@@ -94,12 +94,12 @@ export const main = middyfy($PublicDonationRequest, $PublicPaymentIntentResponse
     stripePaymentMethodId: null,
     // Support client-provided charities for Raise Alumni 2023 pilot
     // Donations to other charities should be manually added
-    charity: event.body.charity ?? "AMF",
+    charity: event.body.charity ?? 'AMF',
     overallPublic: event.body.overallPublic,
     namePublic: event.body.namePublic,
     donationAmountPublic: event.body.donationAmountPublic,
     donationCounted: false,
-  })
+  });
 
   // Can insert all the payments in parallel
   // If any fail, we abort and we just have a donation with some funky payments
@@ -113,9 +113,9 @@ export const main = middyfy($PublicDonationRequest, $PublicPaymentIntentResponse
       donationAmount: paymentSchedule.now.donationAmount,
       contributionAmount: paymentSchedule.now.contributionAmount,
       matchFundingAmount: null,
-      method: "card",
+      method: 'card',
       reference: paymentIntent.id,
-      status: "pending",
+      status: 'pending',
     }),
     ...paymentSchedule.future.map((p) => (insert(paymentTable, {
       id: ulid(),
@@ -125,11 +125,11 @@ export const main = middyfy($PublicDonationRequest, $PublicPaymentIntentResponse
       donationAmount: p.donationAmount,
       contributionAmount: p.contributionAmount,
       matchFundingAmount: null,
-      method: "card",
+      method: 'card',
       reference: null,
-      status: "pending",
+      status: 'pending',
     }))),
-  ])
+  ]);
 
   return {
     stripeClientSecret,
@@ -137,5 +137,5 @@ export const main = middyfy($PublicDonationRequest, $PublicPaymentIntentResponse
     amount: paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount,
     futurePayments: paymentSchedule.future.map((p) => ({ at: p.at, amount: p.donationAmount + p.contributionAmount })),
     totalDonationAmount,
-  }
-})
+  };
+});

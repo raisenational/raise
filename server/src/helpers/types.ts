@@ -1,7 +1,7 @@
 import type {
   APIGatewayProxyEventV2, APIGatewayProxyResult, Handler as AWSHandler, Context,
-} from "aws-lambda"
-import type { JSONSchema, Ulid } from "../schemas"
+} from 'aws-lambda';
+import type { JSONSchema, Ulid } from '../schemas';
 
 export interface AuthTokenPayload {
   subject: string,
@@ -22,21 +22,21 @@ export interface TaskDefinition {
  * */
 export type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
   event: APIGatewayEvent<
-    RequestSchema extends JSONSchema<infer T> ? T : null,
-    RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined
+  RequestSchema extends JSONSchema<infer T> ? T : null,
+  RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined
   >,
-  context: Context) => Promise<ResponseSchema extends JSONSchema<infer T> ? T : void>
+  context: Context) => Promise<ResponseSchema extends JSONSchema<infer T> ? T : void>;
 
 /**
  * The API event we have to handle after our middlewares have run.
  * The type of event passed to our inner handler.
  * */
-export type APIGatewayEvent<Body = unknown, Auth = { payload: AuthTokenPayload, token: string } | undefined> = Omit<APIGatewayProxyEventV2, "body" | "pathParameters"> & {
+export type APIGatewayEvent<Body = unknown, Auth = { payload: AuthTokenPayload, token: string } | undefined> = Omit<APIGatewayProxyEventV2, 'body' | 'pathParameters'> & {
   body: Body,
   rawBody: Body extends null ? unknown : string,
   pathParameters: Record<string, string>,
   auth: Auth,
-}
+};
 
 /**
  * The type each API main function is expected to be, i.e. the result of middify.
@@ -47,10 +47,10 @@ export type ExternalHandler<RequestSchema, ResponseSchema, RequiresAuth> =
     requestSchema: RequestSchema,
     responseSchema: ResponseSchema,
     requiresAuth: RequiresAuth,
-  }
+  };
 
 export interface Env {
-  STAGE: "local" | "dev" | "prod",
+  STAGE: 'local' | 'dev' | 'prod',
 
   API_BASE_URL: string,
 

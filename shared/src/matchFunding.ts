@@ -11,4 +11,4 @@ export default (params: {
     (params.matchFundingPerDonationLimit ?? Infinity) - (params.alreadyMatchFunded ?? 0),
   ),
   0,
-)
+);

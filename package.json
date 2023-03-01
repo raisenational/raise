@@ -8,5 +8,27 @@
   "scripts": {
     "postinstall": "npm run postinstall --if-present --workspaces",
     "start": "npm run start --workspace=server & npm run start --workspace=web"
+  },
+  "overrides": {
+    "react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825": {
+      "react": "^18",
+      "react-dom": "^18"
+    },
+    "@reach/accordion": {
+      "react": "^18",
+      "react-dom": "^18"
+    },
+    "@reach/dialog": {
+      "react": "^18",
+      "react-dom": "^18"
+    },
+    "@reach/disclosure": {
+      "react": "^18",
+      "react-dom": "^18"
+    },
+    "@reach/listbox": {
+      "react": "^18",
+      "react-dom": "^18"
+    }
   }
 }

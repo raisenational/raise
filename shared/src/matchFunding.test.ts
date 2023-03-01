@@ -1,4 +1,4 @@
-import matchFunding from "./matchFunding"
+import matchFunding from './matchFunding';
 
 test.each([
   // Basics
@@ -33,12 +33,12 @@ test.each([
   [15, 20, 100, 25, 20, 5],
   [15, 20, 100, 15, 25, 5],
   [10, 10, 100, 15, 25, 10],
-])("expects match funding of %sp for %sp donation, %s% rate, %sp remaining, %sp limit, %sp already", async (expected, donationAmount, matchFundingRate, matchFundingRemaining, matchFundingPerDonationLimit, alreadyMatchFunded) => {
+])('expects match funding of %sp for %sp donation, %s% rate, %sp remaining, %sp limit, %sp already', async (expected, donationAmount, matchFundingRate, matchFundingRemaining, matchFundingPerDonationLimit, alreadyMatchFunded) => {
   expect(matchFunding({
     donationAmount,
     alreadyMatchFunded,
     matchFundingRate,
     matchFundingRemaining,
     matchFundingPerDonationLimit,
-  })).toBe(expected)
-})
+  })).toBe(expected);
+});
