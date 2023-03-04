@@ -166,17 +166,21 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
         </div>
       </div>
 
-      <div className="flex bg-white text-black p-4 md:p-6 mt-4 md:mt-8 items-center rounded shadow-raise">
-        <Logo className="hidden sm:block mr-6 w-24" />
-        <div className="flex-1 text-left">
-          <p className="mb-4 leading-none">
+      <div className="flex bg-white text-black p-4 md:p-8 gap-4 md:gap-8 mt-4 md:mt-8 items-center rounded shadow-raise">
+        <Logo className="hidden sm:block w-24 flex-shrink-0" />
+        <div className="max-w-full text-left space-y-8">
+          <p>
             At
             {' '}
             {fundraiser.data?.publicName ?? title}
             , we believe that when we adopt a positive, deliberate approach towards giving, it can become a meaningful part of our lives.
           </p>
-          <p className="leading-none">
+          <p>
             Join now and celebrate giving by making a personally significant donation today.
+          </p>
+          {/* TODO: this only applies to the alumni fundraiser */}
+          <p>
+            For more information about the charities you can donate to, and some reflection questions to help you think about your donation, see <Link href="https://forms.gle/pYEfH1KvD5Ysk6q37" target="_blank">our form</Link>.
           </p>
         </div>
       </div>
