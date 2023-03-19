@@ -10,6 +10,7 @@ import Philosophy from '../../components/Philosophy';
 import { SocialIconV2 } from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
 import Footer from '../../components/Footer';
+import Button from '../../components/Button';
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
 
 const IndexPage = () => (
@@ -28,7 +29,7 @@ const IndexPage = () => (
           { text: 'Contact', href: '#contact' },
         ]}
         right={[
-          { text: 'Get Involved', href: 'https://forms.gle/aqf3ZJghoN25ZyuW6' },
+          { text: 'Donate', href: 'donate/' },
         ]}
       />
       <Section className="px-8">
@@ -42,6 +43,7 @@ const IndexPage = () => (
             protected: 455285,
           }}
         />
+        <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
       </Section>
       <CTADown
         text="How it works"
