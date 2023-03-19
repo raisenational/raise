@@ -10,6 +10,7 @@ import Philosophy from '../../components/Philosophy';
 import { SocialIconV2 } from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
 import Footer from '../../components/Footer';
+import Button from '../../components/Button';
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
 
 const IndexPage = () => (
@@ -28,20 +29,23 @@ const IndexPage = () => (
           { text: 'Contact', href: '#contact' },
         ]}
         right={[
-          { text: 'Get Involved', href: 'https://forms.gle/aqf3ZJghoN25ZyuW6' },
-        ]}
+             [
+            { text: 'Donate', href: 'donate/' },
+          ]
+        }
       />
       <Section className="px-8">
         <IntroStats
           title="Raise Leeds"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our national impact below."
           statistics={{
-            years: 5,
-            students: 2099,
-            raised: 382739,
-            protected: 455285,
+            years: 1,
+            students: 53,
+            raised: 4891.75,
+            protected: convert.moneyToPeopleProtected('gbp', 489175),
           }}
         />
+        <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
       </Section>
       <CTADown
         text="How it works"
