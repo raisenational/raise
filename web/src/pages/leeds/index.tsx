@@ -11,6 +11,7 @@ import { SocialIconV2 } from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
 import Footer from '../../components/Footer';
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
+import Button from "../../components/Button"
 
 const IndexPage = () => (
   <Page>
