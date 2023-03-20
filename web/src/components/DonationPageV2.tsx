@@ -869,6 +869,7 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
       return (
         <p>
           Amount due:
+          {' '}
           {format.amountShort(piResponse.currency, piResponse.amount)}
           {' '}
           (
@@ -885,6 +886,7 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
     return (
       <p>
         Amount due:
+        {' '}
         {format.amountShort(piResponse.currency, piResponse.amount)}
       </p>
     );
@@ -894,6 +896,7 @@ const DonationFormPaymentAmount: React.FC<{ watches: DonationFormResponses, piRe
     <>
       <p>
         Amount due:
+        {' '}
         {format.amountShort(piResponse.currency, piResponse.amount)}
         {contributionAmount > 0 ? ` (${format.amountShort(piResponse.currency, parseMoney(watches.donationAmount))} donation + ${format.amountShort(piResponse.currency, contributionAmount)} contribution)` : ''}
         {' '}
