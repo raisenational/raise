@@ -33,8 +33,8 @@ const IndexPage = () => (
         ]}
         right={[
           {
-            text: 'Donate now!',
-            href: 'https://www.joinraise.org/oxford/donate/',
+            text: 'Join the 2023/24 Committee',
+            href: 'https://forms.gle/LiLUkY7LCuGutS7x6',
           },
         ]}
       />
