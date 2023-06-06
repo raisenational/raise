@@ -14,6 +14,7 @@ import sp1 from '../images/summer-party-1.jpg';
 import sp2 from '../images/summer-party-2.jpg';
 import Button from '../components/Button';
 import { LabelledInput } from '../components/Form';
+import env from '../env/env';
 
 interface LatLong {
   latitude: number,
@@ -40,7 +41,7 @@ const CHAPTERS: Chapter[] = [
   {
     id: '01GMXD8C9NV9SWWH1NP17NKD0F',
     name: 'Cambridge',
-    href: 'https://www.mayweekalternative.org.uk/',
+    href: `//${env.CUSTOM_MWA_DOMAIN}`,
     location: {
       latitude: 52.2054,
       longitude: 0.1132,
@@ -123,12 +124,7 @@ const ChaptersPage = () => (
       <SectionTitle>Our Chapters</SectionTitle>
 
       <p>
-        We operate at
-        {CHAPTERS.length}
-        {' '}
-        UK universities. We call each local Raise group a chapter. If there isn't a Raise chapter at your university yet, we'd love to
-        <Link href="#starting-a-chapter">help you start one</Link>
-        .
+        We operate at {CHAPTERS.length} UK universities. We call each local Raise group a chapter. If there isn't a Raise chapter at your university yet, we'd love to <Link href="#starting-a-chapter">help you start one</Link>.
       </p>
 
       <div className="md:grid md:grid-cols-2 mt-4">
@@ -146,8 +142,7 @@ const ChaptersPage = () => (
         <p>We love to hear from potential founders that are interested in starting a local Raise group. Even if you're not sure, please contact us and we can figure it out from there!</p>
         <p>Our national team will be happy to help you get set up. We'll provide a complete written manual with everything you need to know to set up a successful chapter, and can arrange regular mentorship sessions to support you as a founder.</p>
         <p>
-          To get started, email us at
-          <Link href="mailto:raisenational@gmail.com?body=Hey%2C%0D%0A%0D%0AI%20was%20reading%20your%20chapters%20page%20and%20was%20interested%20in%20founding%20a%20Raise%20chapter%20for%20%3Clocation%3E.%0D%0A%0D%0AHow%20can%20I%20get%20started%3F">raisenational@gmail.com</Link>
+          To get started, email us at <Link href="mailto:raisenational@gmail.com?body=Hey%2C%0D%0A%0D%0AI%20was%20reading%20your%20chapters%20page%20and%20was%20interested%20in%20founding%20a%20Raise%20chapter%20for%20%3Clocation%3E.%0D%0A%0D%0AHow%20can%20I%20get%20started%3F">raisenational@gmail.com</Link>.
         </p>
       </div>
     </Section>
