@@ -53,11 +53,11 @@
     @apply font-bold
   }
 
-  p a {
+  p a, li a {
     @apply text-blue-700
   }
 
-  p a:hover {
+  p a:hover, li a:hover {
     @apply text-blue-500
   }
 
