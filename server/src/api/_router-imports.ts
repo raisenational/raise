@@ -27,6 +27,7 @@ export const importMap = {
   "/admin/users/get": () => import("./admin/users/get"),
   "/admin/users/post": () => import("./admin/users/post"),
   "/admin/users/{userId}/patch": () => import("./admin/users/{userId}/patch"),
+  "/public/Deevan/get": () => import("./public/Deevan/get"),
   "/public/fundraisers/{fundraiserId}/donation/post": () => import("./public/fundraisers/{fundraiserId}/donation/post"),
   "/public/fundraisers/{fundraiserId}/get": () => import("./public/fundraisers/{fundraiserId}/get"),
   "/public/status/get": () => import("./public/status/get"),

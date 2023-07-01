@@ -149,6 +149,11 @@ export type Routes = {
       "userId": string,
     },
   },
+  "get /public/Deevan": {
+    request: null,
+    response: S.Status,
+    params: null,
+  },
   "post /public/fundraisers/{fundraiserId}/donation": {
     request: S.PublicDonationRequest,
     response: S.PublicPaymentIntentResponse,
@@ -392,6 +397,13 @@ export const routes = {
     hasRequest: true,
     hasResponse: false,
     hasParams: true,
+  },
+  "get /public/Deevan": {
+    method: "get",
+    makePath: ({ }: {}) => `/public/Deevan`,
+    hasRequest: false,
+    hasResponse: true,
+    hasParams: false,
   },
   "post /public/fundraisers/{fundraiserId}/donation": {
     method: "post",

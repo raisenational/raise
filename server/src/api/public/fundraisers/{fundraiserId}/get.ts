@@ -11,7 +11,7 @@ export const main = middyfy(null, $PublicFundraiser, false, async (event) => {
 
   return {
     id: fundraiser.id,
-    publicName: fundraiser.publicName,
+    publicName: 'exampletext',
     activeFrom: fundraiser.activeFrom,
     activeTo: fundraiser.activeTo,
     recurringDonationsTo: fundraiser.recurringDonationsTo,

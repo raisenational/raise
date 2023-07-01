@@ -25,7 +25,7 @@ const IndexPage = () => (
       <TopNavigation />
       <Section className="px-8 my-8">
         <IntroStats
-          title="Raise: A Celebration of Giving"
+          title="Raise: A Celebration of Giving!"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our chapter websites to learn more about what we do."
           statistics={{
             years: 6,
@@ -36,9 +36,9 @@ const IndexPage = () => (
         />
 
         <iframe
-          className="w-full max-w-2xl mx-auto my-8 rounded shadow-raise"
+          className="w-full max-w-3xl mx-auto my-8 rounded shadow-raise"
           title="YouTube: Raise: A Celebration of Giving"
-          width="672"
+          width="700"
           height="378"
           src="https://www.youtube-nocookie.com/embed/6bEloAzIV2c?rel=0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
