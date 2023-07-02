@@ -1,0 +1,35 @@
+# =========================
+# Node.js-Specific Ignores
+# =========================
+
+# Build directory
+public/
+dist/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# build files
+.turbo
+.next
+.cache
+.npm
+.eslintcache
+dist
+coverage
+
+# Dependency directories
+node_modules/
+
+# Serverless (and plugins) directories
+.serverless
+
+# Custom environment
+src/env/env.ts
+src/env/local.ts
+# local is .gitignored so custom changes aren't committed accidentally
+# dev and prod configs can be public as they should not have secrets

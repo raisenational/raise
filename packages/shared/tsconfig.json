@@ -1,0 +1,4 @@
+{
+  "extends": "@raise/tsconfig/internal-package.json",
+  "include": ["src"]
+}

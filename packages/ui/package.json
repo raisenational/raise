@@ -1,0 +1,19 @@
+{
+  "name": "@raise/ui",
+  "private": true,
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "scripts": {
+    "lint": "eslint 'src'",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.44.0",
+    "@raise/eslint-config": "*",
+    "react": "^18.2.0",
+    "@raise/tsconfig": "*",
+    "typescript": "^5.1.6"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "esnext",
+    "jsx": "react-jsx",
+    "lib": [
+      "dom",
+      "es2015",
+      "es2017"
+    ],
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+  },
+  "include": [
+    "gatsby-browser.ts",
+    "gatsby-config.ts",
+    "gatsby-node.ts",
+    "serverless.ts",
+    "src"
+  ]
+}
