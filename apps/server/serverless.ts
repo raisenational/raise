@@ -88,7 +88,7 @@ const serverlessConfiguration: AWS = {
       websocketPort: 8002,
       lambdaPort: 8003,
     },
-    dynamodb: { // serverless-dynamodb-local
+    dynamodb: { // serverless-dynamodb
       stages: [env.STAGE], // https://github.com/99x/serverless-dynamodb-local/issues/225
       start: {
         port: 8004,
@@ -129,7 +129,7 @@ const serverlessConfiguration: AWS = {
   },
   plugins: [
     'serverless-webpack',
-    'serverless-dynamodb-local',
+    'serverless-dynamodb',
     'serverless-offline',
     'serverless-offline-ses-v2',
     'serverless-offline-watcher',

@@ -6,7 +6,7 @@
   ],
   "private": true,
   "scripts": {
-    "postinstall": "npm run postinstall --workspaces",
+    "postinstall": "npm run postinstall --workspaces --if-present",
     "start": "turbo run start",
     "test": "turbo run test",
     "lint": "turbo run lint",

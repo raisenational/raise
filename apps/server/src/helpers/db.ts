@@ -24,7 +24,10 @@ const dynamoDBClient = env.STAGE === 'local'
   ? new DynamoDBClient({
     region: 'localhost',
     endpoint: 'http://0.0.0.0:8004',
-    credentials: { accessKeyId: 'DEFAULT_ACCESS_KEY', secretAccessKey: 'DEFAULT_SECRET' },
+    credentials: {
+      accessKeyId: 'MockAccessKeyId',
+      secretAccessKey: 'MockSecretAccessKey'
+    },
     requestHandler,
   })
   : new DynamoDBClient({

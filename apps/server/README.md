@@ -166,7 +166,7 @@ We use the Serverless framework to manage all this infrastructure, which uses AW
 Serverless also comes with plugins that help us:
 - `serverless-webpack`: Allows us to use webpack to bundle up our code in the way AWS Lambda expects before running or deploying it
 - `serverless-offline`: Allows us to mock many AWS services (Lambda, API Gateway, CloudWatch) locally so we can run the server ourselves
-- `serverless-dynamodb-local`: Allows us to mock AWS DynamoDB locally so we can run the server ourselves
+- `serverless-dynamodb`: Allows us to mock AWS DynamoDB locally so we can run the server ourselves
 
 ## 👷 CI
 

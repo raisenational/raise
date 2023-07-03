@@ -62,8 +62,8 @@ All packages should have their main content in a `src` folder, and output built 
 - `8001`: the API
 - `8002`: serverless-offline websockets
 - `8003`: serverless-offline AWS Lambda API
-- `8004`: serverless-dynamodb-local instance of DynamoDB for serverless-offline
-- `8005`: serverless-dynamodb-local instance of DynamoDB for tests
+- `8004`: serverless-dynamodb instance of DynamoDB for serverless-offline
+- `8005`: serverless-dynamodb instance of DynamoDB for tests
 - `8006`: serverless-offline-ses-v2 instance of ses
 
 ### 🔀 Change process

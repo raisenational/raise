@@ -1,15 +1,14 @@
-// NB: we use dynamodb-localhost as it's the same as serverless-offline, and reduces our dependencies
-const dynamodbLocal = require("dynamodb-localhost")
+const dynamodbLocal = require("aws-dynamodb-local")
 const path = require("path")
 const execSync = require('child_process').execSync;
 
 module.exports = async () => {
   const service = JSON.parse(execSync('npx serverless print --format json', { encoding: 'utf-8' }))
 
-  // Fix log from dynamodb-localhost as "Determining test suites to run..." misses trailing newline
+  // Fix log from aws-dynamodb-local as "Determining test suites to run..." misses trailing newline
   console.log()
 
-  // Start dynamodb-localhost
+  // Start DynamoDB local
   dynamodbLocal.start({
     port: 8005,
     install_path: path.join(__dirname, '../.dynamodb'),

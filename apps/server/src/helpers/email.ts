@@ -13,7 +13,10 @@ const sesClient = env.STAGE === 'local'
   ? new SESv2Client({
     region: 'localhost',
     endpoint: 'http://localhost:8006',
-    credentials: { accessKeyId: 'DEFAULT_ACCESS_KEY', secretAccessKey: 'DEFAULT_SECRET' },
+    credentials: {
+      accessKeyId: 'MockAccessKeyId',
+      secretAccessKey: 'MockSecretAccessKey'
+    },
     requestHandler,
   })
   : new SESv2Client({
