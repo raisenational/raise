@@ -26,6 +26,7 @@
   "dependencies": {
     "@gatsbyjs/reach-router": "^2.0.1",
     "@heroicons/react": "^1.0.4",
+    "@raise/server": "*",
     "@raise/shared": "*",
     "@reach/accordion": "^0.18.0",
     "@reach/dialog": "^0.18.0",
