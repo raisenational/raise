@@ -1,14 +1,3 @@
-# package directories
-node_modules
-
-# Serverless (and plugins) directories
-.serverless
-.webpack
-.dynamodb
-
-# jest output
-coverage
-
 # Custom environment
 src/env/env.ts
 src/env/local.ts

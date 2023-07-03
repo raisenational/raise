@@ -7,7 +7,9 @@ node_modules
 .cache
 .npm
 .eslintcache
-public
+.serverless
+.webpack
+.dynamodb
 coverage
 tmp
 
