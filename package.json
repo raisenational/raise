@@ -1,14 +1,24 @@
 {
   "name": "raise",
   "workspaces": [
-    "shared",
-    "server",
-    "web"
+    "apps/*",
+    "packages/*"
   ],
+  "private": true,
   "scripts": {
-    "postinstall": "npm run postinstall --if-present --workspaces",
-    "start": "npm run start --workspace=server & npm run start --workspace=web"
+    "postinstall": "npm run postinstall --workspaces --if-present",
+    "start": "turbo run start",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "build": "turbo run build",
+    "// TODO: add formatter": "",
+    "// format": "exit 1 && prettier --write \"**/*.{ts,tsx,md}\""
   },
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "turbo": "latest"
+  },
+  "packageManager": "npm@9.5.1",
   "overrides": {
     "react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825": {
       "react": "^18",

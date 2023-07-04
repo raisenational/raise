@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        node-version: [18]
+
+    steps:
+      - name: Checkout ${{ github.sha }}
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          # TODO: can we further improve caching performance by caching node_modules directly,
+          # given our platform and node version is constant (changes are the usual reason not
+          # to as installs may vary on this)?
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Set up Turborepo caching
+        uses: dtinth/setup-github-actions-caching-for-turbo@v1
+      - name: Test, lint, build
+        run: npx turbo test lint build
+
+      # Deployment to dev environment
+      - name: "server: Retrieve env for dev environment"
+        if: github.ref == 'refs/heads/master'
+        run: echo "$DEV_ENV" > server/src/env/dev.ts
+        env:
+          DEV_ENV: ${{ secrets.DEV_ENV }}
+      - name: "Deploy to dev environment"
+        if: github.ref == 'refs/heads/master'
+        run: npx turbo deploy:dev
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      # Deployment to prod environment
+      - name: "web: Deploy to prod environment"
+        if: github.ref == 'refs/heads/master'
+        run: npx turbo deploy:prod --filter web
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+

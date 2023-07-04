@@ -1,0 +1,8 @@
+# Build directory
+public/
+
+# Custom environment
+src/env/env.ts
+src/env/local.ts
+# local is .gitignored so custom changes aren't committed accidentally
+# dev and prod configs can be public as they should not have secrets

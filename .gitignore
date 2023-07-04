@@ -1,4 +1,25 @@
-# tmp dir created in MWA website build
-web-mwa/
-
+# dependencies
 node_modules
+
+# build files
+.turbo
+.next
+.cache
+.npm
+.eslintcache
+.serverless
+.webpack
+.dynamodb
+coverage
+tmp
+
+# build output
+dist
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# tmp dir created in MWA website build
+apps/web-mwa/

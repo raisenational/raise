@@ -1,20 +1,23 @@
 {
-  "editor.tabSize": 2,
+  // Standardize formatting to avoid noise in diffs
   "files.encoding": "utf8",
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
+
+  // Tell ESLint to validate TS and TSX
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact",
   ],
+
+  // Encourages fixing lint issues as you go
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
   },
-  "workbench.startupEditor": "none",
-  "git.enableSmartCommit": true,
-  "redhat.telemetry.enabled": false,
-  "css.format.enable": false,
   "eslint.format.enable": true,
+
+  // Simplify git workflow
+  "git.enableSmartCommit": true,
 }

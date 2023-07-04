@@ -1,0 +1,35 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "ignorePaths": ["cspell.json", "node_modules"],
+  "words": [
+    "gatsbyjs",
+    "oidc",
+    "signin",
+    "joinraise",
+    "mayweekalternative",
+    "middyfy",
+    "middlewares",
+    "unmock",
+    "idempotency",
+    "idempotently",
+    "greetee",
+    "unmarshall",
+    "mockdate",
+    "Malena",
+    "domdomegg",
+    "Personface",
+    "unstringifyable",
+    "SESv2"
+  ],
+  "ignoreRegExpList": ["ULID", "GoogleClientId", "StripeAPIKey"],
+  "patterns": [{
+    "name": "ULID",
+    "pattern": "[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}"
+  }, {
+    "name": "GoogleClientID",
+    "pattern": "[0-9]+-[0-9A-Za-z_]{32}\\.apps\\.googleusercontent\\.com"
+  }, {
+    "name": "StripeAPIKey",
+    "pattern": "((pk|sk|rk)_(test|live)|whsec)_[A-Za-z0-9]+"
+  }]
+}

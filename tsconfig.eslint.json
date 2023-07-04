@@ -1,0 +1,4 @@
+{
+  "extends": "@raise/tsconfig/base.json",
+  "include": ["**/*.ts", "**/*.tsx"]
+}
