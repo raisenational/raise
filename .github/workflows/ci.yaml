@@ -35,7 +35,7 @@ jobs:
       # Deployment to dev environment
       - name: "server: Retrieve env for dev environment"
         if: github.ref == 'refs/heads/master'
-        run: echo "$DEV_ENV" > server/src/env/dev.ts
+        run: echo "$DEV_ENV" > apps/server/src/env/dev.ts
         env:
           DEV_ENV: ${{ secrets.DEV_ENV }}
       - name: "Deploy to dev environment"
@@ -52,4 +52,3 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
