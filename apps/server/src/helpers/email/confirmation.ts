@@ -3,9 +3,9 @@ import {
 } from '@raise/shared';
 import env from '../../env/env';
 import { Donation, Fundraiser, Payment } from '../../schemas';
-import renderHtml from './renderHtml';
+import renderHtml, { RenderedHtml } from './renderHtml';
 
-export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[]): string => {
+export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[]): RenderedHtml => {
   const totalDonated = payments.reduce((acc, p) => acc + p.donationAmount, 0);
   const totalExpectedMatchFunding = payments.reduce((acc, p) => acc + (p.matchFundingAmount ?? calcMatchFunding({
     donationAmount: p.donationAmount,
@@ -347,5 +347,5 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
   </div>
 </body>
 
-</html>`.string;
+</html>`;
 };
