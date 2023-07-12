@@ -175,6 +175,11 @@ export const main = middyfy($StripeWebhookRequest, null, false, async (event) =>
   }
 
   if (payments[0].id === paymentId) {
-    await sendEmail("We've received your donation", confirmation(fundraiser, donation, payments), donation.donorEmail, fundraiser.publicName);
+    await sendEmail(
+      "We've received your donation",
+      confirmation(fundraiser, donation, payments),
+      donation.donorEmail,
+      fundraiser.publicName
+    );
   }
 });
