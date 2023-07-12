@@ -305,7 +305,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                   ${payments.slice(1).map((p) => renderHtml`<tr style="font-family:'Helvetica', 'Arial', sans-serif">
                                       <td style="padding: 2px 0;font-size:18px">${format.date(p.at)}</td>
                                       <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, p.donationAmount + p.contributionAmount)}</td>
-                                  </tr>`).join('')}
+                                  </tr>`)}
                                   <tr style="height:6px">
                                     <td></td>
                                     <td></td>
