@@ -1,2 +1,6 @@
 Contact: mailto:raisenational@gmail.com
 Preferred-Languages: en
+
+# Added to help security researchers who use scanning tools
+# that break on security.txt files without an Expires field
+Expires: 9999-12-31T23:59:59z
