@@ -22,7 +22,7 @@ test('renders email correctly with one payment', () => {
   ];
 
   // when we render the email
-  const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, ' ');
+  const email = confirmation(fundraiser, donation, payments).string.replace(/\s+/g, ' ');
 
   // then we have expected data filled in
   expect(email).toContain('Dear Greg,');
@@ -57,7 +57,7 @@ test('renders email correctly for payments with no contribution or match funding
   ];
 
   // when we render the email
-  const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, ' ');
+  const email = confirmation(fundraiser, donation, payments).string.replace(/\s+/g, ' ');
 
   // then we have expected data filled in
   expect(email).toContain('Dear Greg,');
@@ -94,7 +94,7 @@ test('renders email correctly for payments with inferred match funding', () => {
   ];
 
   // when we render the email
-  const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, ' ');
+  const email = confirmation(fundraiser, donation, payments).string.replace(/\s+/g, ' ');
 
   // then we have expected data filled in
   expect(email).toContain('Dear Greg,');
@@ -151,7 +151,7 @@ test.each([
   ];
 
   // when we render the email
-  const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, ' ');
+  const email = confirmation(fundraiser, donation, payments).string.replace(/\s+/g, ' ');
 
   // then we have expected data filled in
   expect(email).toContain('Dear Greg,');
@@ -188,7 +188,7 @@ test('does not confuse MWA and Raise branding', () => {
   const payments = [makePayment()];
 
   // when we render the email
-  const email = confirmation(fundraiser, donation, payments).replace(/\s+/g, ' ');
+  const email = confirmation(fundraiser, donation, payments).string.replace(/\s+/g, ' ');
 
   // then we expect the email not to mention raise except for the image assets
   expect(email

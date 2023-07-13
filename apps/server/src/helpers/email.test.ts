@@ -1,5 +1,6 @@
 import { SendEmailCommand } from '@aws-sdk/client-sesv2';
 import { sendEmail } from './email';
+import renderHtml from './email/renderHtml';
 
 jest.unmock('./email');
 
@@ -20,7 +21,7 @@ test('sendEmail calls SES correctly', async () => {
   // when we send an email
   await sendEmail(
     'This is the subject',
-    '<!doctype html><html><body>Hello</body></html>',
+    renderHtml`<!doctype html><html><body>Hello</body></html>`,
     'adam@joinraise.org',
   );
 

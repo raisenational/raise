@@ -1,6 +1,7 @@
 import { SESv2Client, SendEmailCommand } from '@aws-sdk/client-sesv2';
 import { NodeHttpHandler } from '@aws-sdk/node-http-handler';
 import env from '../env/env';
+import { RenderedHtml } from './email/renderHtml';
 
 const raiseEmailAddress = 'raisenational@gmail.com';
 
@@ -23,14 +24,14 @@ const sesClient = env.STAGE === 'local'
     requestHandler,
   });
 
-export const sendEmail = async (subject: string, html: string, to: string, fromName = 'Raise'): Promise<void> => {
+export const sendEmail = async (subject: string, html: RenderedHtml, to: string, fromName = 'Raise'): Promise<void> => {
   await sesClient.send(new SendEmailCommand({
     Content: {
       Simple: {
         Body: {
           Html: {
             Charset: 'UTF-8',
-            Data: html,
+            Data: html.string,
           },
         },
         Subject: {
