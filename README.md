@@ -53,6 +53,20 @@ These scripts are defined in the relevant `package.json` files. We keep these sc
 
 All packages should have their main content in a `src` folder, and output built files to `dist`.
 
+#### 📥 Installing packages
+
+To install external packages (choosing the appropriate workspace, and with the argument `--save-dev` for dev dependencies):
+
+```
+npm install some-package-name --workspace @raise/server
+```
+
+And to uninstall:
+
+```
+npm uninstall some-package-name --workspace @raise/server
+```
+
 #### 🚢 Ports
 
 `web`:
