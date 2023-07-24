@@ -9,7 +9,7 @@ const Footer: React.FC = () => (
       <div className="flex gap-4">
         <Link href={`//${env.CUSTOM_RAISE_DOMAIN}`}><Logo className="h-6" /></Link>
         <div>
-          <p>Raise: A Celebration of Giving is a registered charity in England and Wales (number 1202899).</p>
+          <Link href="https://register-of-charities.charitycommission.gov.uk/charity-search/-/charity-details/5208930" className="inline-block transition-all hover:scale-105">Raise: A Celebration of Giving is a registered charity in England and Wales (number 1202899).</Link>
 
           <div className="flex gap-2">
             <Link href={`//${env.CUSTOM_RAISE_DOMAIN}/chapters/`} className="inline-block transition-all hover:scale-105">Find my chapter</Link>
