@@ -439,6 +439,7 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
     donationAmount = parseMoney(watches.donationAmount);
   } catch { /* noop */ }
   const shouldShowLowAmountWarning = donationAmount !== null && ((watches.recurrenceFrequency === 'ONE_OFF' && donationAmount <= 15_00) || (watches.recurrenceFrequency === 'WEEKLY' && donationAmount < 2_00));
+  const shouldShowHighAmountWarning = donationAmount !== null && ((watches.recurrenceFrequency === 'ONE_OFF' && donationAmount >= 2000_00) || (watches.recurrenceFrequency === 'WEEKLY' && donationAmount > 200_00));
   const schedule = donationAmount === null ? null : calcPaymentSchedule(donationAmount, 0, watches.recurrenceFrequency === 'ONE_OFF' ? null : watches.recurrenceFrequency, fundraiser.recurringDonationsTo);
   const totalDonationAmount = schedule === null ? null : schedule.now.donationAmount + schedule.future.reduce((acc, cur) => acc + cur.donationAmount, 0);
   const matchFundingAmount = totalDonationAmount === null ? null : calcMatchFunding({
@@ -530,7 +531,8 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
         })}
       />
 
-      {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="mt-1">We encourage all students to donate an amount that's personally significant to them - and we know this is different for everyone! A good way of thinking about is to donate an amount that really makes you think about where and why you are donating. We can't wait to celebrate with you soon!</p>}
+      {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="my-3 py-2 px-3 font-normal animate-shake text-[#a66a02] border border-[#a66a02] border-1 rounded-lg bg-[#ffec41]">We encourage all students to donate an amount that's personally significant to them - and we know this is different for everyone! A good way of thinking about is to donate an amount that really makes you think about where and why you are donating. We can't wait to celebrate with you soon!</p>}
+      {touchedFields.donationAmount && shouldShowHighAmountWarning && <p className="my-3 py-2 px-3 font-normal animate-shake text-red-800 border border-red-800 border-1 rounded-lg bg-red-50">(Placeholder for High Donations Message)</p>}
 
       {fundraiser.matchFundingRate !== 0 && fundraiser.matchFundingPerDonationLimit !== null && fundraiser.matchFundingRemaining !== 0 && (
       <p className="mt-1">
@@ -675,7 +677,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
             })}
           />
 
-          {touchedFields.contributionAmount && contributionAmount > 20_00 && <p className="mt-1">While you're welcome to contribute as much as you want, we don't expect to spend more than £20 per head on the Summer Party.</p>}
+          {touchedFields.contributionAmount && contributionAmount > 20_00 && <p className="my-3 py-1 px-2 font-normal animate-shake text-[#a66a02] border border-[#a66a02] border-1 rounded-lg bg-[#ffec41]">While you're welcome to contribute as much as you want, we don't expect to spend more than £20 per head on the Summer Party.</p>}
         </>
       )}
 
