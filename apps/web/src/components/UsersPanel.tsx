@@ -15,7 +15,7 @@ import { UserCreation } from '../helpers/generated-api-client';
 
 const UsersPanel: React.FC = () => {
   const [users, refetchUsers] = useReq('get /admin/users');
-  const [groups, refetchGroups] = useReq('get /admin/groups');
+  const [groups] = useReq('get /admin/groups');
   const groupMap = groups.data ? Object.fromEntries(groups.data.map((group) => [group.id, group.name])) : {};
   const [newUserModalOpen, setNewUserModalOpen] = useState(false);
   const req = useRawReq();
