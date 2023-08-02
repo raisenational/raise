@@ -531,8 +531,8 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
         })}
       />
 
-      {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="my-3 py-2 px-3 font-normal animate-shake text-[#a66a02] border border-[#a66a02] border-1 rounded-lg bg-[#ffec41]">We encourage all students to donate an amount that's personally significant to them - and we know this is different for everyone! A good way of thinking about is to donate an amount that really makes you think about where and why you are donating. We can't wait to celebrate with you soon!</p>}
-      {touchedFields.donationAmount && shouldShowHighAmountWarning && <p className="my-3 py-2 px-3 font-normal animate-shake text-red-800 border border-red-800 border-1 rounded-lg bg-red-50">(Placeholder for High Donations Message)</p>}
+      {touchedFields.donationAmount && shouldShowLowAmountWarning && <p className="my-3 py-2 px-3 font-normal animate-shake  text-yellow-900 border border-yellow-400 border-1 rounded-lg bg-yellow-100">We encourage all students to donate an amount that's personally significant to them - and we know this is different for everyone! A good way of thinking about is to donate an amount that really makes you think about where and why you are donating. We can't wait to celebrate with you soon!</p>}
+      {touchedFields.donationAmount && shouldShowHighAmountWarning && <p className="my-3 py-2 px-3 font-normal animate-shake text-yellow-900 border border-yellow-400 border-1 rounded-lg bg-yellow-100">Wow, thank you! For high donations, it may be worth paying us by bank transfer to reduce card fees involved in processing your donation. If you are happy to do this, please contact us via the details on <a href="../" className="text-yellow-900 font-medium"> our homepage</a>. If this is not feasible or practical, feel free to go ahead and make the payment by card.</p>}
 
       {fundraiser.matchFundingRate !== 0 && fundraiser.matchFundingPerDonationLimit !== null && fundraiser.matchFundingRemaining !== 0 && (
       <p className="mt-1">
@@ -677,7 +677,7 @@ const DonationFormCelebrate: React.FC<{ formMethods: UseFormReturn<DonationFormR
             })}
           />
 
-          {touchedFields.contributionAmount && contributionAmount > 20_00 && <p className="my-3 py-1 px-2 font-normal animate-shake text-[#a66a02] border border-[#a66a02] border-1 rounded-lg bg-[#ffec41]">While you're welcome to contribute as much as you want, we don't expect to spend more than £20 per head on the Summer Party.</p>}
+          {touchedFields.contributionAmount && contributionAmount > 20_00 && <p className="my-3 py-2 px-3 font-normal animate-shake text-yellow-900 border border-yellow-400 border-1 rounded-lg bg-yellow-100">While you're welcome to contribute as much as you want, we don't expect to spend more than £20 per head on the Summer Party.</p>}
         </>
       )}
 
