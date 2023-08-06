@@ -15,7 +15,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
     alreadyMatchFunded: acc,
   })), 0);
 
-  const peopleProtected = convert.moneyToPeopleProtected(fundraiser.currency, totalDonated + (donation.giftAid ? 1.25 : 1) + totalExpectedMatchFunding);
+  const peopleProtected = convert.moneyToPeopleProtected(fundraiser.currency, totalDonated * (donation.giftAid ? 1.25 : 1) + totalExpectedMatchFunding);
 
   return renderHtml`<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
