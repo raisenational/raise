@@ -290,6 +290,13 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                     <td style="padding: 8px 0 2px 0;font-size:18px">Total paid</td>
                                     <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount + payments[0].contributionAmount)}</td>
                                   </tr>
+                                  ${donation.giftAid === true ? renderHtml`<tr>
+                                  </tr>
+                                  <tr
+                                    style="font-family:'Helvetica', 'Arial', sans-serif;font-weight:bold">
+                                    <td style="padding: 8px 0 2px 0;font-size:18px">Gift Aid added</td>
+                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount * 0.25)}</td>
+                                  </tr>` : ''}
                                 </table>
                               </td>
                             </tr>
@@ -315,9 +322,49 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                     <td style="padding: 8px 0 2px 0;font-size:18px">Total future donations</td>
                                     <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0))}</td>
                                   </tr>
+                                  ${donation.giftAid === true ? renderHtml`<tr>
+                                  </tr>
+                                  <tr
+                                    style="font-family:'Helvetica', 'Arial', sans-serif;font-weight:bold">
+                                    <td style="padding: 8px 0 2px 0;font-size:18px">Total future Gift Aid to be added</td>
+                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0) * 0.25)}</td>
+                                  </tr>` : ''}
                                 </table>
                               </td>
                             </tr>` : ''}
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--[if mso | IE]></td></tr></table><![endif]-->
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="md-rounded-bottom" style="background:#eeeeee;background-color:#eeeeee;margin:0px auto;max-width:600px;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#eeeeee;background-color:#eeeeee;width:100%;">
+        <tbody>
+          <tr>
+            <td style="direction:ltr;font-size:0px;padding:10px;text-align:center;">
+              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:540px;" ><![endif]-->
+              <div class="mj-column-per-100 mj-outlook-group-fix" style="font-size:0px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%;">
+                <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                  <tbody>
+                    <tr>
+                      <td style="vertical-align:top;padding:0;">
+                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+                          <tbody>
+                            <tr>
+                              <td align="center" style="font-size:0px;padding:4px;word-break:break-word;">
+                                <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:12px;line-height:1.5;text-align:center;color:#000000;">
+                                Raise: A Celebration of Giving is a registered charity in England and Wales (number 1202899)
+                                </div>
+                              </td>
+                            </tr>
                           </tbody>
                         </table>
                       </td>
