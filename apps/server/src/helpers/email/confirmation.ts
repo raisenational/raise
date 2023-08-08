@@ -4,6 +4,7 @@ import {
 import env from '../../env/env';
 import { Donation, Fundraiser, Payment } from '../../schemas';
 import renderHtml, { RenderedHtml } from './renderHtml';
+import footer from './footer';
 
 export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[]): RenderedHtml => {
   const totalDonated = payments.reduce((acc, p) => acc + p.donationAmount, 0);
@@ -290,6 +291,13 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                     <td style="padding: 8px 0 2px 0;font-size:18px">Total paid</td>
                                     <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount + payments[0].contributionAmount)}</td>
                                   </tr>
+                                  ${donation.giftAid === true ? renderHtml`<tr>
+                                  </tr>
+                                  <tr
+                                    style="font-family:'Helvetica', 'Arial', sans-serif;font-weight:bold">
+                                    <td style="padding: 8px 0 2px 0;font-size:18px">Gift Aid added</td>
+                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount * 0.25)}</td>
+                                  </tr>` : ''}
                                 </table>
                               </td>
                             </tr>
@@ -315,6 +323,13 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                     <td style="padding: 8px 0 2px 0;font-size:18px">Total future donations</td>
                                     <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0))}</td>
                                   </tr>
+                                  ${donation.giftAid === true ? renderHtml`<tr>
+                                  </tr>
+                                  <tr
+                                    style="font-family:'Helvetica', 'Arial', sans-serif;font-weight:bold">
+                                    <td style="padding: 8px 0 2px 0;font-size:18px">Total future Gift Aid to be added</td>
+                                    <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0) * 0.25)}</td>
+                                  </tr>` : ''}
                                 </table>
                               </td>
                             </tr>` : ''}
@@ -331,19 +346,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
         </tbody>
       </table>
     </div>
-    <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="md-p-20px-outlook" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-    <div class="md-p-20px" style="margin:0px auto;max-width:600px;">
-      <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
-        <tbody>
-          <tr>
-            <td style="direction:ltr;font-size:0px;padding:0;text-align:center;">
-              <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr></tr></table><![endif]-->
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!--[if mso | IE]></td></tr></table><![endif]-->
+    ${renderHtml`${footer()}`}
   </div>
 </body>
 
