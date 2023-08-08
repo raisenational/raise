@@ -1,5 +1,6 @@
 import { makeDonation, makeFundraiser, makePayment } from '../../../local/testHelpers';
 import confirmation from './confirmation';
+import footer from './footer';
 
 test('renders email correctly with one payment', () => {
   // given fundraiser, donation and payments
@@ -190,9 +191,13 @@ test('does not confuse MWA and Raise branding', () => {
   // when we render the email
   const email = confirmation(fundraiser, donation, payments).string.replace(/\s+/g, ' ');
 
+  // renders footer so we can avoid it from the checks
+  const pageEnd = footer().string.replace(/\s+/g, ' ');
+
   // then we expect the email not to mention raise except for the image assets
   expect(email
     .replace(/fundraiserId/g, '')
-    .replace(/src="https:\/\/www.joinraise.org/g, ''))
+    .replace(/src="https:\/\/www.joinraise.org/g, '')
+    .replace(pageEnd, ''))
     .not.toMatch(/raise/i);
 });
