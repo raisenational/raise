@@ -346,7 +346,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
         </tbody>
       </table>
     </div>
-    ${renderHtml`${footer()}`}
+    ${footer()}
   </div>
 </body>
 
