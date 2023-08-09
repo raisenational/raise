@@ -1,6 +1,6 @@
 /**
  * This file was automatically generated. DO NOT MODIFY IT BY HAND.
- * Instead, modify jsonSchema.ts, and run "npm run generate:schemas"
+ * Instead, modify jsonSchema.ts, and run "npm run generate --workspace @raise/server"
  * (generate:schemas is run automatically if you're running the server).
  */
 /* eslint-disable */
@@ -466,6 +466,7 @@ export interface UserCreation {
   email: string;
   groups: string[];
   securityTrainingCompletedAt: number;
+  autoEmail: boolean;
 }
 
 export interface UserEdits {
@@ -473,6 +474,7 @@ export interface UserEdits {
   email?: string;
   groups?: string[];
   securityTrainingCompletedAt?: number;
+  autoEmail?: boolean;
 }
 
 export interface User {
@@ -480,6 +482,7 @@ export interface User {
   email: string;
   groups: string[];
   securityTrainingCompletedAt: number;
+  autoEmail?: boolean;
   id: string;
 }
 
@@ -488,5 +491,6 @@ export type Users = {
   email: string;
   groups: string[];
   securityTrainingCompletedAt: number;
+  autoEmail?: boolean;
   id: string;
 }[];
