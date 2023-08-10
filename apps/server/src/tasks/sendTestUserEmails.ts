@@ -8,7 +8,7 @@ const testEmail = 'Raise';
 export default {
   id: '01H7DWQ77TZG31E8E1ADWVA15W',
   name: 'Send test user email',
-  groups: [fixedGroups.National, fixedGroups.NationalTech],
+  groups: [fixedGroups.National],
   run: async (): Promise<void> => {
     const body: UserCreation = {
       name: 'Greg McGregFace',
