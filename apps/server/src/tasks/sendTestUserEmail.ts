@@ -15,7 +15,7 @@ export default {
       email: 'raisedemo@gmail.com',
       // the below information is not required for this task
       groups: [],
-      autoEmail: true,
+      sendAccountCreationEmail: true,
       securityTrainingCompletedAt: Math.floor(new Date().getTime() / 1000),
     };
 
