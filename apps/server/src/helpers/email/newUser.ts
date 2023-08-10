@@ -213,8 +213,8 @@ export default (person: UserCreation, sender: string): RenderedHtml => {
                                 <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
                                   <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:20px;line-height:1.5;text-align:left;color:#000000;">
                                   Dear ${person.name},<br /><br />
-                                  Your account has been updated on the Raise platform. <br /><br ?>
-                                  You should be able to login at <a href="https://www.joinraise.org/admin/" target="_blanck" >www.joinraise.org/admin/</a>, using your account ${person.email}. <br /><br />
+                                  Your account has been created on the Raise platform. <br /><br />
+                                  You should be able to login at <a href="${env.CUSTOM_RAISE_DOMAIN.concat('/admin')}" target="_blank" >${env.CUSTOM_RAISE_DOMAIN.concat('/admin')}</a>, using your account ${person.email}. <br /><br />
                                   For more information about using the Raise Platform, <a href="https://docs.google.com/document/d/1H5RdqTJijH-wWb2thCqJrT8IoLiVvxSpWLDEUmDyLxU/edit">click here</a>. <br/><br/>
                                   Best wishes, <br/>
                                   ${sender}
