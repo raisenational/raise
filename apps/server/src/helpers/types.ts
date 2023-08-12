@@ -13,6 +13,7 @@ export interface AuthTokenPayload {
 export interface TaskDefinition {
   id: string,
   name: string,
+  groups: string[],
   run: () => unknown | Promise<unknown>,
 }
 

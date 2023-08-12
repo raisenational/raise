@@ -6,6 +6,7 @@ import { groupTable } from '../helpers/tables';
 export default {
   id: '01GPY6CSHMD09C16H417C8SVBB',
   name: 'Initialize National and NationalTech groups',
+  groups: [fixedGroups.National],
   run: async (): Promise<void> => {
     await insert(groupTable, { id: fixedGroups.National, name: 'National' });
     await insert(groupTable, { id: fixedGroups.NationalTech, name: 'NationalTech' });
