@@ -99,6 +99,7 @@ export const makeFundraiser = <Override extends Partial<Fundraiser>>(override?: 
   suggestedContributionAmount: 10_00,
   eventLink: null,
   moreInvolvedLink: null,
+  archived: false,
   ...override,
 } as Fundraiser & Override)
 

@@ -1,6 +1,6 @@
 /**
  * This file was automatically generated. DO NOT MODIFY IT BY HAND.
- * Instead, modify jsonSchema.ts, and run "npm run generate:schemas"
+ * Instead, modify jsonSchema.ts, and run "npm run generate --workspace @raise/server"
  * (generate:schemas is run automatically if you're running the server).
  */
 /* eslint-disable */
@@ -55,6 +55,7 @@ export interface FundraiserCreation {
   suggestedContributionAmount?: number | null;
   eventLink?: string | null;
   moreInvolvedLink?: string | null;
+  archived?: boolean;
   groupsWithAccess?: string[];
 }
 
@@ -78,6 +79,7 @@ export interface FundraiserEdits {
   suggestedContributionAmount?: number | null;
   eventLink?: string | null;
   moreInvolvedLink?: string | null;
+  archived?: boolean;
   groupsWithAccess?: string[];
   previous?: {
     totalRaised?: number;
@@ -106,6 +108,7 @@ export interface Fundraiser {
   suggestedContributionAmount: number | null;
   eventLink: string | null;
   moreInvolvedLink: string | null;
+  archived: boolean;
   groupsWithAccess: string[];
 }
 
@@ -130,6 +133,7 @@ export type Fundraisers = {
   suggestedContributionAmount: number | null;
   eventLink: string | null;
   moreInvolvedLink: string | null;
+  archived: boolean;
   groupsWithAccess: string[];
 }[];
 
@@ -359,6 +363,7 @@ export interface PublicFundraiser {
   suggestedContributionAmount: number | null;
   eventLink: string | null;
   moreInvolvedLink: string | null;
+  archived?: boolean;
   donations: {
     id: string;
     donorName?: string;

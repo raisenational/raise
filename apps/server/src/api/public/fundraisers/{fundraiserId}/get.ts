@@ -29,6 +29,7 @@ export const main = middyfy(null, $PublicFundraiser, false, async (event) => {
     suggestedContributionAmount: fundraiser.suggestedContributionAmount,
     eventLink: fundraiser.eventLink,
     moreInvolvedLink: fundraiser.moreInvolvedLink,
+    archived: fundraiser.archived,
     donations: donations.filter((d) => d.overallPublic && d.donationCounted).map((d) => ({
       id: d.id,
       donorName: d.namePublic ? d.donorName : undefined,

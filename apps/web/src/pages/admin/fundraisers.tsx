@@ -1,6 +1,6 @@
 import { RouteComponentProps } from '@gatsbyjs/reach-router';
 import { navigate } from 'gatsby';
-import { PlusSmIcon } from '@heroicons/react/outline';
+import { EyeIcon, EyeOffIcon, PlusSmIcon } from '@heroicons/react/outline';
 import {
   convert, fixedGroups, format,
 } from '@raise/shared';
@@ -24,11 +24,28 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
   const [newFundraiserModalOpen, setNewFundraiserModalOpen] = useState(false);
   const axios = useRawAxios();
   const [auth] = useAuthState();
+  const [showArchived, setShowArchived] = useState(true);
 
   return (
     <Section>
       <div className="flex">
         <SectionTitle className="flex-1">Fundraisers</SectionTitle>
+        {!showArchived && (
+        <Button onClick={() => setShowArchived(true)}>
+          <EyeIcon className="h-6 mb-1" />
+          {' '}
+          <span className="hidden lg:inline">Show archived</span>
+          <span className="lg:hidden">More</span>
+        </Button>
+        )}
+        {showArchived && (
+        <Button onClick={() => setShowArchived(false)}>
+          <EyeOffIcon className="h-6 mb-1" />
+          {' '}
+          <span className="hidden lg:inline">Hide archived</span>
+          <span className="lg:hidden">Less</span>
+        </Button>
+        )}
         <RequireGroup group={fixedGroups.National}>
           <Button onClick={() => setNewFundraiserModalOpen(true)}>
             <PlusSmIcon className="h-6 mb-1" />
@@ -87,7 +104,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
           goal: { label: 'Goal', formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), className: 'w-36' },
           totalRaised: { label: 'Raised', formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), className: 'w-36' },
         }}
-        items={asResponseValues(fundraisers.data?.sort((a, b) => b.activeFrom - a.activeFrom), fundraisers)}
+        items={asResponseValues(fundraisers.data?.filter((d) => showArchived || !(d.archived ?? true)).sort((a, b) => b.activeFrom - a.activeFrom), fundraisers)}
         onClick={(fundraiser) => navigate(`/admin/${fundraiser.id}/`)}
       />
       <PropertyEditor
