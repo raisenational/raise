@@ -292,7 +292,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId: string, fundraiser?: Fundra
           matchFundingAmount: { label: 'Matched', formatter: (v: number) => format.amount(fundraiser?.currency, v) },
         }}
         items={asResponseValues(donations.data?.filter((d) => showUncounted || d.donationCounted).sort((a, b) => b.createdAt - a.createdAt), donations)}
-        onClick={(donation) => navigate(`/admin/${fundraiserId}/${donation.id}/`)}
+        href={(donation) => `/admin/${fundraiserId}/${donation.id}/`}
       />
       <PropertyEditor
         definition={{

@@ -68,7 +68,7 @@ const UsersPanel: React.FC = () => {
         }}
             // eslint-disable-next-line no-nested-ternary
         items={asResponseValues(users.data?.sort((a, b) => (a.name === b.name ? 0 : (a.name > b.name ? 1 : -1))), users)}
-        onClick={(user) => navigate(`/admin/users/${user.id}/`)}
+        href={(user) => `/admin/users/${user.id}/`}
       />
     </Section>
   );

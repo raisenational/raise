@@ -64,7 +64,7 @@ const UsersPage: React.FC<RouteComponentProps> = () => {
           }}
           // eslint-disable-next-line no-nested-ternary
           items={asResponseValues(groups.data?.sort((a, b) => (b.name === a.name ? 0 : (b.name > a.name ? 1 : -1))), groups)}
-          onClick={(group) => navigate(`/admin/groups/${group.id}/`)}
+          href={(group) => `/admin/groups/${group.id}/`}
         />
       </Section>
     </>
