@@ -44,11 +44,13 @@ const UsersPanel: React.FC = () => {
               label: 'Groups', formatter: (ids?: string[]) => ids?.map((id) => groupMap[id]).join(', ') || '(none)', inputType: 'multiselect', selectOptions: groupMap,
             },
             securityTrainingCompletedAt: { label: 'Security training completed at', formatter: format.timestamp, inputType: 'datetime-local' },
+            sendAccountCreationEmail: { label: 'Send user email', inputType: 'checkbox' },
           }}
           initialValues={{
             name: '',
             email: '',
             groups: [],
+            sendAccountCreationEmail: true,
             securityTrainingCompletedAt: Math.floor(new Date().getTime() / 1000),
           }}
           showCurrent={false}
