@@ -44,6 +44,9 @@ const env: Env = {
   // Whether to enable login methods
   GOOGLE_LOGIN_ENABLED: true,
   IMPERSONATION_LOGIN_ENABLED: true,
+
+  CUSTOM_RAISE_DOMAIN: 'localhost:8000',
+  CUSTOM_MWA_DOMAIN: 'localhost:8000',
 };
 
 export default env;

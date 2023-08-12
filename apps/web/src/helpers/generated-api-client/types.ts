@@ -466,6 +466,7 @@ export interface UserCreation {
   email: string;
   groups: string[];
   securityTrainingCompletedAt: number;
+  sendAccountCreationEmail: boolean;
 }
 
 export interface UserEdits {
@@ -473,6 +474,7 @@ export interface UserEdits {
   email?: string;
   groups?: string[];
   securityTrainingCompletedAt?: number;
+  sendAccountCreationEmail?: boolean;
 }
 
 export interface User {
@@ -480,6 +482,7 @@ export interface User {
   email: string;
   groups: string[];
   securityTrainingCompletedAt: number;
+  sendAccountCreationEmail?: boolean;
   id: string;
 }
 
@@ -488,5 +491,6 @@ export type Users = {
   email: string;
   groups: string[];
   securityTrainingCompletedAt: number;
+  sendAccountCreationEmail?: boolean;
   id: string;
 }[];
