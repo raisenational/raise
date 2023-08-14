@@ -1,6 +1,6 @@
 /**
  * This file was automatically generated. DO NOT MODIFY IT BY HAND.
- * Instead, modify jsonSchema.ts, and run "npm run generate:schemas"
+ * Instead, modify jsonSchema.ts, and run "npm run generate --workspace @raise/server"
  * (generate:schemas is run automatically if you're running the server).
  */
 /* eslint-disable */
