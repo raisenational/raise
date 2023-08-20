@@ -443,6 +443,7 @@ export const $Task: JSONSchema<S.Task> = {
   properties: {
     id: $Ulid,
     name: { type: 'string' },
+    groups: { type: 'array', items: { type: 'string' } },
   },
   required: ['id', 'name'],
   additionalProperties: false,

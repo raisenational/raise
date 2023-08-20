@@ -436,11 +436,13 @@ export interface StripeWebhookRequest {
 export interface Task {
   id: string;
   name: string;
+  groups?: string[];
 }
 
 export type Tasks = {
   id: string;
   name: string;
+  groups?: string[];
 }[];
 
 export interface GroupCreation {
