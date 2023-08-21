@@ -1,5 +1,4 @@
 import { RouteComponentProps } from '@gatsbyjs/reach-router';
-import { navigate } from 'gatsby';
 import { PlusSmIcon } from '@heroicons/react/outline';
 import { format } from '@raise/shared';
 import { useState } from 'react';
@@ -135,7 +134,7 @@ const DonationPage: React.FC<RouteComponentProps & { fundraiserId: string, donat
           status: { label: 'Status' },
         }}
         items={asResponseValues(payments.data?.sort((a, b) => b.at - a.at), payments)}
-        onClick={(payment) => navigate(`/admin/${fundraiserId}/${donationId}/${payment.id}`)}
+        href={(payment) => `/admin/${fundraiserId}/${donationId}/${payment.id}`}
       />
 
       <SectionTitle className="mt-12">Public preview</SectionTitle>

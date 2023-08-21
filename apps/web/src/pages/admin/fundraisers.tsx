@@ -88,7 +88,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
           totalRaised: { label: 'Raised', formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), className: 'w-36' },
         }}
         items={asResponseValues(fundraisers.data?.sort((a, b) => b.activeFrom - a.activeFrom), fundraisers)}
-        onClick={(fundraiser) => navigate(`/admin/${fundraiser.id}/`)}
+        href={(fundraiser) => `/admin/${fundraiser.id}/`}
       />
       <PropertyEditor
         definition={{

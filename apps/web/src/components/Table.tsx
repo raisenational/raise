@@ -1,6 +1,8 @@
 import classNames from 'classnames';
+import React from 'react';
 import { ResponseValues } from '../helpers/networking';
 import Alert from './Alert';
+import Link from './Link';
 
 interface PropertyDefinition<I, V> {
   label?: string,
@@ -12,15 +14,16 @@ interface Props<I> {
   definition: Partial<{ [K in keyof I]: PropertyDefinition<I, I[K]> } & { [s: `_${string}`]: PropertyDefinition<I, unknown> }>,
   items?: I[] | ResponseValues<I[], unknown, unknown>,
   primaryKey?: keyof I,
-  onClick?: (item: I, event: React.MouseEvent) => void,
+  onClick?: (item: I, event: React.MouseEvent<Element, MouseEvent>) => void,
   emptyMessage?: string,
   renderItem?: (item: I, index: number) => JSX.Element,
   className?: string,
+  href?: (item: I) => string,
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Table = <I extends Record<string, any>>({
-  definition, items, primaryKey, onClick, emptyMessage = 'There are no entries', renderItem, className,
+  definition, items, primaryKey, onClick, emptyMessage = 'There are no entries', renderItem, className, href,
 }: Props<I>) => {
   // Normalized properties
   const nItems = ((items === undefined || Array.isArray(items)) ? items : items.data) ?? [];
@@ -44,9 +47,9 @@ const Table = <I extends Record<string, any>>({
         </thead>
         <tbody>
           {nItems.map(renderItem || ((item, rowIndex) => (
-            <tr key={nPrimaryKey ? String(item[nPrimaryKey]) : rowIndex} className={classNames('hover:bg-black hover:bg-opacity-20', { 'cursor-pointer': onClick !== undefined })} onClick={onClick === undefined ? undefined : (e) => onClick(item, e)}>
+            <tr key={nPrimaryKey ? String(item[nPrimaryKey]) : rowIndex} className={classNames('hover:bg-black hover:bg-opacity-20')}>
               {Object.entries(definition).map(([k, v], cellIndex, arr) => (
-                <td key={k} className={classNames('p-2', { 'pl-4': cellIndex === 0, 'pr-4': cellIndex === arr.length - 1 }, v.className)}>{v.formatter ? v.formatter(item[k as keyof I], item) : (item[k as keyof I] ?? '—')}</td>
+                <td key={k} className={classNames('p-2', { 'pl-4': cellIndex === 0, 'pr-4': cellIndex === arr.length - 1 }, v.className)}><Link href={href === undefined ? undefined : href(item)} onClick={onClick === undefined ? undefined : (e : React.MouseEvent<Element, MouseEvent>) => onClick(item, e)}><div>{v.formatter ? v.formatter(item[k as keyof I], item) : (item[k as keyof I] ?? '—')}</div></Link></td>
               ))}
             </tr>
           )))}
