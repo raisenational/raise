@@ -445,7 +445,7 @@ export const $Task: JSONSchema<S.Task> = {
     name: { type: 'string' },
     groups: { type: 'array', items: { type: 'string' } },
   },
-  required: ['id', 'name'],
+  required: ['id', 'name', 'groups'],
   additionalProperties: false,
 };
 
