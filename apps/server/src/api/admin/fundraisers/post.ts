@@ -29,6 +29,7 @@ export const main = middyfy($FundraiserCreation, $Ulid, true, async (event) => {
     suggestedContributionAmount: event.body.suggestedContributionAmount ?? 10_00,
     eventLink: event.body.eventLink ?? null,
     moreInvolvedLink: event.body.moreInvolvedLink ?? null,
+    archived: event.body.archived ?? false,
     groupsWithAccess: event.body.groupsWithAccess ?? event.auth.payload.groups,
   });
 

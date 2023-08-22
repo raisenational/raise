@@ -25,6 +25,11 @@ export const main = middyfy($PublicDonationRequest, $PublicPaymentIntentResponse
     throw new createHttpError.BadRequest('This fundraiser has temporarily paused taking donations');
   }
 
+  // Validate the fundraiser has not been archived
+  if (fundraiser.archived) {
+    throw new createHttpError.BadRequest('This fundraiser has been archived');
+  }
+
   // Validate gift-aid requirements
   if (event.body.giftAid) {
     if (!event.body.addressLine1) throw new createHttpError.BadRequest('Gift-aided donation must provide address line 1');
