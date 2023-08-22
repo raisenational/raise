@@ -312,6 +312,7 @@ export const $PublicFundraiser: JSONSchema<S.PublicFundraiser> = {
     suggestedContributionAmount: { type: ['integer', 'null'], minimum: 0 },
     eventLink: { type: ['string', 'null'] },
     moreInvolvedLink: { type: ['string', 'null'] },
+    archived: { type: 'boolean' },
     donations: {
       type: 'array',
       items: {

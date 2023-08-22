@@ -363,6 +363,7 @@ export interface PublicFundraiser {
   suggestedContributionAmount: number | null;
   eventLink: string | null;
   moreInvolvedLink: string | null;
+  archived?: boolean;
   donations: {
     id: string;
     donorName?: string;
