@@ -89,6 +89,7 @@ export const $FundraiserCreation: JSONSchema<S.FundraiserCreation> = {
     suggestedContributionAmount: { type: ['integer', 'null'], minimum: 0 },
     eventLink: { type: ['string', 'null'] },
     moreInvolvedLink: { type: ['string', 'null'] },
+    archived: { type: 'boolean' },
     // TODO: change to ulid once all groups migrated
     groupsWithAccess: { type: 'array', items: { type: 'string' } },
   },
@@ -311,6 +312,7 @@ export const $PublicFundraiser: JSONSchema<S.PublicFundraiser> = {
     suggestedContributionAmount: { type: ['integer', 'null'], minimum: 0 },
     eventLink: { type: ['string', 'null'] },
     moreInvolvedLink: { type: ['string', 'null'] },
+    archived: { type: 'boolean' },
     donations: {
       type: 'array',
       items: {
