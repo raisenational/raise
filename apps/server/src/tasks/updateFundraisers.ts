@@ -13,11 +13,10 @@ async function archiveUpdate(fundraiser: Fundraiser) {
 
 export default {
   id: '01H8FRD7X3431J6FH5STKS0HB3',
-  name: 'Update Fundraisers with archived Property',
+  name: 'Update fundraisers with archived Property',
   groups: [fixedGroups.National],
   run: async (): Promise<void> => {
-    const Fundraisers = await scan(fundraiserTable);
-
-    Fundraisers.forEach(archiveUpdate);
+    const fundraisers = await scan(fundraiserTable);
+    await Promise.all(fundraisers.map(archiveUpdate));
   },
 };
