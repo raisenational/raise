@@ -59,6 +59,7 @@ const FundraiserPage: React.FC<RouteComponentProps & { fundraiserId: string }> =
           groupsWithAccess: {
             label: 'Groups with access', formatter: (ids?: string[]) => ids?.map((id) => groupMap[id]).join(', ') || '(none)', inputType: 'multiselect', selectOptions: groupMap,
           },
+          archived: { label: 'Archived', formatter: format.boolean, inputType: 'checkbox' },
         }}
         item={fundraiser}
         onSave={async (data) => {
