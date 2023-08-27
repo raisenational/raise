@@ -251,6 +251,8 @@ export type Donations = {
   contributionAmount: number;
 }[];
 
+export type PaymentStatus = "paid" | "pending" | "scheduled" | "cancelled";
+
 export type PaymentPropertyEdits =
   | {
       donationAmount: number;

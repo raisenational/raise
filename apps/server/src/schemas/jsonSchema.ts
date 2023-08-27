@@ -190,6 +190,26 @@ export const $Donation: JSONSchema<S.Donation> = {
 
 export const $Donations: JSONSchema<S.Donation[]> = { type: 'array', items: $Donation };
 
+export const $PaymentStatus: JSONSchema<S.Payment['status']> = {
+  enum: [
+    // A payment that is complete: the money has been transferred to the recipient
+    // e.g. For card payments, this means Stripe has confirmed Raise has received the money
+    'paid',
+
+    // A payment that is pending confirmation
+    // e.g. For card payments, this means we have created a Stripe payment intent but not received confirmation the payment has been made.
+    'pending',
+
+    // A payment that is confirmed to be made in future
+    // e.g. For card payments, this means we have a card registered in Stripe allocated to pay this payment.
+    'scheduled',
+
+    // A payment that has been aborted
+    // e.g. For card payments, this might be if a donor contacts us to cancel their future scheduled payments, or if we cancel them due to repeated payment failures and the donor is unresponsive.
+    'cancelled',
+  ]
+};
+
 export const $PaymentPropertyEdits: JSONSchema<S.PaymentPropertyEdits> = {
   oneOf: [{
     type: 'object',
@@ -223,7 +243,7 @@ export const $PaymentPropertyEdits: JSONSchema<S.PaymentPropertyEdits> = {
   }, {
     type: 'object',
     properties: {
-      status: { enum: ['paid', 'pending', 'scheduled', 'cancelled'] },
+      status: $PaymentStatus,
     },
     required: ['status'],
     additionalProperties: false,
@@ -247,7 +267,7 @@ export const $Payment: JSONSchema<S.Payment> = {
   type: 'object',
   properties: {
     ...$PaymentCreation.properties,
-    status: { enum: ['paid', 'pending', 'scheduled', 'cancelled'] },
+    status: $PaymentStatus,
     id: $Ulid,
     donationId: $Ulid,
     fundraiserId: $Ulid,
