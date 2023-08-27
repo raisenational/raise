@@ -36,24 +36,18 @@ const IndexLayout = () => {
   const [logoutWarning, setLogoutWarning] = useState<string | undefined>();
   // This logs out the user when their access token expires
   useEffect(() => {
-    if (typeof auth?.expiresAt !== 'number') return undefined;
+    if (typeof auth?.refreshToken.expiresAt !== 'number') return undefined;
 
-    const msUntilExpiration = (auth.expiresAt * 1000) - new Date().getTime();
+    const msUntilExpiration = (auth.refreshToken.expiresAt * 1000) - Date.now();
 
     const warningTimeout = setTimeout(() => {
       setLogoutWarning('You will be logged out in the next minute');
     }, msUntilExpiration - 60_000);
 
-    const logoutTimeout = setTimeout(() => {
-      setLogoutWarning(undefined);
-      setAuth();
-    }, msUntilExpiration);
-
     return () => {
       clearTimeout(warningTimeout);
-      clearTimeout(logoutTimeout);
     };
-  }, [auth?.expiresAt]);
+  }, [auth?.refreshToken.expiresAt]);
 
   // This ensures server-side rendering + hydration does not cause weirdness on these authenticated pages
   const [hasMounted, setHasMounted] = useState(false);

@@ -3,6 +3,7 @@ import { call } from '../../../../../local/testHelpers';
 import { main } from './post';
 import env from '../../../../env/env';
 import { login } from '../../../../helpers/login';
+import { LoginResponse } from '../../../../schemas';
 
 jest.mock('../../../../helpers/login', () => ({
   login: jest.fn(),
@@ -10,17 +11,26 @@ jest.mock('../../../../helpers/login', () => ({
 
 beforeEach(() => {
   (login as unknown as jest.Mock).mockImplementation((email) => {
-    if (email === 'test@joinraise.org') return { accessToken: 'mock', expiresAt: 0, groups: [] };
+    if (email === 'test@joinraise.org') {
+      const result: LoginResponse = {
+        accessToken: { value: 'mockA', expiresAt: 0 },
+        refreshToken: { value: 'mockR', expiresAt: 1 },
+        groups: [],
+      };
+      return result;
+    }
+
     throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`);
   });
 });
 
-test('get working access token for allowlisted email', async () => {
+test('get working tokens for allowlisted email', async () => {
   const response = await call(main, { auth: false })({
     email: 'test@joinraise.org',
   });
 
-  expect(response.accessToken).toEqual('mock');
+  expect(response.accessToken.value).toEqual('mockA');
+  expect(response.refreshToken.value).toEqual('mockR');
 });
 
 test.each([

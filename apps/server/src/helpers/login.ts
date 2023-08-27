@@ -6,12 +6,10 @@ import env from '../env/env';
 import { LoginResponse, Ulid, User } from '../schemas';
 import { insertAudit, scan } from './db';
 import { userTable } from './tables';
-import { AuthTokenPayload } from './types';
+import { AccessTokenPayload, RefreshTokenPayload } from './types';
 
 export const login = async (email: string): Promise<LoginResponse> => {
   const now = Math.floor(new Date().getTime() / 1000);
-  const expiresAt = now + 3600; // 1 hour
-
   const groups = await getGroups(email);
 
   await insertAudit({
@@ -19,25 +17,41 @@ export const login = async (email: string): Promise<LoginResponse> => {
     action: 'login',
   });
 
-  const authTokenPayload: AuthTokenPayload = {
+  const authTokenPayload: AccessTokenPayload = {
     subject: email,
     groups,
     iat: now,
-    exp: expiresAt,
+    exp: now + 3600, // 1 hour
+  };
+
+  const refreshTokenPayload: RefreshTokenPayload = {
+    subject: email,
+    iat: now,
+    exp: now + 3600 * 24, // 1 day
   };
 
   return {
-    accessToken: jwt.sign(
-      authTokenPayload,
-      env.JWT_PRIVATE_KEY,
-      { algorithm: 'ES256' },
-    ),
-    expiresAt,
+    accessToken: {
+      value: jwt.sign(
+        authTokenPayload,
+        env.JWT_PRIVATE_KEY,
+        { algorithm: 'ES256' },
+      ),
+      expiresAt: authTokenPayload.exp,
+    },
+    refreshToken: {
+      value: jwt.sign(
+        refreshTokenPayload,
+        env.JWT_PRIVATE_KEY,
+        { algorithm: 'ES256' },
+      ),
+      expiresAt: refreshTokenPayload.exp,
+    },
     groups,
   };
 };
 
-const TRAINING_VALIDITY_IN_SECONDS = 31556952; // 1 year
+const SECURITY_TRAINING_VALIDITY_IN_SECONDS = 31556952; // 1 year
 
 // Map from SHA1_hex(lowercase Google account email) to use definition
 // We use hashes to avoid checking-in people's personal emails to the repo
@@ -67,7 +81,7 @@ const getGroups = async (email: string): Promise<Ulid[]> => {
     throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`);
   }
 
-  if (user.securityTrainingCompletedAt + TRAINING_VALIDITY_IN_SECONDS < new Date().getTime() / 1000) {
+  if (user.securityTrainingCompletedAt + SECURITY_TRAINING_VALIDITY_IN_SECONDS < new Date().getTime() / 1000) {
     throw new createHttpError.Forbidden(`Security training for ${email} out of date, last marked completed on ${new Date(user.securityTrainingCompletedAt * 1000)}`);
   }
 

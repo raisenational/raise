@@ -28,11 +28,25 @@ export const $Status: JSONSchema<S.Status> = {
 export const $LoginResponse: JSONSchema<S.LoginResponse> = {
   type: 'object',
   properties: {
-    accessToken: { type: 'string' },
-    expiresAt: { type: 'integer' },
+    accessToken: {
+      type: 'object',
+      properties: {
+        value: { type: 'string' },
+        expiresAt: { type: 'integer' },
+      },
+      required: ['value', 'expiresAt']
+    },
+    refreshToken: {
+      type: 'object',
+      properties: {
+        value: { type: 'string' },
+        expiresAt: { type: 'integer' },
+      },
+      required: ['value', 'expiresAt']
+    },
     groups: { type: 'array', items: { type: 'string' } },
   },
-  required: ['accessToken', 'expiresAt', 'groups'],
+  required: ['accessToken', 'refreshToken', 'groups'],
   additionalProperties: false,
 };
 
@@ -51,6 +65,15 @@ export const $ImpersonationLoginRequest: JSONSchema<S.ImpersonationLoginRequest>
     email: $Email,
   },
   required: ['email'],
+  additionalProperties: false,
+};
+
+export const $RefreshLoginRequest: JSONSchema<S.RefreshLoginRequest> = {
+  type: 'object',
+  properties: {
+    refreshToken: { type: 'string' },
+  },
+  required: ['refreshToken'],
   additionalProperties: false,
 };
 

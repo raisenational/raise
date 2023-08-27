@@ -14,8 +14,16 @@ export interface Status {
 }
 
 export interface LoginResponse {
-  accessToken: string;
-  expiresAt: number;
+  accessToken: {
+    value: string;
+    expiresAt: number;
+    [k: string]: unknown;
+  };
+  refreshToken: {
+    value: string;
+    expiresAt: number;
+    [k: string]: unknown;
+  };
   groups: string[];
 }
 
@@ -25,6 +33,10 @@ export interface GoogleLoginRequest {
 
 export interface ImpersonationLoginRequest {
   email: string;
+}
+
+export interface RefreshLoginRequest {
+  refreshToken: string;
 }
 
 export interface Profile {

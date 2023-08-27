@@ -6,7 +6,7 @@ import createHttpError from 'http-errors';
 import { EncryptionAlgorithms, JWTAuthMiddleware } from 'middy-middleware-jwt-auth';
 import type { APIGatewayProxyEventV2, APIGatewayProxyResult, Handler as AWSHandler } from 'aws-lambda';
 import type {
-  Handler, ExternalHandler, AuthTokenPayload, APIGatewayEvent,
+  Handler, ExternalHandler, AccessTokenPayload, APIGatewayEvent,
 } from './types';
 import { middyAuditContextManagerAfter, middyAuditContextManagerBefore } from './auditContext';
 import middyErrorHandler from './middy-error-handler';
@@ -67,7 +67,7 @@ function middyfyInternal<RequestSchema, ResponseSchema, RequiresAuth extends boo
       .use(new JWTAuthMiddleware({
         algorithm: EncryptionAlgorithms.ES256,
         credentialsRequired: requiresAuth,
-        isPayload: (token: AuthTokenPayload): token is AuthTokenPayload => {
+        isPayload: (token: AccessTokenPayload): token is AccessTokenPayload => {
           const isTokenType = (typeof token === 'object' && token !== null && typeof token.subject === 'string' && Array.isArray(token.groups) && token.groups.every((g: string) => typeof g === 'string') && typeof token.iat === 'number' && typeof token.exp === 'number');
           if (!isTokenType) return false;
           if (env.JWT_REQUIRE_ISSUED_AT_AFTER !== undefined && token.iat < env.JWT_REQUIRE_ISSUED_AT_AFTER) throw new createHttpError.Forbidden('Your token is too old. Try logging out and in again.');

@@ -2,12 +2,12 @@ import type { ScheduledHandler } from 'aws-lambda';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import env from '../../env/env';
-import type { AuthTokenPayload } from '../../helpers/types';
+import type { AccessTokenPayload } from '../../helpers/types';
 import 'source-map-support/register';
 
 export const main: ScheduledHandler<unknown> = async () => {
   const now = Math.floor(new Date().getTime() / 1000);
-  const authTokenPayload: AuthTokenPayload = {
+  const authTokenPayload: AccessTokenPayload = {
     subject: 'scheduler',
     groups: [],
     iat: now,

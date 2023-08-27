@@ -8,8 +8,14 @@ import env from '../env/env';
 import { makeClient, routes, Routes } from './generated-api-client';
 
 export interface AuthState {
-  token: string,
-  expiresAt: number,
+  accessToken: {
+    value: string,
+    expiresAt: number,
+  },
+  refreshToken: {
+    value: string,
+    expiresAt: number,
+  }
   groups: string[],
 }
 
@@ -19,14 +25,24 @@ const getAuthFromLocalStorage = (): AuthState | undefined => {
   if (value !== null) {
     try {
       const parsed = JSON.parse(value);
-      if (typeof parsed.token !== 'string') return undefined;
-      if (typeof parsed.expiresAt !== 'number') return undefined;
+      if (typeof parsed.accessToken !== 'object') return undefined;
+      if (typeof parsed.accessToken.value !== 'string') return undefined;
+      if (typeof parsed.accessToken.expiresAt !== 'number') return undefined;
+      if (typeof parsed.refreshToken !== 'object') return undefined;
+      if (typeof parsed.refreshToken.value !== 'string') return undefined;
+      if (typeof parsed.refreshToken.expiresAt !== 'number') return undefined;
+      if (parsed.refreshToken.expiresAt < (new Date().getTime() / 1000)) return undefined;
       if (!Array.isArray(parsed.groups)) return undefined;
       if (!parsed.groups.every((g: unknown) => typeof g === 'string')) return undefined;
-      if (parsed.expiresAt < (new Date().getTime() / 1000)) return undefined;
       return {
-        token: parsed.token,
-        expiresAt: parsed.expiresAt,
+        accessToken: {
+          value: parsed.accessToken.value,
+          expiresAt: parsed.accessToken.expiresAt,
+        },
+        refreshToken: {
+          value: parsed.refreshToken.value,
+          expiresAt: parsed.refreshToken.expiresAt,
+        },
         groups: parsed.groups,
       };
     } catch {
@@ -36,7 +52,7 @@ const getAuthFromLocalStorage = (): AuthState | undefined => {
   return undefined;
 };
 
-let authState: AuthState | undefined = getAuthFromLocalStorage();
+let authState: AuthState | undefined;
 const authStateListeners = new Set<() => void>();
 const setAuthState = (newState?: AuthState) => {
   authState = newState;
@@ -51,6 +67,28 @@ const setAuthState = (newState?: AuthState) => {
   }
   authStateListeners.forEach((l) => l());
 };
+let refreshTimeout: NodeJS.Timeout | undefined;
+authStateListeners.add(() => {
+  if (refreshTimeout) {
+    clearTimeout(refreshTimeout);
+  }
+
+  if (!authState?.accessToken.expiresAt) {
+    return;
+  }
+
+  refreshTimeout = setTimeout(() => {
+    if (authState && authState.refreshToken.expiresAt * 1000 > Date.now()) {
+      makeClient(axiosWithDefaults)('post /admin/login/refresh', { refreshToken: authState.refreshToken.value }).then((res) => {
+        setAuthState(res.data);
+      }).catch((error) => {
+        console.error('Failed to refresh tokens', error);
+        setAuthState();
+      });
+    }
+  }, Math.max(0, authState.accessToken.expiresAt * 1000 - Date.now() - 10_000));
+});
+setAuthState(getAuthFromLocalStorage());
 
 export const useAuthState = () => {
   const [state, setState] = useState(authState);
@@ -187,9 +225,9 @@ const useReqCore = <
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     url: args.params ? routes[route].makePath(args.params as any) : undefined,
     data: args.data,
-    ...(auth?.token ? {
+    ...(auth?.accessToken.value ? {
       headers: {
-        Authorization: `Bearer ${auth.token}`,
+        Authorization: `Bearer ${auth.accessToken.value}`,
       },
     } : {}),
   };
@@ -274,12 +312,12 @@ export const useRawReq = () => makeClient(useRawAxios());
 
 export const useRawAxios = (): AxiosInstance => {
   const [auth] = useAuthState();
-  if (auth?.token) {
+  if (auth?.accessToken.value) {
     const axios = _axios.create({
       ...defaultConfig,
       headers: {
         ...defaultConfig.headers,
-        Authorization: `Bearer ${auth.token}`,
+        Authorization: `Bearer ${auth.accessToken.value}`,
       },
     });
     axios.interceptors.response.use(undefined, logoutOnTokenExpiry);
