@@ -4,7 +4,6 @@ import logStackTrace from './logStackTrace';
 import initializeGroups from './initializeGroups';
 import sendTestConfirmationEmail from './sendTestConfirmationEmail';
 import sendTestUserEmails from './sendTestUserEmails';
-import updateFundraisers from './updateFundraisers';
 
 const tasks: TaskDefinition[] = [
   sendSlackTestMessage,
@@ -12,7 +11,6 @@ const tasks: TaskDefinition[] = [
   initializeGroups,
   sendTestConfirmationEmail,
   sendTestUserEmails,
-  updateFundraisers
 ];
 
 export default tasks;

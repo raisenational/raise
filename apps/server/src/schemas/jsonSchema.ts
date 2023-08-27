@@ -119,7 +119,7 @@ export const $Fundraiser: JSONSchema<S.Fundraiser> = {
     id: $Ulid,
     ...$FundraiserCreation.properties,
   },
-  required: ['id', 'internalName', 'publicName', 'activeFrom', 'activeTo', 'recurringDonationsTo', 'paused', 'currency', 'goal', 'totalRaised', 'donationsCount', 'matchFundingRate', 'matchFundingPerDonationLimit', 'matchFundingRemaining', 'minimumDonationAmount', 'suggestedDonationAmountOneOff', 'suggestedDonationAmountWeekly', 'suggestedContributionAmount', 'eventLink', 'moreInvolvedLink', 'groupsWithAccess'],
+  required: ['id', 'internalName', 'publicName', 'activeFrom', 'activeTo', 'recurringDonationsTo', 'paused', 'currency', 'goal', 'totalRaised', 'donationsCount', 'matchFundingRate', 'matchFundingPerDonationLimit', 'matchFundingRemaining', 'minimumDonationAmount', 'suggestedDonationAmountOneOff', 'suggestedDonationAmountWeekly', 'suggestedContributionAmount', 'eventLink', 'moreInvolvedLink', 'archived', 'groupsWithAccess'],
   additionalProperties: false,
 };
 
@@ -333,7 +333,7 @@ export const $PublicFundraiser: JSONSchema<S.PublicFundraiser> = {
       },
     },
   },
-  required: ['id', 'publicName', 'activeFrom', 'activeTo', 'recurringDonationsTo', 'paused', 'currency', 'goal', 'totalRaised', 'donationsCount', 'matchFundingRate', 'matchFundingPerDonationLimit', 'matchFundingRemaining', 'minimumDonationAmount', 'suggestedDonationAmountOneOff', 'suggestedDonationAmountWeekly', 'suggestedContributionAmount', 'eventLink', 'moreInvolvedLink', 'donations'],
+  required: ['id', 'publicName', 'activeFrom', 'activeTo', 'recurringDonationsTo', 'paused', 'currency', 'goal', 'totalRaised', 'donationsCount', 'matchFundingRate', 'matchFundingPerDonationLimit', 'matchFundingRemaining', 'minimumDonationAmount', 'suggestedDonationAmountOneOff', 'suggestedDonationAmountWeekly', 'suggestedContributionAmount', 'eventLink', 'moreInvolvedLink', 'archived', 'donations'],
   additionalProperties: false,
 };
 
