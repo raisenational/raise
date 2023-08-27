@@ -4,6 +4,7 @@ import { call } from '../../../../../local/testHelpers';
 import env from '../../../../env/env';
 import { login } from '../../../../helpers/login';
 import { main } from './post';
+import { LoginResponse } from '../../../../schemas';
 
 const googleTokenPayload = {
   iss: 'accounts.google.com', // verified by the real library
@@ -28,7 +29,15 @@ jest.mock('../../../../helpers/login', () => ({
 
 beforeEach(() => {
   (login as unknown as jest.Mock).mockImplementation((email) => {
-    if (email === 'test@joinraise.org') return { accessToken: 'mock', expiresAt: 0, groups: [] };
+    if (email === 'test@joinraise.org') {
+      const result: LoginResponse = {
+        accessToken: { value: 'mockA', expiresAt: 0 },
+        refreshToken: { value: 'mockR', expiresAt: 1 },
+        groups: [],
+      };
+      return result;
+    }
+
     throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`);
   });
   (OAuth2Client as unknown as jest.Mock).mockImplementation(() => ({
@@ -50,7 +59,8 @@ test('get working access token for valid Google token', async () => {
     audience: env.GOOGLE_LOGIN_CLIENT_ID,
   });
 
-  expect(response.accessToken).toEqual('mock');
+  expect(response.accessToken.value).toEqual('mockA');
+  expect(response.refreshToken.value).toEqual('mockR');
 });
 
 test.each([

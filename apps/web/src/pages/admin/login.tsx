@@ -92,11 +92,7 @@ const GoogleLoginForm: React.FC<LoginFormProps> = ({ setError, setLoading }) => 
             { idToken: user.id_token },
           );
 
-          setAuthState({
-            token: loginResponse.data.accessToken,
-            expiresAt: loginResponse.data.expiresAt,
-            groups: loginResponse.data.groups,
-          });
+          setAuthState(loginResponse.data);
         } catch (err) {
           setError(err instanceof Error ? err : new Error(String(err)));
         }
@@ -127,11 +123,7 @@ const ImpersonationLoginForm: React.FC<LoginFormProps> = ({ setError, setLoading
             return;
           }
           const loginResponse = await axios.post<LoginResponse>('/admin/login/impersonation', { email });
-          setAuthState({
-            token: loginResponse.data.accessToken,
-            expiresAt: loginResponse.data.expiresAt,
-            groups: loginResponse.data.groups,
-          });
+          setAuthState(loginResponse.data);
         } catch (err) {
           // eslint-disable-next-line no-console
           console.error(err);

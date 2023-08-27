@@ -4,7 +4,7 @@ import type {
 import jwt from "jsonwebtoken"
 import { ulid } from "ulid"
 import { fixedGroups } from "@raise/shared"
-import { AuthTokenPayload } from "../src/helpers/types"
+import { AccessTokenPayload } from "../src/helpers/types"
 import env from "../src/env/env"
 import MockDate from 'mockdate';
 import * as db from "../src/helpers/db"
@@ -16,7 +16,7 @@ interface CallOptions {
   pathParameters?: Record<string, string | undefined>,
   headers?: Record<string, string | undefined>,
   rawResponse?: boolean,
-  auth?: Partial<AuthTokenPayload> | false | string,
+  auth?: Partial<AccessTokenPayload> | false | string,
   authKey?: string
   rawBody?: boolean,
 }

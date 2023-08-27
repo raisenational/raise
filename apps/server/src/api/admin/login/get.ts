@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { middyfy } from '../../../helpers/wrapper';
-import { AuthTokenPayload } from '../../../helpers/types';
+import { AccessTokenPayload } from '../../../helpers/types';
 import { $Profile } from '../../../schemas';
 
 export const main = middyfy(null, $Profile, true, async (event) => {
-  const payload = jwt.decode(event.auth.token, { json: true }) as AuthTokenPayload;
+  const payload = jwt.decode(event.auth.token, { json: true }) as AccessTokenPayload;
 
   return {
     email: payload.subject,

@@ -3,9 +3,15 @@ import type {
 } from 'aws-lambda';
 import type { JSONSchema, Ulid } from '../schemas';
 
-export interface AuthTokenPayload {
+export interface AccessTokenPayload {
   subject: string,
   groups: Ulid[],
+  iat: number,
+  exp: number,
+}
+
+export interface RefreshTokenPayload {
+  subject: string,
   iat: number,
   exp: number,
 }
@@ -24,7 +30,7 @@ export interface TaskDefinition {
 export type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
   event: APIGatewayEvent<
   RequestSchema extends JSONSchema<infer T> ? T : null,
-  RequiresAuth extends true ? { payload: AuthTokenPayload, token: string } : undefined
+  RequiresAuth extends true ? { payload: AccessTokenPayload, token: string } : undefined
   >,
   context: Context) => Promise<ResponseSchema extends JSONSchema<infer T> ? T : void>;
 
@@ -32,7 +38,7 @@ export type Handler<RequestSchema, ResponseSchema, RequiresAuth> = (
  * The API event we have to handle after our middlewares have run.
  * The type of event passed to our inner handler.
  * */
-export type APIGatewayEvent<Body = unknown, Auth = { payload: AuthTokenPayload, token: string } | undefined> = Omit<APIGatewayProxyEventV2, 'body' | 'pathParameters'> & {
+export type APIGatewayEvent<Body = unknown, Auth = { payload: AccessTokenPayload, token: string } | undefined> = Omit<APIGatewayProxyEventV2, 'body' | 'pathParameters'> & {
   body: Body,
   rawBody: Body extends null ? unknown : string,
   pathParameters: Record<string, string>,
