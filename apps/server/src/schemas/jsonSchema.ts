@@ -208,7 +208,7 @@ export const $PaymentStatus: JSONSchema<S.Payment['status']> = {
     // e.g. For card payments, this might be if a donor contacts us to cancel their future scheduled payments, or if we cancel them due to repeated payment failures and the donor is unresponsive.
     'cancelled',
   ]
-}
+};
 
 export const $PaymentPropertyEdits: JSONSchema<S.PaymentPropertyEdits> = {
   oneOf: [{

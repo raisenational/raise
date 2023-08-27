@@ -13,8 +13,6 @@ export default {
     const scheduledCardPayments = payments
       .filter((p) => p.status === 'scheduled' && p.method === 'card');
 
-    await Promise.all(scheduledCardPayments.map(p =>
-      update(paymentTable, { donationId: p.donationId, id: p.id }, { status: 'cancelled' }))
-    )
+    await Promise.all(scheduledCardPayments.map((p) => update(paymentTable, { donationId: p.donationId, id: p.id }, { status: 'cancelled' })));
   },
 };

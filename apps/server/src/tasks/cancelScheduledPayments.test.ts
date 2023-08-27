@@ -6,7 +6,7 @@ import cancelScheduledPayments from './cancelScheduledPayments';
 test('cancels scheduled card payments', async () => {
   // Given
   const scheduledPayment = makePayment({ status: 'scheduled', method: 'card' });
-  await insert(paymentTable, scheduledPayment)
+  await insert(paymentTable, scheduledPayment);
 
   // When
   await cancelScheduledPayments.run();
@@ -16,14 +16,13 @@ test('cancels scheduled card payments', async () => {
   expect(paymentAfter.status).toBe('cancelled');
 });
 
-
 test.each([
   ['pending'],
   ['paid'],
 ] as const)('doesn\'t cancel %s card payments', async (status) => {
   // Given
   const paymentThatShouldntBeCancelled = makePayment({ status, method: 'card' });
-  await insert(paymentTable, paymentThatShouldntBeCancelled)
+  await insert(paymentTable, paymentThatShouldntBeCancelled);
 
   // When
   await cancelScheduledPayments.run();
