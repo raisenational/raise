@@ -5,7 +5,7 @@
  */
 /* eslint-disable */
 
-export type Email = string;
+export type EmailConfig = string;
 
 export type Ulid = string;
 
@@ -514,4 +514,26 @@ export type Users = {
   securityTrainingCompletedAt: number;
   sendAccountCreationEmail?: boolean;
   id: string;
+}[];
+
+export interface EmailCreation {
+  recipient: string;
+  subject: string;
+  message: string;
+}
+
+export interface Email {
+  recipient: string;
+  subject: string;
+  message: string;
+  id: string;
+  time: number;
+}
+
+export type Emails = {
+  recipient: string;
+  subject: string;
+  message: string;
+  id: string;
+  time: number;
 }[];

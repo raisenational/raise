@@ -4,7 +4,7 @@ import type * as S from './typescript';
 // It'd be nice to use JSONSchemaType from AJV. However, it has poor performance and is incorrect: https://github.com/ajv-validator/ajv/issues/1664
 export type JSONSchema<T> = JSONSchema7Definition & { __type?: T };
 
-export const $Email: JSONSchema<S.Email> = {
+export const $EmailConfig: JSONSchema<S.EmailConfig> = {
   type: 'string',
   // Regex from https://html.spec.whatwg.org/multipage/forms.html#e-mail-state-(type=email)
   pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
@@ -62,7 +62,7 @@ export const $GoogleLoginRequest: JSONSchema<S.GoogleLoginRequest> = {
 export const $ImpersonationLoginRequest: JSONSchema<S.ImpersonationLoginRequest> = {
   type: 'object',
   properties: {
-    email: $Email,
+    email: $EmailConfig,
   },
   required: ['email'],
   additionalProperties: false,
@@ -152,7 +152,7 @@ export const $DonationCreation: JSONSchema<S.DonationCreation> = {
   type: 'object',
   properties: {
     donorName: { type: 'string' },
-    donorEmail: $Email,
+    donorEmail: $EmailConfig,
     emailConsentInformational: { type: 'boolean' },
     emailConsentMarketing: { type: 'boolean' },
     createdAt: { type: 'integer' },
@@ -389,7 +389,7 @@ export const $PublicDonationRequest: JSONSchema<S.PublicDonationRequest> = {
     contributionAmount: { type: 'integer', minimum: 0 },
     giftAid: { type: 'boolean' },
     donorName: { type: 'string' },
-    donorEmail: $Email,
+    donorEmail: $EmailConfig,
     emailConsentInformational: { type: 'boolean' },
     emailConsentMarketing: { type: 'boolean' },
     addressLine1: { type: ['string', 'null'] },
@@ -559,3 +559,28 @@ export const $User: JSONSchema<S.User> = {
 };
 
 export const $Users: JSONSchema<S.User[]> = { type: 'array', items: $User };
+
+export const $EmailCreation: JSONSchema<S.EmailCreation> = {
+  type: 'object',
+  properties: {
+    recipient: { type: 'string' },
+    subject: { type: 'string' },
+    message: { type: 'string' },
+  },
+  additionalProperties: false,
+  required: ['recipient', 'subject', 'message'],
+};
+
+// rename this to email, and change the other email at the top to something like emailconfig?
+export const $Email: JSONSchema<S.Email> = {
+  type: 'object',
+  properties: {
+    ...$EmailCreation.properties,
+    id: $Ulid,
+    time: { type: 'integer' }
+  },
+  additionalProperties: false,
+  required: ['recipient', 'subject', 'message', 'id', 'time'],
+};
+
+export const $Emails: JSONSchema<S.Email[]> = { type: 'array', items: $Email };

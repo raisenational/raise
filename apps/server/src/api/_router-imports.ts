@@ -7,6 +7,8 @@
 export const importMap = {
   "/admin/audit-logs/by-object/{objectId}/get": () => import("./admin/audit-logs/by-object/{objectId}/get"),
   "/admin/audit-logs/by-subject/{subjectId}/get": () => import("./admin/audit-logs/by-subject/{subjectId}/get"),
+  "/admin/emails/get": () => import("./admin/emails/get"),
+  "/admin/emails/post": () => import("./admin/emails/post"),
   "/admin/fundraisers/get": () => import("./admin/fundraisers/get"),
   "/admin/fundraisers/post": () => import("./admin/fundraisers/post"),
   "/admin/fundraisers/{fundraiserId}/donations/get": () => import("./admin/fundraisers/{fundraiserId}/donations/get"),

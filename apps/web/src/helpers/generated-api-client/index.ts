@@ -24,6 +24,16 @@ export type Routes = {
       "subjectId": string,
     },
   },
+  "get /admin/emails": {
+    request: null,
+    response: S.Emails,
+    params: null,
+  },
+  "post /admin/emails": {
+    request: S.EmailCreation,
+    response: S.Ulid,
+    params: null,
+  },
   "get /admin/fundraisers": {
     request: null,
     response: S.Fundraisers,
@@ -207,6 +217,20 @@ export const routes = {
     hasRequest: false,
     hasResponse: true,
     hasParams: true,
+  },
+  "get /admin/emails": {
+    method: "get",
+    makePath: ({ }: {}) => `/admin/emails`,
+    hasRequest: false,
+    hasResponse: true,
+    hasParams: false,
+  },
+  "post /admin/emails": {
+    method: "post",
+    makePath: ({ }: {}) => `/admin/emails`,
+    hasRequest: true,
+    hasResponse: true,
+    hasParams: false,
   },
   "get /admin/fundraisers": {
     method: "get",
