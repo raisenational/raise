@@ -259,8 +259,8 @@ const IndexPage = () => (
             Because AMF's intervention is so effective at preventing malaria,
             each donation can have a huge impact. For example, a donation of
             £75, doubled through matched funding, can help protect 170 people.
-            In fact, the money we raised nationally in 2020 was enough to
-            protect over 120,000 people!
+            In fact, the money we raised nationally in 2023 was enough to
+            protect almost 95,000 people!
           </p>
         </FAQ>
 

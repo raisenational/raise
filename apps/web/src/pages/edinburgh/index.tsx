@@ -280,8 +280,8 @@ const IndexPage = () => (
             {convert.moneyToPeopleProtected(ANCHOR[0], ANCHOR[1] * 2)}
             {' '}
             people.
-            In fact, the money we raised nationally in 2020 was enough to
-            protect over 120,000 people!
+            In fact, the money we raised nationally in 2023 was enough to
+            protect almost 95,000 people!
           </p>
         </FAQ>
 

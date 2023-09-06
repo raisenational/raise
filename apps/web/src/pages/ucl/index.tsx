@@ -1,12 +1,10 @@
 import Helmet from 'react-helmet';
 
-import { convert } from '@raise/shared';
 import Page from '../../components/Page';
 import Section, { SectionTitle } from '../../components/Section';
 import Navigation from '../../components/Navigation';
 import Cover, { CTADown } from '../../components/Cover';
 import IntroStats from '../../components/IntroStats';
-import Button from '../../components/Button';
 import FAQs, { FAQ } from '../../components/FAQs';
 import Philosophy from '../../components/Philosophy';
 import { SocialIconV2 } from '../../components/SocialIcon';
@@ -15,12 +13,14 @@ import Panel from '../../components/Panel';
 
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
 import Footer from '../../components/Footer';
+import Button from '../../components/Button';
+import config from './_config';
 
 const IndexPage = () => (
   <Page>
     <Helmet>
-      <title>Raise Durham</title>
-      <meta property="og:title" content="Raise Durham" />
+      <title>{config.title}</title>
+      <meta property="og:title" content={config.title} />
     </Helmet>
     <Cover>
       <Navigation
@@ -32,22 +32,18 @@ const IndexPage = () => (
           { text: 'Contact', href: '#contact' },
         ]}
         right={[
-          {
-            text: 'Become a Rep!',
-            href: 'https://forms.office.com/Pages/ResponsePage.aspx?id=i9hQcmhLKUW-RNWaLYpvlIGtrPRODqJElDPybbbkp9RUNEJHNEJBNDBWTExUUFVJTjg1MzE3UzI3VC4u',
-          },
-          // { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSfeK5cMn8ZWlRtFh5ZJHexjTiS0DVvfpL9E93Logd3CPLMK9A/viewform" },
+          // { text: 'Donate', href: 'donate/' },
         ]}
       />
       <Section className="px-8">
         <IntroStats
-          title="Raise Durham"
-          tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
+          title={config.title}
+          tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our national impact below."
           statistics={{
-            years: 1 + 1,
-            students: 122 + 108,
-            raised: 30714 + 13430,
-            protected: 37867 + convert.moneyToPeopleProtected('gbp', 1334075),
+            years: 5,
+            students: 2099,
+            raised: 382739,
+            protected: 455285,
           }}
         />
         <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
@@ -61,7 +57,7 @@ const IndexPage = () => (
         <Panel
           image={<MoneyBox className="h-16 mb-4" />}
           title="Donate"
-          text="We invite students to make a personally significant donation to charity as a way of celebrating the end of the academic year. We recommend a donation of £100 to the Against Malaria Foundation, but welcome any amount that is significant to you."
+          text="We invite students to make a personally significant donation to charity. We recommend a donation of £100 to the Against Malaria Foundation, but welcome any amount that is significant to you."
           className="bg-raise-purple"
         />
         <Panel
@@ -73,7 +69,7 @@ const IndexPage = () => (
         <Panel
           image={<Party className="h-16 mb-4" />}
           title="Celebrate"
-          text="In third term, we come together as a community to celebrate the end of the academic year and our collective impact. There's food and drink, great company and live entertainment!"
+          text="Towards the end of each year, we come together as a community to celebrate the end of the academic year and our collective impact. There's food and drink, great company and live entertainment!"
           className="bg-raise-yellow text-black"
         />
       </div>
@@ -92,61 +88,21 @@ const IndexPage = () => (
     <Section id="faq">
       <SectionTitle>More Info</SectionTitle>
       <FAQs>
-        <FAQ title="Sounds great, where do I sign up?">
-          <p>
-            Awesome! You can get involved by filling in the form
-            {' '}
-            <a href="https://forms.gle/wBmJQdMSMMrqLrBB7">here</a>
-            !
-          </p>
-        </FAQ>
-
         <FAQ title="How can I get involved?">
           <p>
             We're so pleased you're interested in Raise, and look forward to
             celebrating with you! Here are a few ways you can help grow the
             movement:
           </p>
-          <p>
-            <b>Raise Reps:</b>
-            {' '}
-            Reps are a central part of Raise’s community and
-            are crucial to spreading the Raise message! Rep recruitment for next
-            academic year will start in Michaelmas Term, but we're always
-            interested in hearing from people who want to get involved -
-            register your interest
-            {' '}
-            <a href="https://forms.gle/cPwHFVeYu1z32QkF9">here</a>
-            ! See below
-            for more details on what a Raise rep does.
-          </p>
-          <p>
-            <b>Spread the word:</b>
-            {' '}
-            Letting your friends know about Raise is one
-            of the most valuable things you can do - aside from the huge impact
-            of their donations, celebrating is more fun when we do it together!
-            Why not show them our website, share our posts on social media, and
-            invite friends to follow our
-            {' '}
-            <a href="https://www.facebook.com/raisedurham">Facebook</a>
-            {' '}
-            and
-            {' '}
-            <a href="https://www.instagram.com/raisedurham/">Instagram</a>
-            {' '}
-            pages
-            themselves?
-          </p>
+          <p><b>Spread the word:</b> Letting your friends know about Raise is one of the most valuable things you can do - aside from the huge impact of their donations, celebrating is more fun when we do it together! Try explaining our philosophy, showing them our website, or sharing our posts on social media.</p>
           <p>
             <b>Committee:</b>
             {' '}
-            If you really want to shape the future of Raise,
-            you could apply to join our committee, which coordinates everything
-            we do, from events and partnerships to fundraising and publicity.
-            Applications for the next academic year will open in the spring, but
-            we're always interested in hearing from people who want to get
-            involved!
+            If you want to shape the future of Raise, apply to
+            join our committee which coordinates everything we do, from events
+            and partnerships to fundraising and publicity. To apply, contact us
+            via <a href="./#contact">our details below</a> as we're always
+            interested in hearing from people who want to get involved!
           </p>
           <p>
             <b>Sponsorship:</b>
@@ -156,75 +112,34 @@ const IndexPage = () => (
             end of each year. If you know anyone who may be interested in
             supporting Raise and allowing us to grow even more, please do
             {' '}
-            <a href="#contact">get in touch</a>
+            <a href="./#contact">get in touch</a>
             .
-          </p>
-        </FAQ>
-
-        <FAQ title="What is a Raise Rep, and what do they do?">
-          <p>
-            Reps are a central part of Raise’s community and are crucial to the
-            growth of the movement. As a rep, you have the opportunity to help
-            spread the Raise message, and we'll give you lots of support to do
-            this. You might spread our message through:
-          </p>
-          <p>
-            <b>Conversations:</b>
-            {' '}
-            The most important part of the role! Talk
-            about Raise with others in your college, departments, and social
-            groups - the ask is significant and requires some thought, so this
-            is how most people come to join.
-          </p>
-          <p>
-            <b>Social Media:</b>
-            {' '}
-            Engage regularly with Raise’s posts, invite
-            friends to follow the page, and share things at key moments. Share
-            the Raise philosophy on any groups you are in to try and get as many
-            people involved as possible!
-          </p>
-          <p>
-            <b>Your own ideas!:</b>
-            {' '}
-            We love it when reps suggest and implement
-            their own ideas for spreading the word and engaging new students.
-            Equally, if there’s anything at all we could be doing better,
-            there’s nobody better to point it out!
-          </p>
-          <p>
-            Or you could be a
-            {' '}
-            <b>Lead Rep</b>
-            , who takes responsibility for
-            publicity within college. This will involve sharing posts and
-            messages to college, putting up posters and potentially hosting your
-            own outreach events.
           </p>
         </FAQ>
 
         <FAQ title="£100 is a lot of money - what if I can't donate that?">
           <p>
             We recognise that £100 is a large amount of money for many students,
-            and whilst we have thought carefully about recommending this amount
-            (see next question), it is important to us that any student feels
-            able to join us in celebrating through giving.
+            and we have thought carefully about recommending this amount (see
+            next question). It is important to us that any student feels able to
+            join us in celebrating through giving.
           </p>
           <p>
-            As such, whilst we recommend £100, you are welcome to join Raise by
-            making a donation of a size which is significant to you and allows
+            As such, while we recommend £100, you're encouraged to join Raise by
+            making a donation of any size which is significant to you and allows
             you to put charity at the heart of your end-of-year celebrations. It
-            is central to our philosophy (see
+            is central to
             {' '}
-            <a href="#our-philosophy">here</a>
+            <a href="./#our-philosophy">our philosophy</a>
             {' '}
-            for more) that students actively engage with their decision to
-            celebrate through giving, but we recognise that the donation that
-            enables this will not be the same for everyone.
+            that
+            students actively engage with their decision to celebrate through
+            giving, but we recognise that the donation that enables this will
+            not be the same for everyone.
           </p>
           <p>
             In addition, you have the option of donating in weekly installments,
-            as some have found this more manageable. A weekly donation of £5
+            as some have found this more manageable. A weekly donation of £7
             from the donations launch up until our summer celebration adds up to
             about £100, which will still be doubled through our matched funding.
           </p>
@@ -382,16 +297,13 @@ const IndexPage = () => (
     </Section>
 
     <Philosophy />
-
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
       <div className="inline-block text-left">
-        <SocialIconV2 type="email" id="raisedurham@gmail.com" />
-        <SocialIconV2 type="instagram" id="raisedurham" />
-        <SocialIconV2 type="facebook" id="raisedurham" />
+        <SocialIconV2 type="email" id="raiseucl@gmail.com" />
+        <SocialIconV2 type="instagram" id="raiseucl" />
       </div>
     </Section>
-
     <Footer />
   </Page>
 );

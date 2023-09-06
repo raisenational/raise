@@ -102,6 +102,15 @@ const CHAPTERS: Chapter[] = [
     },
   },
   {
+    id: '01H9P0ZER4KX4H6VE8XZ5ZQ7WH',
+    name: 'University College London (UCL)',
+    href: '/ucl/',
+    location: {
+      latitude: 51.5246,
+      longitude: -0.1338,
+    },
+  },
+  {
     id: '01GMXD8C9VMQK0V88APM61K2T3',
     name: 'Warwick',
     href: '/warwick/',
