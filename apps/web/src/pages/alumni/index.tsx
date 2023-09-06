@@ -1,6 +1,7 @@
 import Helmet from 'react-helmet';
 
 import { UserGroupIcon } from '@heroicons/react/outline';
+import { convert } from '@raise/shared';
 import Page from '../../components/Page';
 import Section, { SectionTitle } from '../../components/Section';
 import Navigation from '../../components/Navigation';
@@ -40,10 +41,10 @@ const IndexPage = () => (
           title="Raise Alumni"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our national impact below."
           statistics={{
-            years: 5,
-            students: 2099,
-            raised: 382739,
-            protected: 455285,
+            years: 6,
+            students: 2697,
+            raised: 466495,
+            protected: convert.moneyToPeopleProtected('gbp', 466495_00),
           }}
         />
         <div className="mt-4 mb-12 flex flex-wrap gap-2 justify-center">
