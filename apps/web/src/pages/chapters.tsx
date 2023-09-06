@@ -142,7 +142,7 @@ const ChaptersPage = () => (
         <p>We love to hear from potential founders that are interested in starting a local Raise group. Even if you're not sure, please contact us and we can figure it out from there!</p>
         <p>Our national team will be happy to help you get set up. We'll provide a complete written manual with everything you need to know to set up a successful chapter, and can arrange regular mentorship sessions to support you as a founder.</p>
         <p>
-          To get started, email us at <Link href="mailto:raisenational@gmail.com?body=Hey%2C%0D%0A%0D%0AI%20was%20reading%20your%20chapters%20page%20and%20was%20interested%20in%20founding%20a%20Raise%20chapter%20for%20%3Clocation%3E.%0D%0A%0D%0AHow%20can%20I%20get%20started%3F">raisenational@gmail.com</Link>.
+          To get started, complete our <Link href="https://docs.google.com/forms/d/e/1FAIpQLSd9o7tsjhQ0zmtNyXvJKaqEPHBN-BwXarwG2c3ODEZxwrS8rA/viewform">founders form</Link>. If you have any questions, email us at <Link href="mailto:raisenational@gmail.com?body=Hey%2C%0D%0A%0D%0AI%20was%20reading%20your%20chapters%20page%20and%20was%20interested%20in%20founding%20a%20Raise%20chapter%20for%20%3Clocation%3E.%0D%0A%0D%0AHow%20can%20I%20get%20started%3F">raisenational@gmail.com</Link>.
         </p>
       </div>
     </Section>
