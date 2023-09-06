@@ -8,7 +8,6 @@ import Quote from '../components/Quote';
 
 import abeTolley from '../images/abe-tolley.jpg';
 import adamJones from '../images/adam-jones.jpg';
-import claraTuffrey from '../images/clara-tuffrey.jpg';
 import hannahWragg from '../images/hannah-wragg.jpg';
 import rahulShah from '../images/rahul-shah.jpg';
 import susanneKarbe from '../images/susanne-karbe.jpg';
@@ -28,13 +27,6 @@ const NATIONAL_TEAM = [
     role: 'Technology and Governance',
     bio: "Adam's responsible and accountable for technology at Raise. He makes sure people have the right tools available to get things done efficiently, securely and to a high standard. He built the majority of the website and our open-source donations platform, and where necessary helps out in other places, for example handling Charity Commission queries, supporting our successful application to the Effective Altruism Infrastructure Fund and facilitating meetings with the Raise Advisory Board.\n\nIn his day job, he works as a software engineer helping people make better data-driven decisions. Outside work, he enjoys cycling around London, contributing to open-source projects and playing board games.",
     img: adamJones,
-  },
-  {
-    id: '01GCT0D1WW129RKXSN0F3HNKTC',
-    name: 'Clara Tuffrey',
-    role: 'Alumni Engagement',
-    bio: "Clara has been involved in Raise for a number of years, first as a Rep Coordinator at Cambridge MWA and since then as a member of the National Team. Her focus is on alumni engagement, working to keep alumni excited about positive and effective giving after they graduate, and coordinating an alumni project work group.\n\nAfter graduating in 2021, Clara spent a year as an RS teacher, and is now completing a Master's in Christian-Jewish relations at Oxford. In her spare time she enjoys knitting, sewing and playing board games.",
-    img: claraTuffrey,
   },
   {
     id: '01GCT0D1WW5XZJWMQT9GYH4DS4',

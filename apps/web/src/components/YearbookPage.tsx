@@ -308,7 +308,7 @@ const ALL_ENTRIES = [
     id: '01G9ZWEBTHCMJWAG9Z8C1WHK2Z', name: 'Mohamed Bushry Basheer, Medicine Student @ Downing', chapter: 'Cambridge', year: 2022, quote: 'MWA allows me to have a good impact, and its philosophy is something I can carry forward throughout my life.',
   },
   {
-    id: '01G9ZWEBTMNKC274SS7KNRAC4D', name: 'Clara Tuffrey, Theology Student', chapter: 'Cambridge', year: 2021, quote: "I joined MWA because I was inspired by the philosophy of positive, deliberate giving. The MWA community is really lovely and welcoming, and I've loved being a part of it!", img: '/shared/images/yearbook/01G9ZWEBTMNKC274SS7KNRAC4D.jpg',
+    id: '01G9ZWEBTMNKC274SS7KNRAC4D', name: 'Anonymous, Theology Student', chapter: 'Cambridge', year: 2021, quote: "I joined MWA because I was inspired by the philosophy of positive, deliberate giving. The MWA community is really lovely and welcoming, and I've loved being a part of it!",
   },
   {
     id: '01G9ZWEBTMH06FH1T9Y4B05885', name: 'Jacob Smith, Natural Sciences Student', chapter: 'Cambridge', year: 2021, quote: 'For me, MWA is special because it takes a seemingly simple idea — that giving should be a positive thing — and uses it to have a huge impact. The fact that hundreds of students have made likely the biggest donations of their lives, and will hopefully continue to do in their future lives, is a testament to how powerful this idea is.', img: '/shared/images/yearbook/01G9ZWEBTMH06FH1T9Y4B05885.jpg',
