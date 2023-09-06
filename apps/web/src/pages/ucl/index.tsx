@@ -1,5 +1,6 @@
 import Helmet from 'react-helmet';
 
+import { convert } from '@raise/shared';
 import Page from '../../components/Page';
 import Section, { SectionTitle } from '../../components/Section';
 import Navigation from '../../components/Navigation';
