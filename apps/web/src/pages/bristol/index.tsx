@@ -1,5 +1,6 @@
 import Helmet from 'react-helmet';
 
+import { convert } from '@raise/shared';
 import Page from '../../components/Page';
 import Section, { SectionTitle } from '../../components/Section';
 import Navigation from '../../components/Navigation';
@@ -14,12 +15,13 @@ import Panel from '../../components/Panel';
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
 import Footer from '../../components/Footer';
 import Button from '../../components/Button';
+import config from './_config';
 
 const IndexPage = () => (
   <Page>
     <Helmet>
-      <title>Raise Bristol</title>
-      <meta property="og:title" content="Raise Bristol" />
+      <title>{config.title}</title>
+      <meta property="og:title" content={config.title} />
     </Helmet>
     <Cover>
       <Navigation
@@ -31,18 +33,18 @@ const IndexPage = () => (
           { text: 'Contact', href: '#contact' },
         ]}
         right={[
-          { text: 'Donate', href: 'donate/' },
+          // { text: 'Donate', href: 'donate/' },
         ]}
       />
       <Section className="px-8">
         <IntroStats
-          title="Raise Bristol"
+          title={config.title}
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our national impact below."
           statistics={{
-            years: 5,
-            students: 2099,
-            raised: 382739,
-            protected: 455285,
+            years: 6,
+            students: 2697,
+            raised: 466495,
+            protected: convert.moneyToPeopleProtected('gbp', 466495_00),
           }}
         />
         <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
@@ -236,8 +238,8 @@ const IndexPage = () => (
             Because AMF's intervention is so effective at preventing malaria,
             each donation can have a huge impact. For example, a donation of
             £75, doubled through matched funding, can help protect 170 people.
-            In fact, the money we raised nationally in 2020 was enough to
-            protect over 120,000 people!
+            In fact, the money we raised nationally in 2023 was enough to
+            protect almost 95,000 people!
           </p>
         </FAQ>
 

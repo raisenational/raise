@@ -14,12 +14,13 @@ import Panel from '../../components/Panel';
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
 import Footer from '../../components/Footer';
 import Button from '../../components/Button';
+import config from './_config';
 
 const IndexPage = () => (
   <Page>
     <Helmet>
-      <title>Raise Sheffield</title>
-      <meta property="og:title" content="Raise Sheffield" />
+      <title>{config.title}</title>
+      <meta property="og:title" content={config.title} />
     </Helmet>
     <Cover>
       <Navigation
@@ -30,15 +31,13 @@ const IndexPage = () => (
           { text: 'Our Philosophy', href: '#our-philosophy' },
           { text: 'Contact', href: '#contact' },
         ]}
-        right={
-          [
-            { text: 'Donate', href: 'donate/' },
-          ]
-        }
+        right={[
+          // { text: 'Donate', href: 'donate/' },
+        ]}
       />
       <Section className="px-8">
         <IntroStats
-          title="Raise Sheffield"
+          title={config.title}
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
           statistics={{
             years: 1,
@@ -254,8 +253,8 @@ const IndexPage = () => (
             Because AMF's intervention is so effective at preventing malaria,
             each donation can have a huge impact. For example, a donation of
             £75, doubled through matched funding, can help protect 170 people.
-            In fact, the money we raised nationally in 2020 was enough to
-            protect over 120,000 people!
+            In fact, the money we raised nationally in 2023 was enough to
+            protect almost 95,000 people!
           </p>
         </FAQ>
 

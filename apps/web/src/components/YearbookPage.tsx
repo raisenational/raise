@@ -1,6 +1,7 @@
 import Helmet from 'react-helmet';
 
 import { FormProvider, useForm } from 'react-hook-form';
+import { convert } from '@raise/shared';
 import Page from './Page';
 import Section, { SectionTitle } from './Section';
 import Navigation from './Navigation';
@@ -782,10 +783,10 @@ const YearbookPage: React.FC<{ brand?: Brand }> = ({ brand }) => {
           title={`${brand} Yearbook`}
           tagline={`${brand} wouldn't be the success it is today without its amazing community! This yearbook celebrates their impact, which together is an incredible:`}
           statistics={{
-            years: 5,
-            students: 2099,
-            raised: 382739,
-            protected: 455285,
+            years: 6,
+            students: 2697,
+            raised: 466495,
+            protected: convert.moneyToPeopleProtected('gbp', 466495_00),
           }}
         />
       </Section>
