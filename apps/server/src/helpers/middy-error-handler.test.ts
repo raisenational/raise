@@ -32,7 +32,7 @@ test('handles 400 error without a message', async () => {
   expect(request.response.body).toBeDefined();
 });
 
-test.each([401, 403])('handles %s security error', async (status) => {
+test.each([401, 403] as const)('handles %s security error', async (status) => {
   // given... a security error
   const err = new createHttpError[status]('public message');
   const request = makeRequestFromError(err);
@@ -89,7 +89,7 @@ test('handles error with unstringifyable details', async () => {
 
 test.each([
   500, 501, 502, 503, 504,
-])('handles %s error with a message', async (status) => {
+] as const)('handles %s error with a message', async (status) => {
   // given... a 5xx error with a message
   const err = new createHttpError[status]('message that should not be public');
   const request = makeRequestFromError(err);
@@ -106,7 +106,7 @@ test.each([
 
 test.each([
   500, 501, 502, 503, 504,
-])('handles %s error without a message', async (status) => {
+] as const)('handles %s error without a message', async (status) => {
   // given... a 5xx error with a message
   const request = makeRequestFromError(new createHttpError[status]());
 
