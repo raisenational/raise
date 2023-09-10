@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
+import { navigate } from 'gatsby';
 import { ResponseValues } from '../helpers/networking';
 import Alert from './Alert';
-import Link from './Link';
 
 interface PropertyDefinition<I, V> {
   label?: string,
@@ -14,7 +14,7 @@ interface Props<I> {
   definition: Partial<{ [K in keyof I]: PropertyDefinition<I, I[K]> } & { [s: `_${string}`]: PropertyDefinition<I, unknown> }>,
   items?: I[] | ResponseValues<I[], unknown, unknown>,
   primaryKey?: keyof I,
-  onClick?: (item: I, event: React.MouseEvent<Element, MouseEvent>) => void,
+  onClick?: (item: I, event: React.MouseEvent | React.KeyboardEvent) => void,
   emptyMessage?: string,
   renderItem?: (item: I, index: number) => JSX.Element,
   className?: string,
@@ -46,13 +46,39 @@ const Table = <I extends Record<string, any>>({
           </tr>
         </thead>
         <tbody>
-          {nItems.map(renderItem || ((item, rowIndex) => (
-            <tr key={nPrimaryKey ? String(item[nPrimaryKey]) : rowIndex} className={classNames('hover:bg-black hover:bg-opacity-20')}>
-              {Object.entries(definition).map(([k, v], cellIndex, arr) => (
-                <td key={k} className={classNames('p-2', { 'pl-4': cellIndex === 0, 'pr-4': cellIndex === arr.length - 1 }, v.className)}><Link href={href === undefined ? undefined : href(item)} onClick={onClick === undefined ? undefined : (e : React.MouseEvent<Element, MouseEvent>) => onClick(item, e)}><div>{v.formatter ? v.formatter(item[k as keyof I], item) : (item[k as keyof I] ?? '—')}</div></Link></td>
-              ))}
-            </tr>
-          )))}
+          {nItems.map(renderItem || ((item, rowIndex) => {
+            const onTrigger = (href || onClick) ? (e: React.MouseEvent | React.KeyboardEvent) => {
+              if (onClick) onClick(item, e);
+              if (href) {
+                if (!e.ctrlKey) {
+                  navigate(href(item));
+                } else {
+                  window.open(href(item), '_blank');
+                }
+              }
+            } : undefined;
+
+            return (
+              <tr
+                key={nPrimaryKey ? String(item[nPrimaryKey]) : rowIndex}
+                className={classNames('hover:bg-black hover:bg-opacity-20', href || onClick ? 'cursor-pointer' : '')}
+                onClick={onTrigger}
+                onKeyDown={onTrigger ? (e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    onTrigger(e);
+                    e.preventDefault();
+                  }
+                } : undefined}
+                tabIndex={onClick || href ? 0 : undefined}
+              >
+                {Object.entries(definition).map(([k, v], cellIndex, arr) => (
+                  <td key={k} className={classNames('p-2', { 'pl-4': cellIndex === 0, 'pr-4': cellIndex === arr.length - 1 }, v.className)}>
+                    {v.formatter ? v.formatter(item[k as keyof I], item) : (item[k as keyof I] ?? '—')}
+                  </td>
+                ))}
+              </tr>
+            );
+          }))}
         </tbody>
       </table>
       {nItems.length === 0 && <p className="px-4 pt-2 pb-1 text-center">{emptyMessage}</p>}
