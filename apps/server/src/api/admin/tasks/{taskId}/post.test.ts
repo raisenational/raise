@@ -1,9 +1,8 @@
 import createHttpError from 'http-errors';
 import { ulid } from 'ulid';
-import { call, enableConsole, testGroupId } from '../../../../../local/testHelpers';
+import { call, testGroupId } from '../../../../../local/testHelpers';
 import { main } from './post';
 import tasks from '../../../../tasks';
-import { Task } from '../../../../schemas';
 import { TaskDefinition } from '../../../../helpers/types';
 
 jest.mock('../../../../tasks', () => [
