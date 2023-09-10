@@ -12,7 +12,7 @@ const env: Env = {
 
   IMPERSONATION_LOGIN_ENABLED: true,
   GOOGLE_LOGIN_ENABLED: true,
-  GOOGLE_LOGIN_CLIENT_ID: '730827052132-u1tatnr4anip3vf7j5tq82k33gb5okpe.apps.googleusercontent.com',
+  GOOGLE_LOGIN_CLIENT_ID: '200627615486-as2s4no2u20mcbb96ldmc4pjb3d0otg3.apps.googleusercontent.com',
 
   CLOUDFLARE_WEB_ANALYTICS_TOKEN_RAISE: undefined,
   CLOUDFLARE_WEB_ANALYTICS_TOKEN_MWA: undefined,
