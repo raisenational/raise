@@ -6,17 +6,12 @@ Back-end code and resources for the Raise platform.
 
 See [the main README](../../README.md) for general instructions.
 
-<!-- TODO: https://github.com/raisenational/raise/issues/289
-
 ### 🏃 Live updates
 
 If the local server is running, your changes will immediately be applied, except for:
 - Adding or removing entire endpoints or functions
 - Changing the database seed data
 - Resetting the database
-- Making changes in the shared folder (see the instructions there)
-
--->
 
 ### 🪝 Emulating Stripe webhooks
 
