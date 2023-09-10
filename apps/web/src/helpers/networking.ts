@@ -82,6 +82,7 @@ authStateListeners.add(() => {
       makeClient(axiosWithDefaults)('post /admin/login/refresh', { refreshToken: authState.refreshToken.value }).then((res) => {
         setAuthState(res.data);
       }).catch((error) => {
+        // eslint-disable-next-line no-console
         console.error('Failed to refresh tokens', error);
         setAuthState();
       });
