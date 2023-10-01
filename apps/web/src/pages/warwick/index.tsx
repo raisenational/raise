@@ -41,9 +41,9 @@ const IndexPage = () => (
           title="Raise Warwick"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
           statistics={{
-            years: 1,
-            students: 18,
-            raised: 3129,
+            years: 2,
+            students: 66,
+            raised: 6577,
             protected: convert.moneyToPeopleProtected('gbp', 312900),
           }}
         />
