@@ -13,8 +13,8 @@
     "generate:schemas": "ts-node --transpile-only local/schemasToTS.ts",
     "generate:client": "ts-node local/generateClient.ts",
     "generate:router": "ts-node local/generateRouterImports.ts",
-    "test": "TZ=utc jest",
-    "test:watch": "TZ=utc jest --watch",
+    "test": "shx cp src/env/local.ts src/env/env.ts && TZ=utc jest",
+    "test:watch": "shx cp src/env/local.ts src/env/env.ts && TZ=utc jest --watch",
     "type-check": "tsc",
     "lint": "eslint 'src' 'serverless.ts'",
     "lint:fix": "npm run lint -- --fix"
