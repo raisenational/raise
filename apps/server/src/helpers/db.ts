@@ -3,7 +3,7 @@ import { DynamoDBClient, TransactionCanceledException } from '@aws-sdk/client-dy
 import {
   DynamoDBDocumentClient, GetCommand, PutCommand, QueryCommand, ScanCommand, TransactWriteCommand, TransactWriteCommandInput, TransactWriteCommandOutput, UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { NodeHttpHandler } from '@aws-sdk/node-http-handler';
+import { NodeHttpHandler } from '@smithy/node-http-handler';
 import Ajv from 'ajv';
 import createHttpError from 'http-errors';
 import type { NativeAttributeValue } from '@aws-sdk/util-dynamodb';
