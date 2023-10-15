@@ -64,7 +64,7 @@ beforeEach(async () => {
     .mockImplementationOnce(async (command) => {
       // The first time, we lazy initiate the tables
       await Promise.all(DYNAMODB_TABLES.map((table: any) => {
-        return dynamoDBDocumentClient.send(new CreateTableCommand({
+        return dynamoDBClient.send(new CreateTableCommand({
           ...table,
           TableName: `${envPrefix}-${table.TableName}`
         }))
