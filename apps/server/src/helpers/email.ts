@@ -1,5 +1,5 @@
 import { SESv2Client, SendEmailCommand } from '@aws-sdk/client-sesv2';
-import { NodeHttpHandler } from '@aws-sdk/node-http-handler';
+import { NodeHttpHandler } from '@smithy/node-http-handler';
 import env from '../env/env';
 import { RenderedHtml } from './email/renderHtml';
 

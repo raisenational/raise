@@ -23,10 +23,10 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.34.0",
-    "@aws-sdk/client-sesv2": "^3.39.0",
-    "@aws-sdk/lib-dynamodb": "^3.34.0",
-    "@aws-sdk/node-http-handler": "^3.38.0",
+    "@aws-sdk/client-dynamodb": "^3.428.0",
+    "@aws-sdk/client-sesv2": "^3.428.0",
+    "@aws-sdk/lib-dynamodb": "^3.428.0",
+    "@smithy/node-http-handler": "^2.1.7",
     "@middy/core": "^2.5.3",
     "@middy/http-json-body-parser": "^2.5.3",
     "@middy/validator": "^2.5.3",
@@ -59,7 +59,7 @@
     "json-schema-to-typescript": "^10.1.5",
     "mockdate": "^3.0.5",
     "serverless": "^3.27.0",
-    "serverless-dynamodb": "^0.2.45",
+    "serverless-dynamodb": "^0.2.46",
     "serverless-offline": "^12.0.4",
     "serverless-offline-ses-v2": "^1.0.1",
     "serverless-offline-watcher": "^1.0.0",
