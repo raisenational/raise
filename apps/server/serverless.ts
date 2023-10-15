@@ -89,8 +89,7 @@ const serverlessConfiguration: AWS = {
       lambdaPort: 8003,
       reloadHandler: true,
     },
-    dynamodb: { // serverless-dynamodb
-      stages: [env.STAGE], // https://github.com/99x/serverless-dynamodb-local/issues/225
+    'serverless-dynamodb': {
       start: {
         port: 8004,
         migrate: true,
