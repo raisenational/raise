@@ -5,13 +5,10 @@ const execSync = require('child_process').execSync;
 module.exports = async () => {
   const service = JSON.parse(execSync('npx serverless print --format json', { encoding: 'utf-8' }))
 
-  // Fix log from aws-dynamodb-local as "Determining test suites to run..." misses trailing newline
-  console.log()
-
   // Start DynamoDB local
   dynamodbLocal.start({
     port: 8005,
-    install_path: path.join(__dirname, '../.dynamodb'),
+    installPath: path.join(__dirname, '..', '.dynamodb'),
     sharedDb: false, // So each test gets its own database
   })
 
