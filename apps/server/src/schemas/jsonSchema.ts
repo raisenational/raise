@@ -4,7 +4,7 @@ import type * as S from './typescript';
 // It'd be nice to use JSONSchemaType from AJV. However, it has poor performance and is incorrect: https://github.com/ajv-validator/ajv/issues/1664
 export type JSONSchema<T> = JSONSchema7Definition & { __type?: T };
 
-export const $Email: JSONSchema<S.Email> = {
+export const $EmailConfig: JSONSchema<S.EmailConfig> = {
   type: 'string',
   // Regex from https://html.spec.whatwg.org/multipage/forms.html#e-mail-state-(type=email)
   pattern: "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
@@ -62,7 +62,7 @@ export const $GoogleLoginRequest: JSONSchema<S.GoogleLoginRequest> = {
 export const $ImpersonationLoginRequest: JSONSchema<S.ImpersonationLoginRequest> = {
   type: 'object',
   properties: {
-    email: $Email,
+    email: $EmailConfig,
   },
   required: ['email'],
   additionalProperties: false,
@@ -152,7 +152,7 @@ export const $DonationCreation: JSONSchema<S.DonationCreation> = {
   type: 'object',
   properties: {
     donorName: { type: 'string' },
-    donorEmail: $Email,
+    donorEmail: $EmailConfig,
     emailConsentInformational: { type: 'boolean' },
     emailConsentMarketing: { type: 'boolean' },
     createdAt: { type: 'integer' },
@@ -389,7 +389,7 @@ export const $PublicDonationRequest: JSONSchema<S.PublicDonationRequest> = {
     contributionAmount: { type: 'integer', minimum: 0 },
     giftAid: { type: 'boolean' },
     donorName: { type: 'string' },
-    donorEmail: $Email,
+    donorEmail: $EmailConfig,
     emailConsentInformational: { type: 'boolean' },
     emailConsentMarketing: { type: 'boolean' },
     addressLine1: { type: ['string', 'null'] },
@@ -559,3 +559,122 @@ export const $User: JSONSchema<S.User> = {
 };
 
 export const $Users: JSONSchema<S.User[]> = { type: 'array', items: $User };
+
+export const $EmailCreation: JSONSchema<S.EmailCreation> = {
+  type: 'object',
+  properties: {
+    recipient: { type: 'string' },
+    subject: { type: 'string' },
+    message: { type: 'string' },
+    chapter: { type: 'string' },
+    campaign: { type: 'string' },
+  },
+  additionalProperties: false,
+  required: ['recipient', 'subject', 'message'],
+};
+
+// rename this to email, and change the other email at the top to something like emailconfig?
+export const $Email: JSONSchema<S.Email> = {
+  type: 'object',
+  properties: {
+    ...$EmailCreation.properties,
+    id: $Ulid,
+    time: { type: 'integer' }
+  },
+  additionalProperties: false,
+  required: ['recipient', 'subject', 'message', 'id', 'time'],
+};
+
+export const $Emails: JSONSchema<S.Email[]> = { type: 'array', items: $Email };
+
+export const $MemberCreation: JSONSchema<S.MemberCreation> = {
+  type: 'object',
+  properties: {
+    name: { type: 'string', maxLength: 100 },
+    email: { type: 'string', maxLength: 100 },
+    // chapter: { type: 'array', items: { type: 'string' } } now obselete due to campaign member
+  },
+  additionalProperties: false,
+  // Removed the required property as this may lead to seemingly cryptic error alert for the user when signing up
+};
+
+export const $MemberRemoval: JSONSchema<S.MemberRemoval> = {
+  type: 'object',
+  properties: {
+    email: { type: 'string', maxLength: 100 },
+    // chapter: { type: 'string' } no longer needed
+  },
+  additionalProperties: false,
+};
+
+export const $Member: JSONSchema<S.Member> = {
+  type: 'object',
+  properties: {
+    ...$MemberCreation.properties,
+    id: $Ulid,
+    joined: { type: 'integer' },
+    active: { type: 'boolean' },
+  },
+  required: ['id', 'joined', 'active', 'email'], // name doesnt work?
+  additionalProperties: false,
+};
+
+export const $Members: JSONSchema<S.Member[]> = { type: 'array', items: $Member };
+
+export const $CampaignCreation: JSONSchema<S.CampaignCreation> = {
+  type: 'object',
+  properties: {
+    chapter: { type: 'string' },
+    campaign: { type: 'string' },
+  },
+  required: ['chapter', 'campaign'],
+  additionalProperties: false,
+};
+
+export const $Campaign: JSONSchema<S.Campaign> = {
+  type: 'object',
+  properties: {
+    ...$CampaignCreation.properties,
+    id: $Ulid,
+    archived: { type: 'boolean' },
+  },
+  required: ['id', 'chapter', 'campaign', 'archived'],
+  additionalProperties: false,
+};
+
+export const $Campaigns: JSONSchema<S.Campaign[]> = { type: 'array', items: $Campaign };
+
+export const $CampaignMemberCreation: JSONSchema<S.CampaignMemberCreation> = {
+  type: 'object',
+  properties: {
+    name: { type: 'string', maxLength: 100 },
+    email: { type: 'string', maxLength: 100 },
+    campaignId: { type: 'string' },
+  },
+  required: ['name', 'email', 'campaignId'],
+  additionalProperties: false,
+};
+
+export const $CampaignMember: JSONSchema<S.CampaignMember> = {
+  type: 'object',
+  properties: {
+    id: $Ulid,
+    memberId: $Ulid,
+    campaignId: $Ulid,
+    active: { type: 'boolean' },
+  },
+  required: ['id', 'campaignId', 'memberId', 'active'],
+  additionalProperties: false,
+};
+
+export const $CampaignMemberRemoval: JSONSchema<S.CampaignMemberRemoval> = {
+  type: 'object',
+  properties: {
+    email: { type: 'string', maxLength: 100 },
+    campaignId: { type: 'string' },
+  },
+  required: ['campaignId', 'email'],
+  additionalProperties: false,
+};
+
+export const $CampaignMembers: JSONSchema<S.CampaignMember[]> = { type: 'array', items: $CampaignMember };

@@ -5,7 +5,7 @@
  */
 /* eslint-disable */
 
-export type Email = string;
+export type EmailConfig = string;
 
 export type Ulid = string;
 
@@ -514,4 +514,101 @@ export type Users = {
   securityTrainingCompletedAt: number;
   sendAccountCreationEmail?: boolean;
   id: string;
+}[];
+
+export interface EmailCreation {
+  recipient: string;
+  subject: string;
+  message: string;
+  chapter?: string;
+  campaign?: string;
+}
+
+export interface Email {
+  recipient: string;
+  subject: string;
+  message: string;
+  chapter?: string;
+  campaign?: string;
+  id: string;
+  time: number;
+}
+
+export type Emails = {
+  recipient: string;
+  subject: string;
+  message: string;
+  chapter?: string;
+  campaign?: string;
+  id: string;
+  time: number;
+}[];
+
+export interface MemberCreation {
+  name?: string;
+  email?: string;
+}
+
+export interface MemberRemoval {
+  email?: string;
+}
+
+export interface Member {
+  name?: string;
+  email: string;
+  id: string;
+  joined: number;
+  active: boolean;
+}
+
+export type Members = {
+  name?: string;
+  email: string;
+  id: string;
+  joined: number;
+  active: boolean;
+}[];
+
+export interface CampaignCreation {
+  chapter: string;
+  campaign: string;
+}
+
+export interface Campaign {
+  chapter: string;
+  campaign: string;
+  id: string;
+  archived: boolean;
+}
+
+export type Campaigns = {
+  chapter: string;
+  campaign: string;
+  id: string;
+  archived: boolean;
+}[];
+
+export interface CampaignMemberCreation {
+  name: string;
+  email: string;
+  campaignId: string;
+}
+
+export interface CampaignMember {
+  id: string;
+  memberId: string;
+  campaignId: string;
+  active: boolean;
+}
+
+export interface CampaignMemberRemoval {
+  email: string;
+  campaignId: string;
+}
+
+export type CampaignMembers = {
+  id: string;
+  memberId: string;
+  campaignId: string;
+  active: boolean;
 }[];

@@ -6,6 +6,9 @@ import {
   $AuditLog, AuditLog,
   $Group, Group,
   $User, User,
+  $Member, Member,
+  $Campaign, Campaign,
+  $Email, Email, $CampaignMember, CampaignMember,
 } from '../schemas';
 import env from '../env/env';
 
@@ -75,6 +78,38 @@ export const userTable: Table<'id', 'id', User> = {
   schema: $User,
 };
 
+export const memberTable: Table<'id', 'id', Member> = {
+  name: `raise-server-${env.STAGE}-member`,
+  entityName: 'member',
+  partitionKey: 'id',
+  primaryKey: 'id',
+  schema: $Member,
+};
+
+export const campaignTable: Table<'id', 'id', Campaign> = {
+  name: `raise-server-${env.STAGE}-campaign`,
+  entityName: 'campaign',
+  partitionKey: 'id',
+  primaryKey: 'id',
+  schema: $Campaign,
+};
+
+export const campaignMemberTable: Table<'campaignId', 'memberId', CampaignMember> = {
+  name: `raise-server-${env.STAGE}-campaignMember`,
+  entityName: 'campaignMember',
+  partitionKey: 'campaignId',
+  primaryKey: 'memberId',
+  schema: $CampaignMember,
+};
+
+export const emailTable: Table<'id', 'id', Email> = {
+  name: `raise-server-${env.STAGE}-email`,
+  entityName: 'email',
+  partitionKey: 'id',
+  primaryKey: 'id',
+  schema: $Email,
+};
+
 export const tables = {
   fundraiser: fundraiserTable,
   donation: donationTable,
@@ -82,4 +117,8 @@ export const tables = {
   auditLog: auditLogTable,
   group: groupTable,
   user: userTable,
+  member: memberTable,
+  campaign: campaignTable,
+  campaignMember: campaignMemberTable,
+  email: emailTable,
 };

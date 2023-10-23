@@ -19,6 +19,9 @@ import UsersPage from './users';
 import UserPage from './user';
 import GroupPage from './group';
 import { helpLink } from './_helpLink';
+import CampaignsPage from './campaigns';
+import CampaignPage from './campaign';
+import EmailPage from './email';
 
 const IndexPage = () => (
   <Page className="pb-8">
@@ -63,6 +66,7 @@ const IndexLayout = () => {
             { text: 'Tasks', href: '/admin/tasks' },
             { text: 'Audit', href: '/admin/audit' },
             { text: 'Users', href: '/admin/users' },
+            { text: 'Campaigns', href: '/admin/campaigns' },
             { text: 'Profile', href: '/admin/profile' },
             { text: 'Help', href: helpLink },
           ]}
@@ -91,6 +95,9 @@ const IndexLayout = () => {
             <UserPage userId="" path="/users/:userId" />
             <GroupPage groupId="" path="/groups/:groupId" />
             <ProfilePage path="/profile" />
+            <CampaignsPage path="/campaigns" />
+            <CampaignPage campaignId="" path="/campaigns/:campaignId" />
+            <EmailPage campaignId="" emailId="" path="/campaigns/:campaignId/:emailId" />
             <NotFoundPage default />
           </>
         )}
