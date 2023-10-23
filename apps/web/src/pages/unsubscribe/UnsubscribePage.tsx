@@ -64,6 +64,7 @@ const UnsubscribePage: React.FC<RouteComponentProps & { campaignName: string, ch
             subscribe={false}
             onSubmit={async (data) => {
               if (data.email === null) {
+                // eslint-disable-next-line no-param-reassign
                 data.email = '';
               }
               await req('post /public/members/unsubscribe', data);

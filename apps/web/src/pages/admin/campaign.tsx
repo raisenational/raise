@@ -22,8 +22,8 @@ const CampaignPage: React.FC<RouteComponentProps & { campaignId: string }> = ({ 
 
   const [newEmailsModalOpen, setNewEmailsModalOpen] = useState(false);
   const [viewEmailModalOpen, setViewEmailModalOpen] = useState(false);
-  const [viewEmailSubject, setViewEmailSubject] = useState('');
-  const [viewEmailMessage, setViewEmailMessage] = useState('');
+  const [viewEmailSubject] = useState('');
+  const [viewEmailMessage] = useState('');
   const [emails, refetchEmails] = useReq('get /admin/emails');
   // const [campains, refetchCampaigns] = useReq('get /admin/emails/campaigns');
   const req = useRawReq();

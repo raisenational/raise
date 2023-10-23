@@ -5,7 +5,7 @@ import Spinner from '../../components/Spinner';
 import ErrorPage from '../../components/ErrorPage';
 
 const EmailPage: React.FC<RouteComponentProps & { emailId: string, campaignId: string }> = ({ emailId, campaignId }) => {
-  const [emails, refetchEmails] = useReq('get /admin/emails');
+  const [emails] = useReq('get /admin/emails');
   const email = asResponseValues(emails.data?.find((e) => e.id === emailId), emails);
 
   // Very Much a Work in Progress

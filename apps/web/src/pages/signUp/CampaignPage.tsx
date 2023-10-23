@@ -68,9 +68,11 @@ const CampaignPage: React.FC<RouteComponentProps & { campaignName: string, chapt
             subscribe
             onSubmit={async (data) => {
               if ((data.name === null)) {
+                // eslint-disable-next-line no-param-reassign
                 data.name = '';
               }
               if (data.email === null) {
+                // eslint-disable-next-line no-param-reassign
                 data.email = '';
               }
               await req('post /public/members/campaign', data);
