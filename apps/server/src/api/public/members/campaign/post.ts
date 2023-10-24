@@ -23,13 +23,14 @@ export const main = middyfy($CampaignMemberCreation, $Ulid, false, async (event)
       if (member.name !== event.body.name) {
         await update(memberTable, { id: member.id }, { name: event.body.name }); // updates the name should there be a change in name
       }
+    } else {
+      await insert(campaignMemberTable, {
+        id: ulid(),
+        memberId: member.id,
+        campaignId: event.body.campaignId,
+        active: true,
+      });
     }
-    await insert(campaignMemberTable, {
-      id: ulid(),
-      memberId: member.id,
-      campaignId: event.body.campaignId,
-      active: true,
-    });
   } else {
     member = await insert(memberTable, {
       id: ulid(),
