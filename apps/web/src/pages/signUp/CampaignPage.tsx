@@ -12,7 +12,7 @@ import Spinner from '../../components/Spinner';
 import Logo from '../../components/Logo';
 
 const CampaignPage: React.FC<RouteComponentProps & { campaignName: string, chapterName: string } > = ({ campaignName, chapterName }) => {
-  const [campaigns] = useReq('get /admin/emails/campaigns');
+  const [campaigns] = useReq('get /admin/campaigns');
   const req = useRawReq();
   const campaign = asResponseValues(campaigns.data?.find((u) => (u.campaign.toLowerCase() === campaignName.toLowerCase()) && (u.chapter.toLowerCase() === chapterName.toLowerCase())), campaigns); // Allows for chapters to use the same campaign name. MWA may cause issues?
   if (campaigns.loading === true) {
@@ -47,7 +47,7 @@ const CampaignPage: React.FC<RouteComponentProps & { campaignName: string, chapt
             <SectionTitle className="flex-1">{campaign.data?.campaign || 'Campaign'}</SectionTitle>
           </div>
           <div>
-            Sign up to recieve updates from {campaign.data?.chapter || 'Raise'}!
+            Sign up to {campaign.data?.chapter || 'Raise'}'s {campaign.data.campaign}!
           </div>
           <div>
             Campaign Id is: {campaign.data?.id}
@@ -58,11 +58,13 @@ const CampaignPage: React.FC<RouteComponentProps & { campaignName: string, chapt
               name: { label: 'Name', inputType: 'text' },
               email: { label: 'Email', inputType: 'text' },
               campaignId: { label: 'chapter', inputType: 'hidden' },
+              emailConsent: { label: 'I agree to receive emails relating to this campaign', inputType: 'checkbox' }
             }}
             initialValues={{
               name: '',
               email: '',
               campaignId: campaignid,
+              emailConsent: true,
             }}
             showCurrent={false}
             subscribe

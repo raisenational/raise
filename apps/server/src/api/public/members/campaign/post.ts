@@ -19,7 +19,7 @@ export const main = middyfy($CampaignMemberCreation, $Ulid, false, async (event)
     if (campaignMembersFromDb.find((cm) => (cm.memberId === member?.id) && (cm.campaignId === event.body.campaignId) && (cm.active === true))) {
       throw new createHttpError.BadRequest('This email has already been used to sign up to this campaign');
     } else if (campaignMembersFromDb.find((cm) => (cm.memberId === member?.id) && (cm.campaignId === event.body.campaignId) && (cm.active === false))) {
-      await update(campaignMemberTable, { memberId: member.id, campaignId: event.body.campaignId }, { active: true }); // re-signs-up member to the campaign (if they had previously unsubscribed)
+      await update(campaignMemberTable, { memberId: member.id, campaignId: event.body.campaignId }, { active: true, emailConsent: event.body.emailConsent }); // re-signs-up member to the campaign (if they had previously unsubscribed)
       if (member.name !== event.body.name) {
         await update(memberTable, { id: member.id }, { name: event.body.name }); // updates the name should there be a change in name
       }
@@ -29,6 +29,7 @@ export const main = middyfy($CampaignMemberCreation, $Ulid, false, async (event)
         memberId: member.id,
         campaignId: event.body.campaignId,
         active: true,
+        emailConsent: event.body.emailConsent
       });
     }
   } else {
@@ -44,6 +45,7 @@ export const main = middyfy($CampaignMemberCreation, $Ulid, false, async (event)
       memberId: member.id,
       campaignId: event.body.campaignId,
       active: true,
+      emailConsent: event.body.emailConsent
     });
   }
 

@@ -135,9 +135,9 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
 
   if (type === 'checkbox') {
     return (
-      <div className={classNames(className, 'flex items-center my-3')}>
+      <div className={classNames(className, 'flex justify-center my-3 ')}>
         {type === 'checkbox' && <input id={id} ref={ref} type={type} className="flex-shrink-0 mr-1" {...rest} />}
-        {label && <label htmlFor={id} className={classNames('text-gray-700 font-bold leading-none', { 'block pb-1': type !== 'checkbox', 'text-raise-red': error })}>{label}</label>}
+        {label && <label htmlFor={id} className={classNames('', { 'block pb-1': type !== 'checkbox', 'text-raise-red': error })}>{label}</label>}
       </div>
     );
   }

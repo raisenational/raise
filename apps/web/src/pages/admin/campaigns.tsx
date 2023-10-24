@@ -15,7 +15,7 @@ import Table from '../../components/Table';
 
 const CampaignsPage: React.FC<RouteComponentProps> = () => {
   const [newCampaignsModalOpen, setNewCampaignsModalOpen] = useState(false);
-  const [campains, refetchCampaigns] = useReq('get /admin/emails/campaigns');
+  const [campains, refetchCampaigns] = useReq('get /admin/campaigns');
   const [showArchived, setShowArchived] = useState(true);
   const req = useRawReq();
 
@@ -66,7 +66,7 @@ const CampaignsPage: React.FC<RouteComponentProps> = () => {
             }}
             showCurrent={false}
             onSubmit={async (data) => {
-              await req('post /admin/emails/campaigns', data);
+              await req('post /admin/campaigns', data);
               await refetchCampaigns();
               setNewCampaignsModalOpen(false);
             }}

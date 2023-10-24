@@ -2,7 +2,6 @@ import Helmet from 'react-helmet';
 import { Router } from '@gatsbyjs/reach-router';
 import Page from '../../components/Page';
 import CampaignPage from './CampaignPage';
-import TasksPage from '../admin/tasks';
 import NotFoundPage from '../404';
 import SignUpPage from '../../components/SignUpPage';
 
@@ -21,7 +20,6 @@ const IndexLayout = () => {
   return (
     <Router basepath="/signUp" className="text-left">
       <>
-        <TasksPage path="/tasks" />
         <SignUpPage path="/" />
         <CampaignPage chapterName="" campaignName="" path="/:chapterName/:campaignName" />
         <NotFoundPage default />

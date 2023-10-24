@@ -650,8 +650,9 @@ export const $CampaignMemberCreation: JSONSchema<S.CampaignMemberCreation> = {
     name: { type: 'string', maxLength: 100 },
     email: { type: 'string', maxLength: 100 },
     campaignId: { type: 'string' },
+    emailConsent: { type: 'boolean' }
   },
-  required: ['name', 'email', 'campaignId'],
+  required: ['name', 'email', 'campaignId', 'emailConsent'],
   additionalProperties: false,
 };
 
@@ -662,8 +663,9 @@ export const $CampaignMember: JSONSchema<S.CampaignMember> = {
     memberId: $Ulid,
     campaignId: $Ulid,
     active: { type: 'boolean' },
+    emailConsent: { type: 'boolean' },
   },
-  required: ['id', 'campaignId', 'memberId', 'active'],
+  required: ['id', 'campaignId', 'memberId', 'active', 'emailConsent'],
   additionalProperties: false,
 };
 

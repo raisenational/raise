@@ -24,23 +24,23 @@ export type Routes = {
       "subjectId": string,
     },
   },
-  "get /admin/emails/campaigns": {
-    request: null,
-    response: S.Campaigns,
-    params: null,
-  },
-  "post /admin/emails/campaigns": {
-    request: S.CampaignCreation,
-    response: S.Ulid,
-    params: null,
-  },
-  "get /admin/emails": {
+  "get /admin/campaigns/emails": {
     request: null,
     response: S.Emails,
     params: null,
   },
-  "post /admin/emails": {
+  "post /admin/campaigns/emails": {
     request: S.EmailCreation,
+    response: S.Ulid,
+    params: null,
+  },
+  "get /admin/campaigns": {
+    request: null,
+    response: S.Campaigns,
+    params: null,
+  },
+  "post /admin/campaigns": {
+    request: S.CampaignCreation,
     response: S.Ulid,
     params: null,
   },
@@ -253,30 +253,30 @@ export const routes = {
     hasResponse: true,
     hasParams: true,
   },
-  "get /admin/emails/campaigns": {
+  "get /admin/campaigns/emails": {
     method: "get",
-    makePath: ({ }: {}) => `/admin/emails/campaigns`,
+    makePath: ({ }: {}) => `/admin/campaigns/emails`,
     hasRequest: false,
     hasResponse: true,
     hasParams: false,
   },
-  "post /admin/emails/campaigns": {
+  "post /admin/campaigns/emails": {
     method: "post",
-    makePath: ({ }: {}) => `/admin/emails/campaigns`,
+    makePath: ({ }: {}) => `/admin/campaigns/emails`,
     hasRequest: true,
     hasResponse: true,
     hasParams: false,
   },
-  "get /admin/emails": {
+  "get /admin/campaigns": {
     method: "get",
-    makePath: ({ }: {}) => `/admin/emails`,
+    makePath: ({ }: {}) => `/admin/campaigns`,
     hasRequest: false,
     hasResponse: true,
     hasParams: false,
   },
-  "post /admin/emails": {
+  "post /admin/campaigns": {
     method: "post",
-    makePath: ({ }: {}) => `/admin/emails`,
+    makePath: ({ }: {}) => `/admin/campaigns`,
     hasRequest: true,
     hasResponse: true,
     hasParams: false,

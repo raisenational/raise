@@ -14,7 +14,7 @@ import { EmailCreation } from '../../helpers/generated-api-client';
 import ErrorPage from '../../components/ErrorPage';
 
 const CampaignPage: React.FC<RouteComponentProps & { campaignId: string }> = ({ campaignId }) => {
-  const [campaigns] = useReq('get /admin/emails/campaigns');
+  const [campaigns] = useReq('get /admin/campaigns');
   const campaign = asResponseValues(campaigns.data?.find((f) => f.id === campaignId), campaigns); // for use later
   const [allMembers] = useReq('get /public/members/campaign');
   const campaignMembers = asResponseValues(allMembers.data?.filter((u) => u.campaignId === campaignId), allMembers);
@@ -24,7 +24,7 @@ const CampaignPage: React.FC<RouteComponentProps & { campaignId: string }> = ({ 
   const [viewEmailModalOpen, setViewEmailModalOpen] = useState(false);
   const [viewEmailSubject] = useState('');
   const [viewEmailMessage] = useState('');
-  const [emails, refetchEmails] = useReq('get /admin/emails');
+  const [emails, refetchEmails] = useReq('get /admin/campaigns/emails');
   // const [campains, refetchCampaigns] = useReq('get /admin/emails/campaigns');
   const req = useRawReq();
   /* const campaignList: string[] = [];
@@ -89,7 +89,7 @@ const CampaignPage: React.FC<RouteComponentProps & { campaignId: string }> = ({ 
             }}
             showCurrent={false}
             onSubmit={async (data) => {
-              await req('post /admin/emails', data);
+              await req('post /admin/campaigns/emails', data);
               await refetchEmails();
               setNewEmailsModalOpen(false);
             }}
@@ -117,13 +117,13 @@ const CampaignPage: React.FC<RouteComponentProps & { campaignId: string }> = ({ 
       </div>
       <div>
         <SectionTitle> Members </SectionTitle>
-        <Table // disabled look caused by outdated repo. Wait till Adam or someone else can help.
+        <Table
           className="mb-8"
           definition={{
             name: { label: 'Name', className: 'whitespace-nowrap' },
             email: { label: 'Email', className: 'whitespace-nowrap' },
           }}
-          items={asResponseValues(members.data?.filter((m) => campaignMembers.data?.find((cm) => cm.memberId === m.id)), members)}
+          items={asResponseValues(members.data?.filter((m) => campaignMembers.data?.find((cm) => (cm.memberId === m.id) && (cm.active === true))), members)}
         />
       </div>
     </Section>

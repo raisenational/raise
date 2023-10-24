@@ -1,13 +1,13 @@
 import { fixedGroups } from '@raise/shared';
 import { ulid } from 'ulid';
-import { middyfy } from '../../../helpers/wrapper';
-import { assertHasGroup, insert, scan } from '../../../helpers/db';
-import { $EmailCreation, $Ulid } from '../../../schemas';
-import { sendEmail } from '../../../helpers/email';
+import { middyfy } from '../../../../helpers/wrapper';
+import { assertHasGroup, insert, scan } from '../../../../helpers/db';
+import { $EmailCreation, $Ulid } from '../../../../schemas';
+import { sendEmail } from '../../../../helpers/email';
 import {
   campaignMemberTable, campaignTable, emailTable, memberTable
-} from '../../../helpers/tables';
-import emailTemplate from '../../../helpers/email/emailTemplate';
+} from '../../../../helpers/tables';
+import emailTemplate from '../../../../helpers/email/emailTemplate';
 
 export const main = middyfy($EmailCreation, $Ulid, true, async (event) => {
   assertHasGroup(event, fixedGroups.National);
@@ -24,7 +24,7 @@ export const main = middyfy($EmailCreation, $Ulid, true, async (event) => {
 
   const campaign = campaignsFromDb.find((c) => (c.id === event.body.recipient));
   const campaignMembers = campaignMembersFromDb.filter((cm) => (cm.campaignId === campaign?.id) && (cm.active === true));
-  const campaignMembersEmails = memberFromDb.filter((m) => campaignMembers.find((cm) => cm.memberId === m.id));
+  const campaignMembersEmails = memberFromDb.filter((m) => campaignMembers.find((cm) => (cm.memberId === m.id) && (cm.emailConsent === true)));
 
   campaignMembersEmails.forEach(async (member) => (sendEmail(
     event.body.subject,

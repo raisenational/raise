@@ -1,10 +1,10 @@
 import { fixedGroups } from '@raise/shared';
 import { ulid } from 'ulid';
 import createHttpError from 'http-errors';
-import { middyfy } from '../../../../helpers/wrapper';
-import { assertHasGroup, insert, scan } from '../../../../helpers/db';
-import { $CampaignCreation, $Ulid } from '../../../../schemas';
-import { campaignTable } from '../../../../helpers/tables';
+import { middyfy } from '../../../helpers/wrapper';
+import { assertHasGroup, insert, scan } from '../../../helpers/db';
+import { $CampaignCreation, $Ulid } from '../../../schemas';
+import { campaignTable } from '../../../helpers/tables';
 
 export const main = middyfy($CampaignCreation, $Ulid, true, async (event) => {
   assertHasGroup(event, fixedGroups.National);

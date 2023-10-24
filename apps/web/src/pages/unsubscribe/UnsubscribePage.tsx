@@ -13,7 +13,7 @@ import Logo from '../../components/Logo';
 
 const UnsubscribePage: React.FC<RouteComponentProps & { campaignName: string, chapterName: string } > = ({ campaignName, chapterName }) => {
   const req = useRawReq();
-  const [campaigns] = useReq('get /admin/emails/campaigns');
+  const [campaigns] = useReq('get /admin/campaigns');
   const campaign = asResponseValues(campaigns.data?.find((u) => (u.campaign.toLowerCase() === campaignName.toLowerCase()) && (u.chapter.toLowerCase() === chapterName.toLowerCase())), campaigns); // Allows for chapters to use the same campaign name. MWA may cause issues?
   const search = new URL(window.location.href).searchParams;
   const emailQuery = search.get('email') || '';

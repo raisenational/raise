@@ -592,6 +592,7 @@ export interface CampaignMemberCreation {
   name: string;
   email: string;
   campaignId: string;
+  emailConsent: boolean;
 }
 
 export interface CampaignMember {
@@ -599,6 +600,7 @@ export interface CampaignMember {
   memberId: string;
   campaignId: string;
   active: boolean;
+  emailConsent: boolean;
 }
 
 export interface CampaignMemberRemoval {
@@ -611,4 +613,5 @@ export type CampaignMembers = {
   memberId: string;
   campaignId: string;
   active: boolean;
+  emailConsent: boolean;
 }[];

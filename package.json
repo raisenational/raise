@@ -40,5 +40,8 @@
       "react": "^18",
       "react-dom": "^18"
     }
+  },
+  "dependencies": {
+    "latest": "^0.2.0"
   }
 }
