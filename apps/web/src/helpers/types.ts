@@ -27,5 +27,5 @@ export interface Env {
 export interface ChapterConfig {
   title: string,
   fundraiserIds: Record<Env['STAGE'], string>,
-  brand?: Brand,
+  brand: Brand,
 }

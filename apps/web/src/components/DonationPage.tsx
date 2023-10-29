@@ -570,9 +570,11 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
           {format.amountShort(fundraiser.currency, donationAmount)}
           {' '}
           each week from now until
+          {' '}
           {format.date(fundraiser.recurringDonationsTo)}
           {' '}
           comes to
+          {' '}
           {format.amountShort(fundraiser.currency, totalDonationAmount)}
           .
         </p>
