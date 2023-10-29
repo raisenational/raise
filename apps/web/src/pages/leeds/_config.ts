@@ -7,6 +7,7 @@ const config: ChapterConfig = {
     prod: '01GNSQVWBXH0RPQ6GZP514G6TG',
   },
   title: 'Raise Leeds',
+  brand: 'Raise',
 };
 
 export default config;

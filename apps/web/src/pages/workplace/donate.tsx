@@ -77,7 +77,7 @@ const Page = () => (
         link: 'https://strongminds.org/'
       },
     ]}
-    reflectionFormHref="https://forms.gle/pYEfH1KvD5Ysk6q37"
+    reflectionFormHref="https://docs.google.com/forms/d/e/1FAIpQLSdL6FxG6AJKdyrSPkVDmgkeWoCG_zRAuwfxOaMbVX7YIWwirQ/viewform"
   />
 );
 
