@@ -14,18 +14,22 @@ import { LoginResponse } from '../../helpers/generated-api-client';
 import Spinner from '../../components/Spinner';
 import Link from '../../components/Link';
 import { helpLink } from './_helpLink';
+import Footer from '../../components/Footer';
 
 const Login: React.FC<RouteComponentProps> = () => (
-  <Section className="mt-8 text-center">
-    <Logo className="my-8 w-24" />
-    <div className="max-w-lg bg-black bg-opacity-20 rounded p-8 mx-auto">
-      <SectionTitle>Admin Login</SectionTitle>
-      <LoadingBoxContent />
-    </div>
-    <footer className="mt-4 py-4 text-xl">
-      <Link href={helpLink}>Help</Link>
-    </footer>
-  </Section>
+  <div className="min-h-screen flex flex-col -mb-8">
+    <Section className="mt-8 text-center flex-1">
+      <Logo className="my-8 w-24" />
+      <div className="max-w-lg bg-black bg-opacity-20 rounded p-8 mx-auto">
+        <SectionTitle>Admin Login</SectionTitle>
+        <LoadingBoxContent />
+      </div>
+      <footer className="mt-4 py-4 text-xl">
+        <Link href={helpLink}>Help</Link>
+      </footer>
+    </Section>
+    <Footer />
+  </div>
 );
 
 const LoadingBoxContent: React.FC = () => {
