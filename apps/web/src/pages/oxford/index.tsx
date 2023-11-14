@@ -33,8 +33,8 @@ const IndexPage = () => (
         ]}
         right={[
           {
-            text: 'Join the 2023/24 Committee',
-            href: 'https://forms.gle/LiLUkY7LCuGutS7x6',
+            text: 'Become a Raise Rep',
+            href: 'https://forms.gle/B7sALfkazXcuUoui8',
           },
         ]}
       />
@@ -43,10 +43,10 @@ const IndexPage = () => (
           title="Raise Oxford"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
           statistics={{
-            years: 2,
-            students: 82 + 95,
-            raised: 13958 + 17004,
-            protected: convert.moneyToPeopleProtected('gbp', 1375872 + 1700381),
+            years: 3,
+            students: 82 + 95 + 80,
+            raised: 13958 + 17004 + 18303,
+            protected: convert.moneyToPeopleProtected('gbp', 1375872 + 1700381 + 1830345),
           }}
         />
       </Section>
@@ -103,7 +103,7 @@ const IndexPage = () => (
             part of Raise’s community, helping to share our philosophy and what
             we do with the Oxford community.
             {' '}
-            <a href="https://forms.gle/f22GkSokt38hSfd48">Click here</a>
+            <a href="https://forms.gle/B7sALfkazXcuUoui8">Click here</a>
             {' '}
             to find
             out more about the rep role and to sign up.
@@ -132,7 +132,7 @@ const IndexPage = () => (
             If you really want to shape the future of Raise,
             you could apply to join our committee, which coordinates everything
             we do, from events and partnerships to fundraising and publicity.
-            Applications are now closed, but will reopen in Trinity 2023!
+            Applications are now closed, but will reopen in Trinity 2024!
           </p>
           <p>
             <b>Sponsorship:</b>
@@ -400,6 +400,7 @@ const IndexPage = () => (
         <SocialIconV2 type="email" id="raiseoxford@gmail.com" />
         <SocialIconV2 type="instagram" id="raiseoxford" />
         <SocialIconV2 type="facebook" id="raiseoxford" />
+        <SocialIconV2 type="tiktok" id="raiseoxford" />
       </div>
     </Section>
 
