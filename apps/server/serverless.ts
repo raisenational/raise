@@ -145,7 +145,11 @@ const serverlessConfiguration: AWS = {
     },
     httpApi: {
       payload: '2.0',
-      cors: true,
+      cors: {
+        // 2023-11-19: not sure why this has become necessary, but as of Chrome v119
+        // just setting this to 'true' no longer works.
+        allowedHeaders: ['*'],
+      },
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',

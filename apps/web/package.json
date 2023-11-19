@@ -70,13 +70,13 @@
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.43.2",
     "react-timeago": "^7.1.0",
-    "serverless": "^3.27.0",
-    "serverless-s3-sync": "^3.1.0",
+    "serverless": "^3.37.0",
+    "serverless-s3-sync": "^3.2.0",
     "shx": "^0.3.4",
     "tailwindcss": "^3.0.7",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "jest": {
     "preset": "ts-jest",
