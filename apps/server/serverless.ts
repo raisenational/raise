@@ -149,6 +149,7 @@ const serverlessConfiguration: AWS = {
         // 2023-11-19: not sure why this has become necessary, but as of Chrome v119
         // just setting this to 'true' no longer works.
         allowedHeaders: ['*'],
+        allowedOrigins: ['*'],
       },
     },
     environment: {
