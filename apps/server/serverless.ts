@@ -63,7 +63,8 @@ const serverlessConfiguration: AWS = {
       webpackConfig: './webpack.config.js',
       includeModules: {
         forceExclude: [
-          // When the aws-sdk v3 is included in the lambda environment, we should exclude all of it
+          // We do not exclude the aws-sdk v3, even though it is included in the Lambda environment,
+          // because then we know exactly what version we're running and have no random surprises
           '@aws-sdk/types',
           'mockdate',
         ],
