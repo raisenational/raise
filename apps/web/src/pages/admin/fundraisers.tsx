@@ -21,7 +21,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
   const groupMap = groups.data ? Object.fromEntries(groups.data.map((g) => [g.id, g.name])) : {};
   const [newFundraiserModalOpen, setNewFundraiserModalOpen] = useState(false);
   const axios = useRawAxios();
-  const [showArchived, setShowArchived] = useState(true);
+  const [showArchived, setShowArchived] = useState(false);
   // The year in 30 days time, to account for creating fundraisers in December ahead of early January starts
   const suggestedCreationYear = new Date(Date.now() + 2592000000).getFullYear();
 
