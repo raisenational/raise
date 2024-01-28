@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "prettier": "^2.8.8",
-    "turbo": "latest"
+    "turbo": "^1.11.3"
   },
   "packageManager": "npm@9.5.1",
   "overrides": {

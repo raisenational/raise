@@ -59,7 +59,7 @@ const HARD_CODED_USER_MAP: Record<string, Omit<User, 'id' | 'email'>> = {
   '715ec86cfb0e42b3f41aec77fa7b4a8441128d5e': {
     name: 'Adam Jones',
     groups: [fixedGroups.National, fixedGroups.NationalTech],
-    securityTrainingCompletedAt: new Date('2023-01-02T18:47:46Z').getTime() / 1000,
+    securityTrainingCompletedAt: new Date('2024-01-27T10:57:25Z').getTime() / 1000,
   },
   '7b023b5154a262453b5c3f1157a866a8f3be6f63': {
     name: 'Malena Schmidt',

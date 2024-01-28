@@ -151,6 +151,7 @@ const serverlessConfiguration: AWS = {
         // just setting this to 'true' no longer works.
         allowedHeaders: ['*'],
         allowedOrigins: ['*'],
+        allowedMethods: ['*'],
       },
     },
     environment: {
