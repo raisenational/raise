@@ -158,7 +158,7 @@ const serverlessConfiguration: AWS = {
       VERSION: getVersion(),
     },
     memorySize: 256,
-    timeout: 10,
+    timeout: 30,
     iam: {
       role: {
         statements: [
