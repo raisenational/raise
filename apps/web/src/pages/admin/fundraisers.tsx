@@ -24,7 +24,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
   const [newFundraiserModalOpen, setNewFundraiserModalOpen] = useState(false);
   const axios = useRawAxios();
   const [auth] = useAuthState();
-  const [showArchived, setShowArchived] = useState(true);
+  const [showArchived, setShowArchived] = useState(false);
 
   return (
     <Section>
