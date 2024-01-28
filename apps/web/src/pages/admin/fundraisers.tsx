@@ -5,9 +5,7 @@ import {
   convert, fixedGroups, format,
 } from '@raise/shared';
 import { useState } from 'react';
-import {
-  asResponseValues, useAuthState, useReq, useRawAxios,
-} from '../../helpers/networking';
+import { asResponseValues, useReq, useRawAxios } from '../../helpers/networking';
 import Section, { SectionTitle } from '../../components/Section';
 import Table from '../../components/Table';
 import Button from '../../components/Button';
