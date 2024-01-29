@@ -139,6 +139,7 @@ const serverlessConfiguration: AWS = {
     name: 'aws',
     runtime: 'nodejs18.x',
     region: 'eu-west-1',
+    profile: 'raise-405129592067',
     stage: env.STAGE,
     apiGateway: {
       minimumCompressionSize: 1024,

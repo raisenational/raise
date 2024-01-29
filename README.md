@@ -30,6 +30,7 @@ You only need to do this once.
 3. Clone the repository ([more info](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository))
 4. Open the folder with VS Code
 5. Run `npm install` in the root
+6. (Optional, only if you need to deploy) Run `AWS_ACCESS_KEY_ID=AKIA... AWS_SECRET_ACCESS_KEY=... npm run config:aws --workspace @raise/server`
 
 ### 🏃 Running locally
 

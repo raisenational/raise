@@ -6,8 +6,9 @@
     "postinstall": "shx cp -n src/env/local.template.ts src/env/local.ts && shx cp -n src/env/local.ts src/env/env.ts && serverless dynamodb install",
     "start": "npm run start:local",
     "start:local": "shx cp src/env/local.ts src/env/env.ts && serverless offline start",
-    "deploy:dev": "shx cp src/env/dev.ts src/env/env.ts && serverless deploy --verbose",
-    "deploy:prod": "shx cp src/env/prod.ts src/env/env.ts && serverless deploy --verbose",
+    "deploy:dev": "shx cp src/env/dev.ts src/env/env.ts && npm run deploy:common",
+    "deploy:prod": "shx cp src/env/prod.ts src/env/env.ts && npm run deploy:common",
+    "deploy:common": "serverless deploy --verbose",
     "build": "npm run generate && serverless package",
     "generate": "npm run generate:schemas && npm run generate:client && npm run generate:router",
     "generate:schemas": "ts-node --transpile-only local/schemasToTS.ts",
@@ -17,7 +18,8 @@
     "test:watch": "shx cp src/env/local.ts src/env/env.ts && TZ=utc jest --watch",
     "type-check": "tsc",
     "lint": "eslint 'src' 'serverless.ts'",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "config:aws": "serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --profile raise-405129592067 --overwrite"
   },
   "engines": {
     "node": ">=16"

@@ -44,7 +44,7 @@ test('sendEmail calls SES correctly', async () => {
       Destination: {
         ToAddresses: ['adam@joinraise.org'],
       },
-      FromEmailAddress: '"Raise" <raisenational@gmail.com>',
+      FromEmailAddress: '"Raise" <national@joinraise.org>',
     },
   });
 });
