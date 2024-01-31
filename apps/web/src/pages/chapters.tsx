@@ -93,15 +93,6 @@ const CHAPTERS: Chapter[] = [
     },
   },
   {
-    id: '01GMXD8C9T7N0YQXNGDC3ARBV6',
-    name: 'Sheffield',
-    href: '/sheffield/',
-    location: {
-      latitude: 53.3814,
-      longitude: -1.4884,
-    },
-  },
-  {
     id: '01H9P0ZER4KX4H6VE8XZ5ZQ7WH',
     name: 'University College London (UCL)',
     href: '/ucl/',
