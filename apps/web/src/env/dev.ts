@@ -6,7 +6,7 @@ const env: Env = {
   CUSTOM_RAISE_DOMAIN: 'dev.joinraise.org',
   CUSTOM_MWA_DOMAIN: 'dev.mayweekalternative.org.uk',
 
-  API_BASE_URL: 'https://bblp6lj50j.execute-api.eu-west-1.amazonaws.com',
+  API_BASE_URL: 'https://y5qasyck62.execute-api.eu-west-1.amazonaws.com',
 
   STRIPE_PUBLISHABLE_KEY: 'pk_test_51JoQv0KzqibgSMB7aaaSq8ZJUsTwC4Hd1rfRwehKncms8iaHsKl941RvdBWNNVGQDcdRZmRaDaMknmBTilFqOhYU00EyfZikdJ',
 

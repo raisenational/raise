@@ -3,7 +3,7 @@ import { NodeHttpHandler } from '@smithy/node-http-handler';
 import env from '../env/env';
 import { RenderedHtml } from './email/renderHtml';
 
-const raiseEmailAddress = 'raisenational@gmail.com';
+const raiseEmailAddress = 'national@joinraise.org';
 
 const requestHandler = new NodeHttpHandler({
   connectionTimeout: 30_000,
