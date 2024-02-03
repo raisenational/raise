@@ -14,7 +14,7 @@ import Panel from '../../components/Panel';
 
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
 import Footer from '../../components/Footer';
-import Button from "../../components/Button"
+import Button from '../../components/Button';
 
 const IndexPage = () => (
   <Page>
