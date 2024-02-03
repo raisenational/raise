@@ -14,6 +14,7 @@ import Panel from '../../components/Panel';
 
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
 import Footer from '../../components/Footer';
+import Button from "../../components/Button"
 
 const IndexPage = () => (
   <Page>
@@ -48,7 +49,6 @@ const IndexPage = () => (
           }}
         />
         <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
-        import Button from '../../components/Button';
       </Section>
       <CTADown text="How it works" href="#how-it-works" />
     </Cover>
