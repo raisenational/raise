@@ -34,9 +34,9 @@ const IndexPage = () => (
         right={[
           {
             text: 'Become a Rep!',
-            href: 'https://forms.office.com/Pages/ResponsePage.aspx?id=i9hQcmhLKUW-RNWaLYpvlIGtrPRODqJElDPybbbkp9RUNEJHNEJBNDBWTExUUFVJTjg1MzE3UzI3VC4u',
+            href: 'https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link',
           },
-          // { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSfeK5cMn8ZWlRtFh5ZJHexjTiS0DVvfpL9E93Logd3CPLMK9A/viewform" },
+          // { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link" },
         ]}
       />
       <Section className="px-8">
@@ -61,13 +61,13 @@ const IndexPage = () => (
         <Panel
           image={<MoneyBox className="h-16 mb-4" />}
           title="Donate"
-          text="We invite students to make a personally significant donation to charity as a way of celebrating the end of the academic year. We recommend a donation of £100 to the Against Malaria Foundation, but welcome any amount that is significant to you."
+          text="We invite students to make a personally significant donation to charity as a way of celebrating the end of the academic year. We recommend a donation of £75 to the Against Malaria Foundation, but welcome any amount that is significant to you."
           className="bg-raise-purple"
         />
         <Panel
           image={<Doubled className="h-16 mb-4" />}
           title="Doubled"
-          text="Thanks to our matched funding, 200% of the money you donate goes directly to AMF. That means that your £100, when doubled, can help protect over 230 people from malaria!"
+          text="Thanks to our matched funding, 200% of the money you donate goes directly to AMF. That means that your £75, when doubled, can help protect over 170 people from malaria!"
           className="bg-raise-red"
         />
         <Panel
@@ -96,7 +96,7 @@ const IndexPage = () => (
           <p>
             Awesome! You can get involved by filling in the form
             {' '}
-            <a href="https://forms.gle/wBmJQdMSMMrqLrBB7">here</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link">here</a>
             !
           </p>
         </FAQ>
@@ -116,7 +116,7 @@ const IndexPage = () => (
             interested in hearing from people who want to get involved -
             register your interest
             {' '}
-            <a href="https://forms.gle/cPwHFVeYu1z32QkF9">here</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link">here</a>
             ! See below
             for more details on what a Raise rep does.
           </p>
@@ -203,15 +203,15 @@ const IndexPage = () => (
           </p>
         </FAQ>
 
-        <FAQ title="£100 is a lot of money - what if I can't donate that?">
+        <FAQ title="£75 is a lot of money - what if I can't donate that?">
           <p>
-            We recognise that £100 is a large amount of money for many students,
+            We recognise that £75 is a large amount of money for many students,
             and whilst we have thought carefully about recommending this amount
             (see next question), it is important to us that any student feels
             able to join us in celebrating through giving.
           </p>
           <p>
-            As such, whilst we recommend £100, you are welcome to join Raise by
+            As such, whilst we recommend £75, you are welcome to join Raise by
             making a donation of a size which is significant to you and allows
             you to put charity at the heart of your end-of-year celebrations. It
             is central to our philosophy (see
@@ -234,9 +234,9 @@ const IndexPage = () => (
           </p>
         </FAQ>
 
-        <FAQ title="Why do you recommend £100?">
+        <FAQ title="Why do you recommend £75?">
           <p>
-            We recognise that £100 is a large amount of money, and substantially
+            We recognise that £75 is a large amount of money, and substantially
             more than most students would routinely donate to charity (indeed,
             that is part of the point!). There are a couple of key reasons we
             recommend this figure:
@@ -251,7 +251,7 @@ const IndexPage = () => (
             hope that all donors will stop and think meaningfully about their
             decision to donate, and will in turn take this positive, deliberate
             approach towards giving forward into their future lives. This is why
-            we recommend £100, or a donation of any size significant to the
+            we recommend £75, or a donation of any size significant to the
             donor.
           </p>
           <p>
@@ -259,8 +259,8 @@ const IndexPage = () => (
             {' '}
             Crucially, the recommended amount, coupled with
             matched funding, allows us to have an exceptionally large impact for
-            a student charity initiative; your £100 donation, when doubled, can
-            help protect over 230 people from malaria.
+            a student charity initiative; your £75 donation, when doubled, can
+            help protect over 170 people from malaria.
           </p>
         </FAQ>
 
@@ -316,7 +316,7 @@ const IndexPage = () => (
           <p>
             Because AMF's intervention is so effective at preventing malaria,
             each donation can have a huge impact. For example, a donation of
-            £100, doubled through matched funding, can help protect 230 people.
+            £75, doubled through matched funding, can help protect 170 people.
             In fact, the money we raised nationally in 2023 was enough to
             protect almost 95,000 people!
           </p>
@@ -365,6 +365,7 @@ const IndexPage = () => (
           </p>
         </FAQ>
 
+  
         <FAQ title="What about COVID-19?">
           <p>
             Naturally, we are aware that the COVID-19 pandemic may affect the
@@ -378,6 +379,7 @@ const IndexPage = () => (
             different circumstances.
           </p>
         </FAQ>
+
       </FAQs>
     </Section>
 
