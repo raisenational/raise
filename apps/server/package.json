@@ -61,7 +61,7 @@
     "json-schema-to-typescript": "^10.1.5",
     "mockdate": "^3.0.5",
     "serverless": "^3.37.0",
-    "serverless-dynamodb": "^0.2.46",
+    "serverless-dynamodb": "^0.2.49",
     "serverless-offline": "^13.3.0",
     "serverless-offline-ses-v2": "^1.0.4",
     "serverless-offline-watcher": "^1.1.0",
