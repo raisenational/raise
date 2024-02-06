@@ -364,7 +364,6 @@ const IndexPage = () => (
             as a real highlight!
           </p>
         </FAQ>
-
   
         <FAQ title="What about COVID-19?">
           <p>
@@ -379,7 +378,6 @@ const IndexPage = () => (
             different circumstances.
           </p>
         </FAQ>
-
       </FAQs>
     </Section>
 
