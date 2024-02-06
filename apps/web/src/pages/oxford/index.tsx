@@ -32,10 +32,8 @@ const IndexPage = () => (
           { text: 'Partner', href: '/oxford/partner/' },
         ]}
         right={[
-          {
-            text: 'Become a Raise Rep',
-            href: 'https://forms.gle/B7sALfkazXcuUoui8',
-          },
+          // { text: 'Become a Raise Rep', href: 'https://forms.gle/B7sALfkazXcuUoui8' },
+          { text: 'Donate', href: '/oxford/donate/' },
         ]}
       />
       <Section className="px-8">
@@ -397,7 +395,7 @@ const IndexPage = () => (
     <Section id="contact">
       <SectionTitle>Get in Touch</SectionTitle>
       <div className="inline-block text-left">
-        <SocialIconV2 type="email" id="raiseoxford@gmail.com" />
+        <SocialIconV2 type="email" id="oxford@joinraise.org" />
         <SocialIconV2 type="instagram" id="raiseoxford" />
         <SocialIconV2 type="facebook" id="raiseoxford" />
         <SocialIconV2 type="tiktok" id="raiseoxford" />
