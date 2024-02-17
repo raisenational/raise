@@ -10,6 +10,7 @@ import FAQs, { FAQ } from '../../components/FAQs';
 import Philosophy from '../../components/Philosophy';
 import { SocialIconV2 } from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
+import Button from '../../components/Button';
 
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
 import Footer from '../../components/Footer';
@@ -37,6 +38,7 @@ const IndexPage = () => (
           // { text: 'Donate', href: 'donate/' },
         ]}
       />
+      <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
       <Section className="px-8">
         <IntroStats
           title="Raise Edinburgh"
