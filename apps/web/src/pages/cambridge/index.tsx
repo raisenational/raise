@@ -33,8 +33,8 @@ const IndexPage = () => (
         ]}
         right={[
           {
-            text: 'Join the Team!',
-            href: 'https://forms.gle/UemQv7VXGcVj6Ac67',
+            text: 'Donate',
+            href: 'donate/',
           },
         ]}
       />
