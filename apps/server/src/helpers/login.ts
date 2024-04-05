@@ -21,13 +21,13 @@ export const login = async (email: string): Promise<LoginResponse> => {
     subject: email,
     groups,
     iat: now,
-    exp: now + 3600, // 1 hour
+    exp: now + 20, // 1 hour
   };
 
   const refreshTokenPayload: RefreshTokenPayload = {
     subject: email,
     iat: now,
-    exp: now + 3600 * 24, // 1 day
+    exp: now + 3600 * 8, // 8 hours
   };
 
   return {

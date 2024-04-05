@@ -31,7 +31,7 @@ const getAuthFromLocalStorage = (): AuthState | undefined => {
       if (typeof parsed.refreshToken !== 'object') return undefined;
       if (typeof parsed.refreshToken.value !== 'string') return undefined;
       if (typeof parsed.refreshToken.expiresAt !== 'number') return undefined;
-      if (parsed.refreshToken.expiresAt < (new Date().getTime() / 1000)) return undefined;
+      if (parsed.refreshToken.expiresAt < (Date.now() / 1000)) return undefined;
       if (!Array.isArray(parsed.groups)) return undefined;
       if (!parsed.groups.every((g: unknown) => typeof g === 'string')) return undefined;
       return {
