@@ -45,7 +45,7 @@ const IndexPage = () => (
             years: 2,
             students: 174,
             raised: 18658,
-            protected: convert.moneyToPeopleProtected('gbp', 13653_00),
+            protected: convert.moneyToPeopleProtected('gbp', 18658_00),
           }}
         />
       </Section>
