@@ -10,7 +10,6 @@ import FAQs, { FAQ } from '../../components/FAQs';
 import Philosophy from '../../components/Philosophy';
 import { SocialIconV2 } from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
-import Button from '../../components/Button';
 
 import { Doubled, MoneyBox, Party } from '../../images/Icons';
 import Footer from '../../components/Footer';
@@ -38,15 +37,14 @@ const IndexPage = () => (
           // { text: 'Donate', href: 'donate/' },
         ]}
       />
-      <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
       <Section className="px-8">
         <IntroStats
           title="Raise Edinburgh"
           tagline="Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our national impact below."
           statistics={{
-            years: 1,
-            students: 124,
-            raised: 13653,
+            years: 2,
+            students: 174,
+            raised: 18658,
             protected: convert.moneyToPeopleProtected('gbp', 13653_00),
           }}
         />
