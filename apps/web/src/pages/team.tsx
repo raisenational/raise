@@ -6,7 +6,6 @@ import { TopNavigation } from '../components/Navigation';
 import Footer from '../components/Footer';
 import Quote from '../components/Quote';
 
-import abeTolley from '../images/abe-tolley.jpg';
 import adamJones from '../images/adam-jones.jpg';
 import hannahWragg from '../images/hannah-wragg.jpg';
 import rahulShah from '../images/rahul-shah.jpg';
@@ -15,13 +14,6 @@ import thomasCohen from '../images/thomas-cohen.jpg';
 import lizSamuel from '../images/liz-samuel.jpg';
 
 const NATIONAL_TEAM = [
-  {
-    id: '01GCT0D1WW8D1ZPS5GKY6KZBCQ',
-    name: 'Abe Tolley',
-    role: 'Director',
-    bio: "Abe coordinates Raise's work around the UK; managing the National Team, supporting the chapters and helping grow the movement. He's previously been on the Cambridge team as a President, Vice President and rep coordinator and this is his second year on the National Team. He especially loves seeing students get excited about their giving, both at university and beyond and has taken the Giving What We Can Pledge to donate at least 10% of his future earnings to effective charities.\n\nAbe is a 5th year medical student at the University of Cambridge and in his spare time enjoys cooking overly complicated food, quizzing and wondering around art galleries.",
-    img: abeTolley,
-  },
   {
     id: '01GCT0D1WWXDEV52E19DWBZ665',
     name: 'Adam Jones',
