@@ -22,6 +22,7 @@ import { helpLink } from './_helpLink';
 import CampaignsPage from './campaigns';
 import CampaignPage from './campaign';
 import EmailPage from './email';
+import Spinner from '../../components/Spinner';
 
 const IndexPage = () => (
   <Page className="pb-8">
