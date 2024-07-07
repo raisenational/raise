@@ -5,9 +5,7 @@ import {
   convert, fixedGroups, format,
 } from '@raise/shared';
 import { useState } from 'react';
-import {
-  asResponseValues, useAuthState, useReq, useRawAxios,
-} from '../../helpers/networking';
+import { asResponseValues, useReq, useRawAxios } from '../../helpers/networking';
 import Section, { SectionTitle } from '../../components/Section';
 import Table from '../../components/Table';
 import Button from '../../components/Button';
@@ -23,8 +21,9 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
   const groupMap = groups.data ? Object.fromEntries(groups.data.map((g) => [g.id, g.name])) : {};
   const [newFundraiserModalOpen, setNewFundraiserModalOpen] = useState(false);
   const axios = useRawAxios();
-  const [auth] = useAuthState();
-  const [showArchived, setShowArchived] = useState(true);
+  const [showArchived, setShowArchived] = useState(false);
+  // The year in 30 days time, to account for creating fundraisers in December ahead of early January starts
+  const suggestedCreationYear = new Date(Date.now() + 2592000000).getFullYear();
 
   return (
     <Section>
@@ -75,14 +74,14 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
             suggestedContributionAmount: { label: 'Suggested contribution amount', formatter: (v?: number | null) => format.amount('gbp', v), inputType: 'amount' },
           }}
           initialValues={{
-            internalName: 'New Fundraiser',
-            publicName: 'New Fundraiser',
-            activeFrom: Math.floor(new Date().getTime() / 1000),
-            activeTo: Math.floor(new Date().getTime() / 1000),
-            recurringDonationsTo: Math.floor(new Date().getTime() / 1000),
+            internalName: `Chapter ${suggestedCreationYear}`,
+            publicName: 'Chapter',
+            activeFrom: new Date(suggestedCreationYear, 0, 1).getTime() / 1000, // January 1st
+            activeTo: new Date(suggestedCreationYear, 5, 1).getTime() / 1000, // June 1st
+            recurringDonationsTo: new Date(suggestedCreationYear, 5, 1).getTime() / 1000, // June 1st
             currency: 'gbp',
             goal: 1000_00,
-            groupsWithAccess: auth?.groups,
+            groupsWithAccess: [],
             suggestedDonationAmountOneOff: 150_00,
             suggestedDonationAmountWeekly: 9_00,
             suggestedContributionAmount: 10_00,

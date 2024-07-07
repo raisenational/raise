@@ -113,7 +113,7 @@ const Philosophy: React.FC<PhilosophyProps> = ({ brand = 'Raise' }) => {
               How does {brand} work?
             </h2>
             <p className="my-4" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">
-              We invite students to join us and celebrate the end of the academic year by making a personally significant donation to charity - an amount that will <span className="font-bold">make you think about what and why you are giving</span>.
+              We invite students and young professionals to join us and celebrate the end of the academic year by making a personally significant donation to charity - an amount that will <span className="font-bold">make you think about what and why you are giving</span>.
             </p>
 
             <Quote className="my-12" by="Chloe Shieh, Donor" headshotSrc={chloeShieh} imagePlacement="right" data-aos="fade-up" data-aos-anchor-placement="top-bottom" data-aos-offset="200">

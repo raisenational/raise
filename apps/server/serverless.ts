@@ -63,7 +63,8 @@ const serverlessConfiguration: AWS = {
       webpackConfig: './webpack.config.js',
       includeModules: {
         forceExclude: [
-          // When the aws-sdk v3 is included in the lambda environment, we should exclude all of it
+          // We do not exclude the aws-sdk v3, even though it is included in the Lambda environment,
+          // because then we know exactly what version we're running and have no random surprises
           '@aws-sdk/types',
           'mockdate',
         ],
@@ -138,6 +139,7 @@ const serverlessConfiguration: AWS = {
     name: 'aws',
     runtime: 'nodejs18.x',
     region: 'eu-west-1',
+    profile: 'raise-405129592067',
     stage: env.STAGE,
     apiGateway: {
       minimumCompressionSize: 1024,
@@ -145,7 +147,13 @@ const serverlessConfiguration: AWS = {
     },
     httpApi: {
       payload: '2.0',
-      cors: true,
+      cors: {
+        // 2023-11-19: not sure why this has become necessary, but as of Chrome v119
+        // just setting this to 'true' no longer works.
+        allowedHeaders: ['*'],
+        allowedOrigins: ['*'],
+        allowedMethods: ['*'],
+      },
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
@@ -153,7 +161,7 @@ const serverlessConfiguration: AWS = {
       VERSION: getVersion(),
     },
     memorySize: 256,
-    timeout: 10,
+    timeout: 30,
     iam: {
       role: {
         statements: [

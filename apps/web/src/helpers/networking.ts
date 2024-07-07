@@ -31,7 +31,7 @@ const getAuthFromLocalStorage = (): AuthState | undefined => {
       if (typeof parsed.refreshToken !== 'object') return undefined;
       if (typeof parsed.refreshToken.value !== 'string') return undefined;
       if (typeof parsed.refreshToken.expiresAt !== 'number') return undefined;
-      if (parsed.refreshToken.expiresAt < (new Date().getTime() / 1000)) return undefined;
+      if (parsed.refreshToken.expiresAt < (Date.now() / 1000)) return undefined;
       if (!Array.isArray(parsed.groups)) return undefined;
       if (!parsed.groups.every((g: unknown) => typeof g === 'string')) return undefined;
       return {
@@ -112,7 +112,8 @@ const defaultConfig: AxiosRequestConfig = {
 const logoutOnTokenExpiry = (err: unknown) => {
   if (typeof err === 'object' && err !== null && 'isAxiosError' in err) {
     const axiosError = err as AxiosError;
-    if (axiosError.response?.status === 401 && typeof axiosError.response?.data?.message === 'string' && axiosError.response.data.message.startsWith('Token expired')) {
+    const isTokenExpiredMessage = typeof axiosError.response?.data === 'object' && axiosError.response.data !== null && 'message' in axiosError.response.data && typeof axiosError.response?.data?.message === 'string' && axiosError.response.data.message.startsWith('Token expired');
+    if (isTokenExpiredMessage) {
       setAuthState();
       // eslint-disable-next-line no-alert
       setTimeout(() => alert('You have been logged out as the server indicated your access token has expired.'), 100);

@@ -1,5 +1,5 @@
 import Helmet from 'react-helmet';
-import { Router } from '@gatsbyjs/reach-router';
+import { RouteComponentProps, Router } from '@gatsbyjs/reach-router';
 import { useEffect, useState } from 'react';
 import Page from '../../components/Page';
 import FundraisersPage from './fundraisers';
@@ -44,6 +44,10 @@ const IndexLayout = () => {
 
     const msUntilExpiration = (auth.refreshToken.expiresAt * 1000) - Date.now();
 
+    if (msUntilExpiration > 60_000) {
+      setLogoutWarning(undefined);
+    }
+
     const warningTimeout = setTimeout(() => {
       setLogoutWarning('You will be logged out in the next minute');
     }, msUntilExpiration - 60_000);
@@ -58,9 +62,10 @@ const IndexLayout = () => {
   useEffect(() => setHasMounted(true), []);
   if (!hasMounted) return null;
 
+  const hasActiveLoginToken = auth && auth.accessToken.expiresAt > (Date.now() / 1000 + 10);
   return (
     <>
-      {auth && (
+      {hasActiveLoginToken && (
         <Navigation
           left={[
             { text: 'Fundraisers', href: '/admin/' },
@@ -76,7 +81,7 @@ const IndexLayout = () => {
           ]}
         />
       )}
-      {logoutWarning && auth && (
+      {logoutWarning && hasActiveLoginToken && (
         <Section>
           <Alert variant="warning">{logoutWarning}</Alert>
         </Section>
@@ -84,7 +89,7 @@ const IndexLayout = () => {
       <Router basepath="/admin" className="text-left">
         <OauthCallbackPage path="/oauth-callback" />
 
-        {auth && (
+        {hasActiveLoginToken && (
           <>
             <FundraisersPage path="/" />
             <FundraiserPage fundraiserId="" path="/:fundraiserId" />
@@ -103,9 +108,19 @@ const IndexLayout = () => {
           </>
         )}
 
+        {auth && !hasActiveLoginToken && <LoadingPage default />}
         {!auth && <Login default />}
       </Router>
     </>
+  );
+};
+
+const LoadingPage: React.FC<RouteComponentProps> = () => {
+  return (
+    <div className="flex justify-center gap-4 py-24">
+      <span>Logging in...</span>
+      <Spinner />
+    </div>
   );
 };
 

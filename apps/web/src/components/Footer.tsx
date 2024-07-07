@@ -17,6 +17,8 @@ const Footer: React.FC = () => (
             <Link href={`//${env.CUSTOM_RAISE_DOMAIN}/team/`} className="inline-block transition-all hover:scale-105">Our people</Link>
             ·
             <Link href={`//${env.CUSTOM_RAISE_DOMAIN}/policies/`} className="inline-block transition-all hover:scale-105">Our policies</Link>
+            ·
+            <Link href={`//${env.CUSTOM_RAISE_DOMAIN}/policies/privacy`} className="inline-block transition-all hover:scale-105">Privacy policy</Link>
           </div>
         </div>
       </div>

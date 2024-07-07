@@ -15,7 +15,7 @@
     "build:prod": "shx cp src/env/prod.ts src/env/env.ts && npm run build:common",
     "build:common": "shx mkdir -p dist && npm run build:common:raise && npm run build:common:mwa",
     "build:common:raise": "npm run type-check && PREFIX_PATHS=true gatsby build && shx rm -rf dist/raise && mv public dist/raise",
-    "build:common:mwa": "shx rm -rf ../web-mwa && shx mkdir ../web-mwa && shx cp -r * ../web-mwa && cd ../web-mwa && sed -i 's|@raise/web|@raise/web-mwa|g' package.json && mv src/pages src/pages-all && mv src/pages-all/cambridge src/pages && shx rm -rf src/pages-all && sed -i 's|from '\\''../|from '\\''|g' src/pages/* && sed -i 's/CUSTOM_RAISE_DOMAIN/CUSTOM_MWA_DOMAIN/g' gatsby-config.ts && sed -i 's/CLOUDFLARE_WEB_ANALYTICS_TOKEN_RAISE/CLOUDFLARE_WEB_ANALYTICS_TOKEN_MWA/g' gatsby-config.ts && npm run type-check && PREFIX_PATHS=true gatsby build && cd ../web && shx rm -rf dist/mwa && mv ../web-mwa/public dist/mwa && shx rm -rf ../web-mwa",
+    "build:common:mwa": "shx rm -rf ../web-mwa && shx mkdir ../web-mwa && shx cp -r * ../web-mwa && cd ../web-mwa && shx sed -i \"s/@raise\\/web/@raise\\/web-mwa/g\" package.json && mv src/pages src/pages-all && mv src/pages-all/cambridge src/pages && shx rm -rf src/pages-all && shx sed -i \"s/from '..\\//from '/g\" src/pages/* && shx sed -i \"s/CUSTOM_RAISE_DOMAIN/CUSTOM_MWA_DOMAIN/g\" gatsby-config.ts && shx sed -i \"s/CLOUDFLARE_WEB_ANALYTICS_TOKEN_RAISE/CLOUDFLARE_WEB_ANALYTICS_TOKEN_MWA/g\" gatsby-config.ts && npm run type-check && PREFIX_PATHS=true gatsby build && cd ../web && shx rm -rf dist/mwa && mv ../web-mwa/public dist/mwa && shx rm -rf ../web-mwa",
     "type-check": "tsc",
     "deploy:dev": "npm run build:dev && serverless deploy --verbose",
     "deploy:prod": "npm run build:prod && serverless deploy --verbose"
@@ -48,8 +48,8 @@
     "@types/react-timeago": "^4.1.3",
     "aos": "^2.3.4",
     "autoprefixer": "^10.3.4",
-    "axios": "^0.24.0",
-    "axios-cache-interceptor": "^0.10.5",
+    "axios": "^1.6.0",
+    "axios-cache-interceptor": "^1.3.2",
     "canvas-confetti": "^1.4.0",
     "classnames": "^2.3.1",
     "eslint": "^8.44.0",
@@ -70,13 +70,13 @@
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.43.2",
     "react-timeago": "^7.1.0",
-    "serverless": "^3.27.0",
-    "serverless-s3-sync": "^3.1.0",
+    "serverless": "^3.37.0",
+    "serverless-s3-sync": "^3.2.0",
     "shx": "^0.3.4",
     "tailwindcss": "^3.0.7",
     "ts-jest": "^29.0.5",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
   },
   "jest": {
     "preset": "ts-jest",

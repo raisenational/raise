@@ -7,6 +7,7 @@ const config: ChapterConfig = {
     prod: '',
   },
   title: 'Raise Demo',
+  brand: 'Raise',
 };
 
 export default config;

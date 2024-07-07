@@ -3,8 +3,8 @@ import env from './src/env/env';
 
 const RAISE_SERVICE_NAME = 'raise-website';
 const MWA_SERVICE_NAME = 'mwa-website';
-const RAISE_S3_BUCKET_NAME = `${RAISE_SERVICE_NAME}-${env.STAGE}`;
-const MWA_S3_BUCKET_NAME = `${MWA_SERVICE_NAME}-${env.STAGE}`;
+const RAISE_S3_BUCKET_NAME = `${RAISE_SERVICE_NAME}-${env.STAGE}-405129592067`;
+const MWA_S3_BUCKET_NAME = `${MWA_SERVICE_NAME}-${env.STAGE}-405129592067`;
 
 const serverlessConfiguration: AWS = {
   service: RAISE_SERVICE_NAME,
@@ -51,6 +51,7 @@ const serverlessConfiguration: AWS = {
     runtime: 'nodejs16.x',
     region: 'eu-west-1',
     stage: env.STAGE,
+    profile: 'raise-405129592067',
   },
   resources: {
     Resources: {
@@ -58,7 +59,12 @@ const serverlessConfiguration: AWS = {
         Type: 'AWS::S3::Bucket',
         Properties: {
           BucketName: RAISE_S3_BUCKET_NAME,
-          AccessControl: 'PublicRead',
+          PublicAccessBlockConfiguration: {
+            BlockPublicAcls: false,
+            BlockPublicPolicy: false,
+            IgnorePublicAcls: false,
+            RestrictPublicBuckets: false
+          },
           WebsiteConfiguration: {
             IndexDocument: 'index.html',
             ErrorDocument: '404.html',
@@ -137,7 +143,7 @@ const serverlessConfiguration: AWS = {
             }],
             PriceClass: 'PriceClass_100',
             ViewerCertificate: {
-              AcmCertificateArn: 'arn:aws:acm:us-east-1:338337944728:certificate/1da4e440-ec4c-4d8f-8ec6-b1b85969d360',
+              AcmCertificateArn: 'arn:aws:acm:us-east-1:405129592067:certificate/b028f0fd-4988-4232-866e-c2f4760a2570',
               MinimumProtocolVersion: 'TLSv1.2_2021',
               SslSupportMethod: 'sni-only',
             },
@@ -149,7 +155,12 @@ const serverlessConfiguration: AWS = {
         Type: 'AWS::S3::Bucket',
         Properties: {
           BucketName: MWA_S3_BUCKET_NAME,
-          AccessControl: 'PublicRead',
+          PublicAccessBlockConfiguration: {
+            BlockPublicAcls: false,
+            BlockPublicPolicy: false,
+            IgnorePublicAcls: false,
+            RestrictPublicBuckets: false
+          },
           WebsiteConfiguration: {
             IndexDocument: 'index.html',
             ErrorDocument: '404.html',
@@ -228,7 +239,7 @@ const serverlessConfiguration: AWS = {
             }],
             PriceClass: 'PriceClass_100',
             ViewerCertificate: {
-              AcmCertificateArn: 'arn:aws:acm:us-east-1:338337944728:certificate/e6de0c70-749e-45f1-8258-4f13c4f40654',
+              AcmCertificateArn: 'arn:aws:acm:us-east-1:405129592067:certificate/b8349f4c-a17d-4776-acf1-6bcd6a799e46',
               MinimumProtocolVersion: 'TLSv1.2_2021',
               SslSupportMethod: 'sni-only',
             },

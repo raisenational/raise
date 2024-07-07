@@ -6,26 +6,19 @@ import { TopNavigation } from '../components/Navigation';
 import Footer from '../components/Footer';
 import Quote from '../components/Quote';
 
-import abeTolley from '../images/abe-tolley.jpg';
 import adamJones from '../images/adam-jones.jpg';
 import hannahWragg from '../images/hannah-wragg.jpg';
 import rahulShah from '../images/rahul-shah.jpg';
 import susanneKarbe from '../images/susanne-karbe.jpg';
 import thomasCohen from '../images/thomas-cohen.jpg';
+import lizSamuel from '../images/liz-samuel.jpg';
 
 const NATIONAL_TEAM = [
-  {
-    id: '01GCT0D1WW8D1ZPS5GKY6KZBCQ',
-    name: 'Abe Tolley',
-    role: 'Director',
-    bio: "Abe coordinates Raise's work around the UK; managing the National Team, supporting the chapters and helping grow the movement. He's previously been on the Cambridge team as a President, Vice President and rep coordinator and this is his second year on the National Team. He especially loves seeing students get excited about their giving, both at university and beyond and has taken the Giving What We Can Pledge to donate at least 10% of his future earnings to effective charities.\n\nAbe is a 5th year medical student at the University of Cambridge and in his spare time enjoys cooking overly complicated food, quizzing and wondering around art galleries.",
-    img: abeTolley,
-  },
   {
     id: '01GCT0D1WWXDEV52E19DWBZ665',
     name: 'Adam Jones',
     role: 'Technology and Governance',
-    bio: "Adam's responsible and accountable for technology at Raise. He makes sure people have the right tools available to get things done efficiently, securely and to a high standard. He built the majority of the website and our open-source donations platform, and where necessary helps out in other places, for example handling Charity Commission queries, supporting our successful application to the Effective Altruism Infrastructure Fund and facilitating meetings with the Raise Advisory Board.\n\nIn his day job, he works as a software engineer helping people make better data-driven decisions. Outside work, he enjoys cycling around London, contributing to open-source projects and playing board games.",
+    bio: 'Adam is responsible for technology at Raise. He maintains the website and our open-source donations platform. He also manages our relationship with the Charity Commission, and serves as a trustee on our board.\n\nIn his day job, he works as a software engineer helping people to have more impact in their careers. Outside work, he enjoys cycling around London, contributing to open-source projects and playing board games.',
     img: adamJones,
   },
   {
@@ -56,6 +49,13 @@ const NATIONAL_TEAM = [
     bio: "Thomas does a number of different jobs on the Raise National Team, including managing the accounts and mentoring. He was heavily involved in Raise in Durham, acting as Vice President and President over its first two years. He is really passionate about positive and celebratory giving, and therefore has pledged to give 10% of his income to charity!\n\nThomas has just finished a degree in History at Durham, and this year will be doing a master's in History and Philosophy of Science at UCL.",
     img: thomasCohen,
   },
+  {
+    id: '01HNGY65F6FK5ATTA06Z9ZP4QR',
+    name: 'Liz Samuel',
+    role: 'Expansion and Founding Officer',
+    bio: 'Liz is responsible for expansion of Raise to more universities across the UK, and helping to set up new chapters. She was previously a Rep Coordinator for the Cambridge chapter. She is passionate about spreading the message of Raise as widely as possible and is currently looking to help found new chapters at some of the larger UK universities where Raise does not currently operate.\n\nShe is in her 5th year studying medicine. In her spare time she enjoys reading and trying out new restaurants and cafes around Cambridge!',
+    img: lizSamuel,
+  }
 ];
 
 const TeamPage = () => (

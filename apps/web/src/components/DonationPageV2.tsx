@@ -45,7 +45,8 @@ interface Props {
   title: string,
   fundraiserIds: Record<Env['STAGE'], string>,
   brand?: Brand,
-  charities: CharityDefinition[]
+  charities: CharityDefinition[],
+  reflectionFormHref: string,
 }
 
 /**
@@ -53,7 +54,7 @@ interface Props {
  * Supports suggesting multiple effective charities
  */
 const DonationPageV2: React.FC<Props> = ({
-  title, fundraiserIds, brand, charities
+  title, fundraiserIds, brand, charities, reflectionFormHref
 }) => {
   const fundraiserId = fundraiserIds[env.STAGE];
   const [fundraiser, refetchFundraiser] = useReq('get /public/fundraisers/{fundraiserId}', { fundraiserId });
@@ -93,6 +94,7 @@ const DonationPageV2: React.FC<Props> = ({
               charities={charities}
               fundraiser={fundraiser}
               openModal={() => setModalOpen(true)}
+              reflectionFormHref={reflectionFormHref}
             />
             <Modal open={modalOpen} onClose={() => setModalOpen(false)} className="max-w-2xl">
               {fundraiser.data && <DonationForm charities={charities} fundraiser={fundraiser.data} refetchFundraiser={refetchFundraiser} />}
@@ -111,10 +113,11 @@ interface IntroFundraiserProps {
   charities: CharityDefinition[],
   fundraiser: ResponseValues<PublicFundraiser, unknown, unknown>,
   openModal: () => void,
+  reflectionFormHref: string,
 }
 
 const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
-  title, charities, fundraiser, openModal,
+  title, charities, fundraiser, openModal, reflectionFormHref
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -178,9 +181,8 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
           <p>
             Join now and celebrate giving by making a personally significant donation today.
           </p>
-          {/* TODO: this only applies to the alumni fundraiser */}
           <p>
-            For more information about the charities you can donate to, and some reflection questions to help you think about your donation, see <Link href="https://forms.gle/pYEfH1KvD5Ysk6q37" target="_blank">our form</Link>.
+            For more information about the charities you can donate to, and some reflection questions to help you think about your donation, see <Link href={reflectionFormHref} target="_blank">our form</Link>.
           </p>
         </div>
       </div>
@@ -210,13 +212,15 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
                 <MoneyBox className="h-16 mr-4" />
                 <p className="flex-1">We invite people to donate an amount significant to them to charity.</p>
               </div>
+              {fundraiser.data?.matchFundingRate === 100 && (
               <div className="flex my-6 items-center">
                 <Doubled className="h-16 mr-4" />
                 <p className="flex-1">Thanks to our matched funding, every donation is doubled for twice the impact.</p>
               </div>
+              )}
               <div className="flex my-6 items-center">
                 <Party className="h-16 mr-4" />
-                <p className="flex-1">Then we come together at the end of the academic year at our Summer Party to celebrate our collective impact.</p>
+                <p className="flex-1">Then we come together with a workplace social to celebrate our collective impact and establish a community of people excited by positive, deliberate, effective giving.</p>
               </div>
               <p>
                 For more about our philosophy of celebrating deliberate, effective giving, see
@@ -246,12 +250,14 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
                   </p>
                 </div>
               ))}
-              <p>As always with Raise, you can still get involved by making a personally significant donation to any charity that means something to you. Let us know if you do, and we'll add it to the donor wall plus add match funding.</p>
-              <p>
-                <span className="font-bold">Note:</span>
-                {' '}
-                Due to existing agreements with our matchers, match funding will go to the Against Malaria Foundation.
-              </p>
+              <p>As always with Raise, you can still get involved by making a personally significant donation to any charity that means something to you. Let us know if you do, and we'll add it to the donor wall{fundraiser.data?.matchFundingRate ? 'plus add match funding' : undefined}.</p>
+              {fundraiser.data?.matchFundingRate ? (
+                <p>
+                  <span className="font-bold">Note:</span>
+                  {' '}
+                  Due to existing agreements with our matchers, match funding will go to the Against Malaria Foundation.
+                </p>
+              ) : undefined}
             </div>
           ),
         }}
@@ -629,9 +635,11 @@ const DonationFormDonate: React.FC<{ formMethods: UseFormReturn<DonationFormResp
           {format.amountShort(fundraiser.currency, donationAmount)}
           {' '}
           each week from now until
+          {' '}
           {format.date(fundraiser.recurringDonationsTo)}
           {' '}
           comes to
+          {' '}
           {format.amountShort(fundraiser.currency, totalDonationAmount)}
           .
         </p>

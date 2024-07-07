@@ -2,6 +2,7 @@ import email from '../images/email.svg';
 import facebook from '../images/facebook.svg';
 import instagram from '../images/instagram.svg';
 import twitter from '../images/twitter.svg';
+import tiktok from '../images/tiktok.svg';
 
 interface Props {
   icon: string,
@@ -16,7 +17,7 @@ const SocialIcon: React.FC<Props> = ({ icon, alt, href }) => (
 );
 
 interface PropsV2 {
-  type: 'email' | 'facebook' | 'instagram' | 'twitter',
+  type: 'email' | 'facebook' | 'instagram' | 'twitter' | 'tiktok',
   /** Email address or username */
   id: string,
 
@@ -41,6 +42,7 @@ const toIconImage: Record<PropsV2['type'], string> = {
   facebook,
   instagram,
   twitter,
+  tiktok,
 };
 
 const toHref: Record<PropsV2['type'], (id: string) => string> = {
@@ -48,6 +50,7 @@ const toHref: Record<PropsV2['type'], (id: string) => string> = {
   facebook: (username: string) => `https://www.facebook.com/${username}`,
   instagram: (username: string) => `https://www.instagram.com/${username}`,
   twitter: (username: string) => `https://www.twitter.com/${username}`,
+  tiktok: (username: string) => `https://www.tiktok.com/@${username}`,
 };
 
 export default SocialIcon;

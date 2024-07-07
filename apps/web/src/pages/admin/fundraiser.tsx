@@ -217,7 +217,7 @@ const DonationsSummaryView: React.FC<{ fundraiserId: string, fundraiser?: Fundra
         <h2 className="mt-8 text-2xl">I want to send non-marketing emails to donors</h2>
         <p className="my-2">
           This contains all donor names and emails. Some of these may not have agreed to receive marketing emails. Make sure any emails you send do not contain marketing messages, for example promoting a certain thing such as taking a pledge. It is generally okay to use this list to send summer party RSVP or feedback surveys. More guidance on what is and isn't marketing is available from
-          <Link href="https://ico.org.uk/media/for-organisations/documents/1555/direct-marketing-guidance.pdf#page=17">the ICO</Link>
+          <Link href="https://ico.org.uk/media/for-organisations/documents/1555/direct-marketing-guidance.pdf#page=17"> the ICO</Link>
           {' '}
           or the national team. You must not share this data with other organisations. Ideally use a mail merge tool or proper email software (such as Mailchimp) to send emails. If not, make sure you BCC recipients.
         </p>
