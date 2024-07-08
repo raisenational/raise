@@ -19,7 +19,7 @@ import { useReq } from '../../helpers/networking';
 import Button from '../../components/Button';
 
 const IndexPage = () => {
-  const fundraiserId = config.fundraiserIds.local
+  const fundraiserId = config.fundraiserIds.prod
   const [fundraiser] = useReq('get /public/fundraisers/{fundraiserId}', { fundraiserId });
   let DonationButtonActive = false
 

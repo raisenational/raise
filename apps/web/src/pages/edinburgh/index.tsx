@@ -22,7 +22,7 @@ import Button from '../../components/Button';
 const ANCHOR = ['gbp', 75_00] as const;
 
 const IndexPage = () => {
-  const fundraiserId = config.fundraiserIds.local
+  const fundraiserId = config.fundraiserIds.prod
   const [fundraiser] = useReq('get /public/fundraisers/{fundraiserId}', { fundraiserId });
   let DonationButtonActive = false
 
