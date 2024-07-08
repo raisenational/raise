@@ -17,18 +17,13 @@ import { useReq } from '../../helpers/networking';
 import config from './_config';
 
 const IndexPage = () => {
-  const fundraiserId = config.fundraiserIds.prod
+  const fundraiserId = config.fundraiserIds.prod;
   const [fundraiser] = useReq('get /public/fundraisers/{fundraiserId}', { fundraiserId });
-  let DonationButtonActive = false
+  let DonationButtonActive = false;
 
-  if ((fundraiser.data !== undefined) && (fundraiser.loading === false))
-    if (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom)
-      if (new Date().getTime() / 1000 < fundraiser.data?.activeTo)
-        if (fundraiser.data?.archived !== true)
-          if (fundraiser.data?.paused !== true)
-            DonationButtonActive = true
+  if ((fundraiser.data !== undefined) && (fundraiser.loading === false) && (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom) && (new Date().getTime() / 1000 < fundraiser.data?.activeTo) && (fundraiser.data?.archived !== true) && (fundraiser.data?.paused !== true)) { DonationButtonActive = true; }
 
-  return(
+  return (
     <Page>
       <Helmet>
         <title>Raise Leeds</title>
@@ -58,7 +53,7 @@ const IndexPage = () => {
               protected: convert.moneyToPeopleProtected('gbp', 466495_00),
             }}
           />
-          {DonationButtonActive ? <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button> : "" }
+          {DonationButtonActive ? <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button> : '' }
         </Section>
         <CTADown
           text="How it works"
@@ -196,6 +191,6 @@ const IndexPage = () => {
       <Footer />
     </Page>
   );
-}
+};
 
 export default IndexPage;

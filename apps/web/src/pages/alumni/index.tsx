@@ -20,18 +20,13 @@ import config from './_config';
 import { useReq } from '../../helpers/networking';
 
 const IndexPage = () => {
-  const fundraiserId = config.fundraiserIds.prod
+  const fundraiserId = config.fundraiserIds.prod;
   const [fundraiser] = useReq('get /public/fundraisers/{fundraiserId}', { fundraiserId });
-  let DonationButtonActive = false
+  let DonationButtonActive = false;
 
-  if ((fundraiser.data !== undefined) && (fundraiser.loading === false))
-    if (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom)
-      if (new Date().getTime() / 1000 < fundraiser.data?.activeTo)
-        if (fundraiser.data?.archived !== true)
-          if (fundraiser.data?.paused !== true)
-            DonationButtonActive = true
+  if ((fundraiser.data !== undefined) && (fundraiser.loading === false) && (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom) && (new Date().getTime() / 1000 < fundraiser.data?.activeTo) && (fundraiser.data?.archived !== true) && (fundraiser.data?.paused !== true)) { DonationButtonActive = true; }
 
-  return(
+  return (
     <Page>
       <Helmet>
         <title>Raise Alumni</title>
@@ -62,7 +57,7 @@ const IndexPage = () => {
             }}
           />
           <div className="mt-4 mb-12 flex flex-wrap gap-2 justify-center">
-          {DonationButtonActive ? <Button variant="outline" size="large" href="donate/">Donate</Button> : "" }
+            {DonationButtonActive ? <Button variant="outline" size="large" href="donate/">Donate</Button> : '' }
             <Button variant="outline" size="large" href="https://www.facebook.com/groups/966154864287768">Join Facebook group</Button>
           </div>
         </Section>
@@ -173,6 +168,6 @@ const IndexPage = () => {
       <Footer />
     </Page>
   );
-}
+};
 
 export default IndexPage;
