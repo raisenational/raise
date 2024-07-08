@@ -1,6 +1,7 @@
 import { makeDonation, makeFundraiser, makePayment } from '../../../local/testHelpers';
 import confirmation from './confirmation';
-import footer from './footer';
+import renderFooter from './footerTemplate';
+import renderHtml from './renderHtml';
 
 test('renders email correctly with one payment', () => {
   // given fundraiser, donation and payments
@@ -192,7 +193,7 @@ test('does not confuse MWA and Raise branding', () => {
   const email = confirmation(fundraiser, donation, payments).string.replace(/\s+/g, ' ');
 
   // renders footer so we can avoid it from the checks
-  const pageEnd = footer().string.replace(/\s+/g, ' ');
+  const pageEnd = renderHtml`${renderFooter()}`.string.replace(/\s+/g, ' ');
 
   // then we expect the email not to mention raise except for the image assets
   expect(email

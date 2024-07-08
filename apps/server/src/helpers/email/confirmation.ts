@@ -4,7 +4,7 @@ import {
 import env from '../../env/env';
 import { Donation, Fundraiser, Payment } from '../../schemas';
 import renderHtml, { RenderedHtml } from './renderHtml';
-import footer from './footer';
+import renderFooter from './footerTemplate';
 
 export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[]): RenderedHtml => {
   const totalDonated = payments.reduce((acc, p) => acc + p.donationAmount, 0);
@@ -346,7 +346,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
         </tbody>
       </table>
     </div>
-    ${footer()}
+    ${renderFooter()}
   </div>
 </body>
 
