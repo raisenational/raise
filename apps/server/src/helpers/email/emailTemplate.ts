@@ -1,9 +1,9 @@
 import env from '../../env/env';
-import renderHtml, { RenderedHtml } from './renderHtml';
-import footer from './footer';
 import { EmailCreation } from '../../schemas';
+import renderFooter from './footerTemplate';
+import renderHtml from './renderHtml';
 
-export default (email: EmailCreation): RenderedHtml => {
+export default (email: EmailCreation) => {
   return renderHtml`<!doctype html>
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
     xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -229,7 +229,7 @@ export default (email: EmailCreation): RenderedHtml => {
           </tbody>
         </table>
       </div>
-      ${footer()}
+      ${renderFooter()}
     </div>
   </body>
 

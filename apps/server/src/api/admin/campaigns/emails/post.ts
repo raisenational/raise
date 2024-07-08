@@ -16,6 +16,7 @@ export const main = middyfy($EmailCreation, $Ulid, true, async (event) => {
     id: ulid(),
     time: Math.floor(new Date().getTime() / 1000),
     ...event.body,
+    message: emailTemplate(event.body).string
   });
 
   const campaignsFromDb = await scan(campaignTable);

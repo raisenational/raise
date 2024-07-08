@@ -1,7 +1,7 @@
 import env from '../../env/env';
 import { UserCreation } from '../../schemas';
 import renderHtml, { RenderedHtml } from './renderHtml';
-import footer from './footer';
+import renderFooter from './footerTemplate';
 
 export default (person: UserCreation, sender: string): RenderedHtml => {
   return renderHtml`<!doctype html>
@@ -234,7 +234,7 @@ export default (person: UserCreation, sender: string): RenderedHtml => {
           </tbody>
         </table>
       </div>
-      ${footer()}
+      ${renderFooter()}
     </div>
   </body>
 

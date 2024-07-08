@@ -1,4 +1,5 @@
 import { RouteComponentProps } from '@gatsbyjs/reach-router';
+import { format } from '@raise/shared';
 import { asResponseValues, useReq } from '../../helpers/networking';
 import Section, { SectionTitle } from '../../components/Section';
 import Spinner from '../../components/Spinner';
@@ -22,9 +23,18 @@ const EmailPage: React.FC<RouteComponentProps & { emailId: string, campaignId: s
     );
   }
   const emailContent = email.data;
+
+  const testEmail = emailContent.message;
+
   return (
     <Section>
-      <SectionTitle> {emailContent.subject}</SectionTitle>
+      <SectionTitle> Subject: {emailContent.subject}</SectionTitle>
+      <div className="bg-raise-blue-dark p-3 rounded-lg">
+        Sent: {format.timestamp(emailContent.time)}
+        <div className="pt-2">
+          <iframe srcDoc={testEmail} id={`${emailId}-iframe-element`} title={`${emailId}-iframe-element`} className="w-full border-spacing-1 rounded-lg" height="700" />
+        </div>
+      </div>
     </Section>
   );
 };
