@@ -21,9 +21,14 @@ import Button from '../../components/Button';
 const IndexPage = () => {
   const fundraiserId = config.fundraiserIds.prod;
   const [fundraiser] = useReq('get /public/fundraisers/{fundraiserId}', { fundraiserId });
-  let DonationButtonActive = false;
+  let donationButtonActive = false;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const headerArray: any = [
+    // If you wish to add another button, create it here (below this comment)
+    // { text: 'Become a Raise Rep', href: 'https://forms.gle/B7sALfkazXcuUoui8' },
+  ];
 
-  if ((fundraiser.data !== undefined) && (fundraiser.loading === false) && (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom) && (new Date().getTime() / 1000 < fundraiser.data?.activeTo) && (fundraiser.data?.archived !== true) && (fundraiser.data?.paused !== true)) { DonationButtonActive = true; }
+  if ((fundraiser.data !== undefined) && (fundraiser.loading === false) && (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom) && (new Date().getTime() / 1000 < fundraiser.data?.activeTo) && (fundraiser.data?.archived !== true) && (fundraiser.data?.paused !== true)) { donationButtonActive = true; }
 
   return (
     <Page>
@@ -41,10 +46,7 @@ const IndexPage = () => {
             { text: 'Contact', href: '/oxford/#contact' },
             { text: 'Partner', href: '/oxford/partner/' },
           ]}
-          right={[
-            // { text: 'Become a Raise Rep', href: 'https://forms.gle/B7sALfkazXcuUoui8' },
-            { text: 'Donate', href: '/oxford/donate/' },
-          ]}
+          right={donationButtonActive ? headerArray.concat({ text: 'Donate', href: '/oxford/donate/' }) : headerArray}
         />
         <Section className="px-8">
           <IntroStats
@@ -57,7 +59,7 @@ const IndexPage = () => {
               protected: convert.moneyToPeopleProtected('gbp', 1375872 + 1700381 + 1830345),
             }}
           />
-          {DonationButtonActive ? <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button> : '' }
+          {donationButtonActive ? <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button> : '' }
         </Section>
         <CTADown text="How it works" href="#how-it-works" />
       </Cover>

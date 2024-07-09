@@ -19,9 +19,14 @@ import { useReq } from '../../helpers/networking';
 const IndexPage = () => {
   const fundraiserId = config.fundraiserIds.prod;
   const [fundraiser] = useReq('get /public/fundraisers/{fundraiserId}', { fundraiserId });
-  let DonationButtonActive = false;
+  let donationButtonActive = false;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const headerArray: any = [
+    // If you wish to add another button, create it here (below this comment)
+    // {{text: '', href: ''}}
+  ];
 
-  if ((fundraiser.data !== undefined) && (fundraiser.loading === false) && (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom) && (new Date().getTime() / 1000 < fundraiser.data?.activeTo) && (fundraiser.data?.archived !== true) && (fundraiser.data?.paused !== true)) { DonationButtonActive = true; }
+  if ((fundraiser.data !== undefined) && (fundraiser.loading === false) && (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom) && (new Date().getTime() / 1000 < fundraiser.data?.activeTo) && (fundraiser.data?.archived !== true) && (fundraiser.data?.paused !== true)) { donationButtonActive = true; }
 
   return (
     <Page brand={config.brand}>
@@ -39,12 +44,7 @@ const IndexPage = () => {
             { text: 'Contact', href: '#contact' },
             { text: 'Partner', href: 'partner/' },
           ]}
-          right={[
-            {
-              text: 'Donate',
-              href: 'donate/',
-            },
-          ]}
+          right={donationButtonActive ? headerArray.concat({ text: 'Donate', href: 'donate/' }) : headerArray}
         />
         <Section className="px-8">
           <IntroStats
@@ -57,7 +57,7 @@ const IndexPage = () => {
               protected: 269737 + convert.moneyToPeopleProtected('gbp', 5273585),
             }}
           />
-          {DonationButtonActive ? <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button> : '' }
+          {donationButtonActive ? <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button> : '' }
         </Section>
         <CTADown text="How it works" href="#how-it-works" />
       </Cover>

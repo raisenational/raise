@@ -21,9 +21,18 @@ import { useReq } from '../../helpers/networking';
 const IndexPage = () => {
   const fundraiserId = config.fundraiserIds.prod;
   const [fundraiser] = useReq('get /public/fundraisers/{fundraiserId}', { fundraiserId });
-  let DonationButtonActive = false;
+  let donationButtonActive = false;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const headerArray = [
+    // If you wish to add another button, create it here (below this comment)
+    {
+      text: 'Become a Rep!',
+      href: 'https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link',
+    },
+    // { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link" },
+  ];
 
-  if ((fundraiser.data !== undefined) && (fundraiser.loading === false) && (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom) && (new Date().getTime() / 1000 < fundraiser.data?.activeTo) && (fundraiser.data?.archived !== true) && (fundraiser.data?.paused !== true)) { DonationButtonActive = true; }
+  if ((fundraiser.data !== undefined) && (fundraiser.loading === false) && (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom) && (new Date().getTime() / 1000 < fundraiser.data?.activeTo) && (fundraiser.data?.archived !== true) && (fundraiser.data?.paused !== true)) { donationButtonActive = true; }
 
   return (
     <Page>
@@ -40,13 +49,7 @@ const IndexPage = () => {
             { text: 'Our Philosophy', href: '#our-philosophy' },
             { text: 'Contact', href: '#contact' },
           ]}
-          right={[
-            {
-              text: 'Become a Rep!',
-              href: 'https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link',
-            },
-            // { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link" },
-          ]}
+          right={donationButtonActive ? headerArray.concat({ text: 'Donate', href: 'donate/' }) : headerArray}
         />
         <Section className="px-8">
           <IntroStats
@@ -59,7 +62,7 @@ const IndexPage = () => {
               protected: 37867 + convert.moneyToPeopleProtected('gbp', 1334075),
             }}
           />
-          {DonationButtonActive ? <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button> : '' }
+          {donationButtonActive ? <Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button> : '' }
         </Section>
         <CTADown text="How it works" href="#how-it-works" />
       </Cover>
