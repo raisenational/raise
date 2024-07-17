@@ -39,7 +39,7 @@ Summary: start everything with `npx turbo start`, and test with `npx turbo test`
 | Command                 | What it does                                   |
 |-------------------------|------------------------------------------------|
 | `npm install`           | Install and update dependencies                |
-| `npx turbo start`       | Find lint issues                               |
+| `npx turbo start`       | Starts local server                            |
 | `npx turbo test`        | Run unit tests                                 |
 | `npx turbo test:watch`  | Run unit tests in watch mode                   |
 | `npx turbo lint`        | Find lint issues                               |
