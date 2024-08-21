@@ -18,18 +18,16 @@ import Footer from '../../components/Footer';
 import Link from '../../components/Link';
 import config from './_config';
 import { useReq } from '../../helpers/networking';
+import env from '../../env/env';
 
 const IndexPage = () => {
-  const fundraiserId = config.fundraiserIds.prod;
+  const fundraiserId = config.fundraiserIds[env.STAGE];
   const [fundraiser] = useReq('get /public/fundraisers/{fundraiserId}', { fundraiserId });
-  let donationButtonActive = false;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const headerArray: any = [
-    // If you wish to add another button, create it here (below this comment)
-    // {{text: '', href: ''}}
-  ];
-
-  if ((fundraiser.data !== undefined) && (fundraiser.loading === false) && (new Date().getTime() / 1000 >= fundraiser.data?.activeFrom) && (new Date().getTime() / 1000 < fundraiser.data?.activeTo) && (fundraiser.data?.archived !== true) && (fundraiser.data?.paused !== true)) { donationButtonActive = true; }
+  const now = new Date().getTime() / 1000;
+  const donationButtonActive = fundraiser.data?.archived === false
+    && fundraiser.data.paused === false
+    && now > fundraiser.data.activeFrom
+    && now < fundraiser.data.activeTo;
 
   return (
     <Page>
@@ -46,7 +44,11 @@ const IndexPage = () => {
             { text: 'Our Philosophy', href: '#our-philosophy' },
             { text: 'Contact', href: '#contact' },
           ]}
-          right={donationButtonActive ? headerArray.concat({ text: 'Donate', href: 'donate/' }) : headerArray}
+          right={[
+            // Add other buttons by uncommenting the next line
+            // { text: 'Apply as a rep', href: 'https://example.com' },
+            ...donationButtonActive ? [{ text: 'Donate', href: 'donate/' }] : []
+          ]}
         />
         <Section className="px-8">
           <IntroStats
@@ -60,7 +62,7 @@ const IndexPage = () => {
             }}
           />
           <div className="mt-4 mb-12 flex flex-wrap gap-2 justify-center">
-            {donationButtonActive ? <Button variant="outline" size="large" href="donate/">Donate</Button> : '' }
+            {donationButtonActive ? <Button variant="outline" size="large" href="donate/">Donate</Button> : null}
             <Button variant="outline" size="large" href="https://www.facebook.com/groups/966154864287768">Join Facebook group</Button>
           </div>
         </Section>
