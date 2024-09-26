@@ -43,10 +43,10 @@ const IndexPage = () => (
           title="May Week Alternative"
           tagline="MWA is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving."
           statistics={{
-            years: 4 + 1,
-            students: 1089 + 385,
-            raised: 228296 + 52735,
-            protected: 269737 + convert.moneyToPeopleProtected('gbp', 5273585),
+            years: 7,
+            students: 1755,
+            raised: 314767,
+            protected: 378337 + convert.moneyToPeopleProtected('gbp', 5273585),
           }}
         />
       </Section>
