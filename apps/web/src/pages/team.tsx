@@ -7,55 +7,70 @@ import Footer from '../components/Footer';
 import Quote from '../components/Quote';
 
 import adamJones from '../images/adam-jones.jpg';
-import hannahWragg from '../images/hannah-wragg.jpg';
-import rahulShah from '../images/rahul-shah.jpg';
-import susanneKarbe from '../images/susanne-karbe.jpg';
 import thomasCohen from '../images/thomas-cohen.jpg';
-import lizSamuel from '../images/liz-samuel.jpg';
+import bill from '../images/bill.jpg';
+import louis from '../images/louis.jpg';
+import meehal from '../images/meehal.jpg';
+import olivia from '../images/olivia.jpg';
+import varshneyee from '../images/varshneyee.jpg';
+import ella from '../images/ella.jpg';
+import maxime from '../images/maxime.jpg';
 
 const NATIONAL_TEAM = [
   {
-    id: '01GCT0D1WWXDEV52E19DWBZ665',
+    name: 'Olivia Collotta',
+    role: 'Director',
+    image: olivia,
+    bio: "Olivia is a final year student at the University of Edinburgh studying Politics. Since co-founding Raise Edinburgh in 2022, she has served as a mentor to other Raise chapters and lead the community team. She is incredibly excited to be helping take Raise forward into another year of meaningful student engagement and celebration! Outside of her more fruitful academic pursuits, she enjoys trying to keep up with current events and trying to adopt her neighborhood's stray cats.",
+  },
+  {
+    name: 'Ella Denton',
+    role: 'Community lead',
+    image: ella,
+    bio: "Ella is a final year History student at UCL. She founded Raise UCL, London's first Raise chapter, as a first year in 2022.\nThis year, she will be taking on the role of Community Lead - organising the mentor program as well as mentoring several chapters herself. She is really excited about growing Raise at other London universities, with LSE among the chapters she will be mentoring.\nOutside of Raise and uni, Ella writes films, works as a part-time nanny to fund her penchant for pretty dresses, and then sleeps because all that's pretty exhausting. Top tip: when you meet her, time how long it takes her to mention that she used to live in Sweden.",
+  },
+  {
+    name: 'Maxime Alves',
+    role: 'UCL mentor & Advisory board member',
+    image: maxime,
+    bio: "Maxime is studying Management Science at UCL, and was involved in establishing Raise's first London-based chapter as its Secretary-Treasurer. He will be joining the Advisory Board working on bettering Raise processes and fostering a sense of community while also mentoring newer chapters.\n\nIn his spare time, Maxime enjoys cooking, going to the movies and spontaneously trying new things.",
+  },
+  {
+    name: 'Shahamath Meehal Hussain',
+    role: 'Warwick mentor',
+    image: meehal,
+    bio: "Meehal was the Founding President of Raise Warwick, where he worked to set up the chapter for two years. Leaving it in capable hands, he joined the national team to continue mentoring Warwick and other chapters. Meehal really enjoyed his time leading Raise Warwick, where he grew to understand and embody the values and core mission of Raise. He found it rewarding to inspire others in the same cause. He continues to donate to AMF and other such charities and encourages his fellow graduates to do so, too.\n\nMeehal now works at Lloyds Banking Group on their Finance Graduate Scheme, where his current role empowers him to hold companies accountable against LBG's ESG mission statements and continues to get involved in fundraising and volunteering initiatives. In his free time Meehal enjoys playing piano, tutoring maths and learning Japanese in preparation for moving there one day.",
+  },
+  {
+    name: 'Varshneyee Dutt',
+    role: 'Advisory board chair',
+    image: varshneyee,
+    bio: 'Varshneyee is a final year student of English Language & Linguistics at the University of Glasgow. She has been part of Raise since last year, when she was President of the Glasgow chapter, and is thrilled to join the national team this year.\n\nIn her free time, she enjoys reading Victorian literature, watching period dramas and travelling.',
+  },
+  {
+    name: 'Louis Danker',
+    role: 'Expansion & founding',
+    image: louis,
+    bio: "Louis is focussed on expanding Raise to more universities, and helping found new chapters. He was Co-Founding President of Raise Edinburgh in 2022, and is keen to keep spreading the celebration of giving far and wide! Louis is a final year Geography student in Edinburgh. He's a big football fan (and terrible footballer), a big music fan (and terrible musician), and a big foodie (his cooking divides opinion).",
+  },
+  {
+    name: 'Bill Chen',
+    role: 'Advisory board member',
+    image: bill,
+    bio: "Bill is on the advisory board of the Raise National Team. Before this role, he led the University of Oxford Raise chapter while studying Philosophy, Politics and Economics. During this time, Bill revitalised the inactive chapter, culminating in its most successful year.\n\nOn the advisory board, he aims to find solutions to make Raise chapters more resilient in the longer term. Bill is excited by the potential of cross-chapter collaboration to improve Raise's agility.",
+  },
+  {
     name: 'Adam Jones',
-    role: 'Technology and Governance',
+    role: 'Technology & governance',
     bio: 'Adam is responsible for technology at Raise. He maintains the website and our open-source donations platform. He also manages our relationship with the Charity Commission, and serves as a trustee on our board.\n\nIn his day job, he works as a software engineer helping people to have more impact in their careers. Outside work, he enjoys cycling around London, contributing to open-source projects and playing board games.',
     img: adamJones,
   },
   {
-    id: '01GCT0D1WW5XZJWMQT9GYH4DS4',
-    name: 'Hannah Wragg',
-    role: 'Mentorship and Sponsorship',
-    bio: "Hannah has just finished her master's degree in management at The University of Sheffield. Alongside her master's she founded Raise Sheffield, and is now volunteering as a member of the National Team in her free time alongside working for a social enterprise providing charity fundraising challenges to University students.\n\nOn the national team this year Hannah will be mentoring some of the newer chapters through the year, and working on national sponsorship initiatives to ensure that Raise can put on some great events across the country this year.\n\nHannah's favourite thing about Raise is watching students go through the process of coming to understand the ethos and seeing how everyone comes together to form wonderful new friendships around a desire to have a positive impact in the world.\n\nHannah has also been involved in the Effective Altruism community and has taken the Giving What We Can pledge to donate 10% of her income to charity.",
-    img: hannahWragg,
-  },
-  {
-    id: '01GCT0D1WWYGATDR1J71WSZEJB',
-    name: 'Rahul Shah',
-    role: 'Community and Logistics',
-    bio: "Rahul's a medical student studying at Cambridge, and has been involved in Raise since the start of his time there: first as a rep, then as Vice President Fundraising, then as President. He's excited to join the National Team to help Raise expand, evolve and continue having huge impact.\n\nWhen not doing Raise stuff, Rahul likes taking on entrepreneurial side projects and attempting to cook!",
-    img: rahulShah,
-  },
-  {
-    id: '01GCT0D1WWYDDHKDY59H0DAQ5C',
-    name: 'Susanne Karbe',
-    role: 'Community',
-    bio: 'Susanne recently completed her PhD in Economics at Durham University and is currently on a gap year in South Korea! She set up the Raise chapter in Durham in 2020 and is now on the national team.\n\nIn her free time she loves to travel, dance and skate!',
-    img: susanneKarbe,
-  },
-  {
-    id: '01GCT0D1WW3E0YN30JKEQEPJY1',
     name: 'Thomas Cohen',
-    role: 'Treasurer and Logistics',
-    bio: "Thomas does a number of different jobs on the Raise National Team, including managing the accounts and mentoring. He was heavily involved in Raise in Durham, acting as Vice President and President over its first two years. He is really passionate about positive and celebratory giving, and therefore has pledged to give 10% of his income to charity!\n\nThomas has just finished a degree in History at Durham, and this year will be doing a master's in History and Philosophy of Science at UCL.",
+    role: 'Treasurer',
+    bio: "Thomas has done a number of different jobs on the Raise National Team, including managing the accounts and mentoring. He was heavily involved in Raise in Durham, acting as Vice President and President over its first two years. He is really passionate about positive and celebratory giving, and therefore has pledged to give 10% of his income to charity!\n\nThomas studied History at Durham, and last year completed a master's in History and Philosophy of Science at UCL.",
     img: thomasCohen,
   },
-  {
-    id: '01HNGY65F6FK5ATTA06Z9ZP4QR',
-    name: 'Liz Samuel',
-    role: 'Expansion and Founding Officer',
-    bio: 'Liz is responsible for expansion of Raise to more universities across the UK, and helping to set up new chapters. She was previously a Rep Coordinator for the Cambridge chapter. She is passionate about spreading the message of Raise as widely as possible and is currently looking to help found new chapters at some of the larger UK universities where Raise does not currently operate.\n\nShe is in her 5th year studying medicine. In her spare time she enjoys reading and trying out new restaurants and cafes around Cambridge!',
-    img: lizSamuel,
-  }
 ];
 
 const TeamPage = () => (
@@ -88,7 +103,8 @@ const TeamPage = () => (
         of us on the national team. We're students and recent grads who volunteer to support chapters as best we can:
       </p>
       {NATIONAL_TEAM.map((m, i) => (
-        <Quote key={m.id} by={`${m.name}, ${m.role}`} headshotSrc={m.img} imagePlacement={i % 4 <= 1 ? 'left' : 'right'} className="mt-4 p-8 bg-raise-red rounded-lg min-h-[10rem] whitespace-pre-line">
+        // eslint-disable-next-line react/no-array-index-key
+        <Quote key={i} by={`${m.name}, ${m.role}`} headshotSrc={m.img} imagePlacement={i % 4 <= 1 ? 'left' : 'right'} className="mt-4 p-8 bg-raise-red rounded-lg min-h-[10rem] whitespace-pre-line">
           {m.bio}
         </Quote>
       ))}
