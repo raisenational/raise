@@ -1,9 +1,9 @@
 import env from '../../env/env';
-import { UserCreation } from '../../schemas';
-import renderHtml, { RenderedHtml } from './renderHtml';
+import { EmailCreation } from '../../schemas';
 import renderFooter from './footerTemplate';
+import renderHtml from './renderHtml';
 
-export default (person: UserCreation, sender: string): RenderedHtml => {
+export default (email: EmailCreation) => {
   return renderHtml`<!doctype html>
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
     xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -179,7 +179,7 @@ export default (person: UserCreation, sender: string): RenderedHtml => {
                               </tr>
                               <tr>
                                 <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
-                                  <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:40px;line-height:1.25;text-align:left;color:#ffffff;"><strong>Your account has been created!</strong></div>
+                                  <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:40px;line-height:1.25;text-align:left;color:#ffffff;"><strong>${email.subject}</strong></div>
                                 </td>
                               </tr>
                             </tbody>
@@ -212,12 +212,7 @@ export default (person: UserCreation, sender: string): RenderedHtml => {
                               <tr>
                                 <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
                                   <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:20px;line-height:1.5;text-align:left;color:#000000;">
-                                  Dear ${person.name},<br /><br />
-                                  Your account has been created on the Raise platform. <br /><br />
-                                  You should be able to login at <a href="${env.CUSTOM_RAISE_DOMAIN.concat('/admin')}" target="_blank" >${env.CUSTOM_RAISE_DOMAIN.concat('/admin')}</a>, using your account ${person.email}. <br /><br />
-                                  For more information about using the Raise Platform, <a href="https://docs.google.com/document/d/1H5RdqTJijH-wWb2thCqJrT8IoLiVvxSpWLDEUmDyLxU/edit">click here</a>. <br/><br/>
-                                  Best wishes, <br/>
-                                  ${sender}
+                                  ${email.message}
                                   </div>
                                 </td>
                               </tr>
