@@ -84,6 +84,15 @@ const CHAPTERS: Chapter[] = [
     },
   },
   {
+    id: '01HNHBX2P4KX4H6VE8XZ5ZQ7WH',
+    name: 'Manchester',
+    href: '/manchester/',
+    location: {
+      latitude: 53.4808,
+      longitude: -2.2426,
+    },
+  },
+  {
     id: '01GMXD8C9TADQ6AVPWDNKBAT60',
     name: 'Oxford',
     href: '/oxford/',
