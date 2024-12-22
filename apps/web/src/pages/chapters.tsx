@@ -119,6 +119,15 @@ const CHAPTERS: Chapter[] = [
       longitude: -1.5615,
     },
   },
+  {
+    id: '01HNHBX2P4KX4H6VE8XZ5ZQ7WJ',
+    name: 'London School of Economics (LSE)',
+    href: '/lse/',
+    location: {
+      latitude: 51.5144,
+      longitude: -0.1165,
+    },
+  },
 ];
 
 const ChaptersPage = () => (
