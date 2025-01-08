@@ -33,7 +33,7 @@ const IndexPage = () => (
         ]}
         right={[
           {
-            text: 'Donate',
+            text: 'Get Involved',
             href: 'donate/',
           },
         ]}
