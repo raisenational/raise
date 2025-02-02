@@ -11,12 +11,10 @@
     "start": "turbo run start",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "build": "turbo run build",
-    "// TODO: add formatter": "",
-    "// format": "exit 1 && prettier --write \"**/*.{ts,tsx,md}\""
+    "build": "turbo run build"
   },
   "devDependencies": {
-    "prettier": "^2.8.8",
+    "eslint": "^9.19.0",
     "turbo": "^1.11.3"
   },
   "packageManager": "npm@9.5.1",

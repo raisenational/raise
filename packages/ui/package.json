@@ -8,12 +8,11 @@
     "lint:fix": "npm run lint -- --fix"
   },
   "devDependencies": {
+    "@raise/eslint-config": "*",
+    "@raise/tsconfig": "*",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "eslint": "^8.44.0",
-    "@raise/eslint-config": "*",
     "react": "^18.2.0",
-    "@raise/tsconfig": "*",
     "typescript": "^5.2.2"
   }
 }
