@@ -7,11 +7,12 @@ export const percent = (percentageInPoints?: number | null): string => (percenta
 export const timestamp = (unixTimestamp?: number | null): string => (unixTimestamp === undefined || unixTimestamp === null ? '—' : new Date(unixTimestamp * 1000).toLocaleString('en-GB'));
 export const json = (any: unknown): string => String(JSON.stringify(any));
 export const currencySymbol = (currency: 'gbp' | 'usd') => {
-  let result = '';
-  if (currency === 'gbp') {
-    result = '£';
-  } else if (currency === 'usd') {
-    result = '$';
-  }
-  return result;
+	let result = '';
+	if (currency === 'gbp') {
+		result = '£';
+	} else if (currency === 'usd') {
+		result = '$';
+	}
+
+	return result;
 };
