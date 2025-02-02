@@ -1,14 +1,12 @@
 {
   "name": "@raise/eslint-config",
   "private": true,
-  "main": "src/index.js",
+  "main": "src/index.mjs",
   "scripts": {
-    "lint": "eslint 'src'",
+    "lint": "eslint",
     "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
-    "eslint-config-domdomegg": "^1.2.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-config-turbo": "^1.9.3"
+    "eslint-config-domdomegg": "^2.0.6"
   }
 }

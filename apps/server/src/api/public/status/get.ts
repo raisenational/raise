@@ -1,6 +1,6 @@
-import { middyfy } from '../../../helpers/wrapper';
-import { $Status } from '../../../schemas';
+import {middyfy} from '../../../helpers/wrapper';
+import {$Status} from '../../../schemas';
 
 export const main = middyfy(null, $Status, false, async () => ({
-  message: 'Service online',
+	message: 'Service online',
 }));

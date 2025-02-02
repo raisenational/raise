@@ -1,8 +1,8 @@
-import { sendMessage } from '../helpers/slack';
+import {sendMessage} from '../helpers/slack';
 import sendSlackTestMessage from './sendSlackTestMessage';
 
 test('calls sendMessage once', async () => {
-  await sendSlackTestMessage.run();
+	await sendSlackTestMessage.run();
 
-  expect(sendMessage).toBeCalledTimes(1);
+	expect(sendMessage).toBeCalledTimes(1);
 });

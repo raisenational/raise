@@ -1,7 +1,7 @@
 import renderHtml from './renderHtml';
 
 export default () => {
-  return (renderHtml`
+	return (renderHtml`
     <footer>
         <div class="md-rounded-bottom" style="background:#eeeeee;background-color:#eeeeee;margin:0px auto;max-width:600px;">
             <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#eeeeee;background-color:#eeeeee;width:100%;">

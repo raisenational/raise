@@ -1,10 +1,10 @@
 import env from '../../env/env';
-import { UserCreation } from '../../schemas';
-import renderHtml, { RenderedHtml } from './renderHtml';
+import {type UserCreation} from '../../schemas';
+import renderHtml, {type RenderedHtml} from './renderHtml';
 import footer from './footer';
 
 export default (person: UserCreation, sender: string): RenderedHtml => {
-  return renderHtml`<!doctype html>
+	return renderHtml`<!doctype html>
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
     xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -111,7 +111,8 @@ export default (person: UserCreation, sender: string): RenderedHtml => {
 
   <body style="word-spacing:normal;background-color:#eeeeee;">
     <div style="background-color:#eeeeee;">
-      ${env.STAGE !== 'prod' ? renderHtml`<!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#F2CA1A" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+      ${env.STAGE !== 'prod'
+			? renderHtml`<!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#F2CA1A" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
       <div style="background:#F2CA1A;background-color:#F2CA1A;margin:0px auto;max-width:600px;">
         <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F2CA1A;background-color:#F2CA1A;width:100%;">
           <tbody>
@@ -143,7 +144,8 @@ export default (person: UserCreation, sender: string): RenderedHtml => {
           </tbody>
         </table>
       </div>
-      <!--[if mso | IE]></td></tr></table><![endif]-->` : ''}
+      <!--[if mso | IE]></td></tr></table><![endif]-->`
+			: ''}
 
       <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#2ECAD6" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
       <div style="background:#2ECAD6;background-color:#2ECAD6;margin:0px auto;max-width:600px;">

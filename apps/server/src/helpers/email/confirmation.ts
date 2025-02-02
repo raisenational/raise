@@ -1,24 +1,24 @@
 import {
-  convert, format, calcMatchFunding,
+	convert, format, calcMatchFunding,
 } from '@raise/shared';
 import env from '../../env/env';
-import { Donation, Fundraiser, Payment } from '../../schemas';
-import renderHtml, { RenderedHtml } from './renderHtml';
+import {type Donation, type Fundraiser, type Payment} from '../../schemas';
+import renderHtml, {type RenderedHtml} from './renderHtml';
 import footer from './footer';
 
 export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[]): RenderedHtml => {
-  const totalDonated = payments.reduce((acc, p) => acc + p.donationAmount, 0);
-  const totalExpectedMatchFunding = payments.reduce((acc, p) => acc + (p.matchFundingAmount ?? calcMatchFunding({
-    donationAmount: p.donationAmount,
-    matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit === null ? null : fundraiser.matchFundingPerDonationLimit - acc,
-    matchFundingRate: fundraiser.matchFundingRate,
-    matchFundingRemaining: fundraiser.matchFundingRemaining === null ? null : fundraiser.matchFundingRemaining - acc,
-    alreadyMatchFunded: acc,
-  })), 0);
+	const totalDonated = payments.reduce((acc, p) => acc + p.donationAmount, 0);
+	const totalExpectedMatchFunding = payments.reduce((acc, p) => acc + (p.matchFundingAmount ?? calcMatchFunding({
+		donationAmount: p.donationAmount,
+		matchFundingPerDonationLimit: fundraiser.matchFundingPerDonationLimit === null ? null : fundraiser.matchFundingPerDonationLimit - acc,
+		matchFundingRate: fundraiser.matchFundingRate,
+		matchFundingRemaining: fundraiser.matchFundingRemaining === null ? null : fundraiser.matchFundingRemaining - acc,
+		alreadyMatchFunded: acc,
+	})), 0);
 
-  const peopleProtected = convert.moneyToPeopleProtected(fundraiser.currency, totalDonated * (donation.giftAid ? 1.25 : 1) + totalExpectedMatchFunding);
+	const peopleProtected = convert.moneyToPeopleProtected(fundraiser.currency, (totalDonated * (donation.giftAid ? 1.25 : 1)) + totalExpectedMatchFunding);
 
-  return renderHtml`<!doctype html>
+	return renderHtml`<!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
   xmlns:o="urn:schemas-microsoft-com:office:office">
 
@@ -128,7 +128,9 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
 
 <body style="word-spacing:normal;background-color:#eeeeee;">
   <div style="background-color:#eeeeee;">
-    ${env.STAGE !== 'prod' ? renderHtml`<!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#F2CA1A" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+    ${env.STAGE === 'prod'
+		? ''
+		: renderHtml`<!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#F2CA1A" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
     <div style="background:#F2CA1A;background-color:#F2CA1A;margin:0px auto;max-width:600px;">
       <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F2CA1A;background-color:#F2CA1A;width:100%;">
         <tbody>
@@ -160,7 +162,7 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
         </tbody>
       </table>
     </div>
-    <!--[if mso | IE]></td></tr></table><![endif]-->` : ''}
+    <!--[if mso | IE]></td></tr></table><![endif]-->`}
 
     <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600" bgcolor="#2ECAD6" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
     <div style="background:#2ECAD6;background-color:#2ECAD6;margin:0px auto;max-width:600px;">
@@ -274,14 +276,18 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                             <tr>
                               <td align="left" style="font-size:0px;padding:8px;word-break:break-word;">
                                 <table cellpadding="0" cellspacing="0" width="100%" border="0" style="color:#ffffff;font-family:'Helvetica', 'Arial', sans-serif;font-size:13px;line-height:22px;table-layout:auto;width:100%;border:none;">
-                                  ${payments[0].donationAmount > 0 ? renderHtml`<tr style="font-family:'Helvetica', 'Arial', sans-serif">
+                                  ${payments[0].donationAmount > 0
+										? renderHtml`<tr style="font-family:'Helvetica', 'Arial', sans-serif">
                                     <td style="padding: 2px 0;font-size:18px">Your donation to ${donation.charity}</td>
                                     <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount)}</td>
-                                  </tr>` : ''}
-                                  ${payments[0].contributionAmount > 0 ? renderHtml`<tr style="font-family:'Helvetica', 'Arial', sans-serif">
+                                  </tr>`
+										: ''}
+                                  ${payments[0].contributionAmount > 0
+										? renderHtml`<tr style="font-family:'Helvetica', 'Arial', sans-serif">
                                       <td style="padding: 2px 0;font-size:18px">Your Summer Party contribution</td>
                                       <td style="padding: 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].contributionAmount)}</td>
-                                  </tr>` : ''}
+                                  </tr>`
+										: ''}
                                   <tr style="height:6px">
                                     <td></td>
                                     <td></td>
@@ -291,17 +297,20 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                     <td style="padding: 8px 0 2px 0;font-size:18px">Total paid</td>
                                     <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount + payments[0].contributionAmount)}</td>
                                   </tr>
-                                  ${donation.giftAid === true ? renderHtml`<tr>
+                                  ${donation.giftAid
+										? renderHtml`<tr>
                                   </tr>
                                   <tr
                                     style="font-family:'Helvetica', 'Arial', sans-serif;font-weight:bold">
                                     <td style="padding: 8px 0 2px 0;font-size:18px">Gift Aid added</td>
                                     <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments[0].donationAmount * 0.25)}</td>
-                                  </tr>` : ''}
+                                  </tr>`
+										: ''}
                                 </table>
                               </td>
                             </tr>
-                            ${payments.length > 1 ? renderHtml`<tr>
+                            ${payments.length > 1
+								? renderHtml`<tr>
                               <td align="left" style="font-size:0px;padding:32px 8px 5px 8px;word-break:break-word;">
                                 <div style="font-family:'Helvetica', 'Arial', sans-serif;font-size:18px;line-height:1.5;text-align:left;color:#ffffff;">
                                   You also set up future donations:</div>
@@ -323,16 +332,19 @@ export default (fundraiser: Fundraiser, donation: Donation, payments: Payment[])
                                     <td style="padding: 8px 0 2px 0;font-size:18px">Total future donations</td>
                                     <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0))}</td>
                                   </tr>
-                                  ${donation.giftAid === true ? renderHtml`<tr>
+                                  ${donation.giftAid
+										? renderHtml`<tr>
                                   </tr>
                                   <tr
                                     style="font-family:'Helvetica', 'Arial', sans-serif;font-weight:bold">
                                     <td style="padding: 8px 0 2px 0;font-size:18px">Total future Gift Aid to be added</td>
                                     <td style="padding: 8px 0 2px 0;text-align:right;white-space:nowrap;font-size:18px">${format.amountShort(fundraiser.currency, payments.slice(1).reduce((acc, cur) => acc + cur.donationAmount + cur.contributionAmount, 0) * 0.25)}</td>
-                                  </tr>` : ''}
+                                  </tr>`
+										: ''}
                                 </table>
                               </td>
-                            </tr>` : ''}
+                            </tr>`
+								: ''}
                           </tbody>
                         </table>
                       </td>

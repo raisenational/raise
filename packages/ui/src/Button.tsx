@@ -1,4 +1,6 @@
 export const Button = () => {
-  // eslint-disable-next-line no-alert
-  return <button type="button" onClick={() => alert('Pressed!')}>Press</button>;
+	return <button type='button' onClick={() => {
+		// eslint-disable-next-line no-alert
+		alert('Pressed!');
+	}}>Press</button>;
 };
