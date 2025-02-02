@@ -21,7 +21,7 @@
     "deploy:prod": "npm run build:prod && serverless deploy --verbose"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=22"
   },
   "dependencies": {
     "@gatsbyjs/reach-router": "^2.0.1",
@@ -69,7 +69,7 @@
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.43.2",
     "react-timeago": "^7.1.0",
-    "serverless": "^3.37.0",
+    "serverless": "^3.40.0",
     "serverless-s3-sync": "^3.2.0",
     "shx": "^0.3.4",
     "tailwindcss": "^3.0.7",

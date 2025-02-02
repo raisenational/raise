@@ -8,22 +8,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
-    strategy:
-      matrix:
-        node-version: [18]
 
     steps:
       - name: Checkout ${{ github.sha }}
         uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-          # TODO: can we further improve caching performance by caching node_modules directly,
-          # given our platform and node version is constant (changes are the usual reason not
-          # to as installs may vary on this)?
+          node-version: 22
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
