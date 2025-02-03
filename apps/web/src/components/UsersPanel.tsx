@@ -63,7 +63,7 @@ const UsersPanel: React.FC = () => {
 					onSubmit={async (data) => {
 						const userId = (await req('post /admin/users', data)).data;
 						await refetchUsers();
-						void router.push(`/admin/?page=user&userId=${userId}/`);
+						void router.push(`/admin/?page=user&userId=${userId}`);
 					}}
 				/>
 			</Modal>
