@@ -1,6 +1,7 @@
 // This test is probably a bit over the top, but it also acts as a test for get
 // endpoints generally: that the wrapper, logic and database all glue together
 
+import {test, expect} from 'vitest';
 import {ulid} from 'ulid';
 import {insert} from '../../../helpers/db';
 import {fundraiserTable} from '../../../helpers/tables';

@@ -1,3 +1,6 @@
+import {
+	beforeEach, test, expect, vi, type Mock,
+} from 'vitest';
 import createHttpError from 'http-errors';
 import {call} from '../../../../../local/testHelpers';
 import {main} from './post';
@@ -5,12 +8,12 @@ import env from '../../../../env/env';
 import {login} from '../../../../helpers/login';
 import {type LoginResponse} from '../../../../schemas';
 
-jest.mock('../../../../helpers/login', () => ({
-	login: jest.fn(),
+vi.mock('../../../../helpers/login', () => ({
+	login: vi.fn(),
 }));
 
 beforeEach(() => {
-	(login as unknown as jest.Mock).mockImplementation((email) => {
+	(login as unknown as Mock).mockImplementation((email) => {
 		if (email === 'test@joinraise.org') {
 			const result: LoginResponse = {
 				accessToken: {value: 'mockA', expiresAt: 0},

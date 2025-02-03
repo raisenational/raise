@@ -1,3 +1,4 @@
+import {describe, test, expect} from 'vitest';
 import {moneyToPeopleProtected} from './convert';
 
 describe('gbpToPeopleProtected', () => {

@@ -1,3 +1,4 @@
+import {test, expect} from 'vitest';
 import {call, makeDonation, makeFundraiser} from '../../../../../../../local/testHelpers';
 import {get, insert} from '../../../../../../helpers/db';
 import {donationTable, fundraiserTable} from '../../../../../../helpers/tables';

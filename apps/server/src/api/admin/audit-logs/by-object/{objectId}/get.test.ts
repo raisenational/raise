@@ -1,3 +1,4 @@
+import {test, expect} from 'vitest';
 import {ulid} from 'ulid';
 import {fixedGroups} from '@raise/shared';
 import {insert} from '../../../../../helpers/db';

@@ -1,3 +1,4 @@
+import {test, expect} from 'vitest';
 import {
 	call, makeFundraiser, makeDonation, makePayment,
 } from '../../../../../../../../local/testHelpers';

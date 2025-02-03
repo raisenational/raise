@@ -22,7 +22,8 @@
   "include": [
     "src",
     "local",
-    "serverless.ts"
+    "serverless.ts",
+    "vitest.config.ts"
   ],
   "exclude": [
     ".serverless/**/*",

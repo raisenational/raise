@@ -1,3 +1,4 @@
+import {test, expect} from 'vitest';
 import {fixedGroups} from '@raise/shared';
 import {call, makeFundraiser} from '../../../../../local/testHelpers';
 import {get, insert} from '../../../../helpers/db';
