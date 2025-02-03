@@ -1,3 +1,4 @@
+import {test, expect} from 'vitest';
 import {sendMessage} from '../helpers/slack';
 import sendSlackTestMessage from './sendSlackTestMessage';
 

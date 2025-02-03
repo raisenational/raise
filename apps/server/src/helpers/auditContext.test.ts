@@ -1,3 +1,6 @@
+import {
+	beforeAll, afterAll, test, expect,
+} from 'vitest';
 import type middy from '@middy/core';
 import {fixedGroups} from '@raise/shared';
 import {

@@ -1,3 +1,6 @@
+import {
+	beforeEach, test, expect, vi,
+} from 'vitest';
 import {ulid} from 'ulid';
 import {call, makeFundraiser, setMockDate} from '../../../../../../local/testHelpers';
 import {insert, scan} from '../../../../../helpers/db';
@@ -5,14 +8,16 @@ import {donationTable, fundraiserTable, paymentTable} from '../../../../../helpe
 import {type PublicDonationRequest} from '../../../../../schemas';
 import {main} from './post';
 
-const paymentIntentCreate = jest.fn();
+const paymentIntentCreate = vi.fn();
 
-jest.mock('stripe', () => jest.fn().mockReturnValue({
-	paymentIntents: {
-		get create() {
-			return paymentIntentCreate;
+vi.mock('stripe', () => ({
+	default: vi.fn().mockReturnValue({
+		paymentIntents: {
+			get create() {
+				return paymentIntentCreate;
+			},
 		},
-	},
+	}),
 }));
 
 beforeEach(() => {

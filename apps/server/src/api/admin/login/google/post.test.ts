@@ -1,3 +1,6 @@
+import {
+	beforeEach, test, expect, vi, type Mock,
+} from 'vitest';
 import {OAuth2Client} from 'google-auth-library';
 import createHttpError from 'http-errors';
 import {call} from '../../../../../local/testHelpers';
@@ -16,19 +19,19 @@ const googleTokenPayload = {
 	exp: 2524608000, // Verified by the real library
 };
 
-const getPayload = jest.fn();
-const verifyIdToken = jest.fn();
+const getPayload = vi.fn();
+const verifyIdToken = vi.fn();
 
-jest.mock('google-auth-library', () => ({
-	OAuth2Client: jest.fn(),
+vi.mock('google-auth-library', () => ({
+	OAuth2Client: vi.fn(),
 }));
 
-jest.mock('../../../../helpers/login', () => ({
-	login: jest.fn(),
+vi.mock('../../../../helpers/login', () => ({
+	login: vi.fn(),
 }));
 
 beforeEach(() => {
-	(login as unknown as jest.Mock).mockImplementation((email) => {
+	(login as unknown as Mock).mockImplementation((email) => {
 		if (email === 'test@joinraise.org') {
 			const result: LoginResponse = {
 				accessToken: {value: 'mockA', expiresAt: 0},
@@ -40,7 +43,7 @@ beforeEach(() => {
 
 		throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`);
 	});
-	(OAuth2Client as unknown as jest.Mock).mockImplementation(() => ({
+	(OAuth2Client as unknown as Mock).mockImplementation(() => ({
 		verifyIdToken,
 	}));
 	verifyIdToken.mockResolvedValue({getPayload});

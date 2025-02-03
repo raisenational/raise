@@ -1,5 +1,5 @@
 import {fixedGroups} from '@raise/shared';
-import {makeDonation, makeFundraiser, makePayment} from '../../local/testHelpers';
+import {makeDonation, makeFundraiser, makePayment} from '../helpers/makers';
 import {sendEmail} from '../helpers/email';
 import confirmation from '../helpers/email/confirmation';
 

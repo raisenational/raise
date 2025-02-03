@@ -1,6 +1,7 @@
 {
   "name": "@raise/web",
   "private": true,
+  "type": "commonjs",
   "scripts": {
     "postinstall": "shx cp -n src/env/local.template.ts src/env/local.ts && shx cp -n src/env/local.ts src/env/env.ts",
     "start": "npm run start:local",

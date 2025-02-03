@@ -9,14 +9,14 @@
     "forceConsistentCasingInFileNames": true,
     "inlineSources": false,
     "isolatedModules": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
     "skipLibCheck": true,
     "strict": true,
     "target": "es2020",
-    "module": "commonjs"
+    "module": "node16"
   },
   // Applications should specify their own 'include' and 'exclude'
   // https://github.com/microsoft/TypeScript/issues/51213

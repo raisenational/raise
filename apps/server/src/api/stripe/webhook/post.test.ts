@@ -1,3 +1,6 @@
+import {
+	beforeEach, describe, test, expect, vi,
+} from 'vitest';
 import {ulid} from 'ulid';
 import {
 	call, makeFundraiser, makeDonation, makePayment, delayDb,
@@ -9,20 +12,22 @@ import {donationTable, fundraiserTable, paymentTable} from '../../../helpers/tab
 import {type StripeWebhookRequest} from '../../../schemas';
 import {main} from './post';
 
-const webhookConstructEvent = jest.fn();
-const customersCreate = jest.fn();
+const webhookConstructEvent = vi.fn();
+const customersCreate = vi.fn();
 
-jest.mock('stripe', () => jest.fn().mockReturnValue({
-	webhooks: {
-		get constructEvent() {
-			return webhookConstructEvent;
+vi.mock('stripe', () => ({
+	default: vi.fn().mockReturnValue({
+		webhooks: {
+			get constructEvent() {
+				return webhookConstructEvent;
+			},
 		},
-	},
-	customers: {
-		get create() {
-			return customersCreate;
+		customers: {
+			get create() {
+				return customersCreate;
+			},
 		},
-	},
+	}),
 }));
 
 beforeEach(() => {
@@ -1103,7 +1108,7 @@ describe('handles database conflicts', () => {
 		});
 		await Promise.all([insert(fundraiserTable, fundraiser), insert(donationTable, donation), insert(paymentTable, payment)]);
 		const realGet = db.get;
-		jest.spyOn(db, 'get').mockImplementation(async (...args) => {
+		vi.spyOn(db, 'get').mockImplementation(async (...args) => {
 			const result = await realGet(...args);
 			if (args[0].entityName === 'fundraiser' && obj === 'fundraiser') {
 				await update(fundraiserTable, {id: fundraiser.id}, {[property]: after});

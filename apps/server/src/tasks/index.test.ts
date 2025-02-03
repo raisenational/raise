@@ -1,3 +1,4 @@
+import {test} from 'vitest';
 import {readdirSync} from 'fs';
 import {resolve} from 'path';
 import tasks from '.';
@@ -5,7 +6,7 @@ import tasks from '.';
 // Checks we've added the task to the index, to help us not forget to add it
 test.each(readdirSync(__dirname).filter((f) => f !== 'index.ts' && !f.endsWith('.test.ts')).map((f) => [f]))('%s is exported', async (f) => {
 	// eslint-disable-next-line
-  const task = require(resolve(__dirname, f)).default
+  	const task = (await import(resolve(__dirname, f))).default;
 	if (!tasks.find((t) => t.id === task.id)) {
 		throw new Error(`Task in file ${f} with id ${task.id} is not exported`);
 	}

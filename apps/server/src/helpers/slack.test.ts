@@ -1,13 +1,16 @@
+import {
+	beforeEach, test, expect, vi, type Mock,
+} from 'vitest';
 import axios from 'axios';
 import env from '../env/env';
 import {auditContext} from './auditContext';
 import {sendMessage, sendMessageWithLogsLink} from './slack';
 
-jest.mock('axios', jest.fn);
-jest.unmock('./slack');
+vi.mock('axios', () => ({default: vi.fn()}));
+vi.unmock('./slack');
 
 beforeEach(() => {
-	(axios as unknown as jest.Mock).mockResolvedValue({data: {ok: true}});
+	(axios as unknown as Mock).mockResolvedValue({data: {ok: true}});
 });
 
 test('sendMessage calls Slack API correctly', async () => {
@@ -79,7 +82,7 @@ test('sendMessageWithLogsLink calls Slack API correctly when can\'t determine lo
 });
 
 test('rethrows axios error', async () => {
-	(axios as unknown as jest.Mock).mockResolvedValueOnce({data: {ok: false, error: 'not_in_channel'}});
+	(axios as unknown as Mock).mockResolvedValueOnce({data: {ok: false, error: 'not_in_channel'}});
 
 	await expect(async () => sendMessage('This message was sent from slack.test.ts'))
 		.rejects.toThrowError('Slack API: not_in_channel');
@@ -88,7 +91,7 @@ test('rethrows axios error', async () => {
 });
 
 test('rethrows Slack API error', async () => {
-	(axios as unknown as jest.Mock).mockRejectedValueOnce(new Error('this would be an axios error'));
+	(axios as unknown as Mock).mockRejectedValueOnce(new Error('this would be an axios error'));
 
 	await expect(async () => sendMessage('This message was sent from slack.test.ts'))
 		.rejects.toThrowError('this would be an axios error');

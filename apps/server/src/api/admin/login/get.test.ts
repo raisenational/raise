@@ -1,3 +1,4 @@
+import {test, expect} from 'vitest';
 import {call} from '../../../../local/testHelpers';
 import {main} from './get';
 

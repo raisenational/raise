@@ -1,3 +1,4 @@
+import {test, expect} from 'vitest';
 import {makePayment} from '../../local/testHelpers';
 import {get, insert} from '../helpers/db';
 import {paymentTable} from '../helpers/tables';

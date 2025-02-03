@@ -1,3 +1,4 @@
+import {test, expect, vi} from 'vitest';
 import {calcPaymentSchedule} from './paymentSchedule';
 
 test.each([
@@ -19,7 +20,7 @@ test.each([
 	['contribution-only', 0, 10_00],
 	['donation with contribution', 100_00, 10_00],
 ])('weekly %s', (description, donationAmount, contributionAmount) => {
-	Date.now = jest.fn(() => 1641220724000);
+	Date.now = vi.fn(() => 1641220724000);
 
 	const schedule = calcPaymentSchedule(donationAmount, contributionAmount, 'WEEKLY', 1643889600);
 
@@ -49,7 +50,7 @@ test.each([
 });
 
 test.each(new Array(48).fill(0).map((_, i) => [i / 2]))('when offset from UTC midnight is %s hours', (offsetHours) => {
-	Date.now = jest.fn(() => 1641168000000 + (offsetHours * 3.6e+6));
+	Date.now = vi.fn(() => 1641168000000 + (offsetHours * 3.6e+6));
 	const donationAmount = 100_00;
 	const contributionAmount = 10_00;
 
