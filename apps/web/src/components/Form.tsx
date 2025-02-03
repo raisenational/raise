@@ -389,8 +389,7 @@ export const Form = <T extends FieldValues>({
 							<LabelledInput label={v.label ?? String(k)} id={String(k)} type={nInputType as any} options={(v as any).selectOptions} {...register(k)} />
 							{showCurrent && (
 								<p className='word-wrap'>
-									Current value:
-									{v.formatter ? v.formatter(initialValues[k], initialValues) : (initialValues[k] ?? '—')}
+									Current value: {v.formatter ? v.formatter(initialValues[k], initialValues) : (initialValues[k] ?? '—')}
 								</p>
 							)}
 							<p className='word-wrap'>
