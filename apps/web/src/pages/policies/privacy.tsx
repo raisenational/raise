@@ -1,17 +1,15 @@
-import Helmet from 'react-helmet';
-
-import Page from '../../components/Page';
+import Head from 'next/head';
 import Section, {SectionTitle} from '../../components/Section';
 import {TopNavigation} from '../../components/Navigation';
 import Table from '../../components/Table';
 import Footer from '../../components/Footer';
 
 const PrivacyPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>Raise: Privacy Policy</title>
 			<meta property='og:title' content='Raise: Privacy Policy' />
-		</Helmet>
+		</Head>
 		<TopNavigation />
 
 		<Section className='text-left'>
@@ -100,7 +98,7 @@ const PrivacyPage = () => (
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 export default PrivacyPage;

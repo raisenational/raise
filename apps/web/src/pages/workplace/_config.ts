@@ -7,7 +7,6 @@ const config: ChapterConfig = {
 		prod: '01HDR7GG0W6A5085CMTEMMPJK8',
 	},
 	title: 'Raise Workplace',
-	brand: 'Raise',
 };
 
 export default config;

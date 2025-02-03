@@ -1,5 +1,5 @@
 import TimeAgo from 'react-timeago';
-import classNames from 'classnames';
+import classNames from 'clsx';
 import {format} from '@raise/shared';
 
 type Props = {

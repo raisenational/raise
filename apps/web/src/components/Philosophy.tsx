@@ -3,12 +3,6 @@ import confetti from 'canvas-confetti';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import {useEffect} from 'react';
-import chloeShieh from '../images/chloe-shieh.jpg';
-import elenaCaspall from '../images/elena-caspall.jpg';
-import jakeMendel from '../images/jake-mendel.jpg';
-import sp1 from '../images/summer-party-1.jpg';
-import sp2 from '../images/summer-party-2.jpg';
-import sp3 from '../images/summer-party-3.jpg';
 import Section, {SectionTitle} from './Section';
 import Quote from './Quote';
 import Link from './Link';
@@ -124,25 +118,25 @@ const Philosophy: React.FC<PhilosophyProps> = ({brand = 'Raise'}) => {
 							We invite students and young professionals to join us and celebrate the end of the academic year by making a personally significant donation to charity - an amount that will <span className='font-bold'>make you think about what and why you are giving</span>.
 						</p>
 
-						<Quote className='my-12' by='Chloe Shieh, Donor' headshotSrc={chloeShieh} imagePlacement='right' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='200'>
+						<Quote className='my-12' by='Chloe Shieh, Donor' headshotSrc='/shared/images/chloe-shieh.jpg' imagePlacement='right' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='200'>
 							It took me a long time to decide to join {brand} - I'd never given that much before - but when I finally donated, I saw our incredible impact and it really made donating an amazing positive experience.
 						</Quote>
 
 						<p className='my-4' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='200'>Then, at the end of the academic year, we come together as a community for our Summer Party. It's a time when we can reflect on and celebrate our impact, while enjoying the end of the year with a wonderful group of people.</p>
 
-						<Quote className='my-12' by='Elena Caspall, Donor' headshotSrc={elenaCaspall} imagePlacement='left' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='200'>
+						<Quote className='my-12' by='Elena Caspall, Donor' headshotSrc='/shared/images/elena-caspall.jpg' imagePlacement='left' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='200'>
 							It was at the Summer Party that I really appreciated just how powerful the idea of giving positively and deliberately can be. Everyone was having a great time, energised by the collective knowledge that together we'd done something incredible.
 						</Quote>
 
 						<div className='relative h-[34rem] md:-mt-10'>
 							<div className='absolute' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='100'>
-								<img src={sp1} alt='Summer Party' className='shadow-raise rounded border-white border-8 w-96 h-60 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out' />
+								<img src='/shared/images/summer-party-1.jpg' alt='Summer Party' className='shadow-raise rounded border-white border-8 w-96 h-60 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out' />
 							</div>
 							<div className='absolute right-0 top-32' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='250'>
-								<img src={sp2} alt='Summer Party' className='shadow-raise rounded border-white border-8 w-96 h-60 rotate-6 hover:rotate-3 transition-all duration-500 ease-out' />
+								<img src='/shared/images/summer-party-2.jpg' alt='Summer Party' className='shadow-raise rounded border-white border-8 w-96 h-60 rotate-6 hover:rotate-3 transition-all duration-500 ease-out' />
 							</div>
 							<div className=' absolute top-64' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='400'>
-								<img src={sp3} alt='Summer Party' className='shadow-raise rounded border-white border-8 w-96 h-60 -rotate-12 hover:-rotate-3 transition-all duration-500 ease-out' />
+								<img src='/shared/images/summer-party-3.jpg' alt='Summer Party' className='shadow-raise rounded border-white border-8 w-96 h-60 -rotate-12 hover:-rotate-3 transition-all duration-500 ease-out' />
 							</div>
 						</div>
 					</div>
@@ -160,7 +154,7 @@ const Philosophy: React.FC<PhilosophyProps> = ({brand = 'Raise'}) => {
 							Ultimately, <span className='font-bold'>we want to change the culture around charity</span>. We want charity to be something that is actively embraced and enjoyed, and a meaningful part of all of our lives.
 						</p>
 
-						<Quote className='my-12' by='Jake Mendel, Donor' headshotSrc={jakeMendel} imagePlacement='right' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='200'>
+						<Quote className='my-12' by='Jake Mendel, Donor' headshotSrc='/shared/images/jake-mendel.jpg' imagePlacement='right' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='200'>
 							{brand} really changed the way I approach giving. It's made me want to make deliberate giving a permanent part of my life even now I've graduated so, after joining {brand}, I decided to donate 10% of my income to effective charities every year.
 							<br />
 							<br />

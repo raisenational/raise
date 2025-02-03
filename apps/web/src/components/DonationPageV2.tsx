@@ -8,16 +8,15 @@ import {
 import {
 	format, calcMatchFunding, calcPaymentSchedule,
 } from '@raise/shared';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import confetti from 'canvas-confetti';
-import classNames from 'classnames';
+import classNames from 'clsx';
 import {QuestionMarkCircleIcon} from '@heroicons/react/outline';
 import {
-	useEffect, useLayoutEffect, useRef, useState, type JSX,
+	useEffect, useState, type JSX,
 } from 'react';
 import Button from './Button';
 import DonationCard from './DonationCard';
-import {animateStatsIn} from './IntroStats';
 import {type ResponseValues, useManualReq, useReq} from '../helpers/networking';
 import Modal from './Modal';
 import Section, {SectionTitle} from './Section';
@@ -25,13 +24,12 @@ import {LabelledInput} from './Form';
 import Alert from './Alert';
 import {parseMoney} from '../helpers/parse';
 import env from '../env/env';
-import {type Env, type Brand} from '../helpers/types';
-import Page from './Page';
+import {type Env} from '../helpers/types';
 import Navigation from './Navigation';
 import Footer from './Footer';
 import Link from './Link';
 import Tooltip from './Tooltip';
-import {Doubled, MoneyBox, Party} from '../images/Icons';
+import {Doubled, MoneyBox, Party} from './Icons';
 import Logo from './Logo';
 import {type PublicDonationRequest, type PublicFundraiser, type PublicPaymentIntentResponse} from '../helpers/generated-api-client';
 
@@ -44,7 +42,6 @@ type CharityDefinition = {
 type Props = {
 	title: string;
 	fundraiserIds: Record<Env['STAGE'], string>;
-	brand?: Brand;
 	charities: CharityDefinition[];
 	reflectionFormHref: string;
 };
@@ -54,26 +51,26 @@ type Props = {
  * Supports suggesting multiple effective charities
  */
 const DonationPageV2: React.FC<Props> = ({
-	title, fundraiserIds, brand, charities, reflectionFormHref,
+	title, fundraiserIds, charities, reflectionFormHref,
 }) => {
 	const fundraiserId = fundraiserIds[env.STAGE];
 	const [fundraiser, refetchFundraiser] = useReq('get /public/fundraisers/{fundraiserId}', {fundraiserId});
 	const [modalOpen, setModalOpen] = useState(false);
 
 	return (
-		<Page brand={brand}>
-			<Helmet>
+		<>
+			<Head>
 				<title>
 					{fundraiser.data?.publicName ?? title}
 					: Donate
 				</title>
 				<meta property='og:title' content={`${fundraiser.data?.publicName ?? title}: Donate`} />
 				<meta name='robots' content='noindex' />
-			</Helmet>
+			</Head>
 
 			<Navigation
 				left={[
-					{text: '< back to main site', href: '../'},
+					{text: '< back to main site', href: './'},
 				]}
 				right={[]}
 			/>
@@ -110,7 +107,7 @@ const DonationPageV2: React.FC<Props> = ({
 			</Section>
 
 			<Footer />
-		</Page>
+		</>
 	);
 };
 
@@ -125,20 +122,10 @@ type IntroFundraiserProps = {
 const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
 	title, charities, fundraiser, openModal, reflectionFormHref,
 }) => {
-	const ref = useRef<HTMLDivElement>(null);
-	const [hasAnimated, setHasAnimated] = useState(false);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useLayoutEffect(() => {
-		if (ref.current && fundraiser.data && !hasAnimated) {
-			animateStatsIn(ref.current);
-			setHasAnimated(true);
-		}
-	});
-
 	const percentageToTarget = fundraiser.data ? Math.min(Math.round((fundraiser.data.totalRaised / fundraiser.data.goal) * 100), 100) : 0;
 
 	return (
-		<div ref={ref}>
+		<div>
 			<h1 className='text-5xl md:text-7xl font-raise-header font-black'>{title}</h1>
 
 			<div className='mx-2 md:mx-0 md:flex my-4'>

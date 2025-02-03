@@ -1,4 +1,4 @@
-import {navigate} from 'gatsby';
+import {useRouter} from 'next/router';
 import {PlusSmIcon} from '@heroicons/react/outline';
 import {fixedGroups, format} from '@raise/shared';
 import {useState} from 'react';
@@ -19,6 +19,7 @@ const UsersPanel: React.FC = () => {
 	const groupMap = groups.data ? Object.fromEntries(groups.data.map((group) => [group.id, group.name])) : {};
 	const [newUserModalOpen, setNewUserModalOpen] = useState(false);
 	const req = useRawReq();
+	const router = useRouter();
 
 	return (
 		<Section>
@@ -62,7 +63,7 @@ const UsersPanel: React.FC = () => {
 					onSubmit={async (data) => {
 						const userId = (await req('post /admin/users', data)).data;
 						await refetchUsers();
-						navigate(`/admin/users/${userId}/`);
+						void router.push(`/admin/users/${userId}/`);
 					}}
 				/>
 			</Modal>

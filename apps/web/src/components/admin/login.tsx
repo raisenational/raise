@@ -1,4 +1,3 @@
-import {type RouteComponentProps} from '@gatsbyjs/reach-router';
 // We are using oidc-client rather than oidc-client-ts because it supports
 // the implicit flow, which is currently needed for Google authentication
 // https://github.com/authts/oidc-client-ts/issues/152
@@ -16,7 +15,7 @@ import Link from '../../components/Link';
 import {helpLink} from './_helpLink';
 import Footer from '../../components/Footer';
 
-const Login: React.FC<RouteComponentProps> = () => (
+const Login: React.FC = () => (
 	<div className='min-h-screen flex flex-col -mb-8'>
 		<Section className='mt-8 text-center flex-1'>
 			<Logo className='my-8 w-24' />
@@ -142,7 +141,7 @@ const ImpersonationLoginForm: React.FC<LoginFormProps> = ({setError, setLoading}
 	);
 };
 
-export const OauthCallbackPage: React.FC<RouteComponentProps> = () => {
+export const OauthCallbackPage: React.FC = () => {
 	const [error, setError] = useState<undefined | React.ReactNode | Error>();
 
 	useEffect(() => {

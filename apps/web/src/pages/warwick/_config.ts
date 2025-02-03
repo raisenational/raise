@@ -7,7 +7,6 @@ const config: ChapterConfig = {
 		prod: '01HNGXKKDV6X683MWJZY9BV8PE',
 	},
 	title: 'Raise Warwick',
-	brand: 'Raise',
 };
 
 export default config;

@@ -1,5 +1,6 @@
-# Build directory
-public/
+# Build files
+.next
+*.tsbuildinfo
 
 # Custom environment
 src/env/env.ts

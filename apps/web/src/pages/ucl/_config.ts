@@ -7,7 +7,6 @@ const config: ChapterConfig = {
 		prod: '01HNGXK2X5MV4QJ35PXE98K7BC',
 	},
 	title: 'Raise UCL',
-	brand: 'Raise',
 };
 
 export default config;

@@ -1,10 +1,8 @@
-import Helmet from 'react-helmet';
-
+import Head from 'next/head';
 import {
 	CakeIcon, CashIcon, GlobeIcon, HeartIcon, PresentationChartLineIcon, RefreshIcon, UserGroupIcon,
 } from '@heroicons/react/outline';
-import classNames from 'classnames';
-import Page from '../components/Page';
+import classNames from 'clsx';
 import Section, {SectionTitle} from '../components/Section';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -14,14 +12,14 @@ import Button from '../components/Button';
 import Link from '../components/Link';
 
 const IndexPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>Raise: Taking Raise Forwards</title>
 			<meta property='og:title' content='Raise: Taking Raise Forwards' />
-		</Helmet>
+		</Head>
 		<Navigation
 			left={[
-				{text: '< back to main site', href: '../'},
+				{text: '< back to main site', href: './'},
 			]}
 			right={[]}
 		/>
@@ -195,7 +193,7 @@ const IndexPage = () => (
 			</FAQs>
 		</Section>
 		<Footer />
-	</Page>
+	</>
 );
 
 const Point: React.FC<React.PropsWithChildren<{className?: string; icon: React.FC<{width?: number; height?: number}>}>> = ({className, icon: Icon, children}) => (

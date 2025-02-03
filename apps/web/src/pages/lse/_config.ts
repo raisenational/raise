@@ -7,7 +7,6 @@ const config: ChapterConfig = {
 		prod: '', // This will need to be updated with the actual LSE fundraiser ID when available
 	},
 	title: 'Raise LSE',
-	brand: 'Raise',
 };
 
 export default config;

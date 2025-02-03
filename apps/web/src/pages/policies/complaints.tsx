@@ -1,17 +1,15 @@
-import Helmet from 'react-helmet';
-
-import Page from '../../components/Page';
+import Head from 'next/head';
 import Section, {SectionTitle} from '../../components/Section';
 import {TopNavigation} from '../../components/Navigation';
 import Footer from '../../components/Footer';
 import Link from '../../components/Link';
 
 const ComplaintsPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>Raise: Complaints Policy</title>
 			<meta property='og:title' content='Raise: Complaints Policy' />
-		</Helmet>
+		</Head>
 		<TopNavigation />
 
 		<Section className='text-left'>
@@ -62,7 +60,7 @@ const ComplaintsPage = () => (
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 export default ComplaintsPage;

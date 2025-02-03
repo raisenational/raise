@@ -1,10 +1,9 @@
-import {type RouteComponentProps} from '@gatsbyjs/reach-router';
 import {asResponseValues, useReq, useRawReq} from '../../helpers/networking';
 import Section, {SectionTitle} from '../../components/Section';
 import PropertyEditor from '../../components/PropertyEditor';
 import {type Group} from '../../helpers/generated-api-client';
 
-const GroupPage: React.FC<RouteComponentProps & {groupId: string}> = ({groupId}) => {
+const GroupPage: React.FC<{groupId: string}> = ({groupId}) => {
 	const [groups, refetchGroups] = useReq('get /admin/groups');
 	const req = useRawReq();
 

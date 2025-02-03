@@ -1,17 +1,13 @@
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import haversineDistance from 'haversine-distance';
-import {navigate} from 'gatsby';
+import {useRouter} from 'next/router';
 import {useForm} from 'react-hook-form';
-
 import {LocationMarkerIcon} from '@heroicons/react/outline';
 import {useState} from 'react';
-import Page from '../components/Page';
 import Section, {SectionTitle} from '../components/Section';
 import {TopNavigation} from '../components/Navigation';
 import Footer from '../components/Footer';
 import Link from '../components/Link';
-import sp1 from '../images/summer-party-1.jpg';
-import sp2 from '../images/summer-party-2.jpg';
 import Button from '../components/Button';
 import {LabelledInput} from '../components/Form';
 import env from '../env/env';
@@ -131,11 +127,11 @@ const CHAPTERS: Chapter[] = [
 ];
 
 const ChaptersPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>Raise: Our Chapters</title>
 			<meta property='og:title' content='Raise: Our Chapters' />
-		</Helmet>
+		</Head>
 		<TopNavigation />
 
 		<Section className='text-left'>
@@ -150,8 +146,8 @@ const ChaptersPage = () => (
 					<ChapterBrowser />
 				</div>
 				<div className='ml-2 hidden md:block'>
-					<img src={sp1} alt='Summer Party' className='shadow-raise rounded border-white border-8 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out' />
-					<img src={sp2} alt='Summer Party' className='shadow-raise rounded border-white border-8 rotate-6 hover:rotate-3 transition-all duration-500 ease-out' />
+					<img src='/shared/images/summer-party-1.jpg' alt='Summer Party' className='shadow-raise rounded border-white border-8 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out' />
+					<img src='/shared/images/summer-party-2.jpg' alt='Summer Party' className='shadow-raise rounded border-white border-8 rotate-6 hover:rotate-3 transition-all duration-500 ease-out' />
 				</div>
 			</div>
 
@@ -166,7 +162,7 @@ const ChaptersPage = () => (
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 const ChapterBrowser = () => {
@@ -208,6 +204,8 @@ const ChapterBrowser = () => {
 		}))
 		.sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
 
+	const router = useRouter();
+
 	return (
 		<>
 			<LabelledInput
@@ -218,7 +216,7 @@ const ChapterBrowser = () => {
 				onKeyDown={(e) => {
 					if (e.key === 'Enter') {
 						if (filteredEntries.length === 1) {
-							navigate(filteredEntries[0].href);
+							void router.push(filteredEntries[0].href);
 						}
 
 						e.preventDefault();

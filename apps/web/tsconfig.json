@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "esnext",
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "lib": [
       "dom",
       "es2015",
@@ -13,12 +13,17 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "allowJs": true,
+    "incremental": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true
   },
   "include": [
-    "gatsby-browser.ts",
-    "gatsby-config.ts",
-    "gatsby-node.ts",
     "serverless.ts",
+    "vitest.config.ts",
     "src"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

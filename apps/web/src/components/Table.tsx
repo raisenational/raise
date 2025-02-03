@@ -1,6 +1,6 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import type React from 'react';
-import {navigate} from 'gatsby';
+import {useRouter} from 'next/router';
 import {type ResponseValues} from '../helpers/networking';
 import Alert from './Alert';
 
@@ -27,6 +27,8 @@ const Table = <I extends Record<string, any>>({
 	// Normalized properties
 	const nItems = ((items === undefined || Array.isArray(items)) ? items : items.data) ?? [];
 	const nPrimaryKey = primaryKey ?? (nItems && nItems[0] && 'id' in nItems[0] ? 'id' as keyof I : undefined);
+
+	const router = useRouter();
 
 	// Loading and error states
 	if (items && !Array.isArray(items)) {
@@ -61,7 +63,7 @@ const Table = <I extends Record<string, any>>({
 
 								if (href) {
 									if (!e.ctrlKey) {
-										navigate(href(item));
+										void router.push(href(item));
 									} else {
 										window.open(href(item), '_blank');
 									}

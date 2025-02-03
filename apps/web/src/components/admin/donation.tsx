@@ -1,4 +1,3 @@
-import {type RouteComponentProps} from '@gatsbyjs/reach-router';
 import {PlusSmIcon} from '@heroicons/react/outline';
 import {format} from '@raise/shared';
 import {useState} from 'react';
@@ -12,7 +11,7 @@ import {Form} from '../../components/Form';
 import DonationCard from '../../components/DonationCard';
 import {type PaymentCreation} from '../../helpers/generated-api-client';
 
-const DonationPage: React.FC<RouteComponentProps & {fundraiserId: string; donationId: string}> = ({fundraiserId, donationId}) => {
+const DonationPage: React.FC<{fundraiserId: string; donationId: string}> = ({fundraiserId, donationId}) => {
 	const [fundraisers] = useReq('get /admin/fundraisers');
 	const [donations, refetchDonations] = useReq('get /admin/fundraisers/{fundraiserId}/donations', {fundraiserId});
 	const [payments, refetchPayments] = useReq('get /admin/fundraisers/{fundraiserId}/donations/{donationId}/payments', {fundraiserId, donationId});
@@ -138,7 +137,7 @@ const DonationPage: React.FC<RouteComponentProps & {fundraiserId: string; donati
 					status: {label: 'Status'},
 				}}
 				items={asResponseValues(payments.data?.sort((a, b) => b.at - a.at), payments)}
-				href={(payment) => `/admin/${fundraiserId}/${donationId}/${payment.id}`}
+				href={(payment) => `/admin/?page=payment&fundraiserId=${fundraiserId}&donationId=${donationId}&paymentId=${payment.id}`}
 			/>
 
 			<SectionTitle className='mt-12'>Public preview</SectionTitle>

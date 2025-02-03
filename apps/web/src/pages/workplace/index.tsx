@@ -1,28 +1,25 @@
-import Helmet from 'react-helmet';
-
+import Head from 'next/head';
 import {UserGroupIcon} from '@heroicons/react/outline';
 import {convert} from '@raise/shared';
-import Page from '../../components/Page';
 import Section, {SectionTitle} from '../../components/Section';
 import Navigation from '../../components/Navigation';
 import Cover, {CTADown} from '../../components/Cover';
 import IntroStats from '../../components/IntroStats';
 import FAQs, {FAQ} from '../../components/FAQs';
 import Philosophy from '../../components/Philosophy';
-import {SocialIconV2} from '../../components/SocialIcon';
+import {SocialIcon} from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
 import Button from '../../components/Button';
-
-import {MoneyBox, Party} from '../../images/Icons';
+import {MoneyBox, Party} from '../../components/Icons';
 import Footer from '../../components/Footer';
 import Link from '../../components/Link';
 import config from './_config';
 
 const IndexPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>{config.title}</title>
-		</Helmet>
+		</Head>
 		<Cover>
 			<Navigation
 				left={[
@@ -39,7 +36,7 @@ const IndexPage = () => (
 			<Section className='px-8'>
 				<IntroStats
 					title={config.title}
-					tagline={`${config.brand} is a charitable movement encouraging people to adopt a positive approach towards deliberate, effective giving. Check out our national impact below.`}
+					tagline={'A charitable movement encouraging people to adopt a positive approach towards deliberate, effective giving. Check out our national impact below.'}
 					statistics={{
 						years: 6,
 						students: 2697,
@@ -125,12 +122,12 @@ const IndexPage = () => (
 		<Section id='contact'>
 			<SectionTitle>Get in Touch</SectionTitle>
 			<div className='inline-block text-left'>
-				<SocialIconV2 type='email' id='raisenational@gmail.com' />
+				<SocialIcon type='email' id='raisenational@gmail.com' />
 			</div>
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 export default IndexPage;

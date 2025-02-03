@@ -1,17 +1,15 @@
-import Helmet from 'react-helmet';
-
-import Page from '../../components/Page';
+import Head from 'next/head';
 import Section, {SectionTitle} from '../../components/Section';
 import {TopNavigation} from '../../components/Navigation';
 import Footer from '../../components/Footer';
 import Link from '../../components/Link';
 
 const PoliciesPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>Raise: Policies</title>
 			<meta property='og:title' content='Raise: Policies' />
-		</Helmet>
+		</Head>
 		<TopNavigation />
 
 		<Section className='text-left'>
@@ -24,7 +22,7 @@ const PoliciesPage = () => (
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 export default PoliciesPage;

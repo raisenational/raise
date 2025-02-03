@@ -5,7 +5,7 @@ import {
 	ListboxInput, ListboxButton, ListboxPopover, ListboxList, ListboxOption,
 } from '@reach/listbox';
 import {CheckIcon, ChevronDownIcon} from '@heroicons/react/outline';
-import classNames from 'classnames';
+import classNames from 'clsx';
 import {
 	Controller,
 	type FieldValues,

@@ -1,5 +1,4 @@
-import {type RouteComponentProps} from '@gatsbyjs/reach-router';
-import {navigate} from 'gatsby';
+import {useRouter} from 'next/router';
 import {
 	DownloadIcon, EyeIcon, EyeOffIcon, PlusSmIcon,
 } from '@heroicons/react/outline';
@@ -17,7 +16,7 @@ import {RequireGroup} from '../../helpers/security';
 import Link from '../../components/Link';
 import {type DonationEdits, type Fundraiser} from '../../helpers/generated-api-client';
 
-const FundraiserPage: React.FC<RouteComponentProps & {fundraiserId: string}> = ({fundraiserId}) => {
+const FundraiserPage: React.FC<{fundraiserId: string}> = ({fundraiserId}) => {
 	const [fundraisers, refetchFundraisers] = useReq('get /admin/fundraisers');
 	const fundraiser = asResponseValues(fundraisers.data?.find((f) => f.id === fundraiserId), fundraisers);
 	const [groups] = useReq('get /admin/groups');
@@ -102,6 +101,7 @@ const DonationsSummaryView: React.FC<{fundraiserId: string; fundraiser?: Fundrai
 	const [newDonationModalOpen, setNewDonationModalOpen] = useState(false);
 	const [showUncounted, setShowUncounted] = useState(false);
 	const axios = useRawAxios();
+	const router = useRouter();
 
 	const downloadMarketingEmails = downloadFn(
 		donations.data
@@ -294,7 +294,7 @@ const DonationsSummaryView: React.FC<{fundraiserId: string; fundraiser?: Fundrai
 					onSubmit={async (data) => {
 						const donationId = (await axios.post<string>(`/admin/fundraisers/${fundraiserId}/donations`, data)).data;
 						await refetchDonations();
-						navigate(`/admin/${fundraiserId}/${donationId}`);
+						void router.push(`/admin/${fundraiserId}/${donationId}`);
 					}}
 				/>
 			</Modal>
@@ -308,7 +308,7 @@ const DonationsSummaryView: React.FC<{fundraiserId: string; fundraiser?: Fundrai
 					matchFundingAmount: {label: 'Matched', formatter: (v: number) => format.amount(fundraiser?.currency, v)},
 				}}
 				items={asResponseValues(donations.data?.filter((d) => showUncounted || d.donationCounted).sort((a, b) => b.createdAt - a.createdAt), donations)}
-				href={(donation) => `/admin/${fundraiserId}/${donation.id}/`}
+				href={(donation) => `/admin/?page=donation&fundraiserId=${donation.fundraiserId}&donationId=${donation.id}`}
 			/>
 			<PropertyEditor
 				definition={{

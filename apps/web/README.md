@@ -2,7 +2,7 @@
 
 Front-end code and resources for the Raise platform.
 
-It is built with [Gatsby](https://www.gatsbyjs.com/), hosted in a [S3 bucket with CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/amazon-s3-amazon-cloudfront-a-match-made-in-the-cloud/), and is available at [joinraise.org](https://joinraise.org).
+It is built with [Next](https://nextjs.org/), hosted in a [S3 bucket with CloudFront](https://aws.amazon.com/blogs/networking-and-content-delivery/amazon-s3-amazon-cloudfront-a-match-made-in-the-cloud/), and is available at [joinraise.org](https://joinraise.org).
 
 ## 📝 Making small website changes
 
@@ -16,7 +16,7 @@ See [the main README](../../README.md) for general instructions.
 
 ### 💡 Technical details
 
-The site is built in the TypeScript language with the React framework. We use Gatsby to bundle this into a static site that loads quickly and supports a wide range of browsers.
+The site is built in the TypeScript language with the React framework. We use Next to bundle this into a static site that loads quickly and supports a wide range of browsers.
 
 For the donations platform, the site communicates with [the server](../server) using Axios.
 

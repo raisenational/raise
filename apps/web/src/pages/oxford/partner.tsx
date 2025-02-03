@@ -1,25 +1,19 @@
-import Helmet from 'react-helmet';
-
-import Page from '../../components/Page';
+import Head from 'next/head';
 import Section, {SectionNoPadding, SectionTitle} from '../../components/Section';
 import Navigation from '../../components/Navigation';
 import Cover from '../../components/Cover';
 import ContactForm from '../../components/ContactForm';
-import SocialIcon from '../../components/SocialIcon';
+import {SocialIcon} from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
-
-import instagram from '../../images/instagram.svg';
-import facebook from '../../images/facebook.svg';
-import email from '../../images/email.svg';
 import Button from '../../components/Button';
 import Footer from '../../components/Footer';
 
 const PartnerPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>Raise Oxford: Partner with us</title>
 			<meta property='og:title' content='Raise Oxford: Partner with us' />
-		</Helmet>
+		</Head>
 		<Cover>
 			<Navigation
 				left={[
@@ -94,15 +88,15 @@ const PartnerPage = () => (
 		<Section id='contact'>
 			<SectionTitle>Get in Touch</SectionTitle>
 			<div className='flex justify-center gap-8'>
-				<SocialIcon icon={instagram} alt='Instagram' href='https://www.instagram.com/raiseoxford/' />
-				<SocialIcon icon={facebook} alt='Facebook' href='https://www.facebook.com/raiseoxford' />
-				<SocialIcon icon={email} alt='Email' href='mailto:raiseoxford@gmail.com' />
+				<SocialIcon type='instagram' id='raiseoxford' />
+				<SocialIcon type='facebook' id='raiseoxford' />
+				<SocialIcon type='email' id='raiseoxford@gmail.com' />
 			</div>
 			<ContactForm className='mt-8' action='https://formspree.io/mvoqrejq' />
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 export default PartnerPage;

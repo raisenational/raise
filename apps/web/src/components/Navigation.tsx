@@ -1,6 +1,6 @@
 import {Disclosure, DisclosureButton, DisclosurePanel} from '@reach/disclosure';
 import {MenuIcon, XIcon} from '@heroicons/react/outline';
-import classNames from 'classnames';
+import classNames from 'clsx';
 import {useState} from 'react';
 import {SectionNoPadding} from './Section';
 import Button from './Button';

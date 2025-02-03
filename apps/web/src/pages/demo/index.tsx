@@ -1,27 +1,24 @@
-import Helmet from 'react-helmet';
-
+import Head from 'next/head';
 import {convert} from '@raise/shared';
-import Page from '../../components/Page';
 import Section, {SectionTitle} from '../../components/Section';
 import Navigation from '../../components/Navigation';
 import FAQs, {FAQ} from '../../components/FAQs';
 import Philosophy from '../../components/Philosophy';
-import {SocialIconV2} from '../../components/SocialIcon';
+import {SocialIcon} from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
 import Footer from '../../components/Footer';
 import Button from '../../components/Button';
-
-import {Doubled, MoneyBox, Party} from '../../images/Icons';
+import {Doubled, MoneyBox, Party} from '../../components/Icons';
 import IntroStats from '../../components/IntroStats';
 import Cover, {CTADown} from '../../components/Cover';
 
 const IndexPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<meta name='robots' content='noindex' />
 			<title>Raise Demo</title>
 			<meta property='og:title' content='Raise Demo' />
-		</Helmet>
+		</Head>
 
 		<Cover>
 			<Navigation
@@ -127,11 +124,11 @@ const IndexPage = () => (
 
 		<Section id='contact'>
 			<SectionTitle>Get in Touch</SectionTitle>
-			<SocialIconV2 type='email' id='raisenational@gmail.com' />
+			<SocialIcon type='email' id='raisenational@gmail.com' />
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 export default IndexPage;
