@@ -4,7 +4,7 @@ const config: ChapterConfig = {
 	fundraiserIds: {
 		local: '01FGNSHH6X6X878ZNBZKY44JQA', // Raise Demo
 		dev: '',
-		prod: '', // This will need to be updated with the actual LSE fundraiser ID when available
+		prod: '01JK51DB3JVDNEY2M55FEVXH16',
 	},
 	title: 'Raise LSE',
 };
