@@ -57,7 +57,7 @@ const UsersPage: React.FC = () => {
 						onSubmit={async (data) => {
 							const groupId = (await req('post /admin/groups', data)).data;
 							await refetchGroups();
-							void router.push(`/admin/groups/${groupId}/`);
+							void router.push(`/admin/?page=group&groupId=${groupId}`);
 						}}
 					/>
 				</Modal>

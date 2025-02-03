@@ -294,7 +294,7 @@ const DonationsSummaryView: React.FC<{fundraiserId: string; fundraiser?: Fundrai
 					onSubmit={async (data) => {
 						const donationId = (await axios.post<string>(`/admin/fundraisers/${fundraiserId}/donations`, data)).data;
 						await refetchDonations();
-						void router.push(`/admin/${fundraiserId}/${donationId}`);
+						void router.push(`/admin/?page=donation&fundraiserId=${fundraiserId}&donationId=${donationId}`);
 					}}
 				/>
 			</Modal>

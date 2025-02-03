@@ -99,7 +99,7 @@ const FundraisersPage: React.FC = () => {
 					onSubmit={async (data) => {
 						const fundraiserId = (await axios.post<string>('/admin/fundraisers', data)).data;
 						await refetchFundraisers();
-						void router.push(`/admin/${fundraiserId}`);
+						void router.push(`/admin/?page=fundraiser&fundraiserId=${fundraiserId}`);
 					}}
 				/>
 			</Modal>

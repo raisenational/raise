@@ -63,7 +63,7 @@ const UsersPanel: React.FC = () => {
 					onSubmit={async (data) => {
 						const userId = (await req('post /admin/users', data)).data;
 						await refetchUsers();
-						void router.push(`/admin/users/${userId}/`);
+						void router.push(`/admin/?page=user&userId=${userId}/`);
 					}}
 				/>
 			</Modal>
@@ -77,7 +77,7 @@ const UsersPanel: React.FC = () => {
 				}}
 
 				items={asResponseValues(users.data?.sort((a, b) => (a.name === b.name ? 0 : (a.name > b.name ? 1 : -1))), users)}
-				href={(user) => `/admin/users/${user.id}/`}
+				href={(user) => `/admin/?page=user&userId=${user.id}`}
 			/>
 		</Section>
 	);
