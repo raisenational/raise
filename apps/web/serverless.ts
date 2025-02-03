@@ -36,7 +36,8 @@ const serverlessConfiguration: AWS = {
 	],
 	provider: {
 		name: 'aws',
-		runtime: 'nodejs16.x',
+		// @ts-expect-error: serverless types are outdated, see https://github.com/serverless/typescript/issues/90
+		runtime: 'nodejs22.x',
 		region: 'eu-west-1',
 		stage: env.STAGE,
 		profile: 'raise-405129592067',
