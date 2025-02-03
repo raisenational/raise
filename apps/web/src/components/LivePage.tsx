@@ -1,21 +1,18 @@
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import confetti from 'canvas-confetti';
-
 import {convert, format} from '@raise/shared';
 import {useEffect} from 'react';
-import Page from './Page';
 import {useReq} from '../helpers/networking';
 import Alert from './Alert';
 import env from '../env/env';
-import {type Env, type Brand} from '../helpers/types';
+import {type Env} from '../helpers/types';
 
 type Props = {
 	title: string;
 	fundraiserIds: Record<Env['STAGE'], string>;
-	brand?: Brand;
 };
 
-const LivePage: React.FC<Props> = ({title, fundraiserIds, brand}) => {
+const LivePage: React.FC<Props> = ({title, fundraiserIds}) => {
 	const fundraiserId = fundraiserIds[env.STAGE];
 	const [fundraiser, refetchFundraiser] = useReq('get /public/fundraisers/{fundraiserId}', {fundraiserId});
 
@@ -69,15 +66,15 @@ const LivePage: React.FC<Props> = ({title, fundraiserIds, brand}) => {
 	});
 
 	return (
-		<Page brand={brand}>
-			<Helmet>
+		<>
+			<Head>
 				<title>
 					{fundraiser.data?.publicName ?? title}
 					: Live
 				</title>
 				<meta property='og:title' content={`${fundraiser.data?.publicName ?? title}: Live`} />
 				<meta name='robots' content='noindex' />
-			</Helmet>
+			</Head>
 
 			{fundraiser.error && <Alert className='m-16'>{fundraiser.error}</Alert>}
 			{fundraiser.data && (
@@ -97,7 +94,7 @@ const LivePage: React.FC<Props> = ({title, fundraiserIds, brand}) => {
 					</div>
 				</div>
 			)}
-		</Page>
+		</>
 	);
 };
 

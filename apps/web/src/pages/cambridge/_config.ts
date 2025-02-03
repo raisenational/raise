@@ -7,7 +7,6 @@ const config: ChapterConfig = {
 		prod: '01HNGXGGCRPEPPC97WTS1DAK8B',
 	},
 	title: 'MWA',
-	brand: 'MWA',
 };
 
 export default config;

@@ -1,17 +1,16 @@
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import {convert} from '@raise/shared';
-import Page from '../components/Page';
 import Section, {SectionTitle} from '../components/Section';
 import {TopNavigation} from '../components/Navigation';
 import Cover, {CTADown} from '../components/Cover';
 import IntroStats from '../components/IntroStats';
 import Philosophy from '../components/Philosophy';
 import Footer from '../components/Footer';
-import {SocialIconV2} from '../components/SocialIcon';
+import {SocialIcon} from '../components/SocialIcon';
 
 const IndexPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>
 				Raise: A charitable movement encouraging students to adopt a positive
 				approach towards deliberate, effective giving
@@ -20,7 +19,7 @@ const IndexPage = () => (
 				property='og:title'
 				content='Raise: A charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving'
 			/>
-		</Helmet>
+		</Head>
 		<Cover>
 			<TopNavigation />
 			<Section className='px-8 my-8'>
@@ -53,12 +52,12 @@ const IndexPage = () => (
 		<Section id='contact'>
 			<SectionTitle>Get in Touch</SectionTitle>
 			<div className='inline-block text-left'>
-				<SocialIconV2 type='email' id='raisenational@gmail.com' />
+				<SocialIcon type='email' id='raisenational@gmail.com' />
 			</div>
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 export default IndexPage;

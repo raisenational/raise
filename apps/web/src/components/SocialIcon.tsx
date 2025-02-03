@@ -1,22 +1,4 @@
-import email from '../images/email.svg';
-import facebook from '../images/facebook.svg';
-import instagram from '../images/instagram.svg';
-import twitter from '../images/twitter.svg';
-import tiktok from '../images/tiktok.svg';
-
-type Props = {
-	icon: string;
-	alt: string;
-	href: string;
-};
-
-const SocialIcon: React.FC<Props> = ({icon, alt, href}) => (
-	<a href={href}>
-		<img alt={alt} src={icon} width={36} />
-	</a>
-);
-
-type PropsV2 = {
+type SocialIconProps = {
 	type: 'email' | 'facebook' | 'instagram' | 'twitter' | 'tiktok';
 	/** Email address or username */
 	id: string;
@@ -27,7 +9,7 @@ type PropsV2 = {
 	linkHrefOverride?: string;
 };
 
-export const SocialIconV2: React.FC<PropsV2> = ({
+export const SocialIcon: React.FC<SocialIconProps> = ({
 	type, id,
 	linkTextOverride, linkHrefOverride,
 }) => (
@@ -37,20 +19,18 @@ export const SocialIconV2: React.FC<PropsV2> = ({
 	</a>
 );
 
-const toIconImage: Record<PropsV2['type'], string> = {
-	email,
-	facebook,
-	instagram,
-	twitter,
-	tiktok,
+const toIconImage: Record<SocialIconProps['type'], string> = {
+	email: '/shared/images/email.svg',
+	facebook: '/shared/images/facebook.svg',
+	instagram: '/shared/images/instagram.svg',
+	twitter: '/shared/images/twitter.svg',
+	tiktok: '/shared/images/tiktok.svg',
 };
 
-const toHref: Record<PropsV2['type'], (id: string) => string> = {
+const toHref: Record<SocialIconProps['type'], (id: string) => string> = {
 	email: (address: string) => `mailto:${address}`,
 	facebook: (username: string) => `https://www.facebook.com/${username}`,
 	instagram: (username: string) => `https://www.instagram.com/${username}`,
 	twitter: (username: string) => `https://www.twitter.com/${username}`,
 	tiktok: (username: string) => `https://www.tiktok.com/@${username}`,
 };
-
-export default SocialIcon;

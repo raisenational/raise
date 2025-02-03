@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 
 const Quote: React.FC<React.PropsWithChildren<{className?: string; by: string; headshotSrc?: string; imagePlacement?: 'left' | 'right'}>> = ({
 	children, className, by, headshotSrc, imagePlacement = 'right', ...props

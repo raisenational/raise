@@ -1,6 +1,6 @@
 import {Accordion, AccordionItem, AccordionButton} from '@reach/accordion';
 import {ChevronRightIcon} from '@heroicons/react/solid';
-import classNames from 'classnames';
+import classNames from 'clsx';
 
 type FaqProps = {
 	title: string;

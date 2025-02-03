@@ -1,5 +1,5 @@
 import {DialogOverlay, DialogContent} from '@reach/dialog';
-import classNames from 'classnames';
+import classNames from 'clsx';
 import {XIcon} from '@heroicons/react/outline';
 
 type Props = {

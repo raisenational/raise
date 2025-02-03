@@ -257,7 +257,7 @@ const useReqCore = <
 	data?: RequestData extends null ? undefined : RequestData;
 	options: UseReqOptions;
 }): UseReqCoreResult<Route, RequestData, Params, Result, ErrorResult> => {
-	// Hack for Gatsby SSR so that dynamic components appear to be loading
+	// Hack for SSR so that dynamic components appear to be loading
 	if (typeof window === 'undefined') {
 		return [{
 			loading: true,

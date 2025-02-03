@@ -1,5 +1,4 @@
-import {type RouteComponentProps} from '@gatsbyjs/reach-router';
-import {navigate} from 'gatsby';
+import {useRouter} from 'next/router';
 import {EyeIcon, EyeOffIcon, PlusSmIcon} from '@heroicons/react/outline';
 import {
 	convert, fixedGroups, format,
@@ -15,7 +14,7 @@ import PropertyEditor from '../../components/PropertyEditor';
 import {RequireGroup} from '../../helpers/security';
 import {type Fundraiser, type FundraiserEdits} from '../../helpers/generated-api-client';
 
-const FundraisersPage: React.FC<RouteComponentProps> = () => {
+const FundraisersPage: React.FC = () => {
 	const [fundraisers, refetchFundraisers] = useReq('get /admin/fundraisers');
 	const [groups] = useReq('get /admin/groups');
 	const groupMap = groups.data ? Object.fromEntries(groups.data.map((g) => [g.id, g.name])) : {};
@@ -24,6 +23,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
 	const [showArchived, setShowArchived] = useState(false);
 	// The year in 30 days time, to account for creating fundraisers in December ahead of early January starts
 	const suggestedCreationYear = new Date(Date.now() + 2592000000).getFullYear();
+	const router = useRouter();
 
 	return (
 		<Section>
@@ -99,7 +99,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
 					onSubmit={async (data) => {
 						const fundraiserId = (await axios.post<string>('/admin/fundraisers', data)).data;
 						await refetchFundraisers();
-						navigate(`/admin/${fundraiserId}`);
+						void router.push(`/admin/${fundraiserId}`);
 					}}
 				/>
 			</Modal>
@@ -113,7 +113,7 @@ const FundraisersPage: React.FC<RouteComponentProps> = () => {
 					totalRaised: {label: 'Raised', formatter: (v: number, i: Fundraiser) => format.amount(i.currency, v), className: 'w-36'},
 				}}
 				items={asResponseValues(fundraisers.data?.filter((d) => showArchived || !(d.archived ?? true)).sort((a, b) => b.activeFrom - a.activeFrom), fundraisers)}
-				href={(fundraiser) => `/admin/${fundraiser.id}/`}
+				href={(fundraiser) => `/admin/?page=fundraiser&fundraiserId=${fundraiser.id}`}
 			/>
 			<PropertyEditor
 				definition={{

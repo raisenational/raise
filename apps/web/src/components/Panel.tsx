@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 
 type Props = {
 	image?: string | React.ReactNode;

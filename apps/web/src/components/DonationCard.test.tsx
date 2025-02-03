@@ -1,8 +1,11 @@
+import {
+	beforeAll, test, expect, vi,
+} from 'vitest';
 import {render} from '@testing-library/react';
 import DonationCard from './DonationCard';
 
 beforeAll(() => {
-	Date.now = jest.fn(() => 1635699600000);
+	Date.now = vi.fn(() => 1635699600000);
 });
 
 test.each([

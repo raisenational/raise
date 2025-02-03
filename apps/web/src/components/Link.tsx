@@ -1,5 +1,5 @@
-import {Link as GatsbyLink} from 'gatsby';
-import classNames from 'classnames';
+import NextLink from 'next/link';
+import classNames from 'clsx';
 
 type Props = {
 	href?: string;
@@ -24,17 +24,17 @@ const Link: React.FC<Props> = ({
 
 	const isInternal = href && /^(\.?\/(?!\/))|(\.\.)/.test(href);
 
-	// Use Gatsby Link for internal links, and <a> for others
+	// Use NextLink for internal links, and <a> for others
 	if (isInternal && href) {
 		return (
-			<GatsbyLink
-				to={href}
+			<NextLink
+				href={href}
 				onClick={onClick}
 				className={classNames('cursor-pointer', className)}
 				{...anchorProps}
 			>
 				{children}
-			</GatsbyLink>
+			</NextLink>
 		);
 	}
 

@@ -1,5 +1,5 @@
 import {CheckCircleIcon, ExclamationCircleIcon, ExclamationIcon} from '@heroicons/react/outline';
-import classNames from 'classnames';
+import classNames from 'clsx';
 // eslint-disable-next-line no-restricted-imports
 import axios from 'axios';
 

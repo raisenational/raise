@@ -1,28 +1,20 @@
-import Helmet from 'react-helmet';
-
-import Page from '../../components/Page';
+import Head from 'next/head';
 import Section, {SectionNoPadding, SectionTitle} from '../../components/Section';
 import Navigation from '../../components/Navigation';
 import Cover from '../../components/Cover';
 import ContactForm from '../../components/ContactForm';
-import SocialIcon from '../../components/SocialIcon';
+import {SocialIcon} from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
-
-import instagram from '../../images/instagram.svg';
-import facebook from '../../images/facebook.svg';
-import email from '../../images/email.svg';
-import oliLane from '../../images/oli-lane.png';
 import Button from '../../components/Button';
 import Footer from '../../components/Footer';
 import Quote from '../../components/Quote';
-import config from './_config';
 
 const PartnerPage = () => (
-	<Page brand={config.brand}>
-		<Helmet>
+	<>
+		<Head>
 			<title>May Week Alternative: Partner with us</title>
 			<meta property='og:title' content='May Week Alternative: Partner with us' />
-		</Helmet>
+		</Head>
 		<Cover>
 			<Navigation
 				left={[
@@ -92,7 +84,7 @@ const PartnerPage = () => (
 					className='bg-raise-purple'
 				/>
 			</div>
-			<Quote className='my-16 max-w-2xl mx-auto' by='Oli Lane, Gearset' headshotSrc={oliLane}>
+			<Quote className='my-16 max-w-2xl mx-auto' by='Oli Lane, Gearset' headshotSrc='/shared/images/oli-lane.jpg'>
 				We love what the May Week Alternative team are building, and we're thrilled to be able to support them. The movement they've built in such a short time is inspiring - it's fantastic to be a part of growing it for the future!
 			</Quote>
 		</Section>
@@ -100,15 +92,15 @@ const PartnerPage = () => (
 		<Section id='contact'>
 			<SectionTitle>Get in Touch</SectionTitle>
 			<div className='flex justify-center gap-8'>
-				<SocialIcon icon={instagram} alt='Instagram' href='https://www.instagram.com/mayweekalternative' />
-				<SocialIcon icon={facebook} alt='Facebook' href='https://www.facebook.com/mayweekalternative' />
-				<SocialIcon icon={email} alt='Email' href='mailto:mayweekalternative@gmail.com' />
+				<SocialIcon type='instagram' id='mayweekalternative' />
+				<SocialIcon type='facebook' id='mayweekalternative' />
+				<SocialIcon type='email' id='mayweekalternative@gmail.com' />
 			</div>
 			<ContactForm className='mt-8' action='https://formspree.io/f/mogdgkjm' />
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 export default PartnerPage;

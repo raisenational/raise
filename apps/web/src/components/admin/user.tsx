@@ -1,11 +1,10 @@
-import {type RouteComponentProps} from '@gatsbyjs/reach-router';
 import {format} from '@raise/shared';
 import {asResponseValues, useReq, useRawReq} from '../../helpers/networking';
 import Section, {SectionTitle} from '../../components/Section';
 import PropertyEditor from '../../components/PropertyEditor';
 import {type User} from '../../helpers/generated-api-client';
 
-const UserPage: React.FC<RouteComponentProps & {userId: string}> = ({userId}) => {
+const UserPage: React.FC<{userId: string}> = ({userId}) => {
 	const [users, refetchUsers] = useReq('get /admin/users');
 	const [groups] = useReq('get /admin/groups');
 	const groupMap = groups.data ? Object.fromEntries(groups.data.map((group) => [group.id, group.name])) : {};

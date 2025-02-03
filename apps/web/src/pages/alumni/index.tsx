@@ -1,28 +1,26 @@
-import Helmet from 'react-helmet';
-
+import Head from 'next/head';
 import {UserGroupIcon} from '@heroicons/react/outline';
 import {convert} from '@raise/shared';
-import Page from '../../components/Page';
 import Section, {SectionTitle} from '../../components/Section';
 import Navigation from '../../components/Navigation';
 import Cover, {CTADown} from '../../components/Cover';
 import IntroStats from '../../components/IntroStats';
 import FAQs, {FAQ} from '../../components/FAQs';
 import Philosophy from '../../components/Philosophy';
-import {SocialIconV2} from '../../components/SocialIcon';
+import {SocialIcon} from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
 import Button from '../../components/Button';
 
-import {MoneyBox, Party} from '../../images/Icons';
+import {MoneyBox, Party} from '../../components/Icons';
 import Footer from '../../components/Footer';
 import Link from '../../components/Link';
 
 const IndexPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>Raise Alumni</title>
 			<meta property='og:title' content='Raise Alumni' />
-		</Helmet>
+		</Head>
 		<Cover>
 			<Navigation
 				left={[
@@ -151,13 +149,13 @@ const IndexPage = () => (
 		<Section id='contact'>
 			<SectionTitle>Get in Touch</SectionTitle>
 			<div className='inline-block text-left'>
-				<SocialIconV2 type='email' id='raisealumni@gmail.com' />
-				<SocialIconV2 type='facebook' id='groups/966154864287768' linkTextOverride='Raise/MWA Alumni!' />
+				<SocialIcon type='email' id='raisealumni@gmail.com' />
+				<SocialIcon type='facebook' id='groups/966154864287768' linkTextOverride='Raise/MWA Alumni!' />
 			</div>
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 export default IndexPage;

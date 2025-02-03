@@ -1,4 +1,3 @@
-import {type RouteComponentProps} from '@gatsbyjs/reach-router';
 import {fixedGroups, format} from '@raise/shared';
 import {FormProvider, useForm} from 'react-hook-form';
 import jsonexport from 'jsonexport/dist';
@@ -14,7 +13,7 @@ import {RequireGroup} from '../../helpers/security';
 import Alert from '../../components/Alert';
 import {type AuditLog} from '../../helpers/generated-api-client';
 
-const AuditPage: React.FC<RouteComponentProps> = () => {
+const AuditPage: React.FC = () => {
 	const req = useRawReq();
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<AxiosError | undefined>();

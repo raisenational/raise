@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import classNames from 'clsx';
 import {useState} from 'react';
 import Alert from './Alert';
 import Table from './Table';

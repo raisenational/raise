@@ -1,17 +1,14 @@
-import Helmet from 'react-helmet';
-
+import Head from 'next/head';
 import {convert, format} from '@raise/shared';
-import Page from '../../components/Page';
 import Section, {SectionTitle} from '../../components/Section';
 import Navigation from '../../components/Navigation';
 import Cover, {CTADown} from '../../components/Cover';
 import IntroStats from '../../components/IntroStats';
 import FAQs, {FAQ} from '../../components/FAQs';
 import Philosophy from '../../components/Philosophy';
-import {SocialIconV2} from '../../components/SocialIcon';
+import {SocialIcon} from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
-
-import {Doubled, MoneyBox, Party} from '../../images/Icons';
+import {Doubled, MoneyBox, Party} from '../../components/Icons';
 import Footer from '../../components/Footer';
 
 // NB: this only updates this page
@@ -19,11 +16,11 @@ import Footer from '../../components/Footer';
 const ANCHOR = ['gbp', 75_00] as const;
 
 const IndexPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>Raise Edinburgh</title>
 			<meta property='og:title' content='Raise Edinburgh' />
-		</Helmet>
+		</Head>
 		<Cover>
 			<Navigation
 				left={[
@@ -343,14 +340,14 @@ const IndexPage = () => (
 		<Section id='contact'>
 			<SectionTitle>Get in Touch</SectionTitle>
 			<div className='inline-block text-left'>
-				<SocialIconV2 type='email' id='raiseedinburgh@gmail.com' />
-				<SocialIconV2 type='instagram' id='raiseedinburgh' />
-				<SocialIconV2 type='facebook' id='raiseedinburgh' />
+				<SocialIcon type='email' id='raiseedinburgh@gmail.com' />
+				<SocialIcon type='instagram' id='raiseedinburgh' />
+				<SocialIcon type='facebook' id='raiseedinburgh' />
 			</div>
 		</Section>
 
 		<Footer />
-	</Page>
+	</>
 );
 
 export default IndexPage;

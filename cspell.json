@@ -2,7 +2,6 @@
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "ignorePaths": ["cspell.json", "node_modules"],
   "words": [
-    "gatsbyjs",
     "oidc",
     "signin",
     "joinraise",

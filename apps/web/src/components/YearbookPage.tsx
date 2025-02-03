@@ -1,8 +1,7 @@
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 
 import {FormProvider, useForm} from 'react-hook-form';
 import {convert} from '@raise/shared';
-import Page from './Page';
 import Section, {SectionTitle} from './Section';
 import Navigation from './Navigation';
 import FAQs, {FAQ} from './FAQs';
@@ -761,15 +760,15 @@ const YearbookPage: React.FC<{brand?: Brand}> = ({brand}) => {
 	const filteredEntries = ALL_ENTRIES.filter((e) => (chapterFilterValue === 'All chapters' || e.chapter === chapterFilterValue) && (yearFilterValue === 'All years' || e.year.toString() === yearFilterValue));
 
 	return (
-		<Page brand={brand}>
-			<Helmet>
+		<>
+			<Head>
 				<meta name='robots' content='noindex' />
 				<title>
 					{brand}
 					: Yearbook
 				</title>
 				<meta property='og:title' content={`${brand}: Yearbook`} />
-			</Helmet>
+			</Head>
 
 			<Navigation
 				left={[
@@ -851,7 +850,7 @@ const YearbookPage: React.FC<{brand?: Brand}> = ({brand}) => {
 			</Section>
 
 			<Footer />
-		</Page>
+		</>
 	);
 };
 

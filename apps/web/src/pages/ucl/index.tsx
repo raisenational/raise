@@ -1,28 +1,24 @@
-import Helmet from 'react-helmet';
-
+import Head from 'next/head';
 import {convert} from '@raise/shared';
-import Page from '../../components/Page';
 import Section, {SectionTitle} from '../../components/Section';
 import Navigation from '../../components/Navigation';
 import Cover, {CTADown} from '../../components/Cover';
 import IntroStats from '../../components/IntroStats';
 import FAQs, {FAQ} from '../../components/FAQs';
 import Philosophy from '../../components/Philosophy';
-import {SocialIconV2} from '../../components/SocialIcon';
-
+import {SocialIcon} from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
-
-import {Doubled, MoneyBox, Party} from '../../images/Icons';
+import {Doubled, MoneyBox, Party} from '../../components/Icons';
 import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 import config from './_config';
 
 const IndexPage = () => (
-	<Page>
-		<Helmet>
+	<>
+		<Head>
 			<title>{config.title}</title>
 			<meta property='og:title' content={config.title} />
-		</Helmet>
+		</Head>
 		<Cover>
 			<Navigation
 				left={[
@@ -301,12 +297,12 @@ const IndexPage = () => (
 		<Section id='contact'>
 			<SectionTitle>Get in Touch</SectionTitle>
 			<div className='inline-block text-left'>
-				<SocialIconV2 type='email' id='raiseucl@gmail.com' />
-				<SocialIconV2 type='instagram' id='raiseucl' />
+				<SocialIcon type='email' id='raiseucl@gmail.com' />
+				<SocialIcon type='instagram' id='raiseucl' />
 			</div>
 		</Section>
 		<Footer />
-	</Page>
+	</>
 );
 
 export default IndexPage;
