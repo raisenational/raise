@@ -74,7 +74,7 @@ const IndexPage = () => (
 			</div>
 
 			<div className='flex justify-center gap-2 mt-12'>
-				<Button href='https://forms.gle/f5eu3d2fifRWSsqs5'>
+				<Button href='https://forms.gle/XD59oXyCd9vQAcR28'>
 					Get Involved!
 				</Button>
 				<Button href='partner/'>Become a Partner</Button>
