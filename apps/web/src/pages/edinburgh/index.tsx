@@ -10,6 +10,7 @@ import {SocialIcon} from '../../components/SocialIcon';
 import Panel from '../../components/Panel';
 import {Doubled, MoneyBox, Party} from '../../components/Icons';
 import Footer from '../../components/Footer';
+import Button from '../../components/Button';
 
 // NB: this only updates this page
 // To update the donation page, use the admin portal
@@ -45,6 +46,7 @@ const IndexPage = () => (
 						protected: convert.moneyToPeopleProtected('gbp', 18658_00),
 					}}
 				/>
+				<Button variant="outline" size="large" className="mt-4 mb-12" href="donate/">Donate</Button>
 			</Section>
 			<CTADown text='How it works' href='#how-it-works' />
 		</Cover>
