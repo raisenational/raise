@@ -30,8 +30,8 @@ const IndexPage = () => (
 				]}
 				right={[
 					{
-						text: 'Donate!',
-						href: 'https://www.mayweekalternative.org.uk/donate/',
+						text: 'Get Involved!',
+						href: 'https://forms.gle/iXcRmzYLo3neQbyj6',
 					},
 				]}
 			/>
