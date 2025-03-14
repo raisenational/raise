@@ -22,7 +22,7 @@ const DonationPage: React.FC<{fundraiserId: string; donationId: string}> = ({fun
 	const fundraiser = asResponseValues(fundraisers.data?.find((f) => f.id === fundraiserId), fundraisers);
 	const donation = asResponseValues(donations.data?.find((d) => d.fundraiserId === fundraiserId && d.id === donationId), donations);
 	const giftAidEditWarning = 'We must hold accurate names and addresses for gift-aided donations as per the Income Tax Act 2007';
-	const amountEditWarning = 'Do not edit amounts unless you know what you are doing. This will not update the fundraiser totals.';
+	const amountEditWarning = 'You probably want to edit the amounts on the payments instead, not the donation. Editing the amount here will not update the fundraiser totals and makes it harder for us to do our accounting later.';
 	const frequencyEditWarning = 'Do not edit the frequency of payments unless you know what you are doing. This will not update the payments.';
 	const stripeCustomerIdWarning = 'Do not edit the Stripe customer ID unless you know what you are doing';
 	const stripePaymentMethodIdWarning = 'Do not edit the Stripe payment method id unless you know what you are doing';
