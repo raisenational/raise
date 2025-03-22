@@ -68,7 +68,7 @@
     "ts-loader": "^9.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4",
-    "vitest": "^3.0.4",
+    "vitest": "^3.0.5",
     "webpack": "^5.94.0",
     "webpack-node-externals": "^3.0.0"
   }
