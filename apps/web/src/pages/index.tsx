@@ -29,8 +29,8 @@ const IndexPage = () => (
 					statistics={{
 						years: 6,
 						students: 2697,
-						raised: 466495,
-						protected: convert.moneyToPeopleProtected('gbp', 466495_00),
+						raised: 512153,
+						protected: convert.moneyToPeopleProtected('gbp', 512153_73),
 					}}
 				/>
 
