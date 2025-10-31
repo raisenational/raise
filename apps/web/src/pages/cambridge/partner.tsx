@@ -26,7 +26,7 @@ const PartnerPage = () => (
 					{text: 'Partner', href: '.'},
 				]}
 				right={[
-					{text: 'Get Involved!', href: 'https://docs.google.com/forms/d/e/1FAIpQLSciX_CSJm47pwbuPvqoE2QMNKDZ_iv4zNJ6Z9vppWXu67TGFg/viewform'},
+					{text: 'Get Involved!', href: 'https://docs.google.com/forms/d/e/1FAIpQLSdoZcjGsCgUw1idGmQZ-4bW0qWCsaJGg2OI58mxTWaa5oIRPA/viewform?usp=dialog'},
 				]}
 			/>
 			<SectionNoPadding className='px-8'>
