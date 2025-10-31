@@ -31,7 +31,7 @@ const IndexPage = () => (
 				right={[
 					{
 						text: 'Get Involved!',
-						href: 'https://forms.gle/iXcRmzYLo3neQbyj6',
+						href: 'https://docs.google.com/forms/d/e/1FAIpQLSdoZcjGsCgUw1idGmQZ-4bW0qWCsaJGg2OI58mxTWaa5oIRPA/viewform?usp=dialog',
 					},
 				]}
 			/>
