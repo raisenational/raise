@@ -340,20 +340,6 @@ const IndexPage = () => (
 						as a real highlight!
 					</p>
 				</FAQ>
-
-				<FAQ title='What about COVID-19?'>
-					<p>
-						Naturally, we are aware that the COVID-19 pandemic may affect the
-						ways in which we can come together over the course of this year, and
-						we are keeping a close eye on the local and national guidance at
-						every stage. However, even if we are not able to come together as an
-						entire community, this will not stop us from marking the end of the
-						year in true MWA style. Whether in smaller groups or all together,
-						we aim to create a meaningful and enjoyable format to bring the
-						community together and celebrate our collective impact under these
-						different circumstances.
-					</p>
-				</FAQ>
 			</FAQs>
 		</Section>
 
