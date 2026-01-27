@@ -4,7 +4,7 @@ const config: ChapterConfig = {
 	fundraiserIds: {
 		local: '01FGNSHH6X6X878ZNBZKY44JQA', // Raise Demo
 		dev: '01FTPR1THYQP39EBE1GG9HD41T',
-		prod: '01JK51ABRF9YSKASQEFKB2D0AN',
+		prod: '01KFXJ63SEVY2NVFW20R8XMN59',
 	},
 	title: 'MWA',
 };
