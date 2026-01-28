@@ -33,6 +33,10 @@ const IndexPage = () => (
 						text: 'Get Involved!',
 						href: 'https://docs.google.com/forms/d/e/1FAIpQLSdoZcjGsCgUw1idGmQZ-4bW0qWCsaJGg2OI58mxTWaa5oIRPA/viewform?usp=dialog',
 					},
+					{
+						text: 'Donate!',
+						href: 'https://www.mayweekalternative.org.uk/donate/',
+					},
 				]}
 			/>
 			<Section className='px-8'>
@@ -75,7 +79,7 @@ const IndexPage = () => (
 			</div>
 
 			<div className='flex justify-center gap-2 mt-12'>
-				<Button href='https://forms.gle/XD59oXyCd9vQAcR28'>
+				<Button href='https://docs.google.com/forms/d/e/1FAIpQLSdoZcjGsCgUw1idGmQZ-4bW0qWCsaJGg2OI58mxTWaa5oIRPA/viewform?usp=dialog'>
 					Get Involved!
 				</Button>
 				<Button href='partner/'>Become a Partner</Button>
