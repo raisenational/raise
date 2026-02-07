@@ -54,7 +54,7 @@
     "haversine-distance": "^1.2.1",
     "jsdom": "^26.0.0",
     "jsonexport": "^3.2.0",
-    "next": "^15.4.10",
+    "next": "^15.5.10",
     "oidc-client": "^1.11.5",
     "postcss": "^8.4.31",
     "react": "^18.2.0",
