@@ -4,7 +4,7 @@ const config: ChapterConfig = {
 	fundraiserIds: {
 		local: '01FGNSHH6X6X878ZNBZKY44JQA', // Raise Demo
 		dev: '01FTPR9Y3Z7MXAXHJ145E7R2BK',
-		prod: '01HNGXJME7D5GWR1ZVSF7EHR9N',
+		prod: '01KFZF49RS31JFTJRHQAR88SGC',
 	},
 	title: 'Raise Durham',
 };
