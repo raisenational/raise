@@ -1088,6 +1088,10 @@ const DonationFormPaymentInner: React.FC<{formMethods: UseFormReturn<DonationFor
 					billing_details: {
 						name: watches.donorName,
 						email: watches.donorEmail,
+						address: {
+							country: 'GB',
+							postal_code: watches.addressPostcode || '',
+						},
 					},
 				},
 			},
