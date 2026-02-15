@@ -40,7 +40,7 @@
     "escape-html": "^1.0.3",
     "google-auth-library": "^7.10.0",
     "http-errors": "^2.0.0",
-    "jsonwebtoken": "^9.0.0",
+    "jsonwebtoken": "^9.0.3",
     "middy-middleware-jwt-auth": "^6.0.0",
     "source-map-support": "^0.5.21",
     "stripe": "^20.3.1",
