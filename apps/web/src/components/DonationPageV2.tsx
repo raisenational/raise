@@ -3,7 +3,7 @@ import {
 } from 'react-hook-form';
 import {loadStripe} from '@stripe/stripe-js';
 import {
-	Elements, CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements,
+	Elements, PaymentElement, useStripe, useElements,
 } from '@stripe/react-stripe-js';
 import {
 	format, calcMatchFunding, calcPaymentSchedule,
@@ -1016,23 +1016,25 @@ const DonationFormPaymentInner: React.FC<{formMethods: UseFormReturn<DonationFor
 			throw new Error('The payment system is still loading, please try again in a minute.');
 		}
 
-		const cardNumberElement = elements.getElement(CardNumberElement);
-		if (!cardNumberElement) {
-			throw new Error('The payment fields are still loading, please try again in a minute.');
+		const {error: submitError} = await elements.submit();
+		if (submitError) {
+			setError(submitError.message);
+			return;
 		}
 
-		const response = await stripe.confirmCardPayment(
-			stripeClientSecret,
-			{
-				payment_method: {
-					card: cardNumberElement,
+		const response = await stripe.confirmPayment({
+			elements,
+			clientSecret: stripeClientSecret,
+			confirmParams: {
+				payment_method_data: {
 					billing_details: {
 						name: watches.donorName,
 						email: watches.donorEmail,
 					},
 				},
 			},
-		);
+			redirect: 'if_required',
+		});
 
 		if (response.error) {
 			if (response.error.type === 'card_error' || response.error.type === 'validation_error' || response.error.code === 'payment_intent_authentication_failure') {
@@ -1060,74 +1062,8 @@ const DonationFormPaymentInner: React.FC<{formMethods: UseFormReturn<DonationFor
 
 	return (
 		<>
-			<div className='grid md:grid-cols-1 md:gap-2 mt-4'>
-				<div>
-					{ }
-					<label htmlFor='cardNumber' className='text-gray-700 font-bold block pb-1'>Card number</label>
-					<CardNumberElement
-						id='cardNumber'
-						options={{
-							classes: {
-								base: 'w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 outline-none rounded',
-								focus: 'border-gray-800 bg-white-important', // needs to be important to override bg-gray-200 style. can't use focus(-within):bg-white as not really focused
-								invalid: 'bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50',
-							},
-							style: {
-								base: {
-									fontSize: '16px',
-									fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-								},
-							},
-							disabled: isSubmitting,
-							showIcon: true,
-						}}
-					/>
-				</div>
-				<div className='grid md:grid-cols-2 md:gap-2'>
-					<div>
-						{ }
-						<label htmlFor='cardExpiry' className='text-gray-700 font-bold block pb-1'>Expiry date</label>
-						<CardExpiryElement
-							id='cardExpiry'
-							options={{
-								classes: {
-									base: 'w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 outline-none rounded',
-									focus: 'border-gray-800 bg-white-important', // needs to be important to override bg-gray-200 style. can't use focus(-within):bg-white as not really focused
-									invalid: 'bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50',
-								},
-								style: {
-									base: {
-										fontSize: '16px',
-										fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-									},
-								},
-								disabled: isSubmitting,
-							}}
-						/>
-					</div>
-
-					<div>
-						{ }
-						<label htmlFor='cardCvc' className='text-gray-700 font-bold block pb-1'>Security code</label>
-						<CardCvcElement
-							id='cardCvc'
-							options={{
-								classes: {
-									base: 'w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 outline-none rounded',
-									focus: 'border-gray-800 bg-white-important', // needs to be important to override bg-gray-200 style. can't use focus(-within):bg-white as not really focused
-									invalid: 'bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50',
-								},
-								style: {
-									base: {
-										fontSize: '16px',
-										fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-									},
-								},
-								disabled: isSubmitting,
-							}}
-						/>
-					</div>
-				</div>
+			<div className='mt-4'>
+				<PaymentElement />
 			</div>
 			{error && <Alert variant='error' className='mt-4'>{error}</Alert>}
 		</>

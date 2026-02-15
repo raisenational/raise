@@ -12,7 +12,7 @@ import {sendEmail} from '../../../helpers/email';
 import confirmation from '../../../helpers/email/confirmation';
 import {$StripeWebhookRequest} from '../../../schemas';
 
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, {apiVersion: '2020-08-27', typescript: true, timeout: 30_000});
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, {apiVersion: '2026-01-28.clover', typescript: true, timeout: 30_000});
 
 export const main = middyfy($StripeWebhookRequest, null, false, async (event) => {
 	const signature = event.headers['stripe-signature'];

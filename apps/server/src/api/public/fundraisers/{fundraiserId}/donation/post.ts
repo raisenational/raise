@@ -9,7 +9,7 @@ import {donationTable, fundraiserTable, paymentTable} from '../../../../../helpe
 import env from '../../../../../env/env';
 import {$PublicDonationRequest, $PublicPaymentIntentResponse} from '../../../../../schemas';
 
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, {apiVersion: '2020-08-27', typescript: true, timeout: 30_000});
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, {apiVersion: '2026-01-28.clover', typescript: true, timeout: 30_000});
 
 export const main = middyfy($PublicDonationRequest, $PublicPaymentIntentResponse, false, async (event) => {
 	const now = Math.floor(new Date().getTime() / 1000);
@@ -70,7 +70,7 @@ export const main = middyfy($PublicDonationRequest, $PublicPaymentIntentResponse
 	const paymentIntent = await stripe.paymentIntents.create({
 		amount: paymentSchedule.now.donationAmount + paymentSchedule.now.contributionAmount,
 		currency: fundraiser.currency,
-		payment_method_types: ['card'],
+		automatic_payment_methods: {enabled: true},
 		metadata: {
 			fundraiserId: event.pathParameters.fundraiserId,
 			donationId,
