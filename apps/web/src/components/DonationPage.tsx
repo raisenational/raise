@@ -854,7 +854,7 @@ const DonationFormPayment: React.FC<{formMethods: UseFormReturn<DonationFormResp
 					appearance: {
 						variables: {
 							colorPrimary: '#1f2937',
-							colorBackground: '#e5e7eb',
+							colorBackground: '#ffffff',
 							colorText: '#374151',
 							colorDanger: '#df1b41',
 							fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
