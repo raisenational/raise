@@ -1123,6 +1123,7 @@ const DonationFormPaymentInner: React.FC<{formMethods: UseFormReturn<DonationFor
 			<div className='mt-4'>
 				<PaymentElement options={{
 					wallets: {applePay: 'auto', googlePay: 'auto'},
+					fields: {billingDetails: {address: {country: 'never', postalCode: 'never'}}},
 				}} />
 			</div>
 			{error && <Alert variant='error' className='mt-4'>{error}</Alert>}
