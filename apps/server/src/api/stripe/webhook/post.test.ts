@@ -1137,7 +1137,7 @@ describe('handles database conflicts', () => {
 const makeStripeWebhookRequest = (override?: Partial<StripeWebhookRequest>, overridePi?: Partial<StripeWebhookRequest['data']['object']>): StripeWebhookRequest => ({
 	id: `evt_${ulid()}`,
 	object: 'event',
-	api_version: '2020-08-27',
+	api_version: '2026-01-28.clover',
 	data: {
 		object: {
 			id: `pi_${ulid()}`,

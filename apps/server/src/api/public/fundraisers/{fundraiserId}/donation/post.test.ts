@@ -70,7 +70,7 @@ test.each([
 	expect(paymentIntentCreate).toHaveBeenCalledWith({
 		amount: donationRequest.donationAmount + donationRequest.contributionAmount,
 		currency: fundraiser.currency,
-		payment_method_types: ['card'],
+		automatic_payment_methods: {enabled: true},
 		metadata: {
 			fundraiserId: fundraiser.id,
 			donationId: donations[0].id,

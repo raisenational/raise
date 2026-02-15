@@ -6,7 +6,7 @@ import {donationTable, fundraiserTable, paymentTable} from '../../../helpers/tab
 import env from '../../../env/env';
 import {sendMessageWithLogsLink} from '../../../helpers/slack';
 
-const stripe = new Stripe(env.STRIPE_SECRET_KEY, {apiVersion: '2020-08-27', typescript: true, timeout: 30_000});
+const stripe = new Stripe(env.STRIPE_SECRET_KEY, {apiVersion: '2026-01-28.clover', typescript: true, timeout: 30_000});
 
 export const main = middyfy(null, null, true, async (event) => {
 	if (event.auth.payload.subject !== 'scheduler') {
@@ -58,7 +58,7 @@ export const main = middyfy(null, null, true, async (event) => {
 		const paymentIntent = await stripe.paymentIntents.create({
 			amount: payment.donationAmount + payment.contributionAmount,
 			currency: fundraiser.currency,
-			payment_method_types: ['card'],
+			automatic_payment_methods: {enabled: true},
 			metadata: {
 				fundraiserId: payment.fundraiserId,
 				donationId: payment.donationId,

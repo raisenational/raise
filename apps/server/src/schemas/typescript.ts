@@ -426,7 +426,7 @@ export interface PublicPaymentIntentResponse {
 export interface StripeWebhookRequest {
   id: string;
   object: "event";
-  api_version: "2020-08-27";
+  api_version: string;
   data: {
     object: {
       id: string;
