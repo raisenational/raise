@@ -436,7 +436,7 @@ export const $StripeWebhookRequest: JSONSchema<S.StripeWebhookRequest> = {
 	properties: {
 		id: {type: 'string'},
 		object: {enum: ['event']},
-		api_version: {enum: ['2020-08-27']},
+		api_version: {type: 'string'},
 		data: {
 			type: 'object',
 			properties: {
