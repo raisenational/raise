@@ -4,7 +4,7 @@ const config: ChapterConfig = {
 	fundraiserIds: {
 		local: '01FGNSHH6X6X878ZNBZKY44JQA', // Raise Demo
 		dev: '01FTM7BCCKGNPZ1NMDMHZ758KJ',
-		prod: '01JK51B0Y2RB57FJS62M1XDZBB',
+		prod: '01KFZF37VJDDFV4H9YGC1FZ833',
 	},
 	title: 'Raise Edinburgh',
 };
