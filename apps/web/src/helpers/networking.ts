@@ -26,7 +26,7 @@ export type AuthState = {
 
 const LS_AUTH_KEY = 'raise_auth';
 const getAuthFromLocalStorage = (): AuthState | undefined => {
-	const value = typeof localStorage === 'undefined' ? null : localStorage.getItem(LS_AUTH_KEY);
+	const value = typeof window === 'undefined' ? null : window.localStorage.getItem(LS_AUTH_KEY);
 	if (value !== null) {
 		try {
 			const parsed = JSON.parse(value);
