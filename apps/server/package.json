@@ -20,7 +20,8 @@
     "type-check": "tsc",
     "lint": "eslint 'src' 'serverless.ts'",
     "lint:fix": "npm run lint -- --fix",
-    "config:aws": "serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --profile raise-405129592067 --overwrite"
+    "config:aws": "serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY --profile raise-405129592067 --overwrite",
+    "login": "ts-node --transpile-only local/cli-login.ts"
   },
   "engines": {
     "node": ">=22"
