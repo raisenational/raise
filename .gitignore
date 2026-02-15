@@ -23,3 +23,6 @@ yarn-error.log*
 
 # tmp dir created in MWA website build
 apps/web-mwa/
+
+# CLI login tokens
+.raise-auth.json

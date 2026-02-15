@@ -26,6 +26,30 @@ If the local server is running, your changes will immediately be applied, except
 1. Run `stripe listen --forward-to localhost:8001/stripe/webhook` ([more info](https://stripe.com/docs/stripe-cli/webhooks)).
 2. Update your the STRIPE_WEBHOOK_SECRET in [`src/env/local.ts`](./src/env/local.ts) to the secret output by the Stripe CLI
 
+### 🔑 CLI Login (for admin API access)
+
+To obtain admin API tokens from the command line (e.g. for use with curl or Claude Code):
+
+```
+npm run login -w apps/server
+```
+
+This opens Google sign-in in your browser, exchanges the token with the prod API, and saves JWT tokens to `.raise-auth.json` in the project root.
+
+To target a different environment, pass the API base URL:
+
+```
+npm run login -w apps/server -- http://localhost:8001
+```
+
+To use the saved tokens:
+
+```
+curl -H "Authorization: Bearer $(node -e "console.log(JSON.parse(require('fs').readFileSync('.raise-auth.json')).accessToken.value)")" http://localhost:8001/admin/fundraisers
+```
+
+The access token lasts 1 hour and the refresh token lasts 8 hours. Re-run the login command when they expire.
+
 ### 😕 Troubleshooting
 
 **Error: `Exception in thread "main" java.io.IOException: Failed to bind to 0.0.0.0/0.0.0.0:8004`**
