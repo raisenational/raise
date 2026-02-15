@@ -1076,7 +1076,7 @@ const DonationFormPaymentInner: React.FC<{formMethods: UseFormReturn<DonationFor
 
 		const {error: submitError} = await elements.submit();
 		if (submitError) {
-			setError(submitError.message);
+			setError(submitError.message ?? 'Something went wrong, please try again.');
 			return;
 		}
 
@@ -1122,6 +1122,7 @@ const DonationFormPaymentInner: React.FC<{formMethods: UseFormReturn<DonationFor
 		<>
 			<div className='mt-4'>
 				<PaymentElement options={{
+					readOnly: isSubmitting,
 					wallets: {applePay: 'auto', googlePay: 'auto'},
 					fields: {billingDetails: {address: {country: 'never', postalCode: 'never'}}},
 				}} />
