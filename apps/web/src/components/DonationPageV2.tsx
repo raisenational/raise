@@ -903,7 +903,65 @@ const DonationFormPayment: React.FC<{formMethods: UseFormReturn<DonationFormResp
 			)}
 			<DonationFormPaymentAmount watches={watches} piResponse={piResponse.data} />
 			<Elements
-				options={{clientSecret: piResponse.data.stripeClientSecret}}
+				options={{
+					clientSecret: piResponse.data.stripeClientSecret,
+					appearance: {
+						variables: {
+							colorPrimary: '#1f2937',
+							colorBackground: '#e5e7eb',
+							colorText: '#374151',
+							colorDanger: '#df1b41',
+							fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
+							fontSizeBase: '16px',
+							borderRadius: '4px',
+							spacingUnit: '4px',
+						},
+						rules: {
+							'.Input': {
+								backgroundColor: '#e5e7eb',
+								border: '1px solid #e5e7eb',
+								boxShadow: 'none',
+								transition: 'all 150ms',
+							},
+							'.Input:hover': {
+								backgroundColor: '#f3f4f6',
+								borderColor: '#9ca3af',
+							},
+							'.Input:focus': {
+								backgroundColor: '#ffffff',
+								borderColor: '#1f2937',
+								boxShadow: 'none',
+							},
+							'.Input--invalid': {
+								backgroundColor: '#fee2e2',
+								borderColor: '#fee2e2',
+							},
+							'.Input--invalid:hover': {
+								backgroundColor: '#fef2f2',
+								borderColor: '#f87171',
+							},
+							'.Input--invalid:focus': {
+								backgroundColor: '#fef2f2',
+								borderColor: '#991b1b',
+							},
+							'.Label': {
+								fontWeight: '700',
+								color: '#374151',
+							},
+							'.Tab': {
+								border: '1px solid #e5e7eb',
+								boxShadow: 'none',
+							},
+							'.Tab:hover': {
+								borderColor: '#9ca3af',
+							},
+							'.Tab--selected': {
+								borderColor: '#1f2937',
+								boxShadow: 'none',
+							},
+						},
+					},
+				}}
 				stripe={stripePromise}
 			>
 				<DonationFormPaymentInner formMethods={formMethods} watches={watches} stripeClientSecret={piResponse.data.stripeClientSecret} setPayButton={setPayButton} onPaymentSuccess={onPaymentSuccess} />
@@ -1063,7 +1121,9 @@ const DonationFormPaymentInner: React.FC<{formMethods: UseFormReturn<DonationFor
 	return (
 		<>
 			<div className='mt-4'>
-				<PaymentElement />
+				<PaymentElement options={{
+					wallets: {applePay: 'auto', googlePay: 'auto'},
+				}} />
 			</div>
 			{error && <Alert variant='error' className='mt-4'>{error}</Alert>}
 		</>
