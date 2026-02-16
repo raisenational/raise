@@ -30,7 +30,7 @@ const IndexPage = () => (
 				right={[
 					{
 						text: 'Become a Rep!',
-						href: 'https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link',
+						href: 'https://docs.google.com/forms/d/e/1FAIpQLSdxjFst75hu6TmkhJMEfvThfaHuAkvX8yMQq-Q2V0N5_xsPfA/viewform?usp=header',
 					},
 					// { text: "Get Involved!", href: "https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link" },
 				]}
@@ -40,10 +40,10 @@ const IndexPage = () => (
 					title='Raise Durham'
 					tagline='Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.'
 					statistics={{
-						years: 1 + 1,
-						students: 122 + 108,
-						raised: 30714 + 13430,
-						protected: 37867 + convert.moneyToPeopleProtected('gbp', 1334075),
+						years: 1 + 1 + 1,
+						students: 108 + 29 + 18,
+						raised: 13430 + 3137 + 1943,
+						protected: convert.moneyToPeopleProtected('gbp', 18510_00),
 					}}
 				/>
 				<Button variant='outline' size='large' className='mt-4 mb-12' href='donate/'>Donate</Button>
@@ -92,7 +92,7 @@ const IndexPage = () => (
 					<p>
 						Awesome! You can get involved by filling in the form
 						{' '}
-						<a href='https://docs.google.com/forms/d/e/1FAIpQLSfuFT0mYeX0mXhy4Cu5QFhYc4NZOcCO2Q2kWSSQhv-I-lsaCA/viewform?usp=sf_link'>here</a>
+						<a href='https://docs.google.com/forms/d/e/1FAIpQLSdxjFst75hu6TmkhJMEfvThfaHuAkvX8yMQq-Q2V0N5_xsPfA/viewform?usp=header'>here</a>
 						!
 					</p>
 				</FAQ>
