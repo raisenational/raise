@@ -87,30 +87,19 @@ const IndexPage = () => (
 			<FAQs>
 				<FAQ title='How can I get involved?'>
 					<p>
-						We're so pleased you're interested in Raise, and look forward to
-						celebrating with you! Here are a few ways you can help grow the
-						movement:
-					</p>
-					<p><b>Spread the word:</b> Letting your friends know about Raise is one of the most valuable things you can do - aside from the huge impact of their donations, celebrating is more fun when we do it together! Try explaining our philosophy, showing them our website, or sharing our posts on social media.</p>
-					<p>
-						<b>Committee:</b>
-						{' '}
-						If you want to shape the future of Raise, apply to
-						join our committee which coordinates everything we do, from events
-						and partnerships to fundraising and publicity. To apply, contact us
-						via <a href='./#contact'>our details below</a> as we're always
-						interested in hearing from people who want to get involved!
+						There are a few ways to get involved with Raise Manchester. The best
+						way to join is to make a donation and come to our summer celebration
+						— just head to the <a href='donate/'>donate page</a> to get started.
 					</p>
 					<p>
-						<b>Sponsorship:</b>
+						If you'd like to help run Raise, we recruit new committee members at
+						the start of each academic year — follow us on Instagram
+						(@RaiseManchester) to hear when applications open. You can also
+						spread the word to friends, or email us at
 						{' '}
-						The support of our generous partners is
-						invaluable for helping us to put on our summer celebration at the
-						end of each year. If you know anyone who may be interested in
-						supporting Raise and allowing us to grow even more, please do
+						<a href='mailto:manchester@joinraise.org'>manchester@joinraise.org</a>
 						{' '}
-						<a href='./#contact'>get in touch</a>
-						.
+						with any questions.
 					</p>
 				</FAQ>
 
@@ -188,6 +177,20 @@ const IndexPage = () => (
 					<p>
 						Note: All matched funding will still go to the Against Malaria
 						Foundation.
+					</p>
+				</FAQ>
+
+				<FAQ title='Can I claim Gift Aid on my donation?'>
+					<p>
+						Yes — if you're a UK taxpayer, Raise can claim Gift Aid on your
+						donation, boosting it by 25% at no cost to you. When you donate
+						through our platform, you'll be asked if you'd like to enable Gift
+						Aid. Make sure to tick yes if you pay UK income tax or capital gains
+						tax.
+					</p>
+					<p>
+						Note: if you're a student who doesn't currently pay income tax, you
+						may not be eligible — check the HMRC website if you're unsure.
 					</p>
 				</FAQ>
 
@@ -274,20 +277,6 @@ const IndexPage = () => (
 						fantastic chance to reflect on the impact of our donations and many
 						of those who've attended elsewhere in recent years have described it
 						as a real highlight!
-					</p>
-				</FAQ>
-
-				<FAQ title='What about COVID-19?'>
-					<p>
-						Naturally, we are aware that the COVID-19 pandemic may affect the
-						ways in which we can come together over the course of this year, and
-						we are keeping a close eye on the local and national guidance at
-						every stage. However, even if we are not able to come together as an
-						entire community, this will not stop us from marking the end of the
-						year in true Raise style. Whether in smaller groups or all together,
-						we aim to create a meaningful and enjoyable format to bring the
-						community together and celebrate our collective impact under these
-						different circumstances.
 					</p>
 				</FAQ>
 			</FAQs>
