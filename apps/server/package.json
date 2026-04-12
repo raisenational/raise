@@ -36,7 +36,7 @@
     "@raise/shared": "*",
     "@smithy/node-http-handler": "^2.1.7",
     "ajv": "^8.18.0",
-    "axios": "^1.13.5",
+    "axios": "^1.15.0",
     "escape-html": "^1.0.3",
     "google-auth-library": "^7.10.0",
     "http-errors": "^2.0.0",
