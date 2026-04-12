@@ -16,7 +16,7 @@
     "build:prod": "shx cp src/env/prod.ts src/env/env.ts && npm run build:common",
     "build:common": "npm run build:common:raise && npm run build:common:mwa",
     "build:common:raise": "npm run type-check && shx rm -rf dist/raise && RAISE_BRAND=RAISE next build",
-    "build:common:mwa": "shx rm -rf ../web-mwa && shx mkdir ../web-mwa && shx cp -r * ../web-mwa && cd ../web-mwa && shx sed -i \"s/@raise\\/web/@raise\\/web-mwa/g\" package.json && mv src/pages src/pages-all && mv src/pages-all/cambridge src/pages && shx sed -i \"s/from '..\\//from '/g\" src/pages/* && cp src/pages-all/_*.tsx src/pages && shx rm -rf src/pages-all&& npm run type-check && shx rm -rf ../web/dist/mwa && RAISE_BRAND=MWA next build && cd ../web && mv ../web-mwa/dist/mwa dist/mwa && shx rm -rf ../web-mwa",
+    "build:common:mwa": "shx rm -rf ../web-mwa && shx mkdir ../web-mwa && shx cp -r * ../web-mwa && cd ../web-mwa && shx sed -i \"s/@raise\\/web/@raise\\/web-mwa/g\" package.json && mv src/pages src/pages-all && mv src/pages-all/cambridge src/pages && shx sed -i \"s/from '..\\//from '/g\" src/pages/* && cp src/pages-all/_*.tsx src/pages && shx rm -rf src/pages-all&& npm run type-check && shx rm -rf ../web/dist/mwa && RAISE_BRAND=MWA npx next build && cd ../web && mv ../web-mwa/dist/mwa dist/mwa && shx rm -rf ../web-mwa",
     "type-check": "tsc",
     "deploy:dev": "npm run build:dev && serverless deploy --verbose",
     "deploy:prod": "npm run build:prod && serverless deploy --verbose"
@@ -54,7 +54,7 @@
     "haversine-distance": "^1.2.1",
     "jsdom": "^26.0.0",
     "jsonexport": "^3.2.0",
-    "next": "^15.5.10",
+    "next": "^15.5.15",
     "oidc-client": "^1.11.5",
     "postcss": "^8.4.31",
     "react": "^18.2.0",
