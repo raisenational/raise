@@ -56,7 +56,7 @@
     "jsonexport": "^3.2.0",
     "next": "^15.5.15",
     "oidc-client": "^1.11.5",
-    "postcss": "^8.4.31",
+    "postcss": "^8.5.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.2",
