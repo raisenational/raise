@@ -20,7 +20,7 @@ const IndexPage = () => (
 		<Cover>
 			<Navigation
 				left={[
-					{text: 'Home', href: '/oxford/'},
+					{text: 'Home', href: '/'},
 					{text: 'How It Works', href: '/oxford/#how-it-works'},
 					{text: 'FAQs', href: '/oxford/#faq'},
 					{text: 'Our Philosophy', href: '/oxford/#our-philosophy'},

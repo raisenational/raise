@@ -21,7 +21,7 @@ const IndexPage = () => (
 		<Cover>
 			<Navigation
 				left={[
-					{text: 'Home', href: '.'},
+					{text: 'Home', href: '/'},
 					{text: 'How It Works', href: '#how-it-works'},
 					{text: 'FAQs', href: '#faq'},
 					{text: 'Our Philosophy', href: '#our-philosophy'},
