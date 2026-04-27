@@ -33,7 +33,7 @@ const IndexPage = () => (
 				]}
 				right={[
 					{text: 'Donate', href: 'donate/'},
-					{text: 'Get Invloved!', href: 'mailto:raiseedinburgh@gmail.com'},
+					{text: 'Get Involved!', href: 'mailto:raiseedinburgh@gmail.com'},
 				]}
 			/>
 			<Section className='px-8'>
