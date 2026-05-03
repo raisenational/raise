@@ -36,10 +36,10 @@ const IndexPage = () => (
 					title='Raise Leeds'
 					tagline='Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our national impact below.'
 					statistics={{
-						years: 6,
-						students: 2697,
-						raised: 466495,
-						protected: convert.moneyToPeopleProtected('gbp', 466495_00),
+						years: 1,
+						students: 7,
+						raised: 560,
+						protected: convert.moneyToPeopleProtected('gbp', 560_00),
 					}}
 				/>
 				<Button variant='outline' size='large' className='mt-4 mb-12' href='donate/'>Donate</Button>

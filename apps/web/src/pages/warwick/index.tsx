@@ -38,10 +38,10 @@ const IndexPage = () => (
 					title='Raise Warwick'
 					tagline='Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.'
 					statistics={{
-						years: 2,
-						students: 66,
-						raised: 6577,
-						protected: convert.moneyToPeopleProtected('gbp', 6577_00),
+						years: 3,
+						students: 92,
+						raised: 11696,
+						protected: convert.moneyToPeopleProtected('gbp', 11696_90),
 					}}
 				/>
 				<Button variant='outline' size='large' className='mt-4 mb-12' href='donate/'>Donate</Button>
