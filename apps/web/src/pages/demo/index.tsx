@@ -36,7 +36,7 @@ const IndexPage = () => (
 					title='Raise Demo'
 					tagline='Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our national impact below.'
 					statistics={{
-						years: 8,
+						years: 9,
 						students: 3576,
 						raised: 580068,
 						protected: convert.moneyToPeopleProtected('gbp', 580068_16),
