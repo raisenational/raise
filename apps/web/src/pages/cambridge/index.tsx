@@ -44,10 +44,10 @@ const IndexPage = () => (
 					title='May Week Alternative'
 					tagline='MWA is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving.'
 					statistics={{
-						years: 7,
+						years: 9,
 						students: 1755,
-						raised: 314767,
-						protected: 378337 + convert.moneyToPeopleProtected('gbp', 5273585),
+						raised: 371265,
+						protected: convert.moneyToPeopleProtected('gbp', 371265_03),
 					}}
 				/>
 				<Button variant='outline' size='large' className='mt-4 mb-12' href='donate/'>Donate</Button>

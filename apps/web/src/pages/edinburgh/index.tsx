@@ -41,10 +41,10 @@ const IndexPage = () => (
 					title='Raise Edinburgh'
 					tagline='Raise is a charitable movement encouraging students to adopt a positive approach towards deliberate, effective giving. Check out our national impact below.'
 					statistics={{
-						years: 2,
-						students: 174,
-						raised: 18658,
-						protected: convert.moneyToPeopleProtected('gbp', 18658_00),
+						years: 4,
+						students: 229,
+						raised: 24714,
+						protected: convert.moneyToPeopleProtected('gbp', 24714_64),
 					}}
 				/>
 				<Button variant='outline' size='large' className='mt-4 mb-12' href='donate/'>Donate</Button>
