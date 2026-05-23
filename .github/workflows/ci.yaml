@@ -47,4 +47,4 @@ jobs:
       # Deployment to prod environment
       - name: "web: Deploy to prod environment"
         if: github.ref == 'refs/heads/master'
-        run: npx turbo deploy:prod --filter web
+        run: npx turbo deploy:prod --filter @raise/web
