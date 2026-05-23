@@ -48,7 +48,7 @@ Summary: start everything with `npx turbo start`, and test with `npx turbo test`
 | `npx turbo deploy:dev`  | Deploy to dev environment                      |
 | `npx turbo deploy:prod` | Deploy to prod environment                     |
 
-All commands are run from the root of the repository. Any of the turbo commands can be filtered with `--filter <app>`, for example to start just `web` run `npx turbo start --filter web`
+All commands are run from the root of the repository. Any of the turbo commands can be filtered with `--filter <app>`, for example to start just `web` run `npx turbo start --filter @raise/web`
 
 These scripts are defined in the relevant `package.json` files. We keep these scripts as simple to use as possible, so developers need to run very few commands. We also keep these scripts consistent so that they behave as expected across the repo, and we need less config overrides.
 
