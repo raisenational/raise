@@ -85,7 +85,7 @@ test('rethrows axios error', async () => {
 	(axios as unknown as Mock).mockResolvedValueOnce({data: {ok: false, error: 'not_in_channel'}});
 
 	await expect(async () => sendMessage('This message was sent from slack.test.ts'))
-		.rejects.toThrowError('Slack API: not_in_channel');
+		.rejects.toThrow('Slack API: not_in_channel');
 
 	expect(axios).toHaveBeenCalledTimes(1);
 });
@@ -94,7 +94,7 @@ test('rethrows Slack API error', async () => {
 	(axios as unknown as Mock).mockRejectedValueOnce(new Error('this would be an axios error'));
 
 	await expect(async () => sendMessage('This message was sent from slack.test.ts'))
-		.rejects.toThrowError('this would be an axios error');
+		.rejects.toThrow('this would be an axios error');
 
 	expect(axios).toHaveBeenCalledTimes(1);
 });

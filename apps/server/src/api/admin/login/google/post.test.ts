@@ -1,7 +1,6 @@
 import {
 	beforeEach, test, expect, vi, type Mock,
 } from 'vitest';
-import {OAuth2Client} from 'google-auth-library';
 import createHttpError from 'http-errors';
 import {call} from '../../../../../local/testHelpers';
 import env from '../../../../env/env';
@@ -20,10 +19,13 @@ const googleTokenPayload = {
 };
 
 const getPayload = vi.fn();
-const verifyIdToken = vi.fn();
+const {verifyIdToken} = vi.hoisted(() => ({verifyIdToken: vi.fn()}));
 
 vi.mock('google-auth-library', () => ({
-	OAuth2Client: vi.fn(),
+	// eslint-disable-next-line prefer-arrow-callback -- vitest 4 requires a non-arrow implementation to be constructed with `new`
+	OAuth2Client: vi.fn().mockImplementation(function () {
+		return {verifyIdToken};
+	}),
 }));
 
 vi.mock('../../../../helpers/login', () => ({
@@ -43,9 +45,6 @@ beforeEach(() => {
 
 		throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`);
 	});
-	(OAuth2Client as unknown as Mock).mockImplementation(() => ({
-		verifyIdToken,
-	}));
 	verifyIdToken.mockResolvedValue({getPayload});
 });
 

@@ -5,5 +5,5 @@ import sendSlackTestMessage from './sendSlackTestMessage';
 test('calls sendMessage once', async () => {
 	await sendSlackTestMessage.run();
 
-	expect(sendMessage).toBeCalledTimes(1);
+	expect(sendMessage).toHaveBeenCalledTimes(1);
 });

@@ -1,25 +1,26 @@
 import {
-	beforeEach, test, expect, vi, type Mock,
+	test, expect, vi,
 } from 'vitest';
-import {SendEmailCommand} from '@aws-sdk/client-sesv2';
 import {sendEmail} from './email';
 import renderHtml from './email/renderHtml';
 
 vi.unmock('./email');
 
-const send = vi.fn();
+const {send} = vi.hoisted(() => ({send: vi.fn()}));
 vi.mock('@aws-sdk/client-sesv2', () => ({
-	SESv2Client: vi.fn().mockImplementation(() => ({
-		get send() {
-			return send;
-		},
-	})),
-	SendEmailCommand: vi.fn(),
+	// eslint-disable-next-line prefer-arrow-callback -- vitest 4 requires a non-arrow implementation to be constructed with `new`
+	SESv2Client: vi.fn().mockImplementation(function () {
+		return {
+			get send() {
+				return send;
+			},
+		};
+	}),
+	// eslint-disable-next-line prefer-arrow-callback -- vitest 4 requires a non-arrow implementation to be constructed with `new`
+	SendEmailCommand: vi.fn().mockImplementation(function (input: unknown) {
+		return {_input: input};
+	}),
 }));
-
-beforeEach(() => {
-	(SendEmailCommand as unknown as Mock).mockImplementation((input) => ({_input: input}));
-});
 
 test('sendEmail calls SES correctly', async () => {
 	// Given no calls to the send endpoint
