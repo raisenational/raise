@@ -8,15 +8,18 @@ import {donationTable, fundraiserTable, paymentTable} from '../../../../../helpe
 import {type PublicDonationRequest} from '../../../../../schemas';
 import {main} from './post';
 
-const paymentIntentCreate = vi.fn();
+const {paymentIntentCreate} = vi.hoisted(() => ({paymentIntentCreate: vi.fn()}));
 
 vi.mock('stripe', () => ({
-	default: vi.fn().mockReturnValue({
-		paymentIntents: {
-			get create() {
-				return paymentIntentCreate;
+	// eslint-disable-next-line prefer-arrow-callback -- vitest 4 requires a non-arrow implementation to be constructed with `new`
+	default: vi.fn().mockImplementation(function () {
+		return {
+			get paymentIntents() {
+				return {
+					create: paymentIntentCreate,
+				};
 			},
-		},
+		};
 	}),
 }));
 

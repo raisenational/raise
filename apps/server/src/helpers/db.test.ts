@@ -48,13 +48,13 @@ describe('insert', () => {
 	});
 
 	test('fails with condition expression that evaluates to false', async () => {
-		await expect(insert(fundraiserTable, makeFundraiser(), 'id = internalName')).rejects.toThrowError('failed conditional expression');
+		await expect(insert(fundraiserTable, makeFundraiser(), 'id = internalName')).rejects.toThrow('failed conditional expression');
 
 		expect(await scan(fundraiserTable)).toHaveLength(0);
 	});
 
 	test('fails with an invalid condition expression', async () => {
-		await expect(insert(fundraiserTable, makeFundraiser(), '?')).rejects.toThrowError('Invalid ConditionExpression');
+		await expect(insert(fundraiserTable, makeFundraiser(), '?')).rejects.toThrow('Invalid ConditionExpression');
 
 		expect(await scan(fundraiserTable)).toHaveLength(0);
 	});
@@ -63,7 +63,7 @@ describe('insert', () => {
 		const fundraiser = makeFundraiser();
 		await insert(fundraiserTable, fundraiser);
 
-		await expect(insert(fundraiserTable, makeFundraiser({id: fundraiser.id}))).rejects.toThrowError();
+		await expect(insert(fundraiserTable, makeFundraiser({id: fundraiser.id}))).rejects.toThrow();
 
 		expect(await scan(fundraiserTable)).toEqual([fundraiser]);
 	});
@@ -119,7 +119,7 @@ describe('insert', () => {
 			const donation = makeDonation({fundraiserId: fundraiser.id});
 			await insert(donationTable, donation);
 
-			await expect(insert(donationTable, makeDonation({fundraiserId: fundraiser.id, id: donation.id}))).rejects.toThrowError();
+			await expect(insert(donationTable, makeDonation({fundraiserId: fundraiser.id, id: donation.id}))).rejects.toThrow();
 
 			expect(await scan(donationTable)).toEqual([donation]);
 		});
@@ -146,11 +146,11 @@ describe('get', () => {
 	});
 
 	test('get fails if item doesn\'t exist', async () => {
-		await expect(async () => get(fundraiserTable, {id: ulid()})).rejects.toThrowError('not found');
+		await expect(async () => get(fundraiserTable, {id: ulid()})).rejects.toThrow('not found');
 	});
 
 	test('get fails if item doesn\'t exist', async () => {
-		await expect(async () => get(donationTable, {fundraiserId: ulid(), id: ulid()})).rejects.toThrowError('not found');
+		await expect(async () => get(donationTable, {fundraiserId: ulid(), id: ulid()})).rejects.toThrow('not found');
 	});
 });
 
@@ -213,7 +213,7 @@ describe('update', () => {
 
 		await insert(fundraiserTable, fundraiser);
 
-		await expect(async () => update(fundraiserTable, {id: fundraiser.id}, {donationsCount: 3, matchFundingRate: 200}, 'donationsCount = :currentDonationsCount', {':currentDonationsCount': 100})).rejects.toThrowError('failed conditional expression');
+		await expect(async () => update(fundraiserTable, {id: fundraiser.id}, {donationsCount: 3, matchFundingRate: 200}, 'donationsCount = :currentDonationsCount', {':currentDonationsCount': 100})).rejects.toThrow('failed conditional expression');
 
 		expect(await get(fundraiserTable, {id: fundraiser.id})).toEqual(fundraiser);
 	});
@@ -235,7 +235,7 @@ describe('updateT', () => {
 
 		await expect(async () => inTransaction([
 			updateT(fundraiserTable, {id: fundraiser.id}, {donationsCount: 3, matchFundingRate: 200}, 'donationsCount = :currentDonationsCount', {':currentDonationsCount': 100}),
-		])).rejects.toThrowError('failed conditional expression');
+		])).rejects.toThrow('failed conditional expression');
 
 		expect(await get(fundraiserTable, {id: fundraiser.id})).toEqual(fundraiser);
 	});
@@ -257,7 +257,7 @@ describe('plusT', () => {
 
 		await expect(async () => inTransaction([
 			updateT(fundraiserTable, {id: fundraiser.id}, {donationsCount: 1}, 'donationsCount = :currentDonationsCount', {':currentDonationsCount': 100}),
-		])).rejects.toThrowError('failed conditional expression');
+		])).rejects.toThrow('failed conditional expression');
 
 		expect(await get(fundraiserTable, {id: fundraiser.id})).toEqual(fundraiser);
 	});
@@ -278,7 +278,7 @@ describe('insertT', () => {
 
 		await expect(async () => inTransaction([
 			insertT(fundraiserTable, fundraiser, 'donationsCount = :currentDonationsCount', {':currentDonationsCount': 100}),
-		])).rejects.toThrowError('failed conditional expression');
+		])).rejects.toThrow('failed conditional expression');
 
 		expect(await scan(fundraiserTable)).toHaveLength(0);
 	});
@@ -287,7 +287,7 @@ describe('insertT', () => {
 		const fundraiser = makeFundraiser({donationsCount: 0});
 		await insert(fundraiserTable, fundraiser);
 
-		await expect(async () => inTransaction([insertT(fundraiserTable, makeFundraiser({id: fundraiser.id}))])).rejects.toThrowError();
+		await expect(async () => inTransaction([insertT(fundraiserTable, makeFundraiser({id: fundraiser.id}))])).rejects.toThrow();
 
 		expect(await scan(fundraiserTable)).toHaveLength(1);
 	});
@@ -314,7 +314,7 @@ describe('inTransaction', () => {
 		await expect(async () => inTransaction([
 			insertT(fundraiserTable, fundraiser2),
 			updateT(fundraiserTable, {id: fundraiser1.id}, {donationsCount: 3}, 'donationsCount = :donationsCount'),
-		])).rejects.toThrowError('failed conditional expression');
+		])).rejects.toThrow('failed conditional expression');
 
 		expect(await scan(fundraiserTable)).toHaveLength(1);
 		expect(await get(fundraiserTable, {id: fundraiser1.id})).toEqual(fundraiser1);
@@ -327,7 +327,7 @@ describe('inTransaction', () => {
 		await expect(async () => inTransaction([
 			updateT(fundraiserTable, {id: fundraiser.id}, {donationsCount: 1}),
 			updateT(fundraiserTable, {id: fundraiser.id}, {donationsCount: 2}),
-		])).rejects.toThrowError('cannot include multiple operations on one item');
+		])).rejects.toThrow('cannot include multiple operations on one item');
 
 		expect(await get(fundraiserTable, {id: fundraiser.id})).toEqual(fundraiser);
 	});
@@ -397,42 +397,42 @@ describe('assertMatchesSchema', () => {
 		expect(() => {
 			assertMatchesSchema(messageSchema, {message: 'hello', extra: 'not allowed'});
 		})
-			.toThrowError('failed validation');
+			.toThrow('failed validation');
 	});
 
 	test('throws for object with missing property', () => {
 		expect(() => {
 			assertMatchesSchema(messageSchema, {});
 		})
-			.toThrowError('failed validation');
+			.toThrow('failed validation');
 	});
 
 	test('throws for object with wrong type', () => {
 		expect(() => {
 			assertMatchesSchema(messageSchema, 'a string');
 		})
-			.toThrowError('failed validation');
+			.toThrow('failed validation');
 	});
 
 	test('throws for object with wrong nested type', () => {
 		expect(() => {
 			assertMatchesSchema(messageSchema, {message: 1});
 		})
-			.toThrowError('failed validation');
+			.toThrow('failed validation');
 	});
 
 	test('throws for invalid schema syntax', () => {
 		expect(() => {
 			assertMatchesSchema({not: 'a schema'} as never, {message: 'hello'});
 		})
-			.toThrowError('schema is invalid');
+			.toThrow('schema is invalid');
 	});
 
 	test('throws for invalid schema semantics', () => {
 		expect(() => {
 			assertMatchesSchema({$ref: '#/definitions/doesNotExist', definitions: {exists: messageSchema}}, {message: 'hello'});
 		})
-			.toThrowError('can\'t resolve reference #/definitions/doesNotExist');
+			.toThrow('can\'t resolve reference #/definitions/doesNotExist');
 	});
 });
 
@@ -516,6 +516,6 @@ describe('checkPrevious', () => {
 		// Given a fundraiser in the db
 		const fundraiser = await insert(fundraiserTable, makeFundraiser());
 
-		await expect(async () => update(fundraiserTable, {id: fundraiser.id}, ...checkPrevious({donationsCount: 1, previous: {donationsCount: fundraiser.donationsCount - 1}}))).rejects.toThrowError('failed conditional expression');
+		await expect(async () => update(fundraiserTable, {id: fundraiser.id}, ...checkPrevious({donationsCount: 1, previous: {donationsCount: fundraiser.donationsCount - 1}}))).rejects.toThrow('failed conditional expression');
 	});
 });

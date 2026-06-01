@@ -12,21 +12,26 @@ import {donationTable, fundraiserTable, paymentTable} from '../../../helpers/tab
 import {type StripeWebhookRequest} from '../../../schemas';
 import {main} from './post';
 
-const webhookConstructEvent = vi.fn();
-const customersCreate = vi.fn();
+const {webhookConstructEvent, customersCreate} = vi.hoisted(() => ({
+	webhookConstructEvent: vi.fn(),
+	customersCreate: vi.fn(),
+}));
 
 vi.mock('stripe', () => ({
-	default: vi.fn().mockReturnValue({
-		webhooks: {
-			get constructEvent() {
-				return webhookConstructEvent;
+	// eslint-disable-next-line prefer-arrow-callback -- vitest 4 requires a non-arrow implementation to be constructed with `new`
+	default: vi.fn().mockImplementation(function () {
+		return {
+			get webhooks() {
+				return {
+					constructEvent: webhookConstructEvent,
+				};
 			},
-		},
-		customers: {
-			get create() {
-				return customersCreate;
+			get customers() {
+				return {
+					create: customersCreate,
+				};
 			},
-		},
+		};
 	}),
 }));
 
@@ -86,8 +91,8 @@ describe('one-off donation', () => {
 
 		const response = await call(main, {rawResponse: true, auth: false, headers: {'stripe-signature': 'valid-signature'}})(req);
 
-		expect(webhookConstructEvent).toBeCalledTimes(1);
-		expect(webhookConstructEvent).toBeCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
+		expect(webhookConstructEvent).toHaveBeenCalledTimes(1);
+		expect(webhookConstructEvent).toHaveBeenCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
 		expect(response.statusCode).toBe(204);
 
 		expect(await get(fundraiserTable, {id: fundraiser.id})).toMatchObject({
@@ -155,10 +160,10 @@ test('can make first recurring donation without matchFundingPerDonationLimit', a
 
 	const response = await call(main, {rawResponse: true, auth: false, headers: {'stripe-signature': 'valid-signature'}})(req);
 
-	expect(webhookConstructEvent).toBeCalledTimes(1);
-	expect(webhookConstructEvent).toBeCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
-	expect(customersCreate).toBeCalledTimes(1);
-	expect(customersCreate).toBeCalledWith({
+	expect(webhookConstructEvent).toHaveBeenCalledTimes(1);
+	expect(webhookConstructEvent).toHaveBeenCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
+	expect(customersCreate).toHaveBeenCalledTimes(1);
+	expect(customersCreate).toHaveBeenCalledWith({
 		name: donation.donorName,
 		email: donation.donorEmail,
 		metadata: {
@@ -249,10 +254,10 @@ test('can make first recurring donation with matchFundingPerDonationLimit', asyn
 
 	const response = await call(main, {rawResponse: true, auth: false, headers: {'stripe-signature': 'valid-signature'}})(req);
 
-	expect(webhookConstructEvent).toBeCalledTimes(1);
-	expect(webhookConstructEvent).toBeCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
-	expect(customersCreate).toBeCalledTimes(1);
-	expect(customersCreate).toBeCalledWith({
+	expect(webhookConstructEvent).toHaveBeenCalledTimes(1);
+	expect(webhookConstructEvent).toHaveBeenCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
+	expect(customersCreate).toHaveBeenCalledTimes(1);
+	expect(customersCreate).toHaveBeenCalledWith({
 		name: donation.donorName,
 		email: donation.donorEmail,
 		metadata: {
@@ -356,10 +361,10 @@ test('can make later recurring donation with gift-aid and match funding committe
 
 	const response = await call(main, {rawResponse: true, auth: false, headers: {'stripe-signature': 'valid-signature'}})(req);
 
-	expect(webhookConstructEvent).toBeCalledTimes(1);
-	expect(webhookConstructEvent).toBeCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
-	expect(customersCreate).toBeCalledTimes(1);
-	expect(customersCreate).toBeCalledWith({
+	expect(webhookConstructEvent).toHaveBeenCalledTimes(1);
+	expect(webhookConstructEvent).toHaveBeenCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
+	expect(customersCreate).toHaveBeenCalledTimes(1);
+	expect(customersCreate).toHaveBeenCalledWith({
 		name: donation.donorName,
 		email: donation.donorEmail,
 		metadata: {
@@ -463,10 +468,10 @@ test('can make later recurring donation with match funding committed previously 
 
 	const response = await call(main, {rawResponse: true, auth: false, headers: {'stripe-signature': 'valid-signature'}})(req);
 
-	expect(webhookConstructEvent).toBeCalledTimes(1);
-	expect(webhookConstructEvent).toBeCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
-	expect(customersCreate).toBeCalledTimes(1);
-	expect(customersCreate).toBeCalledWith({
+	expect(webhookConstructEvent).toHaveBeenCalledTimes(1);
+	expect(webhookConstructEvent).toHaveBeenCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
+	expect(customersCreate).toHaveBeenCalledTimes(1);
+	expect(customersCreate).toHaveBeenCalledWith({
 		name: donation.donorName,
 		email: donation.donorEmail,
 		metadata: {
@@ -571,9 +576,9 @@ test('can make later recurring donation with match funding committed previously 
 
 	const response = await call(main, {rawResponse: true, auth: false, headers: {'stripe-signature': 'valid-signature'}})(req);
 
-	expect(webhookConstructEvent).toBeCalledTimes(1);
-	expect(webhookConstructEvent).toBeCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
-	expect(customersCreate).not.toBeCalled();
+	expect(webhookConstructEvent).toHaveBeenCalledTimes(1);
+	expect(webhookConstructEvent).toHaveBeenCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
+	expect(customersCreate).not.toHaveBeenCalled();
 	expect(response.statusCode).toBe(204);
 
 	expect(await get(fundraiserTable, {id: fundraiser.id})).toMatchObject({
@@ -668,10 +673,10 @@ test('can make later recurring donation without match funding committed previous
 
 	const response = await call(main, {rawResponse: true, auth: false, headers: {'stripe-signature': 'valid-signature'}})(req);
 
-	expect(webhookConstructEvent).toBeCalledTimes(1);
-	expect(webhookConstructEvent).toBeCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
-	expect(customersCreate).toBeCalledTimes(1);
-	expect(customersCreate).toBeCalledWith({
+	expect(webhookConstructEvent).toHaveBeenCalledTimes(1);
+	expect(webhookConstructEvent).toHaveBeenCalledWith(JSON.stringify(req), 'valid-signature', env.STRIPE_WEBHOOK_SECRET);
+	expect(customersCreate).toHaveBeenCalledTimes(1);
+	expect(customersCreate).toHaveBeenCalledWith({
 		name: donation.donorName,
 		email: donation.donorEmail,
 		metadata: {
