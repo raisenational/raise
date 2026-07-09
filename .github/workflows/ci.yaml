@@ -6,6 +6,10 @@ on:
       - master
   pull_request:
 
+permissions:
+  id-token: write   # mint the GitHub OIDC token used to assume the AWS role
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -26,13 +30,15 @@ jobs:
       - name: Test, lint, build
         run: npx turbo test lint build
 
-      # Deployment prep
-      - name: "Configure for deployment"
+      # Deployment prep — AWS access via GitHub OIDC federation (no stored keys).
+      # Assumes the raise-ci role, which trusts this repo's master-ref OIDC token
+      # and grants the same serverless-policy the old static-key user had.
+      - name: "Configure AWS credentials (OIDC)"
         if: github.ref == 'refs/heads/master'
-        run: npm run config:aws --workspace @raise/server
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::405129592067:role/raise-ci
+          aws-region: eu-west-1
 
       # Deployment to dev environment
       - name: "server: Retrieve env for dev environment"
