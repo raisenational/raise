@@ -6,6 +6,13 @@ const MWA_SERVICE_NAME = 'mwa-website';
 const RAISE_S3_BUCKET_NAME = `${RAISE_SERVICE_NAME}-${env.STAGE}-405129592067`;
 const MWA_S3_BUCKET_NAME = `${MWA_SERVICE_NAME}-${env.STAGE}-405129592067`;
 
+// Locally, deploy with the named profile (static keys in ~/.aws). In CI (GitHub
+// Actions) we authenticate via GitHub OIDC (the raise-ci role) and use the
+// default credential chain, so leave `profile` unset. Gate on GITHUB_ACTIONS,
+// not the AWS creds: this config is evaluated at `serverless package` (build)
+// time, which runs before the OIDC step sets AWS_ACCESS_KEY_ID.
+const AWS_PROFILE = process.env.GITHUB_ACTIONS ? undefined : 'raise-405129592067';
+
 const serverlessConfiguration: AWS = {
 	service: RAISE_SERVICE_NAME,
 	frameworkVersion: '3',
@@ -40,7 +47,7 @@ const serverlessConfiguration: AWS = {
 		runtime: 'nodejs22.x',
 		region: 'eu-west-1',
 		stage: env.STAGE,
-		profile: 'raise-405129592067',
+		profile: AWS_PROFILE,
 	},
 	resources: {
 		Resources: {
