@@ -8,13 +8,6 @@ import {getFunctionEvent, getFunctionPaths, pascalCase} from './local/helpers';
 
 const SERVICE_NAME = 'raise-server';
 
-// Locally, deploy with the named profile (static keys in ~/.aws). In CI (GitHub
-// Actions) we authenticate via GitHub OIDC (the raise-ci role) and use the
-// default credential chain, so leave `profile` unset. Gate on GITHUB_ACTIONS,
-// not the AWS creds: this config is evaluated at `serverless package` (build)
-// time, which runs before the OIDC step sets AWS_ACCESS_KEY_ID.
-const AWS_PROFILE = process.env.GITHUB_ACTIONS ? undefined : 'raise-405129592067';
-
 const createResources = (definitions: Record<string, Table<any, any, any>>): NonNullable<NonNullable<AWS['resources']>['Resources']> =>
 	Object.values(definitions).reduce<NonNullable<NonNullable<AWS['resources']>['Resources']>>((acc, table) => {
 		const resourceKey = `${pascalCase(table.entityName)}Table`;
@@ -157,7 +150,6 @@ const serverlessConfiguration: AWS = {
 		name: 'aws',
 		runtime: 'nodejs18.x',
 		region: 'eu-west-1',
-		profile: AWS_PROFILE,
 		stage: env.STAGE,
 		apiGateway: {
 			minimumCompressionSize: 1024,
