@@ -18,10 +18,12 @@
       "outputs": ["dist", ".serverless", ".next/**", "!.next/cache/**"]
     },
     "deploy:dev": {
-      "cache": false
+      "cache": false,
+      "passThroughEnv": ["AWS_*"]
     },
     "deploy:prod": {
-      "cache": false
+      "cache": false,
+      "passThroughEnv": ["AWS_*"]
     }
   }
 }
