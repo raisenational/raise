@@ -17,16 +17,21 @@ jobs:
 
     steps:
       - name: Checkout ${{ github.sha }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
       - name: Install dependencies
         run: npm ci
-      - name: Set up Turborepo caching
-        uses: dtinth/setup-github-actions-caching-for-turbo@v1
+      - name: Cache Turborepo
+        uses: actions/cache@v4
+        with:
+          path: .turbo/cache
+          key: turbo-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ runner.os }}-
       - name: Test, lint, build
         run: npx turbo test lint build
 
