@@ -800,7 +800,7 @@ const YearbookPage: React.FC<{brand?: Brand}> = ({brand}) => {
 				</div>
 				<div className=''>
 					{filteredEntries.map((m, i) => (
-						<Quote key={m.id} by={`${m.name}, ${m.chapter} '${m.year.toString().slice(2)}`} headshotSrc={m.img} imagePlacement={i % 4 <= 1 ? 'left' : 'right'} className='mt-4 p-8 bg-raise-red rounded-lg min-h-[10rem]'>
+						<Quote key={m.id} by={`${m.name}, ${m.chapter} '${m.year.toString().slice(2)}`} headshotSrc={m.img} imagePlacement={i % 4 <= 1 ? 'left' : 'right'} className='mt-4 p-8 bg-raise-red rounded-lg min-h-40'>
 							{m.quote}
 						</Quote>
 					))}

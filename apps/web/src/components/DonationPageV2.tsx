@@ -130,8 +130,8 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
 
 			<div className='mx-2 md:mx-0 md:flex my-4'>
 				<div className='flex-1'>
-					<div className='bg-raise-purple p-1 -skew-x-15 rounded shadow-raise flex'>
-						<div className={classNames('whitespace-nowrap py-1 transition-all ease-in-out duration-1000 bg-raise-yellow rounded-sm', {'px-1': percentageToTarget !== 0})} style={{width: `${percentageToTarget}%`}}>
+					<div className='bg-raise-purple p-1 -skew-x-15 rounded-sm shadow-raise flex'>
+						<div className={classNames('whitespace-nowrap py-1 transition-all ease-in-out duration-1000 bg-raise-yellow rounded-xs', {'px-1': percentageToTarget !== 0})} style={{width: `${percentageToTarget}%`}}>
 							{percentageToTarget >= 50 && (
 								<p className='skew-x-15 md:text-4xl fade-in' style={{animationDelay: '0.3s', animationFillMode: 'both'}}>
 									{format.amountShort(fundraiser.data?.currency, fundraiser.data?.totalRaised)}
@@ -163,8 +163,8 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
 				</div>
 			</div>
 
-			<div className='flex bg-white text-black p-4 md:p-8 gap-4 md:gap-8 mt-4 md:mt-8 items-center rounded shadow-raise'>
-				<Logo className='hidden sm:block w-24 flex-shrink-0' />
+			<div className='flex bg-white text-black p-4 md:p-8 gap-4 md:gap-8 mt-4 md:mt-8 items-center rounded-sm shadow-raise'>
+				<Logo className='hidden sm:block w-24 shrink-0' />
 				<div className='max-w-full text-left space-y-8'>
 					<p>
 						At
@@ -267,7 +267,7 @@ const Tabs: React.FC<{tabs: Record<string, React.ReactNode>}> = ({tabs}) => {
 	const [open, setOpen] = useState<keyof typeof tabs>(keys[0]);
 
 	return (
-		<div className='bg-white text-black rounded shadow-raise overflow-hidden'>
+		<div className='bg-white text-black rounded-sm shadow-raise overflow-hidden'>
 			<div className='flex'>
 				{ }
 				{keys.map((k, i) => <Link key={k} onClick={() => {

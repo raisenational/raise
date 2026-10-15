@@ -33,7 +33,7 @@ const Table = <I extends Record<string, any>>({
 	// Loading and error states
 	if (items && !Array.isArray(items)) {
 		if (items.loading) {
-			return <div className={classNames(className, 'overflow-x-auto bg-black bg-opacity-20 rounded p-4')}><span className='animate-pulse'>Loading...</span></div>;
+			return <div className={classNames(className, 'overflow-x-auto bg-black/20 rounded-sm p-4')}><span className='animate-pulse'>Loading...</span></div>;
 		}
 
 		if (items.error) {
@@ -42,7 +42,7 @@ const Table = <I extends Record<string, any>>({
 	}
 
 	return (
-		<div className={classNames(className, 'overflow-x-auto bg-black bg-opacity-20 rounded py-2')}>
+		<div className={classNames(className, 'overflow-x-auto bg-black/20 rounded-sm py-2')}>
 			<table className='w-full'>
 				<thead>
 					<tr>
@@ -75,7 +75,7 @@ const Table = <I extends Record<string, any>>({
 							<tr
 								key={nPrimaryKey ? String(item[nPrimaryKey]) : rowIndex}
 								// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-								className={classNames('hover:bg-black hover:bg-opacity-20', (href || onClick) ? 'cursor-pointer' : '')}
+								className={classNames('hover:bg-black/20', (href || onClick) ? 'cursor-pointer' : '')}
 								onClick={onTrigger}
 								onKeyDown={onTrigger
 									? (e) => {

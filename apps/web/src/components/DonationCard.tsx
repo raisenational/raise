@@ -38,7 +38,7 @@ const DonationCard: React.FC<Props> = ({
 	const extraAmountText = (matchFundingText || giftAidText) ? `(${[matchFundingText, giftAidText].filter((x) => x).join(', ')})` : undefined;
 
 	return (
-		<div className={classNames('p-4 rounded flex flex-col shadow-raise', className)}>
+		<div className={classNames('p-4 rounded-sm flex flex-col shadow-raise', className)}>
 			<p className='fade-in word-wrap'><span className={classNames({skeleton: loading})}>{title}</span></p>
 			{recurringText && <p className={classNames('fade-in', {skeleton: loading, 'text-base opacity-80': !loading})}>{recurringText}</p>}
 			{extraAmountText && <p className='text-base fade-in'><span className={classNames({skeleton: loading, 'opacity-80': !loading})}>{extraAmountText}</span></p>}

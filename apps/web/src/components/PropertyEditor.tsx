@@ -30,7 +30,7 @@ const PropertyEditor = <I extends Record<string, any>>({
 
 	// Loading and error states
 	if (!item || ('loading' in item && item.loading)) {
-		return <div className='overflow-x-auto bg-black bg-opacity-20 rounded p-4'><span className='animate-pulse'>Loading...</span></div>;
+		return <div className='overflow-x-auto bg-black/20 rounded-sm p-4'><span className='animate-pulse'>Loading...</span></div>;
 	}
 
 	if ('loading' in item && item.error && item.error instanceof Error) {
@@ -95,7 +95,7 @@ const PropertyEditor = <I extends Record<string, any>>({
 					value: v?.formatter ? v.formatter(nItem[k], nItem) : (nItem[k] ?? '—'),
 				}))}
 				renderItem={(i) => (
-					<tr key={String(i.property)} className={classNames('hover:bg-black hover:bg-opacity-20', {'cursor-pointer': definition[i.property]?.inputType !== undefined})} onClick={definition[i.property]?.inputType === undefined
+					<tr key={String(i.property)} className={classNames('hover:bg-black/20', {'cursor-pointer': definition[i.property]?.inputType !== undefined})} onClick={definition[i.property]?.inputType === undefined
 						? undefined
 						: (e) => {
 							tableOnClick(i, e);

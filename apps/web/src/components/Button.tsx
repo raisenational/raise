@@ -23,7 +23,7 @@ const Button: React.FC<Props> = ({
 		className={classNames('Button', {
 			'bg-raise-red border-raise-red hover:bg-raise-red-light hover:border-raise-red-light focus:bg-raise-red-light focus:border-raise-red-light active:bg-raise-red-dark active:border-raise-red-dark hover:text-gray-200': variant === 'red',
 			'bg-raise-purple border-raise-purple hover:bg-raise-purple-light hover:border-raise-purple-light focus:bg-raise-purple-light focus:border-raise-purple-light active:bg-raise-purple-dark active:border-raise-purple-dark hover:text-gray-200': variant === 'purple',
-			'border-white hover:text-raise-blue hover:bg-white focus:text-raise-blue focus:bg-white active:bg-opacity-80 active:border-opacity-0': variant === 'outline',
+			'border-white hover:text-raise-blue hover:bg-white focus:text-raise-blue focus:bg-white active:bg-white/80 active:border-white/0': variant === 'outline',
 			'bg-raise-blue border-raise-blue hover:bg-raise-blue-light hover:border-raise-blue-light focus:bg-raise-blue-light focus:border-raise-blue-light active:bg-raise-blue-dark active:border-raise-blue-dark hover:text-gray-200': variant === 'blue',
 			'bg-gray-400 border-gray-400 hover:text-gray-200': variant === 'gray',
 			'px-2 py-0': size === 'small',

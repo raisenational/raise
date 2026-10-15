@@ -128,15 +128,15 @@ const Philosophy: React.FC<PhilosophyProps> = ({brand = 'Raise'}) => {
 							It was at the Summer Party that I really appreciated just how powerful the idea of giving positively and deliberately can be. Everyone was having a great time, energised by the collective knowledge that together we'd done something incredible.
 						</Quote>
 
-						<div className='relative h-[34rem] md:-mt-10'>
+						<div className='relative h-136 md:-mt-10'>
 							<div className='absolute' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='100'>
-								<img src='/shared/images/summer-party-1.jpg' alt='Summer Party' className='shadow-raise rounded border-white border-8 w-96 h-60 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out' />
+								<img src='/shared/images/summer-party-1.jpg' alt='Summer Party' className='shadow-raise rounded-sm border-white border-8 w-96 h-60 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out' />
 							</div>
 							<div className='absolute right-0 top-32' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='250'>
-								<img src='/shared/images/summer-party-2.jpg' alt='Summer Party' className='shadow-raise rounded border-white border-8 w-96 h-60 rotate-6 hover:rotate-3 transition-all duration-500 ease-out' />
+								<img src='/shared/images/summer-party-2.jpg' alt='Summer Party' className='shadow-raise rounded-sm border-white border-8 w-96 h-60 rotate-6 hover:rotate-3 transition-all duration-500 ease-out' />
 							</div>
 							<div className=' absolute top-64' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='400'>
-								<img src='/shared/images/summer-party-3.jpg' alt='Summer Party' className='shadow-raise rounded border-white border-8 w-96 h-60 -rotate-12 hover:-rotate-3 transition-all duration-500 ease-out' />
+								<img src='/shared/images/summer-party-3.jpg' alt='Summer Party' className='shadow-raise rounded-sm border-white border-8 w-96 h-60 -rotate-12 hover:-rotate-3 transition-all duration-500 ease-out' />
 							</div>
 						</div>
 					</div>
@@ -168,7 +168,7 @@ const Philosophy: React.FC<PhilosophyProps> = ({brand = 'Raise'}) => {
 						<p className='mt-16 mb-4' data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='200'>
 							P.S. Want to get to know us more? Check out testimonies from <Link href='/yearbook' className='text-blue-300 hover:text-blue-400'>our community yearbook</Link> or watch our founder's TEDx Talk, 'Rethinking Celebration: The Positive Case for Giving', which talks all about our feel-good philosophy!
 						</p>
-						<iframe className='w-full rounded shadow-raise' title='YouTube: Rethinking Celebration: The Positive Case for Giving' width='672' height='378' src='https://www.youtube-nocookie.com/embed/fvjeG7xE-wE?rel=0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowFullScreen data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='200' />
+						<iframe className='w-full rounded-sm shadow-raise' title='YouTube: Rethinking Celebration: The Positive Case for Giving' width='672' height='378' src='https://www.youtube-nocookie.com/embed/fvjeG7xE-wE?rel=0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowFullScreen data-aos='fade-up' data-aos-anchor-placement='top-bottom' data-aos-offset='200' />
 					</div>
 				</Section>
 			</div>

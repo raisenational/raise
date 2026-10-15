@@ -146,8 +146,8 @@ const ChaptersPage = () => (
 					<ChapterBrowser />
 				</div>
 				<div className='ml-2 hidden md:block'>
-					<img src='/shared/images/summer-party-1.jpg' alt='Summer Party' className='shadow-raise rounded border-white border-8 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out' />
-					<img src='/shared/images/summer-party-2.jpg' alt='Summer Party' className='shadow-raise rounded border-white border-8 rotate-6 hover:rotate-3 transition-all duration-500 ease-out' />
+					<img src='/shared/images/summer-party-1.jpg' alt='Summer Party' className='shadow-raise rounded-sm border-white border-8 -rotate-6 hover:-rotate-3 transition-all duration-500 ease-out' />
+					<img src='/shared/images/summer-party-2.jpg' alt='Summer Party' className='shadow-raise rounded-sm border-white border-8 rotate-6 hover:rotate-3 transition-all duration-500 ease-out' />
 				</div>
 			</div>
 

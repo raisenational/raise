@@ -1,6 +1,96 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@source '../**/*.{js,jsx,ts,tsx}';
+
+@theme {
+  --color-raise-purple: #5d215e;
+  --color-raise-purple-light: #6d376e;
+  --color-raise-purple-dark: #4a1a4b;
+  --color-raise-red: #ad2e53;
+  --color-raise-red-light: #b54264;
+  --color-raise-red-dark: #8a2442;
+  --color-raise-blue: #2ecad6;
+  --color-raise-blue-light: #42cfda;
+  --color-raise-blue-dark: #24a1ab;
+  --color-raise-orange: #e88452;
+  --color-raise-orange-light: #ea9063;
+  --color-raise-orange-dark: #b96941;
+  --color-raise-yellow: #f2ca1a;
+  --color-raise-yellow-light: #f3cf30;
+  --color-raise-yellow-dark: #c1a114;
+
+  --font-raise-header:
+    laca, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-raise-content:
+    mr-eaves-sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --skew-15: 15deg;
+
+  --skew--15: -15deg;
+
+  --shadow-raise: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+  --animate-breathe: breathe 2s ease-in-out infinite;
+  --animate-shake: wave 2s linear;
+
+  @keyframes breathe {
+    0%,
+    100% {
+      transform: scale(1.05);
+    }
+    50% {
+      transform: scale(1);
+    }
+  }
+  @keyframes wave {
+    0% {
+      transform: rotate(0deg);
+    }
+    10% {
+      transform: rotate(0.7deg);
+    }
+    20% {
+      transform: rotate(-1deg);
+    }
+    30% {
+      transform: rotate(0.7deg);
+    }
+    40% {
+      transform: rotate(-1deg);
+    }
+    50% {
+      transform: rotate(0.7deg);
+    }
+    60% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 @layer base {
   /* Add custom styles here (but avoid it if possible) */
@@ -36,7 +126,7 @@
   }
 
   .tooltip {
-    @apply absolute invisible group-hover:visible bg-black text-white font-normal p-3 rounded mt-8 text-base pointer-events-none z-10 shadow-raise;
+    @apply absolute invisible group-hover:visible bg-black text-white font-normal p-3 rounded-sm mt-8 text-base pointer-events-none z-10 shadow-raise;
     width: 95%;
     left: 2.5%;
   }
@@ -98,7 +188,7 @@
   }
 
   .Button {
-    @apply py-1 px-3 border-2 rounded text-white inline-block h-full transition-all duration-200 shadow hover:shadow-lg scale-100 hover:scale-105 focus:scale-105 active:scale-100
+    @apply py-1 px-3 border-2 rounded-sm text-white inline-block h-full transition-all duration-200 shadow-sm hover:shadow-lg scale-100 hover:scale-105 focus:scale-105 active:scale-100
   }
 
   .Button + .Button:not(.ml-0) {
@@ -106,7 +196,7 @@
   }
 
   .Alert {
-    @apply rounded p-4 break-words flex items-center overflow-x-auto
+    @apply rounded-sm p-4 wrap-break-word flex items-center overflow-x-auto
   }
 
   @keyframes scrollUp {
@@ -119,15 +209,15 @@
   }
 
   .raise-google-button {
-    @apply rounded px-2 !important;
+    @apply rounded-sm! px-2!;
   }
 
   .bg-white-important {
-    @apply bg-white !important
+    @apply bg-white!
   }
 
   .skeleton {
-    @apply animate-pulse text-transparent bg-clip-padding bg-gray-300 bg-opacity-30 border-gray-300 border-opacity-30 rounded shadow-none pointer-events-none select-none cursor-default;
+    @apply animate-pulse text-transparent bg-clip-padding bg-gray-300/30 border-gray-300/30 rounded-sm shadow-none pointer-events-none select-none cursor-default;
   }
 
   .fade-in {

@@ -19,7 +19,7 @@ const IntroStats: React.FC<Props> = ({title, tagline, statistics}) => {
 			<Logo className='mb-8 w-24' />
 			<h1 className='text-5xl lg:text-7xl font-raise-header font-black'>{title}</h1>
 			<p className='text-2xl lg:text-3xl'>{tagline}</p>
-			<div className='grid grid-cols-2 md:flex md:-skew-x-15 shadow-raise mt-8 rounded overflow-hidden font-light'>
+			<div className='grid grid-cols-2 md:flex md:-skew-x-15 shadow-raise mt-8 rounded-sm overflow-hidden font-light'>
 				<Statistic value={statistics.years} description={statistics.years !== 1 ? 'years' : 'year'} className='bg-raise-purple' numberClassName='sm:w-10' durationMs={600} />
 				<Statistic value={statistics.students} description='students' className='bg-raise-red' numberClassName='sm:w-24' durationMs={750} />
 				<Statistic prefix='£' value={statistics.raised} description='raised' className='bg-raise-orange' numberClassName='sm:w-44' durationMs={900} />

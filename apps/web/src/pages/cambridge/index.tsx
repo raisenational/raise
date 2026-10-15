@@ -86,7 +86,7 @@ const IndexPage = () => (
 			</div>
 
 			<iframe
-				className='w-full max-w-2xl mx-auto mt-12 rounded shadow-raise'
+				className='w-full max-w-2xl mx-auto mt-12 rounded-sm shadow-raise'
 				title='YouTube: May Week Alternative: A New Way to Celebrate'
 				width='672'
 				height='378'

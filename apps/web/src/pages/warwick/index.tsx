@@ -73,7 +73,7 @@ const IndexPage = () => (
 			</div>
 
 			<iframe
-				className='w-full max-w-2xl mx-auto mt-12 rounded shadow-raise'
+				className='w-full max-w-2xl mx-auto mt-12 rounded-sm shadow-raise'
 				title='YouTube: Raise: A Celebration of Giving'
 				width='672'
 				height='378'

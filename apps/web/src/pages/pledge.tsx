@@ -45,7 +45,7 @@ const IndexPage = () => (
 				If you've enjoyed being a part of Raise this year, we'd love you to think about how you can make deliberate giving a part of your life going forwards.
 			</Point>
 
-			<div className='mt-16 p-6 rounded shadow-raise text-left bg-white text-black'>
+			<div className='mt-16 p-6 rounded-sm shadow-raise text-left bg-white text-black'>
 				<p>
 					One particularly impactful way to do this is by taking a
 					{' '}
@@ -197,7 +197,7 @@ const IndexPage = () => (
 );
 
 const Point: React.FC<React.PropsWithChildren<{className?: string; icon: React.FC<{width?: number; height?: number}>}>> = ({className, icon: Icon, children}) => (
-	<div className={classNames('sm:flex mt-4 p-6 rounded shadow-raise text-left', className)}>
+	<div className={classNames('sm:flex mt-4 p-6 rounded-sm shadow-raise text-left', className)}>
 		<div className='mb-2 sm:mb-0 text-center sm:mr-6'><Icon width={60} height={60} /></div>
 		<p>
 			{children}

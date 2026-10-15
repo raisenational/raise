@@ -19,7 +19,7 @@ const Navigation: React.FC<{left: LinkDefinition[]; right: LinkDefinition[]}> = 
 				<SectionNoPadding>
 					{/* Mobile nav: menu button */}
 					<div className='text-left pt-4 md:hidden'>
-						<DisclosureButton className='p-2 rounded outline-none focus:ring-2 focus:ring-white' aria-label={open ? 'Close main menu' : 'Open main menu'}>
+						<DisclosureButton className='p-2 rounded-sm outline-hidden focus:ring-2 focus:ring-white' aria-label={open ? 'Close main menu' : 'Open main menu'}>
 							{open
 								? (
 									<XIcon className='block h-8 w-8' />
@@ -32,7 +32,7 @@ const Navigation: React.FC<{left: LinkDefinition[]; right: LinkDefinition[]}> = 
 
 					{/* Mobile nav: (optional) singular right button */}
 					{!open && right.length === 1 && (
-						<div className='md:hidden ml-16 -mt-[3.25rem] mr-2 mb-4 text-right text-2xl'>
+						<div className='md:hidden ml-16 -mt-13 mr-2 mb-4 text-right text-2xl'>
 							<Button key={right[0].text} href={right[0].href} onClick={right[0].onClick} variant='red'>{right[0].text}</Button>
 						</div>
 					)}
@@ -45,7 +45,7 @@ const Navigation: React.FC<{left: LinkDefinition[]; right: LinkDefinition[]}> = 
 									key={item.text}
 									href={item.href}
 									onClick={item.onClick}
-									className='rounded block py-4 mx-8'
+									className='rounded-sm block py-4 mx-8'
 								>
 									{item.text}
 								</Link>
