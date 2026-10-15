@@ -100,7 +100,7 @@ const DonationPage: React.FC<Props> = ({
 
 type IntroFundraiserProps = {
 	title: string;
-	fundraiser: ResponseValues<PublicFundraiser, unknown>;
+	fundraiser: ResponseValues<PublicFundraiser, null>;
 	openModal: () => void;
 };
 

@@ -16,16 +16,16 @@ type PropertyDefinition<I, V> = {
 	| {inputType: InputType<V> & ('select' | 'multiselect'); selectOptions: readonly string[] | Record<string, string>}
 );
 
-type Props<I> = {
+type Props<I, RequestData> = {
 	definition: Partial<{[K in keyof I]: PropertyDefinition<I, I[K]>}> & Record<`_${string}`, PropertyDefinition<I, unknown>>;
-	item?: I | ResponseValues<I, unknown>;
+	item?: I | ResponseValues<I, RequestData>;
 	onClick?: (key: keyof I, event: React.MouseEvent) => void;
 	onSave?: (data: Partial<I>) => void | Promise<void>;
 };
 
-const PropertyEditor = <I extends Record<string, any>>({
+const PropertyEditor = <I extends Record<string, any>, RequestData = unknown>({
 	definition, item, onClick, onSave,
-}: Props<I>) => {
+}: Props<I, RequestData>) => {
 	const [editingProperty, setEditingProperty] = useState<keyof I | undefined>();
 
 	// Loading and error states

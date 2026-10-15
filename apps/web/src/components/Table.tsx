@@ -10,9 +10,9 @@ type PropertyDefinition<I, V> = {
 	className?: string;
 };
 
-type Props<I> = {
+type Props<I, RequestData> = {
 	definition: Partial<{[K in keyof I]: PropertyDefinition<I, I[K]>} & Record<`_${string}`, PropertyDefinition<I, unknown>>>;
-	items?: I[] | ResponseValues<I[], unknown>;
+	items?: I[] | ResponseValues<I[], RequestData>;
 	primaryKey?: keyof I;
 	onClick?: (item: I, event: React.MouseEvent | React.KeyboardEvent) => void;
 	emptyMessage?: string;
@@ -21,9 +21,9 @@ type Props<I> = {
 	href?: (item: I) => string;
 };
 
-const Table = <I extends Record<string, any>>({
+const Table = <I extends Record<string, any>, RequestData = unknown>({
 	definition, items, primaryKey, onClick, emptyMessage = 'There are no entries', renderItem, className, href,
-}: Props<I>) => {
+}: Props<I, RequestData>) => {
 	// Normalized properties
 	const nItems = ((items === undefined || Array.isArray(items)) ? items : items.data) ?? [];
 	const nPrimaryKey = primaryKey ?? (nItems && nItems[0] && 'id' in nItems[0] ? 'id' as keyof I : undefined);

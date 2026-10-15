@@ -26,7 +26,7 @@ const FundraiserPage: React.FC<{fundraiserId: string}> = ({fundraiserId}) => {
 	return (
 		<Section>
 			<SectionTitle>{fundraiser.data?.internalName ?? 'Fundraiser'}</SectionTitle>
-			<PropertyEditor<Fundraiser>
+			<PropertyEditor
 				definition={{
 					internalName: {label: 'Internal name', inputType: 'text'},
 					publicName: {label: 'Public name', inputType: 'text'},
