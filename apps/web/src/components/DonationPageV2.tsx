@@ -114,7 +114,7 @@ const DonationPageV2: React.FC<Props> = ({
 type IntroFundraiserProps = {
 	title: string;
 	charities: CharityDefinition[];
-	fundraiser: ResponseValues<PublicFundraiser, unknown>;
+	fundraiser: ResponseValues<PublicFundraiser, null>;
 	openModal: () => void;
 	reflectionFormHref: string;
 };

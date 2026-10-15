@@ -1,7 +1,6 @@
 import {asResponseValues, useReq, useRawReq} from '../../helpers/networking';
 import Section, {SectionTitle} from '../../components/Section';
 import PropertyEditor from '../../components/PropertyEditor';
-import {type Group} from '../../helpers/generated-api-client';
 
 const GroupPage: React.FC<{groupId: string}> = ({groupId}) => {
 	const [groups, refetchGroups] = useReq('get /admin/groups');
@@ -14,7 +13,7 @@ const GroupPage: React.FC<{groupId: string}> = ({groupId}) => {
 			<div className='flex'>
 				<SectionTitle className='flex-1'>{group.data?.name ?? 'Group'}</SectionTitle>
 			</div>
-			<PropertyEditor<Group>
+			<PropertyEditor
 				definition={{
 					name: {label: 'Name', inputType: 'text'},
 				}}

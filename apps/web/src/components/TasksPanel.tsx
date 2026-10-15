@@ -41,7 +41,7 @@ const TasksPanel: React.FC = () => {
 			{(taskItems.length === 0)
 				? <Alert> You do not have access to any Tasks</Alert>
 				: (
-					<Table<Task>
+					<Table
 						definition={{
 							name: {label: 'Name', className: 'whitespace-nowrap'},
 							id: {label: 'ID', className: 'whitespace-nowrap'},
