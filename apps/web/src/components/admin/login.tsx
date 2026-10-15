@@ -19,7 +19,7 @@ const Login: React.FC = () => (
 	<div className='min-h-screen flex flex-col -mb-8'>
 		<Section className='mt-8 text-center flex-1'>
 			<Logo className='my-8 w-24' />
-			<div className='max-w-lg bg-black bg-opacity-20 rounded p-8 mx-auto'>
+			<div className='max-w-lg bg-black/20 rounded-sm p-8 mx-auto'>
 				<SectionTitle>Admin Login</SectionTitle>
 				<LoadingBoxContent />
 			</div>

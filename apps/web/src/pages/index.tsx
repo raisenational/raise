@@ -35,7 +35,7 @@ const IndexPage = () => (
 				/>
 
 				<iframe
-					className='w-full max-w-2xl mx-auto my-8 rounded shadow-raise'
+					className='w-full max-w-2xl mx-auto my-8 rounded-sm shadow-raise'
 					title='YouTube: Raise: A Celebration of Giving'
 					width='672'
 					height='378'

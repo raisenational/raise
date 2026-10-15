@@ -191,7 +191,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
 	if (type === 'checkbox') {
 		return (
 			<div className={classNames(className, 'flex items-center my-3')}>
-				{type === 'checkbox' && <input id={id} ref={ref} type={type} className='flex-shrink-0 mr-1' {...rest} />}
+				{type === 'checkbox' && <input id={id} ref={ref} type={type} className='shrink-0 mr-1' {...rest} />}
 				{label && <label htmlFor={id} className={classNames('text-gray-700 font-bold leading-none', {'block pb-1': type !== 'checkbox', 'text-raise-red': error})}>{label}</label>}
 			</div>
 		);
@@ -215,7 +215,7 @@ export const LabelledInput = React.forwardRef<HTMLInputElement, LabelledInputPro
 					ref={ref}
 					type={type}
 					step={type === 'number' ? 'any' : undefined}
-					className={classNames(inputClassName, 'w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 outline-none', {
+					className={classNames(inputClassName, 'w-full flex-1 py-2 px-3 appearance-none block border cursor-text transition-all text-gray-700 outline-hidden', {
 						'rounded-l': !prefix,
 						'rounded-r': !suffix,
 						'bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white': !error,
@@ -278,7 +278,7 @@ const Select: React.FC<({type: 'select'; value?: string; onChange: (s: string) =
 			}}
 		>
 			<div className='relative'>
-				<ListboxButton className={classNames('relative text-left w-full py-2 px-3 mb-1 appearance-none block rounded border cursor-text transition-all text-gray-700 outline-none', {
+				<ListboxButton className={classNames('relative text-left w-full py-2 px-3 mb-1 appearance-none block rounded-sm border cursor-text transition-all text-gray-700 outline-hidden', {
 					'bg-gray-200 border-gray-200 hover:bg-gray-100 hover:border-gray-400 focus:border-gray-800 focus:bg-white': !props.error,
 					'bg-red-100 border-red-100 hover:bg-red-50 hover:border-red-400 focus:border-red-800 focus:bg-red-50': props.error,
 				})}
@@ -291,8 +291,8 @@ const Select: React.FC<({type: 'select'; value?: string; onChange: (s: string) =
 						/>
 					</span>
 				</ListboxButton>
-				<ListboxPopover portal={false} className='absolute z-10 w-full mt-1 py-1 overflow-auto text-base bg-white text-black rounded shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
-					<ListboxList className='outline-none'>
+				<ListboxPopover portal={false} className='absolute z-10 w-full mt-1 py-1 overflow-auto text-base bg-white text-black rounded-sm shadow-lg max-h-60 ring-1 ring-black/5 focus:outline-hidden sm:text-sm'>
+					<ListboxList className='outline-hidden'>
 						{Object.entries(options).map(([k, v]) => (
 							<ListboxOption
 								key={k}

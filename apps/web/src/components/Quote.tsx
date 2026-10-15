@@ -6,7 +6,7 @@ const Quote: React.FC<React.PropsWithChildren<{className?: string; by: string; h
 	<div className={classNames('flex', className)} {...props}>
 		{headshotSrc && imagePlacement === 'left' && <QuoteImage by={by} headshotSrc={headshotSrc} imagePlacement={imagePlacement} />}
 		{ }
-		<div className={classNames('relative flex-grow', headshotSrc ? (imagePlacement === 'right' ? 'mr-12 ml-8' : 'ml-12 mr-8') : 'mx-8')}>
+		<div className={classNames('relative grow', headshotSrc ? (imagePlacement === 'right' ? 'mr-12 ml-8' : 'ml-12 mr-8') : 'mx-8')}>
 			<p className="text-left before:content-['“'] before:absolute before:text-[20rem] before:leading-none before:font-black before:-left-12 before:-top-12 before:opacity-20">
 				{children}
 			</p>
@@ -21,7 +21,7 @@ const Quote: React.FC<React.PropsWithChildren<{className?: string; by: string; h
 const QuoteImage: React.FC<{by: string; headshotSrc: string; imagePlacement: 'left' | 'right'}> = ({
 	by, headshotSrc, imagePlacement,
 }) => (
-	<div className='hidden sm:block w-40 flex-shrink-0'>
+	<div className='hidden sm:block w-40 shrink-0'>
 		<img
 			src={headshotSrc}
 			alt={`Headshot of ${by}`}

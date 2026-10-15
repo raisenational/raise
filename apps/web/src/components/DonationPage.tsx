@@ -115,8 +115,8 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
 
 			<div className='mx-2 md:mx-0 md:flex my-4'>
 				<div className='flex-1'>
-					<div className='bg-raise-purple p-1 -skew-x-15 rounded shadow-raise flex'>
-						<div className={classNames('whitespace-nowrap py-1 transition-all ease-in-out duration-1000 bg-raise-yellow rounded-sm', {'px-1': percentageToTarget !== 0})} style={{width: `${percentageToTarget}%`}}>
+					<div className='bg-raise-purple p-1 -skew-x-15 rounded-sm shadow-raise flex'>
+						<div className={classNames('whitespace-nowrap py-1 transition-all ease-in-out duration-1000 bg-raise-yellow rounded-xs', {'px-1': percentageToTarget !== 0})} style={{width: `${percentageToTarget}%`}}>
 							{percentageToTarget >= 50 && (
 								<p className='skew-x-15 md:text-4xl fade-in' style={{animationDelay: '0.3s', animationFillMode: 'both'}}>
 									{format.amountShort(fundraiser.data?.currency, fundraiser.data?.totalRaised)}
@@ -148,7 +148,7 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
 					</p>
 				</div>
 				<div className='inline-block mt-4 md:mt-0 md:w-64 md:mx-2'>
-					<div className='bg-raise-purple p-1 -skew-x-15 rounded shadow-raise'>
+					<div className='bg-raise-purple p-1 -skew-x-15 rounded-sm shadow-raise'>
 						<p className='skew-x-15 md:text-4xl p-1'>
 							{fundraiser.data ? convert.moneyToPeopleProtected(fundraiser.data.currency, fundraiser.data.totalRaised) : '—'}
 							{' '}
@@ -159,7 +159,7 @@ const IntroFundraiser: React.FC<IntroFundraiserProps> = ({
 				</div>
 			</div>
 
-			<div className='flex bg-white text-black p-4 md:p-6 mt-4 md:mt-8 items-center rounded shadow-raise'>
+			<div className='flex bg-white text-black p-4 md:p-6 mt-4 md:mt-8 items-center rounded-sm shadow-raise'>
 				<Logo className='hidden sm:block mr-6 w-24' />
 				<div className='flex-1 text-left'>
 					<p className='mb-4 leading-none'>
@@ -254,7 +254,7 @@ const Tabs: React.FC<{tabs: Record<string, React.ReactNode>}> = ({tabs}) => {
 	const [open, setOpen] = useState<keyof typeof tabs>(keys[0]);
 
 	return (
-		<div className='bg-white text-black rounded shadow-raise overflow-hidden'>
+		<div className='bg-white text-black rounded-sm shadow-raise overflow-hidden'>
 			<div className='flex'>
 				{ }
 				{keys.map((k, i) => <Link key={k} onClick={() => {
@@ -552,8 +552,8 @@ const DonationFormDonate: React.FC<{formMethods: UseFormReturn<DonationFormRespo
 				})}
 			/>
 
-			{touchedFields.donationAmount && shouldShowLowAmountWarning && <p className='my-3 py-2 px-3 font-normal animate-shake  text-yellow-900 border border-yellow-400 border-1 rounded-lg bg-yellow-100'>We encourage all students to donate an amount that's personally significant to them - and we know this is different for everyone! A good way of thinking about is to donate an amount that really makes you think about where and why you are donating. We can't wait to celebrate with you soon!</p>}
-			{touchedFields.donationAmount && shouldShowHighAmountWarning && <p className='my-3 py-2 px-3 font-normal animate-shake text-yellow-900 border border-yellow-400 border-1 rounded-lg bg-yellow-100'>Wow, thank you! For high donations, it may be worth paying us by bank transfer to reduce card fees involved in processing your donation. If you are happy to do this, please contact us via the details on <a href='../' className='text-yellow-900 font-medium'> our homepage</a>. If this is not feasible or practical, feel free to go ahead and make the payment by card.</p>}
+			{touchedFields.donationAmount && shouldShowLowAmountWarning && <p className='my-3 py-2 px-3 font-normal animate-shake  text-yellow-900 border border-yellow-400 border rounded-lg bg-yellow-100'>We encourage all students to donate an amount that's personally significant to them - and we know this is different for everyone! A good way of thinking about is to donate an amount that really makes you think about where and why you are donating. We can't wait to celebrate with you soon!</p>}
+			{touchedFields.donationAmount && shouldShowHighAmountWarning && <p className='my-3 py-2 px-3 font-normal animate-shake text-yellow-900 border border-yellow-400 border rounded-lg bg-yellow-100'>Wow, thank you! For high donations, it may be worth paying us by bank transfer to reduce card fees involved in processing your donation. If you are happy to do this, please contact us via the details on <a href='../' className='text-yellow-900 font-medium'> our homepage</a>. If this is not feasible or practical, feel free to go ahead and make the payment by card.</p>}
 
 			{fundraiser.matchFundingRate !== 0 && fundraiser.matchFundingPerDonationLimit !== null && fundraiser.matchFundingRemaining !== 0 && (
 				<p className='mt-1'>
@@ -718,7 +718,7 @@ const DonationFormCelebrate: React.FC<{formMethods: UseFormReturn<DonationFormRe
 						})}
 					/>
 
-					{touchedFields.contributionAmount && contributionAmount > 20_00 && <p className='my-3 py-2 px-3 font-normal animate-shake text-yellow-900 border border-yellow-400 border-1 rounded-lg bg-yellow-100'>While you're welcome to contribute as much as you want, we don't expect to spend more than £20 per head on the Summer Party.</p>}
+					{touchedFields.contributionAmount && contributionAmount > 20_00 && <p className='my-3 py-2 px-3 font-normal animate-shake text-yellow-900 border border-yellow-400 border rounded-lg bg-yellow-100'>While you're welcome to contribute as much as you want, we don't expect to spend more than £20 per head on the Summer Party.</p>}
 				</>
 			)}
 

@@ -67,7 +67,7 @@ const AuditPage: React.FC = () => {
 					</Button>
 				</div>
 				<FormProvider {...formMethods}>
-					<form className='grid sm:grid-cols-[minmax(0,_1fr)_minmax(0,_2fr)] gap-4' onSubmit={formMethods.handleSubmit(onSubmit)}>
+					<form className='grid sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-4' onSubmit={formMethods.handleSubmit(onSubmit)}>
 						<LabelledInput id='queryType' label={<span className='text-white'>Search by</span>} type='select' options={['object', 'subject']} {...formMethods.register('queryType')} />
 						<LabelledInput
 							id='query'

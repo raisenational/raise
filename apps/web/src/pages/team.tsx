@@ -104,7 +104,7 @@ const TeamPage = () => (
 			</p>
 			{NATIONAL_TEAM.map((m, i) => (
 
-				<Quote key={i} by={`${m.name}, ${m.role}`} headshotSrc={m.img} imagePlacement={i % 4 <= 1 ? 'left' : 'right'} className='mt-4 p-8 bg-raise-red rounded-lg min-h-[10rem] whitespace-pre-line'>
+				<Quote key={i} by={`${m.name}, ${m.role}`} headshotSrc={m.img} imagePlacement={i % 4 <= 1 ? 'left' : 'right'} className='mt-4 p-8 bg-raise-red rounded-lg min-h-40 whitespace-pre-line'>
 					{m.bio}
 				</Quote>
 			))}

@@ -17,11 +17,11 @@ const ContactForm: React.FC<Props> = ({action, className}) => (
 const ContactField: React.FC<{label: string; type: string; name: string; id: string}> = ({
 	label, type, name, id,
 }) => (
-	<div className='border-4 border-white p-2 relative mb-4 rounded'>
+	<div className='border-4 border-white p-2 relative mb-4 rounded-sm'>
 		<label htmlFor={id} className='absolute bg-raise-blue -top-3 left-8 px-2 font-black text-xl leading-none'>{label}</label>
 		{type === 'textarea'
-			? <textarea name={name} rows={6} id={id} required className='bg-transparent w-full h-full resize-none border-none focus:bg-black focus:bg-opacity-10 p-2 rounded focus:outline-none -mb-2' />
-			: <input type={type} name={name} id={id} required className='bg-transparent w-full h-full resize-none border-none focus:bg-black focus:bg-opacity-10 p-2 rounded focus:outline-none' />}
+			? <textarea name={name} rows={6} id={id} required className='bg-transparent w-full h-full resize-none border-none focus:bg-black/10 p-2 rounded-sm focus:outline-hidden -mb-2' />
+			: <input type={type} name={name} id={id} required className='bg-transparent w-full h-full resize-none border-none focus:bg-black/10 p-2 rounded-sm focus:outline-hidden' />}
 	</div>
 );
 
