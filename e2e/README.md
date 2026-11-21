@@ -26,4 +26,4 @@ In CI, these run on every pull request, and the deploy only runs if they pass.
 
 ## 🎬 Watching the tests
 
-Every test is recorded. Locally, run `npx playwright show-report` after a run. In CI, open the workflow run's summary page, use the "Download the report" link on the workflow run summary page (or the `playwright-report` artifact, kept for 7 days), unzip it and run `npx playwright show-report <unzipped folder>`. Click a test to see its video (and, for failures, a trace you can step through with `npx playwright show-trace`).
+Every test is recorded. Locally, run `npx playwright show-report` after a run. In CI, open the workflow run's summary page, use the "Download the report" link on the workflow run summary page (or the `playwright-report` artifact, kept for 7 days), unzip it and run `npx playwright show-report <unzipped folder>`. Click a test to see its trace (the easiest way to follow along: every step, with a snapshot of the page before and after) and video. To make videos easier to watch locally, slow the tests down with e.g. `E2E_SLOW_MO=500 npm run test:e2e`.
