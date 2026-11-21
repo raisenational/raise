@@ -17,6 +17,10 @@ Then run `npm run test:e2e` from the root of the repo. This starts the API (with
 
 If you already have the API running (`npx turbo start --filter @raise/server`), it'll be reused. Note the tests will then run against whatever data is in your local database, so you may want to restart it to get a clean state.
 
+### Against dev
+
+`E2E_ENV=dev npm run test:e2e` runs the same tests against https://dev.joinraise.org, which is useful for checking a deploy. There, Stripe sends real webhooks to the dev API (the "Raise dev API" destination in the Raise Dev Stripe account), so no webhooks are simulated. The tests leave behind test groups, users, fundraisers and donations on dev, and set the Demo fundraiser's match funding to 100% up to £150 per donor.
+
 ## 🧠 How it works
 
 - **Website**: we test a static export (like what we deploy), rather than `next dev`. `next dev` behaves differently. For example, React strict mode runs effects twice, which creates duplicate payment intents and stops some dropdowns opening.

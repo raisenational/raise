@@ -77,6 +77,21 @@ test('a chapter runs a donations push, from setup to audit', async ({page}) => {
 			await pickOption(page, /Demo/, groupName);
 		});
 		await expect(propertyValue(page, 'Groups with access')).toHaveText(new RegExp(groupName));
+		// Match funding: £1 matched for every £1 donated, up to £150 per donor, with no overall cap
+		await editProperty(page, 'Match funding rate', async (d) => {
+			await d.getByRole('spinbutton').fill('100');
+		});
+		await editProperty(page, 'Match funding per donation limit', async (d) => {
+			await d.getByRole('spinbutton').fill('150');
+		});
+		await editProperty(page, 'Match funding remaining', async (d) => {
+			await d.getByRole('spinbutton').fill('');
+		});
+		await editProperty(page, 'Minimum donation amount', async (d) => {
+			await d.getByRole('spinbutton').fill('');
+		});
+		await expect(propertyValue(page, 'Match funding rate')).toHaveText(/^100%/);
+		await expect(propertyValue(page, 'Match funding remaining')).toHaveText('—');
 		// Weekly donations are scheduled until this date (the seed data's is in the past)
 		const fourWeeksTime = new Date(Date.now() + (4 * 7 * 24 * 60 * 60 * 1000) + (60 * 60 * 1000));
 		await editProperty(page, 'Recurring donations to', async (d) => {
