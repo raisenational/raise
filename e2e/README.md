@@ -23,3 +23,7 @@ If you already have the API running (`npx turbo start --filter @raise/server`), 
 - **Data**: tests run one at a time against a shared database. Each test creates the things it changes where possible, and checks relative changes (e.g. the fundraiser total went up by £300) so that tests don't depend on each other.
 
 In CI, these run on every pull request, and the deploy only runs if they pass.
+
+## 🎬 Watching the tests
+
+Every test is recorded. Locally, run `npx playwright show-report` after a run. In CI, open the workflow run's summary page, download the `playwright-report` artifact, unzip it and open `playwright-report/index.html`. Click a test to see its video (and, for failures, a trace you can step through with `npx playwright show-trace`).
