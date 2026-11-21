@@ -35,11 +35,65 @@ jobs:
       - name: Test, lint, build
         run: npx turbo test lint build
 
+  e2e:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout ${{ github.sha }}
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: Run end-to-end tests
+        run: npm run test:e2e
+      # The HTML report includes a video of every test, plus traces for any failures
+      - name: Upload Playwright report
+        id: upload-report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          # Videos take up space, so only keep these briefly
+          retention-days: 7
+      - name: Link to Playwright report
+        if: ${{ !cancelled() && steps.upload-report.outputs.artifact-url }}
+        run: |
+          echo "### 🎭 End-to-end test report" >> "$GITHUB_STEP_SUMMARY"
+          echo "[Download the report with test videos](${{ steps.upload-report.outputs.artifact-url }}) (kept for 7 days), unzip it and run \`npx playwright show-report <folder>\`." >> "$GITHUB_STEP_SUMMARY"
+
+  deploy:
+    if: github.ref == 'refs/heads/master'
+    needs: [build, e2e]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    # Avoid two deploys to the same CloudFormation stacks at once
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout ${{ github.sha }}
+        uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+
       # Deployment prep — AWS access via GitHub OIDC federation (no stored keys).
       # Assumes the raise-ci role, which trusts this repo's master-ref OIDC token
       # and grants the same serverless-policy the old static-key user had.
       - name: "Configure AWS credentials (OIDC)"
-        if: github.ref == 'refs/heads/master'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::405129592067:role/raise-ci
@@ -47,15 +101,12 @@ jobs:
 
       # Deployment to dev environment
       - name: "server: Retrieve env for dev environment"
-        if: github.ref == 'refs/heads/master'
         run: echo "$DEV_ENV" > apps/server/src/env/dev.ts
         env:
           DEV_ENV: ${{ secrets.DEV_ENV }}
       - name: "Deploy to dev environment"
-        if: github.ref == 'refs/heads/master'
         run: npx turbo deploy:dev
 
       # Deployment to prod environment
       - name: "web: Deploy to prod environment"
-        if: github.ref == 'refs/heads/master'
         run: npx turbo deploy:prod --filter @raise/web

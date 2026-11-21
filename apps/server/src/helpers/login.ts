@@ -81,7 +81,7 @@ const getGroups = async (email: string): Promise<Ulid[]> => {
 		throw new createHttpError.Forbidden(`Your account, ${email}, is not allowlisted to use the platform`);
 	}
 
-	const userIsInHardcodedMap = HARD_CODED_USER_MAP[createHash('sha1').update(email.toLowerCase()).digest('hex')] !== null;
+	const userIsInHardcodedMap = HARD_CODED_USER_MAP[createHash('sha1').update(email.toLowerCase()).digest('hex')] !== undefined;
 	if (!userIsInHardcodedMap && user.securityTrainingCompletedAt + SECURITY_TRAINING_VALIDITY_IN_SECONDS < new Date().getTime() / 1000) {
 		throw new createHttpError.Forbidden(`Security training for ${email} out of date, last marked completed on ${new Date(user.securityTrainingCompletedAt * 1000).toJSON()}`);
 	}

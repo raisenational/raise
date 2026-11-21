@@ -42,6 +42,7 @@ Summary: start everything with `npx turbo start`, and test with `npx turbo test`
 | `npx turbo start`       | Starts local server                            |
 | `npx turbo test`        | Run unit tests                                 |
 | `npx turbo test:watch`  | Run unit tests in watch mode                   |
+| `npm run test:e2e`      | Run [end-to-end browser tests](./e2e)          |
 | `npx turbo lint`        | Find lint issues                               |
 | `npx turbo lint:fix`    | Auto-fix lint issues                           |
 | `npx turbo build`       | Build and type-check. Output goes into `dist`. |
