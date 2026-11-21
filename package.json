@@ -11,9 +11,11 @@
     "start": "turbo run start",
     "test": "turbo run test",
     "lint": "turbo run lint",
-    "build": "turbo run build"
+    "build": "turbo run build",
+    "test:e2e": "playwright test"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "eslint": "^9.19.0",
     "turbo": "^2.9.14"
   },
