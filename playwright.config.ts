@@ -11,9 +11,12 @@ export default defineConfig({
 	retries: process.env.CI ? 1 : 0,
 	timeout: 90_000,
 	expect: {timeout: 15_000},
-	reporter: process.env.CI ? [['list'], ['html', {open: 'never'}]] : 'list',
+	reporter: [['list'], ['html', {open: 'never'}]],
 	use: {
 		baseURL: 'http://localhost:8000',
+		// Record every test, so you can watch what they do (videos are in the HTML report,
+		// which CI uploads as the 'playwright-report' artifact)
+		video: 'on',
 		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 	},
