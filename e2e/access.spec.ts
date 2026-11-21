@@ -1,14 +1,24 @@
 import {test, expect} from '@playwright/test';
-import {editProperty, loginAs, propertyValue} from './helpers';
+import {adminApi, editProperty, loginAs, propertyValue} from './helpers';
 
 // Who can get into Donations Admin, and what they can see once there.
 
 test('only authorised admins can see donor data', async ({page}) => {
 	await test.step('Admins whose security training has expired cannot log in', async () => {
+		const email = `e2e-expired-training-${Date.now()}@example.com`;
+		const api = await adminApi('raisenational@gmail.com');
+		await api('POST', '/admin/users', {
+			name: 'E2E Expired Training',
+			email,
+			groups: [],
+			securityTrainingCompletedAt: Math.floor(Date.now() / 1000) - (2 * 365 * 24 * 60 * 60),
+			sendAccountCreationEmail: false,
+		});
+
 		await page.goto('/admin/');
-		page.once('dialog', async (dialog) => dialog.accept('raiseexpiredsecuritytraining@gmail.com'));
+		page.once('dialog', async (dialog) => dialog.accept(email));
 		await page.getByRole('button', {name: 'Impersonation Login'}).click();
-		await expect(page.getByText(/Security training for raiseexpiredsecuritytraining@gmail.com out of date/)).toBeVisible();
+		await expect(page.getByText(`Security training for ${email} out of date`)).toBeVisible();
 		await expect(page.getByRole('button', {name: 'Logout'})).toBeHidden();
 	});
 

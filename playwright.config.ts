@@ -1,5 +1,11 @@
 import {defineConfig, devices} from '@playwright/test';
 
+// E2E_ENV=dev runs the tests against https://dev.joinraise.org instead of a local copy
+const target = process.env.E2E_ENV ?? 'local';
+if (target !== 'local' && target !== 'dev') {
+	throw new Error(`Unsupported E2E_ENV '${target}': use 'local' or 'dev'`);
+}
+
 // End-to-end tests that drive the real website and API running locally.
 // See e2e/README.md for details.
 export default defineConfig({
@@ -13,7 +19,7 @@ export default defineConfig({
 	expect: {timeout: 15_000},
 	reporter: [['list'], ['html', {open: 'never'}]],
 	use: {
-		baseURL: 'http://localhost:8000',
+		baseURL: target === 'dev' ? 'https://dev.joinraise.org' : 'http://localhost:8000',
 		// Record every test, so you can see what they do. Both are in the HTML report, which
 		// CI uploads as the 'playwright-report' artifact. The trace is the easiest to follow:
 		// it lists every step with a snapshot of the page before and after it.
@@ -24,7 +30,7 @@ export default defineConfig({
 		screenshot: 'only-on-failure',
 	},
 	projects: [{name: 'chromium', use: {...devices['Desktop Chrome']}}],
-	webServer: [
+	webServer: target === 'dev' ? [] : [
 		{
 			// API, with DynamoDB Local reseeded from apps/server/local/table_*.json on each start
 			command: 'npm start --workspace @raise/server',

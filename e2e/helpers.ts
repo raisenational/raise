@@ -1,8 +1,10 @@
 import {expect, type Page} from '@playwright/test';
 import Stripe from 'stripe';
 import serverEnv from '../apps/server/src/env/local';
+import devWebEnv from '../apps/web/src/env/dev';
 
-export const API_BASE_URL = 'http://localhost:8001';
+export const IS_DEV = process.env.E2E_ENV === 'dev';
+export const API_BASE_URL = IS_DEV ? devWebEnv.API_BASE_URL : 'http://localhost:8001';
 export const DEMO_FUNDRAISER_ID = '01FGNSHH6X6X878ZNBZKY44JQA';
 
 const stripe = new Stripe(serverEnv.STRIPE_SECRET_KEY);
@@ -52,6 +54,11 @@ export const getPublicFundraiser = async (fundraiserId = DEMO_FUNDRAISER_ID): Pr
  * event to our webhook endpoint, as Stripe would in dev/prod.
  */
 export const sendPaymentSucceededWebhook = async (paymentIntentId: string) => {
+	if (IS_DEV) {
+		// On dev, Stripe sends the real webhook itself
+		return;
+	}
+
 	const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
 	expect(paymentIntent.status).toBe('succeeded');
 
