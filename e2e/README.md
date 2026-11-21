@@ -2,8 +2,10 @@
 
 Browser tests, using [Playwright](https://playwright.dev/), that run through the main things people do on Raise, against the real website and API running locally:
 
-- [`donate.spec.ts`](./donate.spec.ts): the public donation flow, for one-off and weekly donations, including paying with a Stripe test card
-- [`admin.spec.ts`](./admin.spec.ts): the common Donations Admin processes from the [help doc](https://docs.google.com/document/d/1H5RdqTJijH-wWb2thCqJrT8IoLiVvxSpWLDEUmDyLxU/edit). These are logging in, editing a fundraiser, adding manual donations and payments, donor wall visibility, marking payments refunded, creating fundraisers, groups and users, and access control
+- [`journey.spec.ts`](./journey.spec.ts): one long test following a chapter through a donations push, based on the processes in the [help doc](https://docs.google.com/document/d/1H5RdqTJijH-wWb2thCqJrT8IoLiVvxSpWLDEUmDyLxU/edit). The National team sets up a chapter group, president and fundraisers. Supporters make one-off and weekly donations with a Stripe test card. The president reviews them, hides a donor's name and records a cash donation. The National team cancels a scheduled payment, marks a refund and checks the audit log.
+- [`access.spec.ts`](./access.spec.ts): who can log in to Donations Admin, and what chapter admins can see and edit
+
+Each test is split into named steps (`test.step`), so the report, trace and any failure message show which part broke.
 
 These tests give us confidence that refactors and dependency upgrades haven't broken anything, so if you add a new feature or process, consider adding a test for it here.
 
