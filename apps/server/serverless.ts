@@ -68,7 +68,7 @@ const getVersion = (): string => {
 
 const serverlessConfiguration: AWS = {
 	service: SERVICE_NAME,
-	frameworkVersion: '3',
+	frameworkVersion: '4',
 	custom: {
 		webpack: {
 			webpackConfig: './webpack.config.js',
@@ -148,7 +148,8 @@ const serverlessConfiguration: AWS = {
 	],
 	provider: {
 		name: 'aws',
-		runtime: 'nodejs18.x',
+		// @ts-expect-error: serverless types are outdated, see https://github.com/serverless/typescript/issues/90
+		runtime: 'nodejs22.x',
 		region: 'eu-west-1',
 		stage: env.STAGE,
 		apiGateway: {

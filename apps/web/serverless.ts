@@ -8,7 +8,7 @@ const MWA_S3_BUCKET_NAME = `${MWA_SERVICE_NAME}-${env.STAGE}-405129592067`;
 
 const serverlessConfiguration: AWS = {
 	service: RAISE_SERVICE_NAME,
-	frameworkVersion: '3',
+	frameworkVersion: '4',
 	custom: {
 		s3Sync: [
 			{
@@ -32,7 +32,7 @@ const serverlessConfiguration: AWS = {
 		],
 	},
 	plugins: [
-		'serverless-s3-sync',
+		'./serverless-plugins/s3-sync',
 	],
 	provider: {
 		name: 'aws',
