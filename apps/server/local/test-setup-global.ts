@@ -16,7 +16,8 @@ export const setup = async () => {
 
 	// Store the table CloudFormation resources in the __DYNAMODB_TABLES environment variable
 	process.env.__DYNAMODB_TABLES = JSON.stringify(Object.values(service.resources.Resources as NonNullable<NonNullable<AWS['resources']>['Resources']>[string][])
-		.filter((resource) => resource.Type === 'AWS::DynamoDB::Table')
+		// (Resources can also be Fn::ForEach loops, which don't have a Type)
+		.filter((resource): resource is Extract<typeof resource, {Type: string}> => 'Type' in resource && resource.Type === 'AWS::DynamoDB::Table')
 		.map((resource) => resource.Properties));
 };
 

@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@raise/eslint-config": "*",
-    "@serverless/typescript": "^3.27.0",
+    "@serverless/typescript": "^4.30.0",
     "@types/aws-lambda": "^8.10.71",
     "@types/escape-html": "^1.0.2",
     "@types/http-errors": "^2.0.1",
