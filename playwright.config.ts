@@ -14,10 +14,13 @@ export default defineConfig({
 	reporter: [['list'], ['html', {open: 'never'}]],
 	use: {
 		baseURL: 'http://localhost:8000',
-		// Record every test, so you can watch what they do (videos are in the HTML report,
-		// which CI uploads as the 'playwright-report' artifact)
+		// Record every test, so you can see what they do. Both are in the HTML report, which
+		// CI uploads as the 'playwright-report' artifact. The trace is the easiest to follow:
+		// it lists every step with a snapshot of the page before and after it.
 		video: 'on',
-		trace: 'retain-on-failure',
+		trace: 'on',
+		// Set E2E_SLOW_MO=500 to pause 500ms between actions, to make the videos easier to watch
+		launchOptions: {slowMo: Number(process.env.E2E_SLOW_MO ?? 0)},
 		screenshot: 'only-on-failure',
 	},
 	projects: [{name: 'chromium', use: {...devices['Desktop Chrome']}}],
