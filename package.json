@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.65.1",
-    "eslint": "^9.19.0",
+    "eslint": "^9.39.5",
     "turbo": "^2.9.14"
   },
   "packageManager": "npm@9.5.1",
